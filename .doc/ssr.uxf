@@ -1,0 +1,14 @@
+<diagram program="umletino" version="15.0.0"><zoom_level>10</zoom_level><help_text>Space for diagram notes</help_text><element><id>UMLClass</id><coordinates><x>580</x><y>0</y><w>220</w><h>90</h></coordinates><panel_attributes>src/main.js
+--
+--
+createApp
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>210</y><w>220</w><h>30</h></coordinates><panel_attributes>prerender.js
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>270</x><y>120</y><w>220</w><h>120</h></coordinates><panel_attributes>src/entry-client.js
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>270</x><y>260</y><w>220</w><h>410</h></coordinates><panel_attributes>src/entry-server.js
+--
+--
+render(url, manifest)
+renderPreloadLinks(modules, manifest)
+renderPreloadLink(file)
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>160</y><w>220</w><h>30</h></coordinates><panel_attributes>server.js
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>480</x><y>30</y><w>120</w><h>210</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;190;70;190;70;10;100;10</additional_attributes></element><element><id>Relation</id><coordinates><x>480</x><y>30</y><w>120</w><h>260</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;240;70;240;70;10;100;10</additional_attributes></element></diagram>

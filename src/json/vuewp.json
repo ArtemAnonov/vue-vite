@@ -1,0 +1,1269 @@
+{
+    "routing": {
+        "returned": {
+            "category_base": "",
+            "page_on_front": "home",
+            "page_for_posts": "posts",
+            "permalink_structure": "/%year%/%monthnum%/%postname%/",
+            "show_on_front": "page",
+            "tag_base": "",
+            "url": "http://localhost:8080"
+        }
+    },
+    "state": {
+        "auth": {
+            "route_base": "auth",
+            "type": "auth",
+            "apiType": "/jwt-auth/v1/",
+            "specific_params": [],
+            "single_params": [],
+            "params": {},
+            "basedRequest": {
+                "route_base": "auth",
+                "type": "auth",
+                "apiType": "/jwt-auth/v1/"
+            },
+            "items": {},
+            "requests": []
+        },
+        "cart": {
+            "apiType": "/wc/store/v1/",
+            "route_base": "cart",
+            "type": "cart",
+            "single_params": [],
+            "specific_params": [],
+            "params": {},
+            "basedRequest": {
+                "route_base": "cart",
+                "type": "cart",
+                "apiType": "/wc/store/v1/"
+            },
+            "items": {},
+            "requests": []
+        },
+        "checkout": {
+            "apiType": "/wc/store/v1/",
+            "route_base": "checkout",
+            "type": "checkout",
+            "single_params": [],
+            "specific_params": [],
+            "params": {},
+            "basedRequest": {
+                "route_base": "checkout",
+                "type": "checkout",
+                "apiType": "/wc/store/v1/"
+            },
+            "items": {},
+            "requests": []
+        },
+        "pages": {
+            "route_base": "pages",
+            "type": "pages",
+            "apiType": "/wp/v2/",
+            "specific_params": [],
+            "single_params": [],
+            "params": {},
+            "basedRequest": {
+                "route_base": "pages",
+                "type": "pages",
+                "apiType": "/wp/v2/"
+            },
+            "items": {},
+            "requests": []
+        },
+        "banners": {
+            "route_base": "banners",
+            "type": "banners",
+            "apiType": "/wp/v2/",
+            "specific_params": {
+                "per_page": 10,
+                "banner_categories": ""
+            },
+            "single_params": [],
+            "params": {
+                "per_page": 10,
+                "banner_categories": ""
+            },
+            "basedRequest": {
+                "route_base": "banners",
+                "type": "banners",
+                "apiType": "/wp/v2/"
+            },
+            "items": {},
+            "requests": []
+        },
+        "media": {
+            "route_base": "media",
+            "type": "media",
+            "apiType": "/wp/v2/",
+            "specific_params": [],
+            "single_params": [],
+            "params": {},
+            "basedRequest": {
+                "route_base": "media",
+                "type": "media",
+                "apiType": "/wp/v2/"
+            },
+            "items": {},
+            "requests": []
+        },
+        "orders": {
+            "route_base": "orders",
+            "type": "orders",
+            "specific_params": {
+                "per_page": 8,
+                "page": 1
+            },
+            "apiType": "/wc/v3/",
+            "single_params": [],
+            "params": {
+                "per_page": 8,
+                "page": 1
+            },
+            "basedRequest": {
+                "route_base": "orders",
+                "type": "orders",
+                "apiType": "/wc/v3/"
+            },
+            "items": {},
+            "requests": []
+        },
+        "customers": {
+            "route_base": "customers",
+            "type": "customers",
+            "specific_params": [],
+            "apiType": "/wc/v3/",
+            "single_params": [],
+            "params": {},
+            "basedRequest": {
+                "route_base": "customers",
+                "type": "customers",
+                "apiType": "/wc/v3/"
+            },
+            "items": {},
+            "requests": []
+        },
+        "products": {
+            "route_base": "products",
+            "type": "products",
+            "specific_params": {
+                "per_page": 8,
+                "page": 1,
+                "category": "",
+                "slug": "",
+                "min_price": null,
+                "max_price": null,
+                "pa_brand": [],
+                "pa_tcvet": [],
+                "pa_material": [],
+                "type": "simple",
+                "order": "",
+                "orderby": ""
+            },
+            "apiType": "/wc/v3/",
+            "single_params": [],
+            "params": {
+                "per_page": 8,
+                "page": 1,
+                "category": "",
+                "slug": "",
+                "min_price": null,
+                "max_price": null,
+                "pa_brand": [],
+                "pa_tcvet": [],
+                "pa_material": [],
+                "type": "simple",
+                "order": "",
+                "orderby": ""
+            },
+            "basedRequest": {
+                "route_base": "products",
+                "type": "products",
+                "apiType": "/wc/v3/"
+            },
+            "items": {},
+            "requests": []
+        },
+        "productsCategories": {
+            "route_base": "products/categories",
+            "type": "productsCategories",
+            "specific_params": {
+                "per_page": 100,
+                "exclude": [
+                    17
+                ]
+            },
+            "apiType": "/wc/v3/",
+            "single_params": [],
+            "params": {
+                "per_page": 100,
+                "exclude": [
+                    17
+                ]
+            },
+            "basedRequest": {
+                "route_base": "products/categories",
+                "type": "productsCategories",
+                "apiType": "/wc/v3/"
+            },
+            "items": {
+                "20": {
+                    "id": 20,
+                    "name": "Женщинам",
+                    "slug": "zhenshchinam",
+                    "parent": 0,
+                    "description": "",
+                    "display": "default",
+                    "image": null,
+                    "menu_order": 0,
+                    "count": 13,
+                    "_links": {
+                        "self": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories/20"
+                            }
+                        ],
+                        "collection": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories"
+                            }
+                        ]
+                    }
+                },
+                "21": {
+                    "id": 21,
+                    "name": "Юбки",
+                    "slug": "iubki",
+                    "parent": 20,
+                    "description": "Описание по умолчанию не отображается.",
+                    "display": "default",
+                    "image": {
+                        "id": 284,
+                        "date_created": "2022-08-17T23:47:20",
+                        "date_created_gmt": "2022-08-17T20:47:20",
+                        "date_modified": "2022-08-17T23:47:20",
+                        "date_modified_gmt": "2022-08-17T20:47:20",
+                        "src": "http://localhost/wp-content/uploads/2022/08/273_kh_204.png",
+                        "name": "273_kh_204",
+                        "alt": ""
+                    },
+                    "menu_order": 0,
+                    "count": 12,
+                    "_links": {
+                        "self": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories/21"
+                            }
+                        ],
+                        "collection": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories"
+                            }
+                        ],
+                        "up": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories/20"
+                            }
+                        ]
+                    }
+                },
+                "22": {
+                    "id": 22,
+                    "name": "Мужчинам",
+                    "slug": "muzhchinam",
+                    "parent": 0,
+                    "description": "",
+                    "display": "default",
+                    "image": null,
+                    "menu_order": 0,
+                    "count": 1,
+                    "_links": {
+                        "self": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories/22"
+                            }
+                        ],
+                        "collection": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories"
+                            }
+                        ]
+                    }
+                },
+                "23": {
+                    "id": 23,
+                    "name": "Худи",
+                    "slug": "%d1%85%d1%83%d0%b4%d0%b8",
+                    "parent": 22,
+                    "description": "",
+                    "display": "default",
+                    "image": null,
+                    "menu_order": 0,
+                    "count": 1,
+                    "_links": {
+                        "self": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories/23"
+                            }
+                        ],
+                        "collection": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories"
+                            }
+                        ],
+                        "up": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories/22"
+                            }
+                        ]
+                    }
+                },
+                "24": {
+                    "id": 24,
+                    "name": "Верхняя одежда",
+                    "slug": "verkhniaia-odezhda",
+                    "parent": 20,
+                    "description": "Трендовые юбки всех фасонов",
+                    "display": "default",
+                    "image": {
+                        "id": 285,
+                        "date_created": "2022-08-17T23:47:26",
+                        "date_created_gmt": "2022-08-17T20:47:26",
+                        "date_modified": "2022-08-17T23:47:26",
+                        "date_modified_gmt": "2022-08-17T20:47:26",
+                        "src": "http://localhost/wp-content/uploads/2022/08/outerwear2.png",
+                        "name": "outerwear2",
+                        "alt": ""
+                    },
+                    "menu_order": 0,
+                    "count": 0,
+                    "_links": {
+                        "self": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories/24"
+                            }
+                        ],
+                        "collection": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories"
+                            }
+                        ],
+                        "up": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories/20"
+                            }
+                        ]
+                    }
+                },
+                "25": {
+                    "id": 25,
+                    "name": "Толстовки и свитшоты",
+                    "slug": "tolstovki-i-svitshoty",
+                    "parent": 20,
+                    "description": "Преимущества комфорта",
+                    "display": "default",
+                    "image": {
+                        "id": 286,
+                        "date_created": "2022-08-17T23:47:37",
+                        "date_created_gmt": "2022-08-17T20:47:37",
+                        "date_modified": "2022-08-17T23:47:37",
+                        "date_modified_gmt": "2022-08-17T20:47:37",
+                        "src": "http://localhost/wp-content/uploads/2022/08/skirt.png",
+                        "name": "skirt",
+                        "alt": ""
+                    },
+                    "menu_order": 0,
+                    "count": 1,
+                    "_links": {
+                        "self": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories/25"
+                            }
+                        ],
+                        "collection": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories"
+                            }
+                        ],
+                        "up": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories/20"
+                            }
+                        ]
+                    }
+                },
+                "54": {
+                    "id": 54,
+                    "name": "Детям",
+                    "slug": "detiam",
+                    "parent": 0,
+                    "description": "",
+                    "display": "default",
+                    "image": null,
+                    "menu_order": 0,
+                    "count": 0,
+                    "_links": {
+                        "self": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories/54"
+                            }
+                        ],
+                        "collection": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories"
+                            }
+                        ]
+                    }
+                },
+                "55": {
+                    "id": 55,
+                    "name": "Новинки",
+                    "slug": "novinki",
+                    "parent": 0,
+                    "description": "",
+                    "display": "default",
+                    "image": null,
+                    "menu_order": 0,
+                    "count": 0,
+                    "_links": {
+                        "self": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories/55"
+                            }
+                        ],
+                        "collection": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories"
+                            }
+                        ]
+                    }
+                },
+                "56": {
+                    "id": 56,
+                    "name": "Для дома",
+                    "slug": "dlia-doma",
+                    "parent": 0,
+                    "description": "",
+                    "display": "default",
+                    "image": null,
+                    "menu_order": 0,
+                    "count": 0,
+                    "_links": {
+                        "self": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories/56"
+                            }
+                        ],
+                        "collection": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories"
+                            }
+                        ]
+                    }
+                },
+                "57": {
+                    "id": 57,
+                    "name": "Косметика",
+                    "slug": "kosmetika",
+                    "parent": 0,
+                    "description": "",
+                    "display": "default",
+                    "image": null,
+                    "menu_order": 0,
+                    "count": 0,
+                    "_links": {
+                        "self": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories/57"
+                            }
+                        ],
+                        "collection": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories"
+                            }
+                        ]
+                    }
+                },
+                "58": {
+                    "id": 58,
+                    "name": "Бренды",
+                    "slug": "brendy",
+                    "parent": 0,
+                    "description": "",
+                    "display": "default",
+                    "image": null,
+                    "menu_order": 0,
+                    "count": 0,
+                    "_links": {
+                        "self": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories/58"
+                            }
+                        ],
+                        "collection": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories"
+                            }
+                        ]
+                    }
+                },
+                "59": {
+                    "id": 59,
+                    "name": "Sale",
+                    "slug": "sale",
+                    "parent": 0,
+                    "description": "",
+                    "display": "default",
+                    "image": null,
+                    "menu_order": 0,
+                    "count": 0,
+                    "_links": {
+                        "self": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories/59"
+                            }
+                        ],
+                        "collection": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories"
+                            }
+                        ]
+                    }
+                },
+                "78": {
+                    "id": 78,
+                    "name": "Трапеции",
+                    "slug": "trapetcii",
+                    "parent": 21,
+                    "description": "",
+                    "display": "default",
+                    "image": null,
+                    "menu_order": 0,
+                    "count": 1,
+                    "_links": {
+                        "self": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories/78"
+                            }
+                        ],
+                        "collection": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories"
+                            }
+                        ],
+                        "up": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories/21"
+                            }
+                        ]
+                    }
+                },
+                "79": {
+                    "id": 79,
+                    "name": "Миди",
+                    "slug": "midi",
+                    "parent": 21,
+                    "description": "",
+                    "display": "default",
+                    "image": null,
+                    "menu_order": 0,
+                    "count": 2,
+                    "_links": {
+                        "self": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories/79"
+                            }
+                        ],
+                        "collection": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories"
+                            }
+                        ],
+                        "up": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories/21"
+                            }
+                        ]
+                    }
+                },
+                "80": {
+                    "id": 80,
+                    "name": "Мини",
+                    "slug": "mini",
+                    "parent": 21,
+                    "description": "",
+                    "display": "default",
+                    "image": null,
+                    "menu_order": 0,
+                    "count": 0,
+                    "_links": {
+                        "self": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories/80"
+                            }
+                        ],
+                        "collection": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories"
+                            }
+                        ],
+                        "up": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories/21"
+                            }
+                        ]
+                    }
+                },
+                "81": {
+                    "id": 81,
+                    "name": "Прямые",
+                    "slug": "priamye",
+                    "parent": 21,
+                    "description": "",
+                    "display": "default",
+                    "image": null,
+                    "menu_order": 0,
+                    "count": 0,
+                    "_links": {
+                        "self": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories/81"
+                            }
+                        ],
+                        "collection": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories"
+                            }
+                        ],
+                        "up": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories/21"
+                            }
+                        ]
+                    }
+                },
+                "82": {
+                    "id": 82,
+                    "name": "Брюки",
+                    "slug": "briuki",
+                    "parent": 20,
+                    "description": "Преимущества комфорта",
+                    "display": "default",
+                    "image": {
+                        "id": 293,
+                        "date_created": "2022-08-18T11:46:40",
+                        "date_created_gmt": "2022-08-18T08:46:40",
+                        "date_modified": "2022-08-18T11:46:40",
+                        "date_modified_gmt": "2022-08-18T08:46:40",
+                        "src": "http://localhost/wp-content/uploads/2022/08/273kh204_razdel_zhenshchiny_1.png",
+                        "name": "273kh204_razdel_zhenshchiny_1",
+                        "alt": ""
+                    },
+                    "menu_order": 0,
+                    "count": 0,
+                    "_links": {
+                        "self": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories/82"
+                            }
+                        ],
+                        "collection": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories"
+                            }
+                        ],
+                        "up": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories/20"
+                            }
+                        ]
+                    }
+                },
+                "83": {
+                    "id": 83,
+                    "name": "Платья",
+                    "slug": "platia",
+                    "parent": 20,
+                    "description": "Описание по умолчанию",
+                    "display": "default",
+                    "image": {
+                        "id": 294,
+                        "date_created": "2022-08-18T11:46:46",
+                        "date_created_gmt": "2022-08-18T08:46:46",
+                        "date_modified": "2022-08-18T11:46:46",
+                        "date_modified_gmt": "2022-08-18T08:46:46",
+                        "src": "http://localhost/wp-content/uploads/2022/08/273kh204_razdel_zhenshchiny_2.png",
+                        "name": "273kh204_razdel_zhenshchiny_2",
+                        "alt": ""
+                    },
+                    "menu_order": 0,
+                    "count": 0,
+                    "_links": {
+                        "self": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories/83"
+                            }
+                        ],
+                        "collection": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories"
+                            }
+                        ],
+                        "up": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories/20"
+                            }
+                        ]
+                    }
+                },
+                "84": {
+                    "id": 84,
+                    "name": "Аксессуары",
+                    "slug": "aksessuary",
+                    "parent": 20,
+                    "description": "По умолчанию",
+                    "display": "default",
+                    "image": {
+                        "id": 295,
+                        "date_created": "2022-08-18T11:47:05",
+                        "date_created_gmt": "2022-08-18T08:47:05",
+                        "date_modified": "2022-08-18T11:47:05",
+                        "date_modified_gmt": "2022-08-18T08:47:05",
+                        "src": "http://localhost/wp-content/uploads/2022/08/scarf.png",
+                        "name": "scarf",
+                        "alt": ""
+                    },
+                    "menu_order": 0,
+                    "count": 0,
+                    "_links": {
+                        "self": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories/84"
+                            }
+                        ],
+                        "collection": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories"
+                            }
+                        ],
+                        "up": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories/20"
+                            }
+                        ]
+                    }
+                },
+                "85": {
+                    "id": 85,
+                    "name": "Толстовки",
+                    "slug": "%d1%82%d0%be%d0%bb%d1%81%d1%82%d0%be%d0%b2%d0%ba%d0%b8",
+                    "parent": 25,
+                    "description": "",
+                    "display": "default",
+                    "image": null,
+                    "menu_order": 0,
+                    "count": 1,
+                    "_links": {
+                        "self": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories/85"
+                            }
+                        ],
+                        "collection": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories"
+                            }
+                        ],
+                        "up": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories/25"
+                            }
+                        ]
+                    }
+                },
+                "86": {
+                    "id": 86,
+                    "name": "Блузки",
+                    "slug": "bluzki",
+                    "parent": 20,
+                    "description": "Элемент для создания",
+                    "display": "default",
+                    "image": null,
+                    "menu_order": 0,
+                    "count": 0,
+                    "_links": {
+                        "self": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories/86"
+                            }
+                        ],
+                        "collection": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories"
+                            }
+                        ],
+                        "up": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories/20"
+                            }
+                        ]
+                    }
+                },
+                "87": {
+                    "id": 87,
+                    "name": "C принтом",
+                    "slug": "c-%d0%bf%d1%80%d0%b8%d0%bd%d1%82%d0%be%d0%bc",
+                    "parent": 78,
+                    "description": "",
+                    "display": "default",
+                    "image": null,
+                    "menu_order": 0,
+                    "count": 0,
+                    "_links": {
+                        "self": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories/87"
+                            }
+                        ],
+                        "collection": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories"
+                            }
+                        ],
+                        "up": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/categories/78"
+                            }
+                        ]
+                    }
+                }
+            },
+            "requests": [
+                {
+                    "params": {
+                        "per_page": 100,
+                        "exclude": [
+                            17
+                        ]
+                    },
+                    "data": [
+                        87,
+                        59,
+                        84,
+                        86,
+                        58,
+                        82,
+                        24,
+                        54,
+                        56,
+                        20,
+                        57,
+                        79,
+                        80,
+                        22,
+                        55,
+                        83,
+                        81,
+                        85,
+                        25,
+                        78,
+                        23,
+                        21
+                    ],
+                    "total": 22,
+                    "totalPages": 1
+                }
+            ]
+        },
+        "productsAttributes": {
+            "route_base": "products/attributes",
+            "type": "productsAttributes",
+            "specific_params": {
+                "per_page": 100
+            },
+            "apiType": "/wc/v3/",
+            "single_params": [],
+            "params": {
+                "per_page": 100
+            },
+            "basedRequest": {
+                "route_base": "products/attributes",
+                "type": "productsAttributes",
+                "apiType": "/wc/v3/"
+            },
+            "items": {
+                "1": {
+                    "id": 1,
+                    "name": "Бренд",
+                    "slug": "pa_brand",
+                    "type": "select",
+                    "order_by": "menu_order",
+                    "has_archives": false,
+                    "_links": {
+                        "self": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/attributes/1"
+                            }
+                        ],
+                        "collection": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/attributes"
+                            }
+                        ]
+                    }
+                },
+                "3": {
+                    "id": 3,
+                    "name": "Материал",
+                    "slug": "pa_material",
+                    "type": "select",
+                    "order_by": "menu_order",
+                    "has_archives": false,
+                    "_links": {
+                        "self": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/attributes/3"
+                            }
+                        ],
+                        "collection": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/attributes"
+                            }
+                        ]
+                    }
+                },
+                "4": {
+                    "id": 4,
+                    "name": "Размер",
+                    "slug": "pa_razmer",
+                    "type": "select",
+                    "order_by": "menu_order",
+                    "has_archives": false,
+                    "_links": {
+                        "self": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/attributes/4"
+                            }
+                        ],
+                        "collection": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/attributes"
+                            }
+                        ]
+                    }
+                },
+                "5": {
+                    "id": 5,
+                    "name": "Цвет",
+                    "slug": "pa_tcvet",
+                    "type": "select",
+                    "order_by": "menu_order",
+                    "has_archives": false,
+                    "_links": {
+                        "self": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/attributes/5"
+                            }
+                        ],
+                        "collection": [
+                            {
+                                "href": "http://localhost/wp-json/wc/v3/products/attributes"
+                            }
+                        ]
+                    }
+                }
+            },
+            "requests": [
+                {
+                    "params": {
+                        "per_page": 100
+                    },
+                    "data": [
+                        1,
+                        3,
+                        4,
+                        5
+                    ],
+                    "total": 4,
+                    "totalPages": 1
+                }
+            ]
+        },
+        "productsTermsBrands": {
+            "route_base": "products/attributes/1/terms",
+            "type": "productsTermsBrands",
+            "specific_params": {
+                "per_page": 100
+            },
+            "apiType": "/wc/v3/",
+            "single_params": [],
+            "params": {
+                "per_page": 100
+            },
+            "basedRequest": {
+                "route_base": "products/attributes/1/terms",
+                "type": "productsTermsBrands",
+                "apiType": "/wc/v3/"
+            },
+            "items": {},
+            "requests": []
+        },
+        "productsTermsMaterials": {
+            "route_base": "products/attributes/3/terms",
+            "type": "productsTermsMaterials",
+            "specific_params": {
+                "per_page": 100
+            },
+            "apiType": "/wc/v3/",
+            "single_params": [],
+            "params": {
+                "per_page": 100
+            },
+            "basedRequest": {
+                "route_base": "products/attributes/3/terms",
+                "type": "productsTermsMaterials",
+                "apiType": "/wc/v3/"
+            },
+            "items": {},
+            "requests": []
+        },
+        "productsTermsSizes": {
+            "route_base": "products/attributes/4/terms",
+            "type": "productsTermsSizes",
+            "specific_params": {
+                "per_page": 100
+            },
+            "apiType": "/wc/v3/",
+            "single_params": [],
+            "params": {
+                "per_page": 100
+            },
+            "basedRequest": {
+                "route_base": "products/attributes/4/terms",
+                "type": "productsTermsSizes",
+                "apiType": "/wc/v3/"
+            },
+            "items": {},
+            "requests": []
+        },
+        "productsTermsColors": {
+            "route_base": "products/attributes/5/terms",
+            "type": "productsTermsColors",
+            "specific_params": {
+                "per_page": 100
+            },
+            "apiType": "/wc/v3/",
+            "single_params": [],
+            "params": {
+                "per_page": 100
+            },
+            "basedRequest": {
+                "route_base": "products/attributes/5/terms",
+                "type": "productsTermsColors",
+                "apiType": "/wc/v3/"
+            },
+            "items": {},
+            "requests": []
+        },
+        "site": {
+            "returned": {
+                "description": "Ещё один сайт на WordPress",
+                "docTitle": "",
+                "loading": false,
+                "logo": false,
+                "name": "testsite",
+                "posts_per_page": "10",
+                "url": "http://localhost"
+            }
+        },
+        "menus": {
+            "returned": {
+                "top_header": [
+                    {
+                        "id": 153,
+                        "parent": "0",
+                        "target": "",
+                        "content": "8 800 770 09 90",
+                        "title": "",
+                        "url": "tel:88007700990"
+                    },
+                    {
+                        "id": 154,
+                        "parent": "0",
+                        "target": "",
+                        "content": "8 495 775 09 44",
+                        "title": "",
+                        "url": "tel:84957750944"
+                    },
+                    {
+                        "id": 156,
+                        "parent": "0",
+                        "target": "",
+                        "content": "Fashion-блог",
+                        "title": "",
+                        "url": "http://localhost/posts/"
+                    },
+                    {
+                        "id": 157,
+                        "parent": "0",
+                        "target": "",
+                        "content": "Магазины",
+                        "title": "",
+                        "url": "http://localhost/posts/"
+                    },
+                    {
+                        "id": 158,
+                        "parent": "0",
+                        "target": "",
+                        "content": "Акции и новости",
+                        "title": "",
+                        "url": "http://localhost/posts/"
+                    },
+                    {
+                        "id": 159,
+                        "parent": "0",
+                        "target": "",
+                        "content": "Доставка по всей России",
+                        "title": "",
+                        "url": "http://localhost/posts/"
+                    },
+                    {
+                        "id": 160,
+                        "parent": "0",
+                        "target": "",
+                        "content": "Подарочные карты",
+                        "title": "",
+                        "url": "http://localhost/posts/"
+                    }
+                ],
+                "main_category": [
+                    {
+                        "id": 153,
+                        "parent": "0",
+                        "target": "",
+                        "content": "8 800 770 09 90",
+                        "title": "",
+                        "url": "tel:88007700990"
+                    },
+                    {
+                        "id": 154,
+                        "parent": "0",
+                        "target": "",
+                        "content": "8 495 775 09 44",
+                        "title": "",
+                        "url": "tel:84957750944"
+                    },
+                    {
+                        "id": 156,
+                        "parent": "0",
+                        "target": "",
+                        "content": "Fashion-блог",
+                        "title": "",
+                        "url": "http://localhost/posts/"
+                    },
+                    {
+                        "id": 157,
+                        "parent": "0",
+                        "target": "",
+                        "content": "Магазины",
+                        "title": "",
+                        "url": "http://localhost/posts/"
+                    },
+                    {
+                        "id": 158,
+                        "parent": "0",
+                        "target": "",
+                        "content": "Акции и новости",
+                        "title": "",
+                        "url": "http://localhost/posts/"
+                    },
+                    {
+                        "id": 159,
+                        "parent": "0",
+                        "target": "",
+                        "content": "Доставка по всей России",
+                        "title": "",
+                        "url": "http://localhost/posts/"
+                    },
+                    {
+                        "id": 160,
+                        "parent": "0",
+                        "target": "",
+                        "content": "Подарочные карты",
+                        "title": "",
+                        "url": "http://localhost/posts/"
+                    }
+                ],
+                "banners": []
+            }
+        },
+        "filter": {
+            "returned": {
+                "minCost": null,
+                "maxCost": null,
+                "params": {
+                    "page": 1,
+                    "category": null,
+                    "min_price": 1000,
+                    "max_price": 1000000,
+                    "orderAndOrderBy": {
+                        "id": 0,
+                        "name": "По умолчанию",
+                        "orderby": "",
+                        "order": ""
+                    },
+                    "pa_brand": {
+                        "id": 1,
+                        "options": []
+                    },
+                    "pa_material": {
+                        "id": 3,
+                        "options": []
+                    },
+                    "pa_razmer": {
+                        "id": 4,
+                        "options": []
+                    },
+                    "pa_tcvet": {
+                        "id": 5,
+                        "options": []
+                    }
+                },
+                "defaultValues": {
+                    "sort": [
+                        {
+                            "id": 0,
+                            "name": "По умолчанию",
+                            "orderby": "",
+                            "order": ""
+                        },
+                        {
+                            "id": 1,
+                            "name": "По цене, по возрастанию",
+                            "orderby": "price",
+                            "order": "asc"
+                        },
+                        {
+                            "id": 2,
+                            "name": "По цене, по убыванию",
+                            "orderby": "price",
+                            "order": "desc"
+                        },
+                        {
+                            "id": 3,
+                            "name": "По популярности",
+                            "orderby": "popularity",
+                            "order": "asc"
+                        },
+                        {
+                            "id": 4,
+                            "name": "По рейтингу",
+                            "orderby": "rating",
+                            "order": "asc"
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}
