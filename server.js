@@ -38,13 +38,13 @@ async function createServer(
     });
     app.use(vite.middlewares);
   } else {
-    // app.use((await import("compression")).default());
-    // app.use(
-    //   "/test/",
-    //   (await import("serve-static")).default(resolve("dist/client"), {
-    //     index: false,
-    //   })
-    // );
+    app.use((await import("compression")).default());
+    app.use(
+      "/",
+      (await import("serve-static")).default(resolve("dist/client"), {
+        index: false,
+      })
+    );
   }
 
   app.use("*", async (req, res, next) => {
