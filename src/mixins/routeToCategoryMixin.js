@@ -18,12 +18,12 @@ export default {
       ) {
         //
         return this.$router.push({
-          name: "MainCategory",
+          name: "SingleCategory",
           params: { mainCategorySlug: category.slug },
         });
       } else {
         return this.$router.push({
-          name: "Catalog",
+          name: "SingleSubCategory",
           params: {
             mainCategorySlug: parentCategorySlug,
             categorySlug: category.slug,

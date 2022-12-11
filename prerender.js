@@ -5,8 +5,10 @@ import fs from 'node:fs'
 import path from 'node:path'
 import url from 'node:url'
 
-const __dirname = path.dirname(url.fileURLToPath(import.meta.url))
+// import { mainFetch } from "@/api";
+// mainFetch({route_base: 'products', apiType: '/wc/v3/'})
 
+const __dirname = path.dirname(url.fileURLToPath(import.meta.url))
 const toAbsolute = (p) => path.resolve(__dirname, p)
 
 const manifest = JSON.parse(

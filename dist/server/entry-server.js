@@ -202,7 +202,7 @@ _sfc_main$S.setup = (props, ctx) => {
   return _sfc_setup$S ? _sfc_setup$S(props, ctx) : void 0;
 };
 const SelectModel = /* @__PURE__ */ _export_sfc(_sfc_main$S, [["ssrRender", _sfc_ssrRender$S]]);
-const _imports_0 = "/assets/spinner.f13e5c14.gif";
+const _imports_0 = "/wp-content/themes/CustomTheme/vue-vite-ssr/dist/static/assets/spinner.f13e5c14.gif";
 const LoadingNode_vue_vue_type_style_index_0_scoped_aec178a8_lang = "";
 const _sfc_main$R = {
   name: "loading-node",
@@ -2156,7 +2156,7 @@ const productsModule = {
     },
     changePage({ state: state2, dispatch, commit, getters: getters2, rootGetters }, page) {
       let value = Number(page);
-      const pushObj = { name: "Catalog" };
+      const pushObj = { name: "" };
       if (value != 1)
         pushObj["route_base"] = { page: value };
       let type = state2.basedRequest.type;
@@ -2615,8 +2615,8 @@ const defaultAjax = (apiType = "/wp/v2/") => axios.create({
   timeout: 2e4
 });
 async function mainFetch({
-  id,
-  route_base,
+  id = null,
+  route_base = "",
   apiType = "/wp/v2/",
   method = "get",
   config = {},
@@ -2637,7 +2637,7 @@ async function mainFetch({
       };
     }
     const response = await defaultAjax(apiType)[method](
-      `/${route_base}/${id ? id : ""}`,
+      `/${route_base}/${id !== null ? id : ""}`,
       method === "get" ? config : data,
       method === "get" ? void 0 : config
     );
@@ -3152,12 +3152,12 @@ const routeToCategoryMixin = {
         return;
       if (category.parent == 0 && (parentCategorySlug === void 0 || parentCategorySlug === "rootCategories")) {
         return this.$router.push({
-          name: "MainCategory",
+          name: "SingleCategory",
           params: { mainCategorySlug: category.slug }
         });
       } else {
         return this.$router.push({
-          name: "Catalog",
+          name: "SingleSubCategory",
           params: {
             mainCategorySlug: parentCategorySlug,
             categorySlug: category.slug
@@ -5086,7 +5086,7 @@ _sfc_main$t.setup = (props, ctx) => {
   return _sfc_setup$t ? _sfc_setup$t(props, ctx) : void 0;
 };
 const CatalogProductsNode = /* @__PURE__ */ _export_sfc(_sfc_main$t, [["ssrRender", _sfc_ssrRender$t]]);
-const Catalog_vue_vue_type_style_index_0_lang = "";
+const SingleSubCategory_vue_vue_type_style_index_0_lang = "";
 const _sfc_main$s = {
   components: {
     RevealingListNode,
@@ -5440,10 +5440,10 @@ function _sfc_ssrRender$s(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
 const _sfc_setup$s = _sfc_main$s.setup;
 _sfc_main$s.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/pages/Catalog.vue");
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/pages/SingleSubCategory.vue");
   return _sfc_setup$s ? _sfc_setup$s(props, ctx) : void 0;
 };
-const Catalog = /* @__PURE__ */ _export_sfc(_sfc_main$s, [["ssrRender", _sfc_ssrRender$s]]);
+const SingleSubCategory = /* @__PURE__ */ _export_sfc(_sfc_main$s, [["ssrRender", _sfc_ssrRender$s]]);
 const _sfc_main$r = {
   inheritAttrs: false,
   props: {
@@ -5600,7 +5600,7 @@ _sfc_main$q.setup = (props, ctx) => {
   return _sfc_setup$q ? _sfc_setup$q(props, ctx) : void 0;
 };
 const CategoryGrid = /* @__PURE__ */ _export_sfc(_sfc_main$q, [["ssrRender", _sfc_ssrRender$q], ["__scopeId", "data-v-7512a97d"]]);
-const MainCategory_vue_vue_type_style_index_0_lang = "";
+const SingleCategory_vue_vue_type_style_index_0_lang = "";
 const _sfc_main$p = {
   components: {
     CatalogSidebarNode,
@@ -5822,10 +5822,10 @@ function _sfc_ssrRender$p(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
 const _sfc_setup$p = _sfc_main$p.setup;
 _sfc_main$p.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/pages/MainCategory.vue");
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/pages/SingleCategory.vue");
   return _sfc_setup$p ? _sfc_setup$p(props, ctx) : void 0;
 };
-const MainCategory = /* @__PURE__ */ _export_sfc(_sfc_main$p, [["ssrRender", _sfc_ssrRender$p]]);
+const SingleCategory = /* @__PURE__ */ _export_sfc(_sfc_main$p, [["ssrRender", _sfc_ssrRender$p]]);
 const CartBtnNode_vue_vue_type_style_index_0_lang = "";
 const _sfc_main$o = {
   props: {
@@ -7949,14 +7949,14 @@ const commonComponents = [
   postsPageRoute,
   {
     path: "/product-category/:mainCategorySlug",
-    component: MainCategory,
-    name: "MainCategory",
+    component: SingleCategory,
+    name: "SingleCategory",
     props: (route) => ({ params: route.params })
   },
   {
     path: "/product-category/:mainCategorySlug/:categorySlug",
-    component: Catalog,
-    name: "Catalog",
+    component: SingleSubCategory,
+    name: "SingleSubCategory",
     props: (route) => ({ params: route.params, query: route.query })
   },
   {

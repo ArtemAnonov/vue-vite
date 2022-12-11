@@ -341,7 +341,7 @@ export const productsModule = {
 
     changePage({ state, dispatch, commit, getters, rootGetters }, page) {
       let value = Number(page);
-      const pushObj = { name: "Catalog" };
+      const pushObj = { name: "" };
       if (value != 1) pushObj["route_base"] = { page: value };
       let type = state.basedRequest.type;
       commit("SET_PAGE", { type, value }, { root: true });

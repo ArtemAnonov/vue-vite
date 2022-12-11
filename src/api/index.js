@@ -43,8 +43,8 @@ const defaultAjax = (apiType = "/wp/v2/") =>
  * @returns 
  */
 export async function mainFetch({
-  id,
-  route_base,
+  id = null,
+  route_base = '',
   apiType = "/wp/v2/",
   method = "get",
   config = {},
@@ -67,7 +67,7 @@ export async function mainFetch({
     }
 
     const response = await defaultAjax(apiType)[method](
-      `/${route_base}/${id ? id : ''}`,
+      `/${route_base}/${id !== null ? id : ''}`,
       method === "get" ? config : data,
       method === "get" ? undefined : config
     );

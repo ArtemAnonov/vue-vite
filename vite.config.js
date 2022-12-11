@@ -9,7 +9,7 @@ export default defineConfig((command, ssrBuild) => {
     /**
      * Дефолтное значение определяет путь файлов в index.html на выходе как абсолютный
      */
-    base: '',
+    base: '/wp-content/themes/CustomTheme/vue-vite-ssr/dist/static',
     build: {
       outDir: "../dist",
     },

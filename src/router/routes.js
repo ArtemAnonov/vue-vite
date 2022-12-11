@@ -4,8 +4,8 @@ import { categorySlugFromParams, pageFromPath } from "./utils";
 
 import Posts from "@/pages/Posts.vue";
 import Home from "@/pages/Home.vue";
-import Catalog from "@/pages/Catalog.vue";
-import MainCategory from "@/pages/MainCategory.vue";
+import SingleSubCategory from "@/pages/SingleSubCategory.vue";
+import SingleCategory from "@/pages/SingleCategory.vue";
 import SingleProduct from "@/pages/SingleProduct.vue";
 import Cart from "@/pages/Cart.vue";
 import Checkout from "@/pages/Checkout.vue";
@@ -84,14 +84,14 @@ export const commonComponents = [
   postsPageRoute,
   {
     path: "/product-category/:mainCategorySlug",
-    component: MainCategory,
-    name: "MainCategory",
+    component: SingleCategory,
+    name: "SingleCategory",
     props: (route) => ({ params: route.params }),
   },
   {
     path: "/product-category/:mainCategorySlug/:categorySlug",
-    component: Catalog,
-    name: "Catalog",
+    component: SingleSubCategory,
+    name: "SingleSubCategory",
     props: (route) => ({ params: route.params, query: route.query }),
   },
   {
