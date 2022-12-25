@@ -1,12 +1,17 @@
 <template>
   <footer class="footer">
     <section class="footer__main">
-      <container-node>
+      <ContainerNode>
         <div class="footer__main-body">
           <div class="footer__logo">
-            <router-link to="/">LO<span>GOTYPE</span></router-link>
+            <RouterLink to="/">LO<span>GOTYPE</span></RouterLink>
           </div>
-          <spoilers-block-node class="footer__columns" spoilerBlockName="footer" :spoilersAmount="3" v-slot="slotProps">
+          <spoilers-block-node
+            class="footer__columns"
+            spoilerBlockName="footer"
+            :spoilersAmount="3"
+            v-slot="slotProps"
+          >
             <div class="footer__column">
               {{ slotProps.spoilers[Object.keys(slotProps.spoilers)[0]] }}
               <div class="footer__block">
@@ -51,8 +56,8 @@
               </ul>
             </div>
             <div class="footer__column">
-              <div class=" footer__title">Компания</div>
-              <ul class=" footer__list">
+              <div class="footer__title">Компания</div>
+              <ul class="footer__list">
                 <li>Вакансии</li>
                 <li>Fashion-блог</li>
                 <li>О компании</li>
@@ -63,19 +68,18 @@
               </ul>
             </div>
           </spoilers-block-node>
-
         </div>
-      </container-node>
+      </ContainerNode>
     </section>
     <section class="footer__footer">
-      <container-node>
+      <ContainerNode>
         <div class="footer__footer-body">
           <div class="footer__text">© АО «LOGOTYPE», 2022</div>
           <div class="footer__text footer__text_semi-transp">
             Политика конфиденциальности
           </div>
         </div>
-      </container-node>
+      </ContainerNode>
     </section>
   </footer>
 </template>
@@ -90,9 +94,7 @@ export default {
     SpoilersBlockNode,
   },
   data() {
-    return {
-
-    }
+    return {};
   },
 };
 </script>
@@ -107,7 +109,8 @@ export default {
     padding-bottom: 2.6666666667rem;
   }
 
-  &__main-body {}
+  &__main-body {
+  }
 
   &__logo {
     color: #fff;
@@ -119,7 +122,7 @@ export default {
   &__columns {
     display: grid;
     grid-template-columns: repeat(12, 1fr);
-    grid-gap: .6666666667rem 0;
+    grid-gap: 0.6666666667rem 0;
 
     @media (max-width: ($md3+px)) {
       grid-template-columns: none;
@@ -129,26 +132,13 @@ export default {
 
   &__column {
     padding: 1.3333333333rem 0 0;
-    border-top: .1333333333rem solid rgba(255, 255, 255, .2);
+    border-top: 0.1333333333rem solid rgba(255, 255, 255, 0.2);
     border-bottom: none;
 
     @media (max-width: ($md3+px)) {
       grid-column: auto !important;
-
-      .footer__list {
-        // height: 0;
-        // opacity: 0;
-        // visibility: hidden;
-      }
-
-      &.active {
-        .footer__list {
-          // height: auto;
-        }
-      }
-
       &:not(:nth-child(1)) {
-        border-bottom: .0666666667rem solid rgba(255, 255, 255, .2);
+        border-bottom: 0.0666666667rem solid rgba(255, 255, 255, 0.2);
         border-top: 0;
         padding: 1rem 0;
       }
@@ -158,42 +148,48 @@ export default {
       max-width: 16rem;
       padding: 1.3333333333rem;
       background-color: #1a1f27;
-      grid-column: 1/span 3;
+      grid-column: 1 / span 3;
       border: none;
 
       @media (max-width: ($md2+px)) {
-        grid-column: 1/span 4;
+        grid-column: 1 / span 4;
       }
 
       @media (max-width: ($md3+px)) {
         background-color: #1e242c;
         width: 100%;
         order: 1;
-        padding: 0;
+        padding: 1.3333333333rem 0 0;
       }
     }
 
     &:nth-child(2) {
-      grid-column: 4/span 2;
-
+      grid-column: 4 / span 2;
+      @media (max-width: ($md1+px)) {
+        grid-column: 5 / span 2;
+      }
       @media (max-width: ($md2+px)) {
-        grid-column: 7/span 4;
+        grid-column: 7 / span 4;
       }
     }
 
     &:nth-child(3) {
-      grid-column: 7/span 2;
-
+      grid-column: 7 / span 2;
+      @media (max-width: ($md1+px)) {
+        grid-column: 8 / span 2;
+      }
       @media (max-width: ($md2+px)) {
-        grid-column: 1/span 4;
+        grid-column: 1 / span 4;
       }
     }
 
     &:nth-child(4) {
-      grid-column: 10/span 2;
-
+      grid-column: 10 / span 2;
+      @media (max-width: ($md1+px)) {
+        grid-column: 11 / span 2;
+      }
       @media (max-width: ($md2+px)) {
-        grid-column: 7/span 4;
+        grid-column: 7 / span 4;
       }
     }
   }
@@ -202,12 +198,11 @@ export default {
     margin: 0 0 1rem;
 
     .footer__text {
-      margin: 0 0 .3333333333rem;
+      margin: 0 0 0.3333333333rem;
     }
   }
 
   &__text {
-
     &_big {
       font-size: 1.4rem;
     }
@@ -231,7 +226,7 @@ export default {
 
   &__list {
     li {
-      margin: 0 0 .6666666667rem;
+      margin: 0 0 0.6666666667rem;
     }
   }
 
@@ -239,7 +234,8 @@ export default {
     background-color: #1a1f27;
     padding: 2.6666666667rem 0;
 
-    .footer__text {}
+    .footer__text {
+    }
   }
 
   &__footer-body {
@@ -253,10 +249,10 @@ export default {
   }
 
   .social-networks {
-    margin: .6666666667rem 0 0;
+    margin: 0.6666666667rem 0 0;
 
     .button {
-      border: .0666666667rem solid #868686;
+      border: 0.0666666667rem solid #868686;
 
       &:hover {
         background: #868686;
@@ -268,9 +264,7 @@ export default {
 
       &::before {
         color: #d8d8d8;
-
       }
-
     }
   }
 }

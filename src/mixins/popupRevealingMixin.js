@@ -7,13 +7,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters({}),
     ...mapState({
-      /** {
-       *      default: true, // компонент имеет значения по умолчанию
-       *      visible: false
-       *  }
-       */
       state(state) {
         return state.common.revs[this.name];
       },

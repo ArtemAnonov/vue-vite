@@ -1,6 +1,6 @@
 <template>
   <button class="button" :class="`button_${buttonStyle}`">
-    <span>
+    <span class="button__span">
       <slot></slot>
     </span>
   </button>
@@ -8,7 +8,7 @@
 
 <script>
 export default {
-  name: "button-node",
+  name: "ButtonNode",
   props: {
     buttonStyle: {
       type: String,

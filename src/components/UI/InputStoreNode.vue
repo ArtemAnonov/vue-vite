@@ -36,14 +36,14 @@ export default {
     }
 </style>
 
-            <!-- <input-node 
+            <!-- <InputNode 
                 v-for="brand in allBrands"
                 :key="brand.id"
                 type="checkbox" 
                 :model-value="brands "
                 @update:model-value="setBrands"
             >
-            </input-node> -->
+            </InputNode> -->
 
                       <!--                               <input-store-node
                             type="checkbox"

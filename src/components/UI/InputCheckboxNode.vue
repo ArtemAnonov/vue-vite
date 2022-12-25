@@ -1,8 +1,8 @@
 <template>
   <div class="input input_checkbox">
-    <input type="checkbox" v-bind="$attrs" :value="modelValue" @input="$emit('update:modelValue', !modelValue)" />
     <span class="icon-check" :class="modelValue ? 'checked' : ''"></span>
     <label for="">{{ $props.labelText }}</label>
+    <input type="checkbox" v-bind="$attrs" :value="modelValue" @input="$emit('update:modelValue', !modelValue)" />
   </div>
 </template>
 
@@ -23,7 +23,7 @@ export default {
   overflow: hidden;
 
   input {
-    z-index: 3;
+    z-index: 1;
     opacity: 0;
     position: absolute;
     height: 100%;

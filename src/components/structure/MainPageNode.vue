@@ -14,7 +14,7 @@
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 import PageHeadNode from '@/components/structure/PageHeadNode.vue'
 export default {
-  name: "main-page-node",
+  name: "MainPageNode",
   components: {
     PageHeadNode,
   },

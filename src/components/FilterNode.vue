@@ -1,19 +1,15 @@
 <template>
-  <section
-    class="filter"
-    :class="filterShow ? 'filter_active' : ''"
-
-  >
-    <container-node>
-      <button-node
+  <section class="filter" :class="filterShow ? 'filter_active' : ''">
+    <ContainerNode>
+      <ButtonNode
         @click="filterVisible"
         class="filter__button filter__button_filter-show"
-        >Фильтр товаров</button-node
+        >Фильтр товаров</ButtonNode
       >
       <div class="filter__body">
         <ul class="filter__list">
           <li class="filter__item">
-            <revealing-list-node
+            <RevealingListNode
               @apply="$emit('updateFilter')"
               @setDefault="setDefaultPrices"
               :applyValidate="applyValidate"
@@ -22,9 +18,9 @@
               <template #title>Цена</template>
               <template #main>
                 <!-- @applyValidate="updateApplyValidate" -->
-                <!-- <vue-slider-node></vue-slider-node> -->
+                <FilterPrices v-if="browserReady" />
               </template>
-            </revealing-list-node>
+            </RevealingListNode>
           </li>
 
           <li
@@ -32,7 +28,7 @@
             v-for="(attr, index) in attributes"
             :key="index"
           >
-            <revealing-list-node
+            <RevealingListNode
               @apply="$emit('updateFilter')"
               :name="attr.slug"
               @setDefault="setDefaultAttribute(attr.slug)"
@@ -43,7 +39,7 @@
                 <ul class="filter__sub-list">
                   <li
                     class="filter__sub-item"
-                    v-for="{ id, name } in this[attr.slug]"
+                    v-for="{ id, name } in singleAttribute(attr.slug)"
                     :key="id"
                   >
                     <input-checkbox-node
@@ -59,19 +55,22 @@
                   </li>
                 </ul>
               </template>
-            </revealing-list-node>
+            </RevealingListNode>
           </li>
           <li class="filter__item">
-            <input-checkbox-node v-model="onlineOnly" labelText="Доступно онлайн"></input-checkbox-node>
+            <input-checkbox-node
+              v-model="onlineOnly"
+              labelText="Доступно онлайн"
+            ></input-checkbox-node>
           </li>
         </ul>
-        <button-node
+        <ButtonNode
           @click="filterCleanAndLoadDefault"
           class="filter__button filter__button_clean"
-          >Очистить фильтры</button-node
+          >Очистить<span>фильтры</span></ButtonNode
         >
       </div>
-    </container-node>
+    </ContainerNode>
   </section>
 </template>
 
@@ -84,15 +83,22 @@
 
 // setAttributeTerms({ type: attr.slug, value: { id, name } })
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
-import { isEmpty } from 'lodash-es'
+import { isEmpty } from "lodash-es";
+import { defineAsyncComponent } from "vue";
 
-// import VueSliderNode from "@/components/catalogFilter/VueSliderNode.vue";
+// const FilterPrices = defineAsyncComponent(() =>
+//   import('@/components/filter/FilterPrices.vue')
+// )
+import FilterPrices from "@/components/filter/FilterPrices.vue";
 import RevealingListNode from "@/components/RevealingListNode.vue";
 
 export default {
   components: {
-    // VueSliderNode,
+    FilterPrices,
     RevealingListNode,
+    // FilterPrices: defineAsyncComponent(() =>
+    //   import("@/components/filter/FilterPrices.vue")
+    // )
   },
   emits: ["updateFilter"],
   data() {
@@ -117,6 +123,7 @@ export default {
       attributesSlugs: "productsAttributes/attributesSlugs",
     }),
     ...mapState({
+      browserReady: (state) => state.common.browserReady,
       // minCost: state => state.products.minCost,
       // maxCost: state => state.products.maxCost,
       minCost: (state) => state.filter.minCost || 10000,
@@ -134,21 +141,7 @@ export default {
       productsSizesRequest: (state) => state.productsTermsSizes.basedRequest,
       productsAttributesRequest: (state) =>
         state.productsAttributes.basedRequest,
-
-      // revs: state => state.common.revs,
     }),
-    pa_brand() {
-      return this.itemsBased(this.productsBrandsRequest);
-    },
-    pa_material() {
-      return this.itemsBased(this.productsMaterialsRequest);
-    },
-    pa_tcvet() {
-      return this.itemsBased(this.productsColorsRequest);
-    },
-    pa_razmer() {
-      return this.itemsBased(this.productsSizesRequest);
-    },
 
     attributes() {
       return this.itemsBased(this.productsAttributesRequest);
@@ -178,6 +171,19 @@ export default {
       getItems: "getItems",
       setDefaultFilter: "filter/setDefaultFilter",
     }),
+
+    singleAttribute(attributeSlug) {
+      switch (attributeSlug) {
+        case "pa_brand":
+          return this.itemsBased(this.productsBrandsRequest);
+        case "pa_material":
+          return this.itemsBased(this.productsMaterialsRequest);
+        case "pa_tcvet":
+          return this.itemsBased(this.productsColorsRequest);
+        case "pa_razmer":
+          return this.itemsBased(this.productsSizesRequest);
+      }
+    },
 
     /**
      * Возвращает объект формата { "pa_brand": false }
@@ -268,12 +274,20 @@ export default {
     this.addRev(
       Object.assign(this.revealings, this.attributesSlugsRevs(this.attributes))
     );
-
-    this.getItems(this.productsBrandsRequest);
-    this.getItems(this.productsMaterialsRequest);
-    this.getItems(this.productsColorsRequest);
-    this.getItems(this.productsSizesRequest);
-    this.getItems(this.productsAttributesRequest);
+    if (import.meta.env.VITE_LIKE_A_SPA) {
+      this.getItems(this.productsBrandsRequest);
+      this.getItems(this.productsMaterialsRequest);
+      this.getItems(this.productsColorsRequest);
+      this.getItems(this.productsSizesRequest);
+      this.getItems(this.productsAttributesRequest);
+    }
+  },
+  mounted() {
+    // (async () => {
+    //     const FilterPrices = await import(
+    //       "@/components/filter/FilterPrices.vue"
+    //     );
+    // })();
   },
 };
 </script>
@@ -319,6 +333,10 @@ export default {
     display: flex;
     flex: 1 1 auto;
     flex-wrap: wrap;
+    @media (max-width: ($md3+px)) {
+      flex-direction: column;
+      flex: 1 0 auto;
+    }
   }
 
   &__item {
@@ -361,6 +379,14 @@ export default {
     }
     &_clean {
       margin-left: 1rem;
+      span {
+        margin-left: .3rem;
+      }
+      @media (max-width: ($md4+px)) {
+        span {
+          display: none;
+        }
+      }
     }
   }
 }

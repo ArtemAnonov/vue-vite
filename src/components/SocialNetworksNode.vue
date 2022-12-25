@@ -1,8 +1,8 @@
 <template>
   <div class="social-networks">
-    <button-node class="social-networks__button icon icon-image_tg"></button-node>
-    <button-node class="social-networks__button icon icon-image_vk"></button-node>
-    <button-node class="social-networks__button icon icon-image_ms"></button-node>
+    <ButtonNode class="social-networks__button icon icon-image_tg"></ButtonNode>
+    <ButtonNode class="social-networks__button icon icon-image_vk"></ButtonNode>
+    <ButtonNode class="social-networks__button icon icon-image_ms"></ButtonNode>
   </div>
 </template>
 

@@ -1,6 +1,8 @@
 <template>
-  <main-page-node :category="product ? product.categories[1] : undefined"
-    :additionalTitle="product ? product.name : undefined">
+  <main-page-node
+    :category="product ? product.categories[1] : undefined"
+    :additionalTitle="product ? product.name : undefined"
+  >
     <template #page-main>
       <div class="single">
         <!-- <div class="single__actions">
@@ -12,10 +14,12 @@
         </div> -->
         <div class="single__body">
           <div class="single__main">
-            <container-node>
+            <ContainerNode>
               <div class="single__columns">
                 <div class="single__content content-single sw-cont">
-                  <slider-single-node :images="product?.images"></slider-single-node>
+                  <slider-single-node
+                    :images="product?.images"
+                  ></slider-single-node>
                 </div>
                 <div class="single__sidebar sidebar-single">
                   <div class="sidebar-single__item sidebar-single__top">
@@ -32,28 +36,58 @@
                       <button>Определить размер</button>
                     </div>
                     <ul>
-                      <li v-for="(index, size) in attribute(4)?.options" :key="index">
+                      <li
+                        v-for="(index, size) in attribute(4)?.options"
+                        :key="index"
+                      >
                         <button-node
-                          :class="cartItemParams.variations[0].value && attribute(4)?.options[size] === cartItemParams.variations[0].value ? 'checked' : ''"
+                          :class="
+                            cartItemParams.variations[0].value &&
+                            attribute(4)?.options[size] ===
+                              cartItemParams.variations[0].value
+                              ? 'checked'
+                              : ''
+                          "
                           @click="
                             setVariation(
                               attribute(4),
                               attribute(4)?.options[size]
                             )
-                          ">{{ attribute(4)?.options[size] }}</button-node>
+                          "
+                          >{{ attribute(4)?.options[size] }}</button-node
+                        >
                       </li>
                     </ul>
                   </div>
 
-                  <product-prices-node class="sidebar-single__item sidebar-single__prices" :pricesObject="product">
-                  </product-prices-node>
+                  <ProductPricesNode
+                    class="sidebar-single__item sidebar-single__prices"
+                    :pricesObject="product"
+                    :customOptions="{
+                      percentSale: true,
+                      brackets: true,
+                    }"
+                  >
+                  </ProductPricesNode>
                   <div class="sidebar-single__item sidebar-single__actions">
-                    <cart-btn-node class="sidebar-single__addtocart button button_dark cart-btn_textabele" :params="cartItemParams"
-                      route_base="cart/add-item">Купить</cart-btn-node>
+                    <cart-btn-node
+                      class="
+                        sidebar-single__addtocart
+                        button button_dark
+                        cart-btn_textabele
+                      "
+                      :params="cartItemParams"
+                      route_base="cart/add-item"
+                      >Купить</cart-btn-node
+                    >
                     <!--  @errorValidation="errorValidation" -->
-                    <button-node class="sidebar-single__favorite icon icon-favorite"></button-node>
+                    <button
+                      class="sidebar-single__favorite icon icon-favorite"
+                    ></button>
                   </div>
-                  <social-networks-node class="sidebar-single__item"></social-networks-node>
+                  <social-networks-node
+                    class="sidebar-single__item"
+                  ></social-networks-node>
                 </div>
               </div>
               <div class="single__rows">
@@ -61,10 +95,17 @@
                   <div class="data-single__info">
                     <div class="data-single__title">Информация о товаре</div>
                     <ul class="data-single__list">
-                      <li v-for="(attr, index) in product?.attributes" :key="index">
+                      <li
+                        v-for="(attr, index) in product?.attributes"
+                        :key="index"
+                      >
                         <span class="data-single__name">{{ attr.name }}</span>
                         <ul class="data-single__values">
-                          <li v-for="(term, index) in attr.options" :key="index" class="data-single__value">
+                          <li
+                            v-for="(term, index) in attr.options"
+                            :key="index"
+                            class="data-single__value"
+                          >
                             {{ term }}
                           </li>
                         </ul>
@@ -73,14 +114,20 @@
                   </div>
                 </div>
                 <div class="single__row">
-                  <slider-products-node title="Сопутствующие товары" productsCategoryId="20"
-                    :breakpoints="slidersData.breakpoints.singleMain"></slider-products-node>
+                  <slider-products-node
+                    title="Сопутствующие товары"
+                    productsCategoryId="20"
+                    :breakpoints="slidersData.breakpoints.singleMain"
+                  ></slider-products-node>
                 </div>
               </div>
-            </container-node>
+            </ContainerNode>
           </div>
           <div class="single__bottom">
-            <slider-products-node title="С этим товаром также покупают" productsCategoryId="20"></slider-products-node>
+            <slider-products-node
+              title="С этим товаром также покупают"
+              productsCategoryId="20"
+            ></slider-products-node>
             <slider-banners-fashion-blog-node></slider-banners-fashion-blog-node>
 
             <distribution-node></distribution-node>
@@ -93,7 +140,7 @@
 
 <script>
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
-import { isEmpty } from 'lodash-es'
+import { isEmpty } from "lodash-es";
 
 import Sticky from "sticky-js";
 import CartBtnNode from "@/components/cart-and-ordering/CartBtnNode.vue";
@@ -103,7 +150,7 @@ import SliderSingleNode from "@/components/sliders/SliderSingleNode.vue";
 import SocialNetworksNode from "@/components/SocialNetworksNode.vue";
 import DistributionNode from "@/components/DistributionNode.vue";
 import ProductPricesNode from "@/components/product/ProductPricesNode.vue";
-import MainPageNode from '@/components/structure/MainPageNode.vue'
+import MainPageNode from "@/components/structure/MainPageNode.vue";
 
 export default {
   components: {
@@ -114,8 +161,7 @@ export default {
     SocialNetworksNode,
     DistributionNode,
     ProductPricesNode,
-    MainPageNode
-
+    MainPageNode,
   },
   props: {
     params: {
@@ -166,7 +212,6 @@ export default {
   computed: {
     ...mapGetters({
       itemBySlug: "itemBySlug",
-
     }),
     ...mapState({
       productsRequest: (state) => state.products.basedRequest,
@@ -204,7 +249,6 @@ export default {
       this.cartItemParams.id = this.product?.id;
     },
 
-
     /**
      * Метод для вариативных продуктов (заменен фикцией)
      */
@@ -215,8 +259,8 @@ export default {
       // if (variation) {
       //   variation.value = value;
       // }
-      let settedValue = this.cartItemParams.variations[0].value
-      this.cartItemParams.variations[0].value = settedValue ? '' : value
+      let settedValue = this.cartItemParams.variations[0].value;
+      this.cartItemParams.variations[0].value = settedValue ? "" : value;
     },
   },
   created() {
@@ -237,9 +281,11 @@ export default {
 
 <style lang="scss">
 .single {
-  &__body {}
+  &__body {
+  }
 
-  &__main {}
+  &__main {
+  }
 
   &__columns {
     position: relative;
@@ -271,13 +317,17 @@ export default {
     }
   }
 
-  &__row {}
+  &__row {
+  }
 
-  &__content {}
+  &__content {
+  }
 
-  &__sidebar {}
+  &__sidebar {
+  }
 
-  &__data {}
+  &__data {
+  }
 }
 
 .sidebar-single {
@@ -293,7 +343,6 @@ export default {
       font-size: 2rem;
       font-weight: 700;
       white-space: nowrap;
-
     }
 
     &__regular-price {
@@ -307,7 +356,8 @@ export default {
       }
     }
 
-    &__procent-sale {}
+    &__procent-sale {
+    }
   }
 
   &__top {
@@ -376,7 +426,7 @@ export default {
   &__sizes-top {
     display: grid;
     grid-auto-flow: column;
-    grid-template-columns: 1fr 1fr;
+    // grid-template-columns: 1fr 1fr;
     justify-items: start;
     align-items: center;
   }
@@ -384,7 +434,6 @@ export default {
   &__prices {
     display: inline-flex;
     align-items: center;
-
   }
 
   &__actions {

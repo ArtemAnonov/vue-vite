@@ -1,18 +1,18 @@
 <template>
   <header class="header header_light">
-    <container-node>
+    <ContainerNode>
       <div class="header_light__body">
         <div class="header__logo header_light__logo">
-          <router-link to="/">LO<span>GOTYPE</span></router-link>
+          <RouterLink to="/">LO<span>GOTYPE</span></RouterLink>
         </div>
         <div class="header_light__call">
-          <!-- <header-button-node :itemsCounter="cartItemsCount" link="/cart" class="icon-trash"></header-button-node> -->
+          <!-- <HeaderButtonNode :itemsCounter="cartItemsCount" link="/cart" class="icon-trash"></HeaderButtonNode> -->
           <button class="header_light__call-icon icon-call"></button>
           <div class="header_light__text">Бесплатно по России</div>
           <div class="header_light__tel">8 800 999 09 99</div>
         </div>
       </div>
-    </container-node>
+    </ContainerNode>
   </header>
 </template>
 

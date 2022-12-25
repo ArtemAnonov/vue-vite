@@ -1,10 +1,14 @@
 <template>
-  <button class="product" @click="
-    $router.push({
-      name: 'SingleProduct',
-      params: { productSlug: product?.slug },
-    })
-  " :class="catalogType ? 'catalog-type' : ''">
+  <div
+    class="product"
+    @click="
+      $router.push({
+        name: 'SingleProduct',
+        params: { productSlug: product?.slug },
+      })
+    "
+    :class="catalogType ? 'catalog-type' : ''"
+  >
     <div class="product__body">
       <div class="product__image">
         <img v-if="product.images[3]" :src="product.images[3].src" alt="" />
@@ -17,13 +21,20 @@
             {{ product.name }}
           </button>
         </h3>
-        <product-prices-node class="product__prices" :pricesObject="product"></product-prices-node>
+        <ProductPricesNode
+          class="product__prices"
+          :pricesObject="product"
+        ></ProductPricesNode>
       </div>
       <div class="product__actions">
-        <button class="product__favorite icon-favorite"></button>
+        <button @click="$router.push('/favorite')" class="product__favorite icon-favorite"></button>
         <ul class="product__colors">
-          <li class="product__color" :style="{ background: `#${color}` }" v-for="(color, index) in colorsRGBList"
-            :key="index"></li>
+          <li
+            class="product__color"
+            :style="{ background: `#${color}` }"
+            v-for="(color, index) in colorsRGBList"
+            :key="index"
+          ></li>
         </ul>
         <ul class="product__sizes">
           <li v-for="(index, size) in sizes(4)" :key="index">
@@ -32,11 +43,11 @@
         </ul>
       </div>
     </div>
-  </button>
+  </div>
 </template>
 <script>
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
-import { isEmpty } from 'lodash-es'
+import { isEmpty } from "lodash-es";
 
 import ProductPricesNode from "@/components/product/ProductPricesNode.vue";
 
@@ -71,19 +82,16 @@ export default {
   computed: {
     ...mapGetters({
       itemsMatchedOneProperty: "itemsMatchedOneProperty",
-      singleProductAttribute: 'products/singleProductAttribute',
+      singleProductAttribute: "products/singleProductAttribute",
     }),
     ...mapState({
       colorsRequest: (state) => state.productsTermsColors.basedRequest,
     }),
-
   },
 
   methods: {
     ...mapMutations({}),
-    ...mapActions({
-
-    }),
+    ...mapActions({}),
 
     colorsRGB() {
       if (isEmpty(this.product)) return;
@@ -110,23 +118,26 @@ export default {
           this.colorsRGBList.push(str);
         }
       });
-
-
     },
     brand(attrId) {
-      return this.singleProductAttribute({ productId: this.product?.id, attrId })?.options?.[0]
+      return this.singleProductAttribute({
+        productId: this.product?.id,
+        attrId,
+      })?.options?.[0];
     },
     /**
-     * 
-     * @param {*} attrId 
+     *
+     * @param {*} attrId
      * @return {array} - Options
      */
     sizes(attrId) {
-      return this.singleProductAttribute({ productId: this.product?.id, attrId })?.options
+      return this.singleProductAttribute({
+        productId: this.product?.id,
+        attrId,
+      })?.options;
     },
-
   },
-  created() { },
+  created() {},
   mounted() {
     this.colorsRGB();
   },
@@ -152,6 +163,9 @@ export default {
       line-height: 1.2rem;
       font-weight: 700;
       margin: 0 5px 0 0;
+      @media (max-width: ($md4+px)) {
+        font-size: 1rem;
+      }
     }
 
     &__regular-price {
@@ -159,6 +173,9 @@ export default {
       line-height: 1.2rem;
       font-weight: 400;
       text-decoration: line-through;
+      @media (max-width: ($md4+px)) {
+        font-size: 13px;
+      }
 
       &_only {
         text-decoration: none;
@@ -232,11 +249,12 @@ export default {
     pointer-events: none;
   }
 
-  &__body {}
+  &__body {
+  }
 
   &__image {
     position: relative;
-
+    cursor: pointer;
     img {
       height: 100%;
       width: 100%;
@@ -266,6 +284,10 @@ export default {
     font-size: inherit;
     margin: 0 0 0.3333333333rem;
     font-weight: 400;
+    @media (max-width: ($md4+px)) {
+      font-size: 11px;
+      margin: 0 0 -0.3333333333rem;
+    }
   }
 
   &__title {
@@ -278,16 +300,23 @@ export default {
         line-height: 1.06667rem;
       }
     }
-
+    @media (max-width: ($md4+px)) {
+    margin-bottom: .3rem;
+       
+    }
     button {
       font-size: 1rem;
       line-height: 1.2rem;
       color: #868686;
       text-align: start;
+      @media (max-width: ($md4+px)) {
+        font-size: 11px;
+      }
     }
   }
 
-  &__prices {}
+  &__prices {
+  }
 
   &__regular-price {
     &_only {
@@ -295,9 +324,11 @@ export default {
     }
   }
 
-  &__sale-price {}
+  &__sale-price {
+  }
 
-  &__actions {}
+  &__actions {
+  }
 
   &__favorite {
     position: absolute;

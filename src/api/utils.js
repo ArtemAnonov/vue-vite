@@ -17,7 +17,7 @@ export function replaceSlotRoutePath(route_base, value) {
   return route_base.replace("<SLOT>", value);
 }
 
-export function setNonceToken(obj = {}) {
+export function getNonceToken(obj = {}) {
   let nonceToken = Cookies.get("nonce-token");
   if (!nonceToken) {
     throw "Nonce token undefined";

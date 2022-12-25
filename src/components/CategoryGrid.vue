@@ -18,27 +18,27 @@
       <div class="category-grid__items">
         <article
           class="category-grid__item"
-          v-for="productCategory in productsCategories"
-          :key="productCategory.id"
+          v-for="productSubCategory in productsCategories"
+          :key="productSubCategory.id"
         >
           <preload-wrap-node>
             <button
-              v-if="productCategory"
-              @click="routeToCategory(productCategory, productCategory.slug)"
+              v-if="productSubCategory"
+              @click="routeToCategory(productSubCategory, productCategory.slug)"
             >
               <div class="category-grid__image">
                 <img
-                  v-if="productCategory.image"
-                  :src="productCategory.image.src"
+                  v-if="productSubCategory.image"
+                  :src="productSubCategory.image.src"
                   alt=""
                 />
               </div>
               <div class="category-grid__content">
                 <div class="category-grid__title">
-                  {{ productCategory.name }}
+                  {{ productSubCategory.name }}
                 </div>
                 <div class="category-grid__subtitle">
-                  {{ productCategory.description }}
+                  {{ productSubCategory.description }}
                 </div>
               </div>
             </button>

@@ -26,7 +26,7 @@ export default {
       type: Object,
       default: {
         percentSale: true,
-        brackets: true,
+        brackets: false,
       }
     }
   },
@@ -74,6 +74,7 @@ export default {
 
   &__costs {
     display: inline-flex;
+
   }
 
   &__sale-price {
@@ -86,9 +87,9 @@ export default {
     &_only {
       color: #231f20;
 
-      span {
-        display: none;
-      }
+      // span {
+      //   display: none;
+      // }
     }
   }
 

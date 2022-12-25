@@ -25,7 +25,6 @@ export const productsModule = {
       route_base: instance.basedRequest.route_base,
       params: Object.assign({}, instance.params),
       preparedParams: {},
-      showLoading: true,
     },
     requests: instance.requests,
     items: instance.items,
@@ -81,8 +80,6 @@ export const productsModule = {
         //   }
         // }
       }
-      if (!isEmpty(items)) {
-      }
       return items;
     },
 
@@ -109,7 +106,7 @@ export const productsModule = {
      *
      * @returns
      */
-    filteredProductAttributes:
+    filtredProductAttributes:
       (state, getters, rootState, rootGetters) =>
       ({ requestAttributes, item }) => {
         let confirmed = true;
@@ -305,7 +302,7 @@ export const productsModule = {
             !isEmpty(item.attributes) &&
             confirmed
           ) {
-            confirmed = getters.filteredProductAttributes({
+            confirmed = getters.filtredProductAttributes({
               requestAttributes,
               item,
             });

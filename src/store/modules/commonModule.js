@@ -1,12 +1,19 @@
 /**
  * Общий модуль
  */
+
+
 export const commonModule = {
   namespaced: true,
   state: () => ({
     scrollY: null,
     scrollFlag: true,
+    /**
+     * Default value for protected of error before gidratation
+     */
+    browserReady: false,
     windowWidth: null,
+    // windowWidth: import.meta.env.VITE_LIKE_A_SPA ? window.innerWidth : null,
     breakpoint: "",
     /**
      * Наполняется атрибутами при их подгрузке
@@ -117,5 +124,9 @@ export const commonModule = {
     setProgress(state, value) {
       state.progress.push(value);
     },
+
+    setBrowserReady(state, value) {
+      state.browserReady = value;
+    }
   },
 };

@@ -1,8 +1,6 @@
 import { VUE_WP_INSTANCE } from "@/api/utils";
 import paths from "@/router/paths";
 import { categorySlugFromParams, pageFromPath } from "./utils";
-
-import Posts from "@/pages/Posts.vue";
 import Home from "@/pages/Home.vue";
 import SingleSubCategory from "@/pages/SingleSubCategory.vue";
 import SingleCategory from "@/pages/SingleCategory.vue";
@@ -40,15 +38,15 @@ const rootRoute =
 /**
  * Первый маршрут работает, если установлена страница для постов
  */
-const postsPageRoute =
-  show_on_front === "page" && page_for_posts
-    ? {
-        path: paths.postsPage(page_for_posts),
-        component: Posts,
-        name: "Posts",
-        props: (route) => ({ page: pageFromPath(route.path) }),
-      }
-    : null;
+// const postsPageRoute =
+//   show_on_front === "page" && page_for_posts
+//     ? {
+//         path: paths.postsPage(page_for_posts),
+//         component: Posts,
+//         name: "Posts",
+//         props: (route) => ({ page: pageFromPath(route.path) }),
+//       }
+//     : null;
 
 /**
  *
@@ -81,7 +79,7 @@ export const commonComponents = [
   //         props: route => ({ page: pageFromPath(route.path) }),
   //     }
   // },
-  postsPageRoute,
+  // postsPageRoute,
   {
     path: "/product-category/:mainCategorySlug",
     component: SingleCategory,

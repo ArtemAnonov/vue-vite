@@ -9,10 +9,7 @@ const instance = VUE_WP_INSTANCE().state.filter.returned;
  */
 export const filterModule = {
   namespaced: true,
-  state: () => ({
-    params: Object.assign({}, instance.params),
-    defaultValues: Object.assign({}, instance.defaultValues),
-  }),
+  state: () => (instance),
   getters: {
     params(state, getters, rootState) {
       return state.params;

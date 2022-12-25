@@ -5,8 +5,5 @@ const { state } = VUE_WP_INSTANCE();
 
 
 export default {
-    // headers: {
-    //     'Nonce': '',
-    //     'Authorization': 'Bearer ',
-    // }
+
 }

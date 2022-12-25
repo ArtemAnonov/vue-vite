@@ -1,7 +1,7 @@
 <template>
-  <main-page-node :templatePage="templatePage" :category="productCategory">
+  <MainPageNode :templatePage="templatePage" :category="productCategory">
     <template #page-main>
-      <container-node>
+      <ContainerNode>
         <section class="main-category">
           <div class="main-category__main">
             <catalog-sidebar-node
@@ -48,9 +48,9 @@
             </div>
           </div>
         </section>
-      </container-node>
+      </ContainerNode>
     </template>
-  </main-page-node>
+  </MainPageNode>
 </template>
 
 <script>

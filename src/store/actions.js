@@ -69,7 +69,7 @@ export default {
    */
   async getItems(
     { state, getters, commit },
-    { route_base, type, params, apiType, onDownloadProgress = null }
+    { route_base, type, apiType, params, onDownloadProgress = null }
   ) {
     let response;
     let request = getters.request({ type, params });

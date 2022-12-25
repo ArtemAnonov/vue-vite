@@ -1,30 +1,31 @@
 <template>
   <section class="page-head" :class="title ? '' : 'page-head_product'">
-    <container-node>
+    <ContainerNode>
       <div class="page-head__body" v-bind="$attrs">
         <div class="page-head__content">
-          <button v-if="!title" class="page-head__back icon-arrow" @click="$router.back()">
+          <button
+            v-if="!title"
+            class="page-head__back icon-arrow"
+            @click="$router.back()"
+          >
             <!-- <div class=""></div> -->
             Назад
           </button>
           <ul class="page-head__breadcrumbs">
-            <li><router-link to="/">Главная</router-link></li>
-            <li
-              v-for="(crumb, index) in crumbs?.reverse()"
-              :key="index"
-            >
-              <router-link :to="`/product-category/${crumb.slugs.join('/')}`">
-                / {{ crumb.name }}
-              </router-link>
+            <li><RouterLink to="/">Главная&nbsp;&nbsp;&nbsp;/</RouterLink></li>
+            <li v-for="(crumb, index) in crumbs?.reverse()" :key="index">
+              <RouterLink :to="`/product-category/${crumb.slugs.join('/')}`">
+                {{ crumb.name }}&nbsp;&nbsp;&nbsp;/ 
+              </RouterLink>
             </li>
             <li>
-              <span>{{ additionalTitle ? "/ " + additionalTitle : "" }}</span>
+              <span>{{ additionalTitle ? additionalTitle : "" }}</span>
             </li>
           </ul>
         </div>
         <h1 v-if="title" class="page-head__title">{{ title }}</h1>
       </div>
-    </container-node>
+    </ContainerNode>
   </section>
 </template>
 
@@ -57,7 +58,7 @@ export default {
     /**
      * Заметочка: попытка сделать рекурсивную функцию с итеративной передачей
      * массива не получилась \/
-     * 
+     *
      * Прим. Не всегда работает корректно. Ошибка замечена при попытке выдать категории
      */
     crumbs() {
@@ -115,7 +116,9 @@ export default {
   &_product {
     padding: 4rem 0 1rem 0;
     margin-bottom: 1rem;
-    // border-bottom: 0.0666666667rem solid transparent;
+    @media (max-width: ($md3+px)) {
+      padding: 1rem 0 1rem 0;
+    }
   }
   &__body {
   }
@@ -125,9 +128,10 @@ export default {
     line-height: 1.0666666667rem;
     color: #868686;
     display: inline-flex;
+    flex-wrap: wrap;
     li {
       display: inline-flex;
-      margin-right: 0.5rem;
+      margin-right: 0.3rem;
     }
   }
 
@@ -136,6 +140,9 @@ export default {
     // padding: 6px 20px 6px 32px;
     margin-right: 3rem;
     font-size: 0.8rem;
+    @media (max-width: ($md3+px)) {
+      display: none;
+    }
     &::before {
       margin-right: 0.3rem;
       display: inline-flex;
@@ -146,6 +153,9 @@ export default {
 
   &__title {
     padding: 0.6666666667rem 0 1rem;
+    @media (max-width: ($md4+px)) {
+      padding: 0.6666666667rem 0 3rem;
+    }
   }
 }
 </style>

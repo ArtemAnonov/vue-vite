@@ -1,6 +1,6 @@
 <template>
   <section class="distr">
-    <container-node>
+    <ContainerNode>
       <form class="distr__body">
         <div class="distr__head">
           <div class="distr__title">Подпишитесь на рассылку</div>
@@ -10,15 +10,15 @@
           </p>
         </div>
         <div class="distr__inputes">
-          <input-node class="main" v-model="email">
-            <template #after><label>Ваш E-mail:</label></template>
-          </input-node>
+          <InputNode class="main" v-model="email">
+            <template #before><label>Ваш E-mail:</label></template>
+          </InputNode>
           <input-checkbox-node v-model="forMen" labelText="Для мужчин"></input-checkbox-node>
           <input-checkbox-node v-model="forWomen" labelText="Для женщин"></input-checkbox-node>
         </div>
-        <button-node class="distr__btn" buttonStyle="dark">Подписаться</button-node>
+        <ButtonNode class="distr__btn" buttonStyle="dark">Подписаться</ButtonNode>
       </form>
-    </container-node>
+    </ContainerNode>
   </section>
 </template>
 

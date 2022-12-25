@@ -1,23 +1,37 @@
 <template>
-  <main-page-node class="page_home" :pageHeadNodeShow="false">
+  <MainPageNode class="page_home" :pageHeadNodeShow="false">
     <template #page-main>
-      <slider-banners-node class="slider-banners-main" :bannerCategoryId="68"
-        :containerStylesOff="windowWidth < 1024 ? true : false" identificator="slider-banners-main"
-        :autoplay="{ delay: 50000, disableOnInteraction: false }" pagination :slides-per-view="1">
+      <slider-banners-node
+        class="slider-banners-main"
+        :bannerCategoryId="68"
+        :containerStylesOff="windowWidth < 1024 ? true : false"
+        identificator="slider-banners-main"
+        :autoplay="{ delay: 50000, disableOnInteraction: false }"
+        pagination
+        :slides-per-view="1"
+      >
         <template #banner-title="bannerTitleProps">
-          <div class="slider-banners-main__title">
+          <div @click="$router.push('/blog-page')"  class="slider-banners-main__title">
             {{ bannerTitleProps.banner.title.rendered }}
           </div>
         </template>
       </slider-banners-node>
-      <slider-products-node title="Для женщин" productsCategoryId="20"></slider-products-node>
-      <slider-products-node title="Для мужчин" productsCategoryId="22"></slider-products-node>
+      <slider-products-node
+        title="Для женщин"
+        productsCategoryId="20"
+      ></slider-products-node>
+      <slider-products-node
+        title="Для мужчин"
+        productsCategoryId="22"
+      ></slider-products-node>
       <slider-banners-fashion-blog-node></slider-banners-fashion-blog-node>
       <distribution-node></distribution-node>
-      <page-content-node v-if="templatePage" :page="templatePage"></page-content-node>
-
+      <page-content-node
+        v-if="templatePage"
+        :page="templatePage"
+      ></page-content-node>
     </template>
-  </main-page-node>
+  </MainPageNode>
 </template>
 
 <script>
@@ -27,7 +41,7 @@ import SliderBannersFashionBlogNode from "@/components/sliders/SliderBannersFash
 import SliderBannersNode from "@/components/sliders/SliderBannersNode.vue";
 import PageContentNode from "@/components/PageContentNode.vue";
 import DistributionNode from "@/components/DistributionNode.vue";
-import MainPageNode from '@/components/structure/MainPageNode.vue'
+import MainPageNode from "@/components/structure/MainPageNode.vue";
 
 export default {
   components: {
@@ -36,23 +50,13 @@ export default {
     SliderBannersFashionBlogNode,
     PageContentNode,
     DistributionNode,
-    MainPageNode
-
+    MainPageNode,
   },
   props: {
     slug: {
       type: String,
       required: true,
     },
-  },
-  data() {
-    return {
-      request: {
-        type: "pages",
-        slug: this.slug, //home
-        showLoading: true,
-      },
-    };
   },
   computed: {
     ...mapGetters({
@@ -79,10 +83,6 @@ export default {
         basedRequest: this.pagesRequest,
         params: { slug: this.slug },
       });
-
-      if (this.page) {
-        // this.updateDocTitle({ parts: [ this.page.title.rendered, this.$store.state.site.name] })
-      }
     },
   },
   created() {
@@ -134,6 +134,7 @@ export default {
   }
 
   &__title {
+    cursor: pointer;
     font-size: 1.4rem;
     line-height: 2rem;
     color: #231f20;

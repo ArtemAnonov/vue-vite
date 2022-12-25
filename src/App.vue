@@ -1,20 +1,24 @@
 <template>
   <!-- -->
   <div class="app" @click="closeRevs()">
-    <router-view v-slot="{ Component, route }">
+    <router-view
+      v-if="showAppContent"
+      v-slot="{ Component, route }"
+    >
       <all-widgets-node></all-widgets-node>
-      <header-light-node v-if="truncatedComponent(route.name)"></header-light-node>
+      <header-light-node
+        v-if="truncatedComponent(route.name)"
+      ></header-light-node>
       <header-node v-if="!truncatedComponent(route.name)"></header-node>
-          <component :is="Component"></component>
+      <component :is="Component"></component>
       <footer-node v-if="!truncatedComponent(route.name)"></footer-node>
     </router-view>
   </div>
 </template>
 
 <script>
-
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
-import { isEmpty } from 'lodash-es'
+import { isEmpty } from "lodash-es";
 import { truncatedComponents, routes } from "@/router/routes";
 import HeaderLightNode from "@/components/structure/HeaderLightNode.vue";
 import HeaderNode from "@/components/structure/HeaderNode.vue";
@@ -26,11 +30,15 @@ export default {
     HeaderLightNode,
     HeaderNode,
     FooterNode,
-    AllWidgetsNode
+    AllWidgetsNode,
   },
   data() {
     return {
-      // windowWidth: window.innerWidth
+      /**
+       * Default value false for not-SSR mode for cosmetic "correct" load page.
+       * For prod php-template not important
+       */
+      showAppContent: import.meta.env.SSR ? true : false,
     };
   },
   watch: {
@@ -42,8 +50,8 @@ export default {
     ...mapGetters({}),
     ...mapState({
       scrollFlag: (state) => state.common.scrollFlag,
-      windowWidth: (state) => state.common.windowWidth,
       productsCategories: (state) => state.productsCategories,
+      windowWidth: (state) => state.common.windowWidth,
 
     }),
   },
@@ -54,6 +62,7 @@ export default {
       setScrollY: "common/setScrollY",
       setBreakpoint: "common/setBreakpoint",
       closeRevs: "common/closeRevs",
+      setBrowserReady: 'common/setBrowserReady'
     }),
     ...mapActions({
       getItems: "getItems",
@@ -71,7 +80,7 @@ export default {
       document.documentElement.style.overflow = "hidden";
     },
     truncatedComponent(value) {
-      return truncatedComponents.find(el => el.name === value) ? true : false
+      return truncatedComponents.find((el) => el.name === value) ? true : false;
     },
   },
   /**
@@ -80,16 +89,19 @@ export default {
    */
   created() {
     this.updateUserAuth();
-    if (
-      isEmpty(this.productsCategories.items) &&
-      isEmpty(this.productsCategories.requests)
-    ) {
+    if (import.meta.env.VITE_LIKE_A_SPA) {
       this.getItems(this.productsCategories.basedRequest);
     }
     this.getCart();
   },
 
   mounted() {
+    window.addEventListener("DOMContentLoaded", (event) => {
+      this.showAppContent = true;
+      this.setBrowserReady((typeof window !== 'undefined' && typeof document !== 'undefined') ? true : false)
+    });
+
+    this.onResize(window.innerWidth)
     window.addEventListener("resize", (e) =>
       this.onResize(e.target.innerWidth)
     );
@@ -100,13 +112,8 @@ export default {
 
     // let rendererEvent = new Event('renderer-ready')
     // window.document.dispatchEvent(rendererEvent)
-
-  },
-  updated() {
-    console.log('app upd');
   },
 };
-//  scoped
 </script>
 
 <style lang="scss">

@@ -46,14 +46,10 @@ export default {
     },
   },
   methods: {
-    ...mapActions({
-      getItems: "getItems",
-    }),
     ...mapMutations({
       setExclude: "products/setExclude",
     }),
   },
-  mounted() {},
 };
 </script>
 

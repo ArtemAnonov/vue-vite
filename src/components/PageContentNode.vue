@@ -1,11 +1,11 @@
 <template>
   <section class="page-content">
-    <container-node>
+    <ContainerNode>
       <div class="page-content__body">
         <h3 class="page-content__title" v-html="page.title.rendered"></h3>
         <div class="page-content__content" v-html="page.content.rendered"></div>
       </div>
-    </container-node>
+    </ContainerNode>
   </section>
 </template>
 

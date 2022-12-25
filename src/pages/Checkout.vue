@@ -1,76 +1,99 @@
 <template>
-  <main-page-node>
+  <MainPageNode>
     <template #page-head>
-      <page-head-truncated-node backLinkName="Корзина" pageTitle="Оформление заказа"></page-head-truncated-node>
+      <PageHeadTruncatedNode
+        backLinkName="Корзина"
+        pageTitle="Оформление заказа"
+      ></PageHeadTruncatedNode>
     </template>
     <template #page-main>
-      <container-node>
+      <ContainerNode>
         <div class="checkout">
           <div class="checkout__body">
-            <middle-content-node>
+            <MiddleContentNode>
               <template #items>
-                <PreloadWrapContainerNode class="cart__item" :quantityPreloadElements="4" :iterable="cartItems"
-                  v-slot="slotProps">
+                <PreloadWrapContainerNode
+                  class="cart__item"
+                  :quantityPreloadElements="4"
+                  :iterable="cartItems"
+                  v-slot="slotProps"
+                >
                   <div class="order-item">
                     <div class="order-item__image">
                       <picture>
-                        <source srcset="" type="image/webp">
-                        <source srcset="" type="image/jpeg">
-                        <img :src="slotProps.cartItem.images[0].src" alt="">
+                        <source srcset="" type="image/webp" />
+                        <source srcset="" type="image/jpeg" />
+                        <img :src="slotProps.cartItem.images[0].src" alt="" />
                       </picture>
                     </div>
                   </div>
                 </PreloadWrapContainerNode>
               </template>
               <template #sidebar>
-                <div class="middle-content__sidebar">
+                <div class="middle-content__sidebar-inner">
                   <div class="middle-content__block">
                     <div class="middle-content__item">
                       <div class="middle-content__key">Скидка</div>
-                      <div class="middle-content__value">- 0<span class="middle-content__currency"> ₽</span></div>
+                      <div class="middle-content__value">
+                        - 0<span class="middle-content__currency"> ₽</span>
+                      </div>
                     </div>
                     <div class="middle-content__item">
                       <div class="middle-content__key">Количество товаров</div>
-                      <div class="middle-content__value icon-info">{{ cartStore.items?.length }} шт.</div>
+                      <div class="middle-content__value icon-info">
+                        {{ cartStore.items?.length }} шт.
+                      </div>
                     </div>
-
                   </div>
                   <div class="middle-content__block">
                     <div class="middle-content__item">
-                      <div class="middle-content__key middle-content__key_big">Итого</div>
-                      <div class="middle-content__value middle-content__value_big">
+                      <div class="middle-content__key middle-content__key_big">
+                        Итого
+                      </div>
+                      <div
+                        class="middle-content__value middle-content__value_big"
+                      >
                         {{ cartStore?.totals?.total_price }}
                         <span class="middle-content__currency"> ₽</span>
                       </div>
                     </div>
                     <div class="middle-content__item">
-                      <div class="middle-content__key">Стоимость без учёта скидок:</div>
+                      <div class="middle-content__key">
+                        Стоимость без учёта скидок:
+                      </div>
                       <div class="middle-content__value"></div>
                     </div>
                     <div class="middle-content__item">
-                      <div class="middle-content__key">Балов будет начислено:</div>
+                      <div class="middle-content__key">
+                        Балов будет начислено:
+                      </div>
                       <div class="middle-content__value"></div>
                     </div>
-                    <button-node buttonStyle="dark" @click="toCheckout">Заказать
-                    </button-node>
+                    <ButtonNode
+                      class="middle-content__button-submit"
+                      :disabled="true"
+                      buttonStyle="dark"
+                      @click="ordering"
+                      >Заказать
+                    </ButtonNode>
                   </div>
                 </div>
               </template>
-            </middle-content-node>
+            </MiddleContentNode>
           </div>
         </div>
-      </container-node>
+      </ContainerNode>
     </template>
-  </main-page-node>
+  </MainPageNode>
 </template>
 
 <script>
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
-import { setNonceToken } from "@/api/utils";
-import MainPageNode from '@/components/structure/MainPageNode.vue'
+import { getNonceToken } from "@/api/utils";
+import MainPageNode from "@/components/structure/MainPageNode.vue";
 import PreloadWrapContainerNode from "@/components/structure/PreloadWrapContainerNode.vue";
-import PageHeadTruncatedNode from '@/components/structure/PageHeadTruncatedNode.vue'
-import MiddleContentNode from '@/components/cart-and-ordering/MiddleContentNode.vue'
+import PageHeadTruncatedNode from "@/components/structure/PageHeadTruncatedNode.vue";
+import MiddleContentNode from "@/components/cart-and-ordering/MiddleContentNode.vue";
 
 export default {
   components: {
@@ -103,20 +126,19 @@ export default {
         route_base: this.checkoutRequest.route_base,
         method: "get",
         data: {},
-        config: { headers: setNonceToken() },
+        config: { headers: getNonceToken() },
         maintainJWT: true,
         reqiredJWT: true,
       });
     },
   },
 
-  created() {
-
-  },
+  created() {},
 };
 </script>
 
 <style lang="scss">
+
 .order-item {
   width: 4rem;
 
@@ -126,8 +148,19 @@ export default {
       height: 6rem;
       position: relative;
       overflow: hidden;
-      font-size: .75rem;
+      font-size: 0.75rem;
     }
   }
 }
+
+  .middle-content {
+    &__block {
+      &:nth-child(1),
+      &:nth-child(2) {
+        &::after {
+          display: block;
+        }
+      }
+    }
+  }
 </style>

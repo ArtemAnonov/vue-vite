@@ -1,6 +1,6 @@
 <template>
   <section class="slider-products">
-    <container-node>
+    <ContainerNode>
       <div class="slider-products__body">
         <div class="slider-products__title">
           <button @click="routeToCategory(productsCategory)">
@@ -26,9 +26,6 @@
             :modules="modules"
             :breakpoints="swiperBreakpoints"
           >
-            <!-- <swiper-slide v-if="products.length === 0">
-              <preload-wrap-node :targetPreloadElement="true" paddingBottom="146"> </preload-wrap-node>
-            </swiper-slide> -->
             <swiper-slide v-for="(product, index) in products" :key="index">
               <preload-wrap-node
                 :targetPreloadElement="product ? false : true"
@@ -44,14 +41,14 @@
           </swiper>
         </div>
       </div>
-    </container-node>
+    </ContainerNode>
   </section>
 </template>
 
 <script>
 import { Navigation, Pagination, Autoplay, FreeMode } from "swiper";
 import { mapState, mapGetters, mapActions, mapMutations } from "vuex";
-import { isEmpty } from 'lodash-es'
+import { isEmpty } from "lodash-es";
 
 import ProductNode from "@/components/ProductNode.vue";
 import { Swiper, SwiperSlide } from "swiper/vue";
@@ -118,10 +115,10 @@ export default {
       );
     },
     productsCategory() {
-      return this.itemById(
-        this.productsCategoriesRequest,
-        this.productsCategoryId
-      );
+      return this.itemById({
+        type: this.productsCategoriesRequest.type,
+        id: this.productsCategoryId,
+      });
     },
     identificator() {
       if (!isEmpty(this.productsCategory)) {
@@ -138,14 +135,14 @@ export default {
     ...mapActions({
       getItems: "getItems",
     }),
-    ...mapMutations({
-      setProductsCategoryId: "products/setProductsCategoryId",
-    }),
-
   },
   created() {
-    this.setProductsCategoryId(this.productsCategoryId);
-    this.getItems(this.productsRequest);
+    if (import.meta.env.VITE_LIKE_A_SPA) {
+      this.getItems({
+        ...{ category: this.productsCategoryId },
+        ...this.productsRequest,
+      });
+    }
   },
   setup() {
     const onSwiper = (swiper) => {};
@@ -188,9 +185,9 @@ export default {
   &__title {
     text-align: center;
     margin-bottom: 1rem;
-    @media (max-width: ($md3+px)) {
-      margin: 0;
-    }
+    // @media (max-width: ($md3+px)) {
+    //   margin: 0;
+    // }
     button {
       font-size: 2rem;
       line-height: 1.2;

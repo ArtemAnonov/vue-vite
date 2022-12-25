@@ -1,9 +1,8 @@
 <template>
   <section class="catalog-sidebar">
     <button
-      class="catalog-sidebar__title icon-arrow"
+      class="catalog-sidebar__title catalog-sidebar__title_main icon-arrow"
       @click="bodyShow = !bodyShow"
-      v-show="windowWidth < 767"
     >
       Одежда
     </button>
@@ -21,7 +20,8 @@
             )
           "
         >
-          {{ windowWidth > 768 ? "Одежда" : "Вся одежда" }}
+          Вся одежда
+          <!-- {{ windowWidth > 768 ? "Одежда" :  "Вся одежда"}} -->
           <span v-html="total ? total : 0"></span>
         </button>
         <div class="catalog-sidebar__items">
@@ -33,7 +33,13 @@
             >
               <button
                 class="catalog-sidebar__category icon-arrow"
-                :class="category ? (category.id == productsCategory.id ? 'active' : '') : ''"
+                :class="
+                  category
+                    ? category.id == productsCategory.id
+                      ? 'active'
+                      : ''
+                    : ''
+                "
                 @click="
                   routeToCategory(
                     productsCategory,
@@ -209,6 +215,14 @@ export default {
     line-height: 1.6rem;
     padding: 0.2rem 0.7rem 0.2rem 1.3rem;
     margin-left: -1.3rem;
+    &_main {
+      &::before {
+        opacity: 1 !important;
+      }
+      @media (max-width: ($md3+px)) {
+        display: none;
+      }
+    }
     &:hover {
       background-color: transparent !important;
     }

@@ -1,20 +1,44 @@
 import { fileURLToPath, URL } from "node:url";
-import path from 'node:path'
+import path from "node:path";
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
-import { ssr } from "vite-plugin-ssr/plugin";
+// import { ssr } from "vite-plugin-ssr/plugin";
 
-export default defineConfig((command, ssrBuild) => {
+/**
+ * config.command - Vite's API the command value is serve during dev (in the cli vite, vite dev, and vite serve are aliases), and build when building for production (vite build)
+ *
+ * note: for access to .env variables need use loadEnv
+ */
+export default defineConfig(({ mode, command, ssrBuild }) => {
+  console.log(mode, command, ssrBuild);
+
   return {
+    resolve: {
+      alias: {
+        "@": fileURLToPath(new URL("./src", import.meta.url)),
+      },
+    },
+    // envDir: '/',
     /**
      * Дефолтное значение определяет путь файлов в index.html на выходе как абсолютный
+     *
+     *
      */
-    base: '/wp-content/themes/CustomTheme/vue-vite-ssr/dist/static',
+    // base: '/',
+    base: "/wp-content/themes/logotype-ssr/vue-vite-ssr/dist/static/",
     build: {
       outDir: "../dist",
+      // sourcemap: true,
+      // commonjsOptions: {
+      //   /**
+      //    * Setting to make prod-build working with vue-slider-component
+      //    **/
+      //   requireReturnsDefault: "preferred",
+      // },
     },
 
     server: {
+      // hmr: false,
       port: 8080,
     },
     css: {
@@ -24,14 +48,6 @@ export default defineConfig((command, ssrBuild) => {
         },
       },
     },
-    plugins: [vue(), 
- 
-    ],
-
-    resolve: {
-      alias: {
-        "@": fileURLToPath(new URL("./src", import.meta.url)),
-      },
-    },
+    plugins: [vue()],
   };
 });

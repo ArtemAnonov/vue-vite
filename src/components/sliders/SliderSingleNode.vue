@@ -1,6 +1,6 @@
 <template>
   <section class="slider-single">
-    <container-node>
+    <ContainerNode>
       <div class="slider-single__sliders sw-cont">
         <swiper
           class="slider-single__thumb-slider sw-cont"
@@ -64,7 +64,7 @@
           </swiper-slide>
         </swiper>
       </div>
-    </container-node>
+    </ContainerNode>
   </section>
 </template>
 

@@ -1,11 +1,14 @@
 <template>
   <header class="header">
-    <div class="header__wrapper" :class="headerWrapper.default ? '' : 'header__wrapper_scrolled'"
-      ref="headerWrapperNode">
+    <div
+      class="header__wrapper"
+      :class="headerWrapper.default ? '' : 'header__wrapper_scrolled'"
+      ref="headerWrapperNode"
+    >
       <div class="header__body">
-        <div class="header-top" v-show="windowWidth > 1024">
-          <container-node>
-            <nav-node name="top_header">
+        <div class="header-top">
+          <ContainerNode>
+            <NavNode name="top_header">
               <template #choise-location>
                 <li class="header-nav__item">
                   <button class="header-nav__btn" @click="$router.push('/')">
@@ -17,54 +20,61 @@
                 <a href="tel:88009999999">88009999999</a>
               </template>
               <template #my-account>
-                <button class="header-nav__btn icon-profile" @click="loginPopupVisible">
+                <button
+                  class="header-nav__btn icon-profile"
+                  @click="loginPopupVisible"
+                >
                   {{ userAuth ? "Личный кабинет" : "Вход/Регистрация" }}
                 </button>
-                <!-- <reveling-node name="profile">
-                  <ul>
-                    <li>Избранное</li>
-                    <li>Мои заказы</li>
-                    <li>Профиль</li>
-                    <li>Карта лояльности</li>
-                    <li>Выйти</li>
-                  </ul>
-                </reveling-node> -->
-
               </template>
-            </nav-node>
-          </container-node>
+            </NavNode>
+          </ContainerNode>
         </div>
         <div class="header-main">
-          <container-node>
+          <ContainerNode>
             <div class="header-main__body">
-              <header-menu-popup-node> </header-menu-popup-node>
+              <HeaderMenuPopupNode> </HeaderMenuPopupNode>
               <div class="header__logo">
                 <!-- <img src="/images/icons/logo.svg" alt=""> -->
-                <router-link to="/">LO<span>GOTYPE</span></router-link>
+                <RouterLink to="/">LO<span>GOTYPE</span></RouterLink>
               </div>
-              <div class="header-bot header-bot_scroller" v-show="windowWidth > 1024 && scrollY > 99">
-                <categories-node :parent="0" :neastedLevel="0" v-slot="slotProps">
-                  <categories-node :neastedLevel="1" :parent="slotProps.parent"
-                    :parentCategorySlug="slotProps.parentCategorySlug"></categories-node>
-                </categories-node>
+              <div class="header-bot header-bot_scroller" v-show="scrollY > 99">
+                <CategoriesNode
+                  :parent="0"
+                  :neastedLevel="0"
+                  v-slot="slotProps"
+                >
+                  <CategoriesNode
+                    :neastedLevel="1"
+                    :parent="slotProps.parent"
+                    :parentCategorySlug="slotProps.parentCategorySlug"
+                  ></CategoriesNode>
+                </CategoriesNode>
               </div>
-              <search-node></search-node>
+              <SearchNode></SearchNode>
               <div class="header-main__actions">
-                <header-button-node link="/favorite" class="icon-favorite">
+                <HeaderButtonNode link="/favorite" class="icon-favorite">
                   <span></span>
-                </header-button-node>
-                <header-button-node :itemsCounter="cartItemsQuantity" link="/cart" class="icon-cart"></header-button-node>
+                </HeaderButtonNode>
+                <HeaderButtonNode
+                  :itemsCounter="cartItemsQuantity"
+                  link="/cart"
+                  class="icon-cart"
+                ></HeaderButtonNode>
               </div>
             </div>
-          </container-node>
+          </ContainerNode>
         </div>
-        <div class="header-bot" v-show="windowWidth > 1024 && scrollY < 99">
-          <container-node>
-            <categories-node :parent="0" :neastedLevel="0" v-slot="slotProps">
-              <categories-node :neastedLevel="1" :parent="slotProps.parent"
-                :parentCategorySlug="slotProps.parentCategorySlug"></categories-node>
-            </categories-node>
-          </container-node>
+        <div class="header-bot" v-show="scrollY < 99">
+          <ContainerNode>
+            <CategoriesNode :parent="0" :neastedLevel="0" v-slot="slotProps">
+              <CategoriesNode
+                :neastedLevel="1"
+                :parent="slotProps.parent"
+                :parentCategorySlug="slotProps.parentCategorySlug"
+              ></CategoriesNode>
+            </CategoriesNode>
+          </ContainerNode>
         </div>
       </div>
     </div>
@@ -100,15 +110,15 @@ export default {
   },
   watch: {
     scrollY(newValue) {
-      if (this.windowWidth < 1024) {
-        this.headerWrapper.default = true;
-        return;
-      }
-      if (newValue > this.headerWrapper.height) {
-        this.headerWrapper.default = false;
-      } else {
-        this.headerWrapper.default = true;
-      }
+        if (this.windowWidth < 1024) {
+          this.headerWrapper.default = true;
+          return;
+        }
+        if (newValue > this.headerWrapper.height) {
+          this.headerWrapper.default = false;
+        } else {
+          this.headerWrapper.default = true;
+        }
     },
   },
   computed: {
@@ -119,12 +129,9 @@ export default {
       breakpoint: (state) => state.common.breakpoint,
       scrollY: (state) => state.common.scrollY,
       windowWidth: (state) => state.common.windowWidth,
-      // headerMenu(state) {
-      //     return state.common.revs[this.name]
-      // }
       loginPopup(state) {
-        return state.common.revs.login
-      }
+        return state.common.revs.login;
+      },
     }),
   },
   methods: {
@@ -140,7 +147,6 @@ export default {
       });
     },
   },
-
 };
 </script>
 
@@ -159,7 +165,6 @@ export default {
     position: fixed;
     width: 100%;
     z-index: 200;
-
     &_scrolled {
       .header-main {
         padding: 0 !important;
@@ -174,7 +179,7 @@ export default {
       }
 
       .header-top {
-        display: none;
+        display: none !important;
       }
 
       .header__logo {
@@ -202,7 +207,8 @@ export default {
     position: relative;
   }
 
-  &__actions {}
+  &__actions {
+  }
 
   &__logo {
     display: flex;
@@ -239,7 +245,11 @@ export default {
   }
 
   .header-top {
+    display: block;
     background: #f7f7f7;
+    @media (max-width: ($md2+px)) {
+      display: none;
+    }
   }
 
   .header-main {
@@ -309,7 +319,9 @@ export default {
 
   .header-bot {
     background: #f7f7f7;
-
+    @media (max-width: ($md2+px)) {
+      display: none;
+    }
     .categories-list {
       &__item {
         @media (any-hover: hover) {
@@ -345,7 +357,6 @@ export default {
       }
     }
   }
-
 }
 .header-nav__btn.icon-profile {
   &::before {

@@ -1,14 +1,14 @@
 <template>
-  <div class="header-menu" v-show="windowWidth < 1024">
+  <div class="header-menu">
     <button class="header-burger-icon" @click.stop="menuVisability"><i></i><i></i><i></i>
     </button>
     <popup-node name="headerMenu">
-      <categories-node :parent="0" :neastedLevel="0" v-slot="slotProps" :mobile="true">
-        <categories-node :neastedLevel="1" :parent="slotProps.parent" :parentCategorySlug="slotProps.parentCategorySlug"
+      <CategoriesNode :parent="0" :neastedLevel="0" v-slot="slotProps" :mobile="true">
+        <CategoriesNode :neastedLevel="1" :parent="slotProps.parent" :parentCategorySlug="slotProps.parentCategorySlug"
           :mobile="true">
-        </categories-node>
-      </categories-node>
-      <nav-node name="top_header">
+        </CategoriesNode>
+      </CategoriesNode>
+      <NavNode name="top_header">
         <template #choise-location>
           <li class="header-nav__item icon-favorite">
             <button class="header-nav__btn" @click="$router.push('/favorite')">Избранное</button>
@@ -17,7 +17,7 @@
             <button class="header-nav__btn" @click="loginPopupVisible">Профиль</button>
           </li>
         </template>
-      </nav-node>
+      </NavNode>
     </popup-node>
 
   </div>
@@ -44,7 +44,6 @@ export default {
 
     }),
     ...mapState({
-      windowWidth: state => state.common.windowWidth,
       popup(state) {
         return state.common.revs.headerMenu
       },
@@ -83,6 +82,10 @@ export default {
 
 <style lang="scss">
 .header-menu {
+  display: none;
+  @media (max-width: ($md2+px)) {
+     display: block;
+  }
   .popup {
     z-index: -2;
     // display: block !important;

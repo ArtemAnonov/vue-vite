@@ -2,7 +2,7 @@
   <div class="login">
     <div class="login__logined" v-if="userAuth">
       <div class="login__greeting">Вы вошли в систему</div>
-      <button-node buttonStyle="dark" @click.prevent="logoutCustomer()">{{ 'Выйти' }}</button-node>
+      <ButtonNode buttonStyle="dark" @click.prevent="logoutCustomer()">{{ 'Выйти' }}</ButtonNode>
     </div>
     <!-- <div class="login__notifications">
       <span>Для оформления заказа авторизуйтесь!</span>
@@ -23,14 +23,14 @@
                   <input-radio-node :disabled="true" name="typeLogin" labelText="Через СМС-код" :modelValue="false">
                   </input-radio-node>
                 </div>
-                <input-node class="main" type="text" v-model="userData.email">
-                  <template #after><label>Почта</label></template>
-                </input-node>
-                <input-node class="main" type="password" v-model="userData.password">
-                  <template #after><label>Пароль</label></template>
-                </input-node>
-                <button-node buttonStyle="dark" @click.prevent="loginCustomer()">{{ 'Войти'
-                }}</button-node>
+                <InputNode class="main" type="text" v-model="userData.email">
+                  <template #before><label>Почта</label></template>
+                </InputNode>
+                <InputNode class="main" type="password" v-model="userData.password">
+                  <template #before><label>Пароль</label></template>
+                </InputNode>
+                <ButtonNode buttonStyle="dark" @click.prevent="loginCustomer()">{{ 'Войти'
+                }}</ButtonNode>
               </form>
             </div>
           </div>
@@ -38,19 +38,19 @@
         <div v-show="currentTab === 2" class="login__column tab-register">
           <div class="register-tab__body">
             <form>
-              <input-node class="main" type="text" v-model="userData.first_name">
-                <template #after><label>Имя</label></template>
-              </input-node>
-              <input-node class="main" type="text" v-model="userData.last_name">
-                <template #after><label>Фамилия</label></template>
-              </input-node>
-              <input-node class="main" type="text" v-model="userData.email">
-                <template #after><label>Почта</label></template>
-              </input-node>
-              <input-node class="main" type="password" v-model="userData.password">
-                <template #after><label>Пароль</label></template>
-              </input-node>
-              <button-node buttonStyle="dark" @click.prevent="registerCustomer">Зарегистрироваться</button-node>
+              <InputNode class="main" type="text" v-model="userData.first_name">
+                <template #before><label>Имя</label></template>
+              </InputNode>
+              <InputNode class="main" type="text" v-model="userData.last_name">
+                <template #before><label>Фамилия</label></template>
+              </InputNode>
+              <InputNode class="main" type="text" v-model="userData.email">
+                <template #before><label>Почта</label></template>
+              </InputNode>
+              <InputNode class="main" type="password" v-model="userData.password">
+                <template #before><label>Пароль</label></template>
+              </InputNode>
+              <ButtonNode buttonStyle="dark" @click.prevent="registerCustomer">Зарегистрироваться</ButtonNode>
             </form>
           </div>
         </div>

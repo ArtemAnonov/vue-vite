@@ -1,5 +1,5 @@
 <template>
-    <router-link 
+    <RouterLink 
         class="header-button"
         :to="link"
     >
@@ -9,7 +9,7 @@
         <div class="header-button__icon">
             <slot></slot>
         </div>
-    </router-link>
+    </RouterLink>
 </template>
 
 <script>

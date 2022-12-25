@@ -5,17 +5,20 @@
     @click.stop
   >
     <div class="revealing-list__actions">
-      <button-node
+      <ButtonNode
         class="revealing-list__button revealing-list__button_main"
         :class="state.default ? 'revealing-list__button_main_default' : ''"
         @click="bodyVisible"
       >
-        <div class="revealing-list__close icon-plus" @click="setDefault"></div>
-        <div class="revealing-list__title">
+        <span
+          class="revealing-list__close icon-plus"
+          @click="setDefault"
+        ></span>
+        <span class="revealing-list__title">
           <slot name="title"></slot>
-        </div>
-        <div class="revealing-list__arrow icon-arrow"></div>
-      </button-node>
+        </span>
+        <span class="revealing-list__arrow icon-arrow"></span>
+      </ButtonNode>
     </div>
     <div class="revealing-list__body" v-show="state.visible">
       <!-- <div
@@ -28,15 +31,15 @@
         <slot name="main"></slot>
       </div>
       <div class="revealing-list__nested-actions">
-        <button-node class="revealing-list__button" @click="setDefault"
-          >Очистить</button-node
+        <ButtonNode class="revealing-list__button" @click="setDefault"
+          >Очистить</ButtonNode
         >
-        <button-node
+        <ButtonNode
           class="revealing-list__button"
           button-style="dark"
           @click.stop="apply"
           :disabled="bodyLoaded ? false : true"
-          >Применить</button-node
+          >Применить</ButtonNode
         >
       </div>
     </div>
@@ -54,7 +57,7 @@ export default {
      */
     bodyLoaded: {
       type: Boolean,
-      default: false
+      default: false,
     },
     applyValidate: {
       default: true,
@@ -109,7 +112,7 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 .revealing-list {
   position: relative;
   &_active {
@@ -149,10 +152,14 @@ export default {
   &__button {
     // width: 100%;
     // display: flex;
+    .button__span {
+      align-items: center;
+    }
     &_main {
       border: 1px solid #231f20;
       &_default {
         border: 1px solid transparent;
+
         .revealing-list__close {
           width: 0;
           opacity: 0;
@@ -171,9 +178,9 @@ export default {
   }
 
   &__body {
-    padding: 4rem 1rem 1rem 1rem;
-    top: -1rem;
-    left: -1rem;
+    padding: 4rem 1.33rem 1.33rem 1.33rem;
+    top: -1.33rem;
+    left: -1.33rem;
     position: absolute;
     min-width: 17.4666666667rem;
     // opacity: 0;

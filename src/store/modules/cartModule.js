@@ -1,5 +1,5 @@
 import Cookies from "js-cookie";
-import { VUE_WP_INSTANCE, setNonceToken } from "@/api/utils";
+import { VUE_WP_INSTANCE, getNonceToken } from "@/api/utils";
 const instance = VUE_WP_INSTANCE().state.cart;
 export const cartModule = {
   namespaced: true,
@@ -12,6 +12,9 @@ export const cartModule = {
       // single_params: instance.single_params,
     },
     store: {},
+    /**
+     * Параметры запроса, которые должны быть в запросе POST, но не добавляются 
+     */
     aditionalStore: {},
   }),
   getters: {},
@@ -54,7 +57,7 @@ export const cartModule = {
     ) {
       // if (!config.headers) config.headers = {};
       try {
-        config.headers = setNonceToken()
+        config.headers = getNonceToken()
         const requested = await dispatch(
           "mainFetchRequest",
           {

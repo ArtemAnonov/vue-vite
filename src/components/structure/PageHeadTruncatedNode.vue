@@ -1,6 +1,6 @@
 <template>
   <div class="page-head_truncated">
-    <container-node>
+    <ContainerNode>
       <div class="page-head_truncated__body">
         <div class="page-head_truncated__row">
           <button class="page-head_truncated__back icon-long_arrow" @click="$router.back()">
@@ -16,7 +16,7 @@
           <!-- <slot name="content"></slot> -->
         </div>
       </div>
-    </container-node>
+    </ContainerNode>
   </div>
 </template>
 

@@ -1,44 +1,63 @@
 <template>
   <!--         v-if="category && mainCategory && templatePage"  -->
-  <main-page-node :templatePage="templatePage" :category="category">
+  <MainPageNode :templatePage="templatePage" :category="category">
     <template #page-main>
       <filter-node @updateFilter="updateFilter"></filter-node>
-      <container-node>
+      <ContainerNode>
         <div class="catalog__body">
           <div class="catalog__main">
             <div class="catalog__sidebar">
-              <catalog-sidebar-node v-if="mainCategory && category" :mainCategory="mainCategory" :category="category"
-                :total="total"></catalog-sidebar-node>
+              <catalog-sidebar-node
+                v-if="mainCategory && category"
+                :mainCategory="mainCategory"
+                :category="category"
+                :total="total"
+              ></catalog-sidebar-node>
             </div>
             <div class="catalog__products">
               <div class="catalog__sorting">
-                <revealing-list-node :bodyLoaded="sortOptions ? true : false" @apply="updateFilter" name="sorting">
+                <RevealingListNode
+                  :bodyLoaded="sortOptions ? true : false"
+                  @apply="updateFilter"
+                  name="sorting"
+                >
                   <template #title>Сортировка</template>
                   <template #main>
-                    <input-radio-node v-for="option in sortOptions" :modelValue="equalOptionSort(option)"
-                      :labelText="option.name" @input="setOrderAndOrderBy(option)" :checked="option.id === 0"
-                      name="sort" :key="option.id">
+                    <input-radio-node
+                      v-for="option in sortOptions"
+                      :modelValue="equalOptionSort(option)"
+                      :labelText="option.name"
+                      @input="setOrderAndOrderBy(option)"
+                      :checked="option.id === 0"
+                      name="sort"
+                      :key="option.id"
+                    >
                     </input-radio-node>
                   </template>
-                </revealing-list-node>
+                </RevealingListNode>
               </div>
-              <catalog-products-node :categoryId="categoryId"></catalog-products-node>
+              <catalog-products-node
+                :categoryId="categoryId"
+              ></catalog-products-node>
               <pagination-node :type="productsRequest.type"></pagination-node>
             </div>
             <!-- <div class="observer" v-intersection="loadMoreProducts" v-if="page < totalPages"></div> -->
           </div>
         </div>
-        <page-content-node v-if="templatePage" :page="templatePage"></page-content-node>
+        <page-content-node
+          v-if="templatePage"
+          :page="templatePage"
+        ></page-content-node>
         <distribution-node></distribution-node>
-      </container-node>
+      </ContainerNode>
     </template>
-  </main-page-node>
+  </MainPageNode>
 </template>
 
 <script>
 //
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
-import { isEmpty, isEqual } from 'lodash-es'
+import { isEmpty, isEqual } from "lodash-es";
 
 import CatalogSidebarNode from "@/components/CatalogSidebarNode.vue";
 import FilterNode from "@/components/FilterNode.vue";
@@ -47,7 +66,7 @@ import PaginationNode from "@/components/PaginationNode.vue";
 import RevealingListNode from "@/components/RevealingListNode.vue";
 import PageContentNode from "@/components/PageContentNode.vue";
 import DistributionNode from "@/components/DistributionNode.vue";
-import MainPageNode from '@/components/structure/MainPageNode.vue'
+import MainPageNode from "@/components/structure/MainPageNode.vue";
 
 export default {
   /**
@@ -64,7 +83,7 @@ export default {
     PaginationNode,
     PageContentNode,
     DistributionNode,
-    MainPageNode
+    MainPageNode,
   },
   props: {
     params: {
@@ -97,8 +116,10 @@ export default {
      * не происходил ненужный запрос в связи с изменением page
      */
     page(newValue) {
-      if (newValue != this.query.page) {
-        this.loadMoreProducts();
+      if (import.meta.env.VITE_LIKE_A_SPA) {
+        if (newValue != this.query.page) {
+          this.loadMoreProducts();
+        }
       }
     },
   },
@@ -109,6 +130,7 @@ export default {
       requestByItemParam: "requestByItemParam",
     }),
     ...mapState({
+      productsRequestsRequest: (state) => state.products.requests[0],
       productsRequest: (state) => state.products.basedRequest,
       productsCategoriesRequest: (state) =>
         state.productsCategories.basedRequest,
@@ -151,8 +173,6 @@ export default {
       return this.mainCategory.count;
     },
 
-
-
     /*filter*/
     // orderAndOrderByChecked: {
     //   get() {
@@ -180,7 +200,7 @@ export default {
       updateRequestParams: "products/updateRequestParams",
       filterAndPaginate: "products/filterAndPaginate",
       changePage: "products/changePage",
-      validateValues: 'filter/validateValues',
+      validateValues: "filter/validateValues",
       getSingleBySlug: "getSingleBySlug",
     }),
 
@@ -189,15 +209,23 @@ export default {
      */
     async updateFilter() {
       this.$router.push(await this.changePage(1));
-      this.validateValues()
+      this.validateValues();
       this.updateRequestParams();
       this.filterAndPaginate();
-      const { request } = await this.getItems(Object.assign({ onDownloadProgress: Function }, this.productsRequest));
-      this.setTotalPages(request.totalPages);
-      this.setItemsPaginated({
-        pageNumber: request.params.page,
-        value: request.data,
-      });
+      let request;
+      if (import.meta.env.VITE_LIKE_A_SPA) {
+        const { request } = await this.getItems(
+          Object.assign({ onDownloadProgress: Function }, this.productsRequest)
+        );
+        this.setTotalPages(request.totalPages);
+        this.setItemsPaginated({
+          pageNumber: request.params.page,
+          value: request.data,
+        });
+      } else {
+        request = this.productsRequestsRequest;
+        this.setTotalPages(Math.ceil(request.total / 8));
+      }
     },
     async loadMoreProducts() {
       const { request } = await this.getItems(this.productsRequest);
@@ -213,12 +241,19 @@ export default {
     async initCatalog() {
       if (this.query.page) this.setPage(this.query.page);
       await this.updateRequestParams();
-      const { request } = await this.getItems(this.productsRequest);
-      this.setTotalPages(request.totalPages);
-      this.setItemsPaginated({
-        pageNumber: request.params.page,
-        value: request.data,
-      });
+      let request;
+      if (import.meta.env.VITE_LIKE_A_SPA) {
+        request = await this.getItems(this.productsRequest).request;
+        this.setTotalPages(request.totalPages);
+        this.setItemsPaginated({
+          pageNumber: request.params.page,
+          value: request.data,
+        });
+      } else {
+        this.filterAndPaginate();
+        request = this.productsRequestsRequest;
+        this.setTotalPages(Math.ceil(request.total / 8));
+      }
       this.initMarker = true;
     },
 
@@ -230,12 +265,12 @@ export default {
     },
 
     /**
-    * Метод возвращает Boolean, сравнивая опцию, записанную в filter.params.orderAndOrderBy
-    * и опцию из списка опций. Таким образом он в компанент передает значение, которое 
-    * определяет показывается ли checked
-    */
+     * Метод возвращает Boolean, сравнивая опцию, записанную в filter.params.orderAndOrderBy
+     * и опцию из списка опций. Таким образом он в компанент передает значение, которое
+     * определяет показывается ли checked
+     */
     equalOptionSort(value) {
-      return isEqual(value, this.orderAndOrderBy)
+      return isEqual(value, this.orderAndOrderBy);
     },
   },
   created() {
@@ -256,19 +291,21 @@ export default {
 
 <style lang="scss">
 .catalog {
-  &__body {}
+  &__body {
+  }
 
   &__top {
     position: relative;
 
-    @media (max-width: ($md2+px)) {}
+    @media (max-width: ($md2+px)) {
+    }
 
     // margin-bottom: 1000px;
   }
 
   &__sorting {
     .input_radio {
-      margin-bottom: .5rem;
+      margin-bottom: 0.5rem;
     }
   }
 
@@ -283,7 +320,8 @@ export default {
     }
   }
 
-  &__products {}
+  &__products {
+  }
 
   &__sorting {
     display: flex;

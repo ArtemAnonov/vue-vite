@@ -1,85 +1,131 @@
 <template>
-  <main-page-node>
+  <MainPageNode>
     <template #page-head>
-      <page-head-truncated-node backLinkName="На главную" pageTitle="Корзина"></page-head-truncated-node>
+      <PageHeadTruncatedNode
+        backLinkName="На главную"
+        pageTitle="Корзина"
+      ></PageHeadTruncatedNode>
     </template>
     <template #page-main>
-      <container-node>
+      <ContainerNode>
         <div class="cart">
           <div class="cart__body">
-            <template v-if="cartItems?.length || Object.keys(cartStore).length === 0">
-              <middle-content-node>
+            <template
+              v-if="cartItems?.length || Object.keys(cartStore).length === 0"
+            >
+              <MiddleContentNode>
                 <template #items>
-                  <PreloadWrapContainerNode class="cart__item" :quantityPreloadElements="4" :iterable="cartItems"
-                    v-slot="slotProps">
-                    <cart-item-node :cartItem="slotProps.cartItem">
-                    </cart-item-node>
+                  <PreloadWrapContainerNode
+                    class="cart__item"
+                    :quantityPreloadElements="4"
+                    :iterable="cartItems"
+                    v-slot="slotProps"
+                  >
+                    <Cart-Item-Node :cartItem="slotProps.cartItem">
+                    </Cart-Item-Node>
                   </PreloadWrapContainerNode>
                 </template>
                 <template #sidebar>
                   <div class="middle-content__sidebar-inner">
-                    <div class="middle-content__block middle-content__block_promo">
-                      <div class="middle-content__key middle-content__key_medium">Промокод</div>
+                    <div
+                      class="middle-content__block middle-content__block_promo"
+                    >
+                      <div
+                        class="middle-content__key middle-content__key_medium"
+                      >
+                        Промокод
+                      </div>
                       <div class="middle-content__item">
-                        <input-node placeholder="Введите промокод" class="main" v-model="promo"></input-node>
-                        <button-node buttonStyle="green" :disabled="!promo">Применить</button-node>
+                        <InputNode
+                          placeholder="Введите промокод"
+                          class="main"
+                          v-model="promo"
+                        ></InputNode>
+                        <ButtonNode buttonStyle="green" :disabled="!promo"
+                          >Применить</ButtonNode
+                        >
                       </div>
                     </div>
                     <div class="middle-content__block">
                       <div class="middle-content__item">
                         <div class="middle-content__key">Скидка</div>
-                        <div class="middle-content__value">- 0<span class="middle-content__currency"> ₽</span></div>
+                        <div class="middle-content__value">
+                          - 0<span class="middle-content__currency"> ₽</span>
+                        </div>
                       </div>
                       <div class="middle-content__item">
-                        <div class="middle-content__key">Скидка при онлайн оплате</div>
-                        <div class="middle-content__value">- 0<span class="middle-content__currency"> ₽</span></div>
+                        <div class="middle-content__key">
+                          Скидка при онлайн оплате
+                        </div>
+                        <div class="middle-content__value">
+                          - 0<span class="middle-content__currency"> ₽</span>
+                        </div>
                       </div>
                       <div class="middle-content__item">
-                        <div class="middle-content__key">Количество товаров</div>
-                        <div class="middle-content__value icon-info">{{ cartStore.items?.length }} шт.</div>
+                        <div class="middle-content__key">
+                          Количество товаров
+                        </div>
+                        <div class="middle-content__value icon-info">
+                          {{ cartStore.items?.length }} шт.
+                        </div>
                       </div>
-
                     </div>
                     <div class="middle-content__block">
                       <div class="middle-content__item">
-                        <div class="middle-content__key middle-content__key_big">Итого</div>
-                        <div class="middle-content__value middle-content__value_big">{{ cartStore?.totals?.total_price
-                        }}<span class="middle-content__currency"> ₽</span></div>
+                        <div
+                          class="middle-content__key middle-content__key_big"
+                        >
+                          Итого
+                        </div>
+                        <div
+                          class="
+                            middle-content__value middle-content__value_big
+                          "
+                        >
+                          {{ cartStore?.totals?.total_price
+                          }}<span class="middle-content__currency"> ₽</span>
+                        </div>
                       </div>
                       <div class="middle-content__item">
-                        <div class="middle-content__key">Стоимость без учёта скидок:</div>
+                        <div class="middle-content__key">
+                          Стоимость без учёта скидок:
+                        </div>
                         <div class="middle-content__value"></div>
                       </div>
                       <div class="middle-content__item">
-                        <div class="middle-content__key">Балов будет начислено:</div>
+                        <div class="middle-content__key">
+                          Балов будет начислено:
+                        </div>
                         <div class="middle-content__value"></div>
                       </div>
-                      <button-node buttonStyle="green" @click="toCheckout">Перейти к оформлению
-                      </button-node>
+                      <ButtonNode
+                        class="middle-content__button-submit"
+                        buttonStyle="green"
+                        @click="toCheckout"
+                        >Перейти к оформлению
+                      </ButtonNode>
                     </div>
                   </div>
                 </template>
-              </middle-content-node>
+              </MiddleContentNode>
             </template>
             <template v-else>
-              <div>
-                Сейчас ваша корзина пуста. Пополните же её!
-              </div>
+              <div>Сейчас ваша корзина пуста. Пополните же её!</div>
             </template>
           </div>
         </div>
-      </container-node>
+      </ContainerNode>
     </template>
-  </main-page-node>
+  </MainPageNode>
 </template>
 
 <script>
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
-import { cloneDeep } from 'lodash-es'
+import { cloneDeep } from "lodash-es";
 import CartItemNode from "@/components/cart-and-ordering/CartItemNode.vue";
-import MainPageNode from '@/components/structure/MainPageNode.vue'
-import PageHeadTruncatedNode from '@/components/structure/PageHeadTruncatedNode.vue'
-import MiddleContentNode from '@/components/cart-and-ordering/MiddleContentNode.vue'
+import MainPageNode from "@/components/structure/MainPageNode.vue";
+import PageHeadTruncatedNode from "@/components/structure/PageHeadTruncatedNode.vue";
+import MiddleContentNode from "@/components/cart-and-ordering/MiddleContentNode.vue";
 import PreloadWrapContainerNode from "@/components/structure/PreloadWrapContainerNode.vue";
 
 export default {
@@ -88,12 +134,12 @@ export default {
     MainPageNode,
     PageHeadTruncatedNode,
     MiddleContentNode,
-    PreloadWrapContainerNode
+    PreloadWrapContainerNode,
   },
   data() {
     return {
-      promo: ''
-    }
+      promo: "",
+    };
   },
   watch: {
     /**
@@ -102,15 +148,17 @@ export default {
      */
     cartItems: {
       handler(cartItems) {
-        if (cartItems?.length && cartItems?.length !== 0) {
-          let idsCartItems = cartItems.map((el) => el.id)
-          let basedRequest = cloneDeep(this.productsRequest)
-          basedRequest.params = { '_include': idsCartItems }
-          this.getItems(basedRequest)
+        if (import.meta.env.VITE_LIKE_A_SPA) {
+          if (cartItems?.length && cartItems?.length !== 0) {
+            let idsCartItems = cartItems.map((el) => el.id);
+            let basedRequest = cloneDeep(this.productsRequest);
+            basedRequest.params = { _include: idsCartItems };
+            this.getItems(basedRequest);
+          }
         }
       },
-      immediate: true
-    }
+      immediate: true,
+    },
   },
   computed: {
     ...mapGetters({
@@ -124,8 +172,8 @@ export default {
       userAuth: (state) => state.auth.userAuth,
       cartStore: (state) => state.cart.store,
       loginPopup(state) {
-        return state.common.revs.login
-      }
+        return state.common.revs.login;
+      },
     }),
   },
   methods: {
@@ -133,7 +181,6 @@ export default {
       SET_VALUE: "SET_VALUE",
       updateRev: "common/updateRev",
       updateRev: "common/updateRev",
-
     }),
     ...mapActions({
       getItems: "getItems",
@@ -145,26 +192,37 @@ export default {
           name: "login",
           value: this.loginPopup.visible,
         });
-        return
+        return;
       }
-      this.$router.push({ name: 'Checkout' })
+      this.$router.push({ name: "Checkout" });
     },
   },
-
 };
 </script>
 
 <style lang="scss">
 .cart {
-
   // .cart__body
-  &__body {}
+  &__body {
+  }
 
   // .cart__item
-  &__item {}
+  &__item {
+  }
 
   .preload-wrap {
     margin-bottom: 1rem;
+  }
+
+  .middle-content {
+    &__block {
+      &:nth-child(1),
+      &:nth-child(2) {
+        &::after {
+          display: block;
+        }
+      }
+    }
   }
 }
 </style>

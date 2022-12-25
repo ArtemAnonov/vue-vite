@@ -17,38 +17,24 @@
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 
 export default {
-  components: {
-  },
+  components: {},
   data() {
-    return {
-    }
+    return {};
   },
   computed: {
-    ...mapGetters({
-
-    }),
-    ...mapState({
-
-    }),
+    ...mapGetters({}),
+    ...mapState({}),
   },
   methods: {
-    ...mapMutations({
-
-
-    }),
-    ...mapActions({
-
-    }),
-
+    ...mapMutations({}),
+    ...mapActions({}),
   },
-  created() {
-  }
-}
+  created() {},
+};
 </script>
 
 <style lang="scss">
 .middle-content {
-
   // .middle-content__body
   &__body {
     display: grid;
@@ -67,7 +53,7 @@ export default {
   // .middle-content__items
   &__items {
     margin-right: 3.75rem;
-    border-top: .0625rem solid rgba(0, 0, 0, .08);
+    border-top: 0.0625rem solid rgba(0, 0, 0, 0.08);
 
     @media (max-width: ($md2+px)) {
       margin: 0;
@@ -81,7 +67,6 @@ export default {
 
   // .middle-content__sidebar
   &__sidebar {
-
     @media (max-width: ($md2+px)) {
       grid-column: 2/3;
     }
@@ -92,7 +77,7 @@ export default {
   }
 
   &__sidebar-inner {
-    border: .0625rem solid rgba(0, 0, 0, .08);
+    border: 0.0625rem solid rgba(0, 0, 0, 0.08);
     padding: 1.5rem 1.25rem 1.75rem;
 
     @media (max-width: ($md1+px)) {
@@ -100,45 +85,38 @@ export default {
       padding: 1.5rem 0;
     }
 
-    @media (max-width: ($md4+px)) {}
+    @media (max-width: ($md4+px)) {
+    }
   }
 
   // .middle-content__block
   &__block {
     position: relative;
 
-    &:nth-child(3) {
-      .button {
-        min-height: 52px;
-        min-width: 100%;
-        margin-top: 1rem;
-      }
+    &::after {
+      content: "";
+      display: none;
+      position: absolute;
+      height: 0.0625rem;
+      width: 100%;
+      bottom: 0;
+      left: 0;
+      background: rgba(0, 0, 0, 0.08);
     }
-
     &:nth-child(1),
     &:nth-child(2) {
       padding-bottom: 1.25rem;
+    }
 
-      &::after {
-        content: '';
-        position: absolute;
-        height: .0625rem;
-        width: 100%;
-        bottom: 0;
-        left: 0;
-        background: rgba(0, 0, 0, .08);
-
-      }
+    &:nth-child(3) {
     }
 
     &:nth-child(2),
     &:nth-child(3) {
       padding-top: 1.25rem;
-
     }
 
     &_promo {
-
       .middle-content__item {
         @media (max-width: ($md5+px)) {
           grid-template-columns: auto;
@@ -178,18 +156,17 @@ export default {
   &__item {
     display: grid;
     grid-template-columns: 1fr auto;
-    row-gap: .5rem;
+    row-gap: 0.5rem;
   }
 
   // .middle-content__key
   &__key {
-
     // .middle-content__key_medium
     &_medium {
       color: #231f20;
       font-size: 1.125rem;
       line-height: 1.375rem;
-      padding: 0 0 .75rem;
+      padding: 0 0 0.75rem;
 
       &::before {
         color: #187552 !important;
@@ -202,7 +179,6 @@ export default {
       // line-height: 1rem;
       font-weight: 700;
     }
-
   }
 
   // .middle-content__value
@@ -237,6 +213,10 @@ export default {
     font-weight: 400;
   }
 
-
+  &__button-submit {
+    min-height: 52px;
+    min-width: 100%;
+    margin-top: 1rem;
+  }
 }
 </style>

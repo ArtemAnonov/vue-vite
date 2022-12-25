@@ -16,10 +16,10 @@
     }"
   >
     <template #banner-category-name>
-      <div class="slider-banners-fashion-blog__title">Fashion-блог</div>
+      <div @click="$router.push('/blog-page')"  class="slider-banners-fashion-blog__title">Fashion-блог</div>
     </template>
     <template #banner-title="bannerTitleProps">
-      <div class="slider-banners-fashion-blog__banner-title">
+      <div @click="$router.push('/blog-page')"  class="slider-banners-fashion-blog__banner-title">
         {{ bannerTitleProps.banner.title.rendered }}
       </div>
     </template>
@@ -48,9 +48,11 @@ export default {
 
   &__title {
     font-size: 2rem;
+    cursor: pointer;
   }
 
   &__banner-title {
+    cursor: pointer;
     font-size: 1.4rem;
     line-height: 2rem;
     color: #fff;

@@ -13,11 +13,11 @@
           <div class="cart-item__name">{{ cartItem?.name }}</div>
           <div class="cart-item__color">{{ color(2) }}</div>
           <div class="cart-item__size">Размер: {{ size(4) }}</div>
-          <product-prices-node class="cart-item__prices" :pricesObject="cartItem?.prices" :customOptions="{
+          <ProductPricesNode class="cart-item__prices" :pricesObject="cartItem?.prices" :customOptions="{
             percentSale: false,
             brackets: false,
           }">
-          </product-prices-node>
+          </ProductPricesNode>
         </div>
         <div class="cart-item__count">
           <cart-btn-node class="cart-item__button cart-btn_iconable icon-minus"
