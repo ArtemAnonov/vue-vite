@@ -1,5 +1,5 @@
 <template>
-  <slider-banners-node
+  <SliderBannersNode
     class="slider-banners-fashion-blog"
     :bannerCategoryId="69"
     identificator="slider-banners-fashion-blog"
@@ -23,7 +23,7 @@
         {{ bannerTitleProps.banner.title.rendered }}
       </div>
     </template>
-  </slider-banners-node>
+  </SliderBannersNode>
 </template>
 
 <script>

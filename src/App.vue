@@ -1,36 +1,30 @@
 <template>
   <!-- -->
-  <div class="app" @click="closeRevs()">
-    <router-view
-      v-if="showAppContent"
-      v-slot="{ Component, route }"
-    >
-      <all-widgets-node></all-widgets-node>
-      <header-light-node
-        v-if="truncatedComponent(route.name)"
-      ></header-light-node>
-      <header-node v-if="!truncatedComponent(route.name)"></header-node>
+  <div class="app" @click="updateAllOpeningTypeItems({})">
+    <router-view v-if="showAppContent" v-slot="{ Component, route }">
+      <WidgetsNode />
+      <HeaderLightNode v-if="truncatedComponent(route.name)"></HeaderLightNode>
+      <HeaderNode v-if="!truncatedComponent(route.name)"></HeaderNode>
       <component :is="Component"></component>
-      <footer-node v-if="!truncatedComponent(route.name)"></footer-node>
+      <FooterNode v-if="!truncatedComponent(route.name)"></FooterNode>
     </router-view>
   </div>
 </template>
 
 <script>
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
-import { isEmpty } from "lodash-es";
 import { truncatedComponents, routes } from "@/router/routes";
 import HeaderLightNode from "@/components/structure/HeaderLightNode.vue";
 import HeaderNode from "@/components/structure/HeaderNode.vue";
 import FooterNode from "@/components/structure/FooterNode.vue";
-import AllWidgetsNode from "@/components/structure/AllWidgetsNode.vue";
+import WidgetsNode from "@/components/structure/WidgetsNode.vue";
 
 export default {
   components: {
     HeaderLightNode,
     HeaderNode,
     FooterNode,
-    AllWidgetsNode,
+    WidgetsNode,
   },
   data() {
     return {
@@ -52,7 +46,6 @@ export default {
       scrollFlag: (state) => state.common.scrollFlag,
       productsCategories: (state) => state.productsCategories,
       windowWidth: (state) => state.common.windowWidth,
-
     }),
   },
   methods: {
@@ -62,12 +55,13 @@ export default {
       setScrollY: "common/setScrollY",
       setBreakpoint: "common/setBreakpoint",
       closeRevs: "common/closeRevs",
-      setBrowserReady: 'common/setBrowserReady'
+      setBrowserReady: "common/setBrowserReady",
     }),
     ...mapActions({
       getItems: "getItems",
       getCart: "cart/getCart",
       updateUserAuth: "auth/updateUserAuth",
+      updateAllOpeningTypeItems: "common/updateAllOpeningTypeItems",
     }),
     onResize(value) {
       this.setWindowWidth(value);
@@ -84,11 +78,12 @@ export default {
     },
   },
   /**
-   * Аунтификация и загрузка корзины. Загрузка категорий, если они по какой-то причинне
+   * Аутентификация(*) и загрузка корзины. Загрузка категорий, если они по какой-то причинне
    * не загружены из web php
+   * (*) Аутентификация перенесена в router/indexs
    */
   created() {
-    this.updateUserAuth();
+    // this.updateUserAuth();
     if (import.meta.env.VITE_LIKE_A_SPA) {
       this.getItems(this.productsCategories.basedRequest);
     }
@@ -98,10 +93,13 @@ export default {
   mounted() {
     window.addEventListener("DOMContentLoaded", (event) => {
       this.showAppContent = true;
-      this.setBrowserReady((typeof window !== 'undefined' && typeof document !== 'undefined') ? true : false)
+      this.setBrowserReady(
+        typeof window !== "undefined" && typeof document !== "undefined"
+          ? true
+          : false
+      );
     });
-
-    this.onResize(window.innerWidth)
+    this.setWindowWidth(window.innerWidth);
     window.addEventListener("resize", (e) =>
       this.onResize(e.target.innerWidth)
     );

@@ -1,19 +1,19 @@
 import Cookies from "js-cookie";
-import { VUE_WP_INSTANCE, getNonceToken } from "@/api/utils";
+import { VUE_WP_INSTANCE, getNonceToken } from "@/api/helpers.js";
 const instance = VUE_WP_INSTANCE().state.cart;
 export const cartModule = {
   namespaced: true,
   state: () => ({
     basedRequest: {
-      apiType: instance.basedRequest.apiType,
-      type: instance.basedRequest.type,
-      route_base: instance.basedRequest.route_base,
+      apiType: instance.apiType,
+      type: instance.type,
+      route_base: instance.route_base,
       // params: instance.params,
       // single_params: instance.single_params,
     },
     store: {},
     /**
-     * Параметры запроса, которые должны быть в запросе POST, но не добавляются 
+     * Параметры запроса, которые должны быть в запросе POST, но не добавляются
      */
     aditionalStore: {},
   }),
@@ -21,13 +21,16 @@ export const cartModule = {
 
   actions: {
     async getCart({ state, getters, commit, dispatch }) {
+
       try {
-        const requested = await dispatch(
+        let requested = {}
+        requested = await dispatch(
           "mainFetchRequest",
           {
             route_base: state.basedRequest.route_base,
             apiType: state.basedRequest.apiType,
             maintainJWT: true,
+            reqiredJWT: false,
           },
           { root: true }
         );
@@ -42,6 +45,7 @@ export const cartModule = {
       } catch (error) {
         console.log(error);
       }
+
     },
 
     /**
@@ -57,7 +61,7 @@ export const cartModule = {
     ) {
       // if (!config.headers) config.headers = {};
       try {
-        config.headers = getNonceToken()
+        config.headers = getNonceToken();
         const requested = await dispatch(
           "mainFetchRequest",
           {

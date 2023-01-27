@@ -2,8 +2,8 @@
   <div class="preload-container">
     <div v-if="iterableHandled" :class="`${$attrs.class}s`">
       <template v-for="(item, index) in arrayPreloadElements" :key="index">
-        <preload-wrap-node :targetPreloadElement="true" paddingBottom="35">
-        </preload-wrap-node>
+        <PreloadWrapNode :targetPreloadElement="true" paddingBottom="35">
+        </PreloadWrapNode>
       </template>
     </div>
     <div else :class="`${$attrs.class}s`">

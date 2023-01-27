@@ -9,26 +9,24 @@
       <div class="filter__body">
         <ul class="filter__list">
           <li class="filter__item">
-            <RevealingListNode
+            <CatalogRevealingNode
+              :item="{ name: 'catalogPrices' }"
               @apply="$emit('updateFilter')"
               @setDefault="setDefaultPrices"
-              :applyValidate="applyValidate"
-              name="prices"
             >
               <template #title>Цена</template>
               <template #main>
-                <!-- @applyValidate="updateApplyValidate" -->
                 <FilterPrices v-if="browserReady" />
               </template>
-            </RevealingListNode>
+            </CatalogRevealingNode>
           </li>
-
           <li
             class="filter__item"
             v-for="(attr, index) in attributes"
             :key="index"
           >
-            <RevealingListNode
+            <CatalogRevealingNode
+              :item="{ name: attr.slug }"
               @apply="$emit('updateFilter')"
               :name="attr.slug"
               @setDefault="setDefaultAttribute(attr.slug)"
@@ -42,30 +40,30 @@
                     v-for="{ id, name } in singleAttribute(attr.slug)"
                     :key="id"
                   >
-                    <input-checkbox-node
+                    <InputCheckboxNode
                       :modelValue="filterParamsChecked(attr.slug, id)"
                       :labelText="name"
                       @input="
-                        updateRevealing({
+                        updateCatalogRevealing({
                           type: attr.slug,
                           value: { id, name },
                         })
                       "
-                    ></input-checkbox-node>
+                    ></InputCheckboxNode>
                   </li>
                 </ul>
               </template>
-            </RevealingListNode>
+            </CatalogRevealingNode>
           </li>
           <li class="filter__item">
-            <input-checkbox-node
+            <InputCheckboxNode
               v-model="onlineOnly"
               labelText="Доступно онлайн"
-            ></input-checkbox-node>
+            ></InputCheckboxNode>
           </li>
         </ul>
         <ButtonNode
-          @click="filterCleanAndLoadDefault"
+          @click.stop="filterCleanAndLoadDefault"
           class="filter__button filter__button_clean"
           >Очистить<span>фильтры</span></ButtonNode
         >
@@ -76,7 +74,7 @@
 
 <script>
 /**
- * Шаблон input-checkbox-node работает только с v-model...
+ * Шаблон InputCheckboxNode работает только с v-model...
  * Подтверждение мутации опций, списка термов [0:{id: ..., name: ...}] не сделано
  * (подразумевается синхронизация булевого modelValue чекбокса и элемента массива опций)
  */
@@ -84,21 +82,13 @@
 // setAttributeTerms({ type: attr.slug, value: { id, name } })
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 import { isEmpty } from "lodash-es";
-import { defineAsyncComponent } from "vue";
-
-// const FilterPrices = defineAsyncComponent(() =>
-//   import('@/components/filter/FilterPrices.vue')
-// )
 import FilterPrices from "@/components/filter/FilterPrices.vue";
-import RevealingListNode from "@/components/RevealingListNode.vue";
+import CatalogRevealingNode from "@/components/CatalogRevealingNode.vue";
 
 export default {
   components: {
     FilterPrices,
-    RevealingListNode,
-    // FilterPrices: defineAsyncComponent(() =>
-    //   import("@/components/filter/FilterPrices.vue")
-    // )
+    CatalogRevealingNode,
   },
   emits: ["updateFilter"],
   data() {
@@ -120,6 +110,7 @@ export default {
   computed: {
     ...mapGetters({
       itemsBased: "itemsBased",
+      itemsMatchedByCallback: "itemsMatchedByCallback",
       attributesSlugs: "productsAttributes/attributesSlugs",
     }),
     ...mapState({
@@ -144,7 +135,15 @@ export default {
     }),
 
     attributes() {
-      return this.itemsBased(this.productsAttributesRequest);
+      return this.itemsMatchedByCallback(
+        this.productsAttributesRequest,
+        { regExp: /^pa_yookassa_*./ },
+        function (element, keys, params) {
+          if (element.slug.match(params.regExp) === null) {
+            return true;
+          }
+        }
+      );
     },
   },
 
@@ -158,18 +157,16 @@ export default {
       setAttributeTerms: "filter/setAttributeTerms",
       setMaxPrice: "filter/setMaxPrice",
       setMinPrice: "filter/setMinPrice",
-      updateRev: "common/updateRev",
-      addRev: "common/addRev",
-      closeRevs: "common/closeRevs",
-
       unsetDefaultAttributeOptions: "filter/unsetDefaultAttributeOptions",
       setDefaultPrices: "filter/setDefaultPrices",
+      setCatalogRevealing: "common/setCatalogRevealing",
     }),
 
     ...mapActions({
       getItemsBased: "getItemsBased",
       getItems: "getItems",
       setDefaultFilter: "filter/setDefaultFilter",
+      updateAllOpeningTypeItems: "common/updateAllOpeningTypeItems",
     }),
 
     singleAttribute(attributeSlug) {
@@ -199,15 +196,6 @@ export default {
       }
       return items;
     },
-
-    // updateApplyValidate(newValue) {
-    //     if (newValue === false) {
-    //         this.setMaxPrice(this.maxCost)
-    //         this.setMinPrice(this.minCost)
-    //     }
-    //     this.applyValidate = newValue
-    // },
-
     /**
      * Установка чекбоксов атрибутов. Извлекает установленное значение
      */
@@ -228,17 +216,17 @@ export default {
      * (Возможно более изящное решение проблемы...)
      */
     filterCleanAndLoadDefault() {
-      const slugs = this.attributesSlugs;
-      slugs.forEach((slug) => {
-        this.updateRev({
-          name: slug,
-          value: true,
-          toggleValue: false,
-          prop: "default",
-        });
-      });
+      // const slugs = this.attributesSlugs;
+      // slugs.forEach((slug) => {
+      //   this.setCatalogRevealing({
+      //     name: slug,
+      //     value: true,
+      //     prop: "default",
+      //   });
+      // });
       this.setDefaultFilter();
-      this.closeRevs();
+      this.updateAllOpeningTypeItems({ type: "catalogRevealing" });
+      this.updateAllOpeningTypeItems({ type: "catalogRevealing", value: true, prop: "default" });
       this.$emit("updateFilter");
     },
 
@@ -246,34 +234,29 @@ export default {
      * Устанавливает мутированнй терм атрибута в формате {id, name}
      * Если options пуст, значит revealing представляет собой дефолтное состояние
      */
-    updateRevealing({ type, value }) {
+    updateCatalogRevealing({ type, value }) {
       this.setAttributeTerms({ type, value });
       let marker = isEmpty(this.filterParams[type].options);
-      this.updateRev({
+      this.setCatalogRevealing({
         name: type,
         value: marker,
-        toggleValue: false,
         prop: "default",
       });
     },
 
     /**
-     * Очистка options, установка дефолтного значения для компонента revealing-node
+     * Очистка options, установка дефолтного значения для компонента catalog-revealing-node
      */
     setDefaultAttribute(slug) {
-      this.updateRev({
+      this.setCatalogRevealing({
         name: slug,
         value: true,
-        toggleValue: false,
         prop: "default",
       });
       this.unsetDefaultAttributeOptions(slug);
     },
   },
   created() {
-    this.addRev(
-      Object.assign(this.revealings, this.attributesSlugsRevs(this.attributes))
-    );
     if (import.meta.env.VITE_LIKE_A_SPA) {
       this.getItems(this.productsBrandsRequest);
       this.getItems(this.productsMaterialsRequest);
@@ -380,7 +363,7 @@ export default {
     &_clean {
       margin-left: 1rem;
       span {
-        margin-left: .3rem;
+        margin-left: 0.3rem;
       }
       @media (max-width: ($md4+px)) {
         span {

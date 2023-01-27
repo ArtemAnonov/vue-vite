@@ -25,15 +25,15 @@
           @slideChange="onSlideChange"
         >
           <swiper-slide v-if="banners?.length === 0">
-            <preload-wrap-node :targetPreloadElement="true">
+            <PreloadWrapNode :targetPreloadElement="true">
               <div class="slider-banners__image">
                 <img src="" alt="" />
               </div>
-            </preload-wrap-node>
+            </PreloadWrapNode>
           </swiper-slide>
           <swiper-slide @click="$router.push('/blog-page')" v-for="banner in banners" :key="banner.id">
             <!-- Если src картинки равен пустой строке, то отображается псевдоэлемент -->
-            <preload-wrap-node
+            <PreloadWrapNode
               :targetPreloadElement="
                 bannerOneMedia(banner.featured_media) === ''
               "
@@ -46,7 +46,7 @@
                 </picture>
               </div>
               <slot name="banner-title" :banner="banner"></slot>
-            </preload-wrap-node>
+            </PreloadWrapNode>
           </swiper-slide>
         </swiper>
       </div>

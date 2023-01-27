@@ -1,26 +1,44 @@
-// 
+//
 import { routes } from "@/router/routes";
-import { VUE_WP_INSTANCE } from "@/api/utils";
-import { createRouter, createWebHistory, createMemoryHistory } from "vue-router";
-const { url, state } = VUE_WP_INSTANCE().routing.returned;
+import { VUE_WP_INSTANCE } from "@/api/helpers.js";
+import store from "@/store";
+import Cookies from "js-cookie";
 
-// if ("scrollRestoration" in window.history)
-//   window.history.scrollRestoration = "manual";
+import {
+  createRouter,
+  createWebHistory,
+  createMemoryHistory,
+} from "vue-router";
 
 const router = createRouter({
   routes,
   history: import.meta.env.SSR
-  ? createMemoryHistory() // /test/
-  : createWebHistory(),
+    ? createMemoryHistory() // /test/
+    : createWebHistory(),
 });
 
-let userAuth = state?.auth.userAuth
+// let userAuth = store?.state?.auth.userAuth;
 router.beforeEach((to, from) => {
-  // window.scrollTo({ top: 0, behavior: 'smooth' });
-  
-  if (userAuth === false && to.name === 'Checkout') {
-    return { name: 'Cart' }
+  /**
+   * Изначально userAuth установлен в false. Так как загрузка компонентов и Store происходит
+   * после роутинга, guard'ов, то здесь переустановливается userAuth - если установлена куку jwt-token,
+   * то пользователь зарегистрирован и перемаршрутизация работает корректно (была проблема, что зареганый 
+   * юзер не мог сразу открыть Orders маршрут, так как смена userAuth происходила из created хука компонента App)
+   */
+  store.dispatch("auth/updateUserAuth");
+  let userAuth = store.state?.auth.userAuth;
+  // let userAuth = Boolean(Cookies.get('jwt-token'))
+  /**
+   * (!) - userAuth можно изменить из фронта и попасть на маршрут (правильно ли это?)
+   *
+   */
+  if (userAuth === false && to.name === "Checkout") {
+    return { name: "Cart" };
   }
-})
+  if (userAuth === false && to.name === "Orders") {
+    console.log(userAuth);
+    return { name: "Home" };
+  }
+});
 
 export default router;

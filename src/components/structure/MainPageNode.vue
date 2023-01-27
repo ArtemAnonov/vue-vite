@@ -2,8 +2,8 @@
   <main class="page" :class="templatePage ? '' : 'page_product'">
     <slot name="page-head">
       <div class="page__head-wrapper" v-if="pageHeadNodeShow">
-        <page-head-node :title="templatePage ? templatePage.title.rendered : ''" :category="category"
-          :additionalTitle="additionalTitle"></page-head-node>
+        <PageHeadNode :title="templatePage ? templatePage.title.rendered : ''" :category="category"
+          :additionalTitle="additionalTitle"></PageHeadNode>
       </div>
     </slot>
     <slot name="page-main"></slot>
@@ -43,7 +43,7 @@ export default {
 
 <style lang="scss">
 .page {
-  //   min-height: 100vh;
+    min-height: 50vh;
   flex: 1 1 auto;
   position: relative;
 

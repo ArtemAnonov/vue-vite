@@ -22,17 +22,14 @@
 
 <script>
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
-// import VueSlider from "vue-slider-component";
 import VueSlider from "vue-slider-component/dist-css/vue-slider-component.umd.min.js";
 import "vue-slider-component/dist-css/vue-slider-component.css";
 import "vue-slider-component/theme/default.css";
-// import "vue-slider-component/theme/antd.css";
 
 export default {
   components: {
     VueSlider,
   },
-  // emmits: ["updateApplyValidate"],
   data() {
     return {};
   },
@@ -52,7 +49,6 @@ export default {
       },
       set(value) {
         this.setMinPrice(value);
-        // this.$emit("updateApplyValidate", this.applyValidator);
       },
     },
     maxPrice: {
@@ -61,19 +57,11 @@ export default {
       },
       set(value) {
         this.setMaxPrice(value);
-        // this.$emit("updateApplyValidate", this.applyValidator);
       },
     },
     pointValues() {
       return [this.min_price, this.max_price];
     },
-    // applyValidator() {
-    //   if (this.min_price >= this.minCost && this.max_price <= this.maxCost) {
-    //     return true;
-    //   } else {
-    //     return false;
-    //   }
-    // },
   },
   methods: {
     ...mapMutations({
@@ -86,34 +74,36 @@ export default {
       mainFetchRequest: "mainFetchRequest",
     }),
     /**
+     * deprecated - получение цен благодаря продуктам - нудно при этом получать продукты с помощью WCGB
      * ONLI (VITE_LIKE_A_SPA)
      */
-    getPrices() {
-      let params = {
-        orderby: "price",
-        order: "asc",
-        per_page: 1,
-        _fields: ["price"],
-      };
-      this.getPrice(params, "Min");
-      params.order = "desc";
-      this.getPrice(params, "Max");
-    },
+    // getPrices() {
+    //   let params = {
+    //     orderby: "price",
+    //     order: "asc",
+    //     per_page: 1,
+    //     _fields: ["price"],
+    //   };
+    //   this.getPrice(params, "Min");
+    //   params.order = "desc";
+    //   this.getPrice(params, "Max");
+    // },
     /**
+     * deprecated - получение цен благодаря продуктам - нудно при этом получать продукты с помощью WCGB
      * ONLI (VITE_LIKE_A_SPA)
      */
-    async getPrice(params, type) {
-      const { request, response } = await this.mainFetchRequest({
-        config: { params },
-        route_base: this.productsRequest.route_base,
-        apiType: this.productsRequest.apiType,
-      });
-      if (!response) return;
-      let price = Number(response.data[0].price);
+    // async getPrice(params, type) {
+    //   const { request, response } = await this.mainFetchRequest({
+    //     config: { params },
+    //     route_base: this.productsRequest.route_base,
+    //     apiType: this.productsRequest.apiType,
+    //   });
+    //   if (!response) return;
+    //   let price = Number(response.data[0].price);
 
-      this[`set${type}Cost`](price);
-      this[`set${type}Price`](price);
-    },
+    //   this[`set${type}Cost`](price);
+    //   this[`set${type}Price`](price);
+    // },
     updatePrices(newValue) {
       this.setMinPrice(newValue[0]);
       this.setMaxPrice(newValue[1]);
@@ -137,8 +127,7 @@ export default {
       line-height: 1.6666666667rem;
       margin: 0 1.3333333333rem 1.3333333333rem 2.6666666667rem;
       @media (max-width: ($md4+px)) {
-      margin: 0 .3333333333rem 1.3333333333rem 1.6666666667rem;
-         
+        margin: 0 0.3333333333rem 1.3333333333rem 1.6666666667rem;
       }
       input {
         text-align: center;
@@ -154,8 +143,8 @@ export default {
 }
 .vue-slider {
   margin: 0 0.6rem 0 0.6rem;
-      height: .1333333333rem !important;
-        .vue-slider-rail {
+  height: 0.1333333333rem !important;
+  .vue-slider-rail {
     border-radius: 0;
   }
   .vue-slider-process {

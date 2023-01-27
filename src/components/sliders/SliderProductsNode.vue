@@ -27,16 +27,16 @@
             :breakpoints="swiperBreakpoints"
           >
             <swiper-slide v-for="(product, index) in products" :key="index">
-              <preload-wrap-node
+              <PreloadWrapNode
                 :targetPreloadElement="product ? false : true"
                 :paddingBottom="product ? 0 : 146"
               >
-                <product-node
+                <ProductNode
                   v-if="product"
                   :product="product"
                   :catalogType="false"
-                ></product-node>
-              </preload-wrap-node>
+                ></ProductNode>
+              </PreloadWrapNode>
             </swiper-slide>
           </swiper>
         </div>
@@ -55,8 +55,8 @@ import { Swiper, SwiperSlide } from "swiper/vue";
 import ArrowsSliderNode from "@/components/sliders/ArrowsSliderNode.vue";
 
 import "swiper/css";
-import routeToCategoryMixin from "@/mixins/routeToCategoryMixin";
-import itemsLoadHandler from "@/mixins/itemsLoadHandler";
+import {itemsLoadHandler} from "@/api/helpers";
+
 export default {
   inheritAttrs: false,
   components: {
@@ -70,7 +70,6 @@ export default {
     title: String,
     breakpoints: Object,
   },
-  mixins: [itemsLoadHandler, routeToCategoryMixin],
   data() {
     return {
       defaultBreakpoints: {
@@ -97,7 +96,7 @@ export default {
         state.productsCategories.basedRequest,
     }),
     products() {
-      return this.itemsLoadHandler(
+      return itemsLoadHandler(
         this.itemsMatchedByCallback(
           this.productsRequest,
           { categories: this.productsCategoryId },

@@ -85,7 +85,7 @@ let singleRoutesHandler = function (fileName) {
     }
   }
 };
-const pagesRoutes = fs.readdirSync(toAbsolute("src/pages")).map((file) => {
+const pagesRoutes = fs.readdirSync(toAbsolute("src/pages/common")).map((file) => {
   const fileName = file.replace(/\.vue$/, "").toLowerCase();
   if (fileName.match(/^single*./)) {
     singleRoutesHandler(fileName);

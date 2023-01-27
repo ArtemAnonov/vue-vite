@@ -1,5 +1,5 @@
 import axios from "axios";
-import { VUE_WP_INSTANCE } from "@/api/utils";
+import { VUE_WP_INSTANCE } from "@/api/helpers.js";
 /**
  * Импорт глобального хранилища VUEX
  */
@@ -25,6 +25,7 @@ url = url.protocol + "//" + url.hostname;
  * @returns
  */
 const defaultAjax = (apiType = "/wp/v2/") =>
+  
   axios.create({
     baseURL: `${url}/wp-json${apiType}`,
     headers: {
@@ -74,6 +75,7 @@ export async function mainFetch({
     return response;
 
   } catch (error) {
+
     console.log("Error in method 'mainFetch'", error);
   } finally {
     if (showProgress) {

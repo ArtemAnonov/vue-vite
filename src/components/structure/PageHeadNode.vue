@@ -15,11 +15,14 @@
             <li><RouterLink to="/">Главная&nbsp;&nbsp;&nbsp;/</RouterLink></li>
             <li v-for="(crumb, index) in crumbs?.reverse()" :key="index">
               <RouterLink :to="`/product-category/${crumb.slugs.join('/')}`">
-                {{ crumb.name }}&nbsp;&nbsp;&nbsp;/ 
+                {{ crumb.name }}&nbsp;&nbsp;&nbsp;<span
+                  v-if="crumbs.length - 1 !== index || additionalTitle"
+                  >/</span
+                >
               </RouterLink>
             </li>
             <li>
-              <span>{{ additionalTitle ? additionalTitle : "" }}</span>
+              <span v-if="additionalTitle">{{ additionalTitle }}</span>
             </li>
           </ul>
         </div>
@@ -33,7 +36,7 @@
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 
 export default {
-  name: "page-head-node",
+  name: "PageHeadNode",
   inheritAttrs: false,
   props: {
     /**

@@ -51,7 +51,7 @@
           }"
         >
           <swiper-slide v-for="(image, index) in images" :key="index">
-            <preload-wrap-node :paddingBottom="image?.src ? '' : 50" :targetPreloadElement="image?.src ? false : true">
+            <PreloadWrapNode :paddingBottom="image?.src ? '' : 50" :targetPreloadElement="image?.src ? false : true">
                 <div class="slider-single__image">
                   <picture>
                     <source srcset="" type="image/webp" />
@@ -59,7 +59,7 @@
                     <img :src="image?.src" alt="" />
                   </picture>
                 </div>
-            </preload-wrap-node>
+            </PreloadWrapNode>
             <!-- <span>s</span> -->
           </swiper-slide>
         </swiper>

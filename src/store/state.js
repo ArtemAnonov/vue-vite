@@ -1,9 +1,5 @@
-import { VUE_WP_INSTANCE } from '@/api/utils.js'
+import { VUE_WP_INSTANCE } from '@/api/helpers.js'
 const { state } = VUE_WP_INSTANCE();
-
-// console.log(VUE_WP_INSTANCE());
-
-
 export default {
 
 }

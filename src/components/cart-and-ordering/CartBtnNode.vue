@@ -1,26 +1,31 @@
 <template>
-  <button class="cart-btn" v-if="params" :disabled="buttonDisabled || params.id === null"
-    @click="updateCartAndHandleResponse">
+  <button
+    class="cart-btn"
+    v-if="params"
+    :disabled="buttonDisabled || params.id === null"
+    @click="updateCartAndHandleResponse"
+  >
     <slot></slot>
-    <message-node :class="messageClasses" @showMessage="message.current = message.list.default"
-      :show="message.current.name">
-      <template v-if="message.current.name === 'added'">
-        Товар добавлен.<button @click="$router.push({ name: 'Checkout' })" class="message-link"> Оформить
-          заказ?</button>
-      </template>
-      <template v-else-if="message.current.name === 'allError'">
-        Произошла ошибка при выполнении операции...
-      </template>
-      <template v-else-if="message.current.name === 'sizeWrong'">
-        Необходимо выбрать размер.
-      </template>
-    </message-node>
+    <MessageNode :item="messages.productAddedToCart">
+      Товар добавлен.<button
+        @click="$router.push({ name: 'Checkout' })"
+        class="message-link"
+      >
+        Оформить заказ?
+      </button></MessageNode
+    >
+    <MessageNode :item="messages.allError"
+      >Произошла ошибка при выполнении операции...</MessageNode
+    >
+    <MessageNode :item="messages.notSelectProductSize"
+      >Необходимо выбрать размер.</MessageNode
+    >
   </button>
 </template>
 
 <script>
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
-import { cloneDeep } from 'lodash-es'
+import { cloneDeep } from "lodash-es";
 
 export default {
   props: {
@@ -31,79 +36,54 @@ export default {
     return {
       buttonDisabled: false,
       reqiredParams: false,
-      message: {
-        current: {
-          name: '',
-          type: ''
-        },
-        list: {
-          default: {
-            name: '',
-            type: ''
-          },
-          added: {
-            name: 'added',
-            type: 'success'
-          },
-          sizeWrong: {
-            name: 'sizeWrong',
-            type: 'error'
-          },
-          allError: {
-            name: 'allError',
-            type: 'error'
-          }
-        },
-      },
     };
   },
   computed: {
     ...mapGetters({}),
-    ...mapState({}),
-    messageClasses() {
-      return {
-        'icon-check': this.message.current.type === 'success',
-        'error': this.message.current.type === 'error'
-      }
-    }
+    ...mapState({
+      messages: (state) => state.common.messages,
+    }),
   },
   methods: {
     ...mapMutations({}),
     ...mapActions({
       updateCart: "cart/updateCart",
+      updateMessage: "common/updateMessage",
     }),
     /**
      * (!) При обработке params.variations мутируют до пустого массива
-     * 
      */
     async updateCartAndHandleResponse() {
       switch (this.route_base) {
-        case 'cart/add-item':
-          // 
-          const params = cloneDeep(this.params)
-          params.variations = []
+        case "cart/add-item":
           //
-          let valid = this.validationVariations()
+          const params = cloneDeep(this.params);
+          params.variations = [];
+          //
+          let valid = this.validationVariations();
           if (valid === false) {
-            this.message.current = this.message.list.sizeWrong
+            this.updateMessage({ name: "notSelectProductSize" });
             return;
           }
           break;
 
-        case 'cart/remove-item':
-          if (!this.params.hasOwnProperty('key')) {
-            throw 'Need cart-item key for delete'
+        case "cart/remove-item":
+          if (!this.params.hasOwnProperty("key")) {
+            throw "Need cart-item key for delete";
           }
           break;
 
-        case 'cart/update-item':
-          if (!this.params.hasOwnProperty('key') && this.params.hasOwnProperty('quantity')) {
-            throw 'Need cart-item params.key and/or params.quantity for update'
+        case "cart/update-item":
+          if (
+            !this.params.hasOwnProperty("key") &&
+            this.params.hasOwnProperty("quantity")
+          ) {
+            throw "Need cart-item params.key and/or params.quantity for update";
           }
           break;
 
         default:
-          throw 'Попытка выполнить несуществующий или неожиданный (не применяемый) маршрут'
+          throw "Попытка выполнить несуществующий или неожиданный (не применяемый) маршрут";
       }
 
       this.buttonDisabled = true;
@@ -112,11 +92,12 @@ export default {
         config: { params: this.params },
       });
       this.buttonDisabled = false;
-      if (requested === undefined) this.message.current = this.message.list.allError
+      if (requested === undefined) this.updateMessage({ name: "allError" });
 
       switch (this.route_base) {
-        case 'cart/add-item':
-          this.message.current = this.message.list.added
+        case "cart/add-item":
+          this.updateMessage({ name: "productAddedToCart" });
+
           break;
 
         default:
@@ -125,7 +106,7 @@ export default {
     },
     /**
      * Валидатор params.variations (в проекте единственным обязательным выборным
-     * атрибутом является размер)
+     * атрибутом является размер)???
      */
     validationVariations() {
       let valid = true;
@@ -146,7 +127,7 @@ export default {
 
 <style lang="scss">
 .cart-btn {
-  transition: .3s;
+  transition: 0.3s;
 
   &_iconable {
     font-size: 2.5rem;
@@ -171,8 +152,6 @@ export default {
   .disabled {
     // background-color: #231f20;
   }
-
-
 }
 
 .message-link {

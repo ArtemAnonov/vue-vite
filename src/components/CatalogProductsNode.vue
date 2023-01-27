@@ -1,26 +1,26 @@
 <template>
-  <div class="catalog-products" :class="itemsLoaded ? '' : 'products-loading'">
-    <preload-wrap-node
+<!-- :class="itemsLoaded ? '' : 'products-loading'" -->
+  <div class="catalog-products" >
+    <PreloadWrapNode
       v-for="(product, index) in products"
       :key="index"
       :targetPreloadElement="product ? false : true"
       :paddingBottom="product ? 0 : 180"
     >
-      <product-node v-if="product" :product="product"></product-node>
-    </preload-wrap-node>
+      <ProductNode v-if="product" :product="product"></ProductNode>
+    </PreloadWrapNode>
   </div>
 </template>
 
 <script>
 import { mapState, mapGetters, mapActions, mapMutations } from "vuex";
-import itemsLoadHandler from "@/mixins/itemsLoadHandler";
+import {itemsLoadHandler} from "@/api/helpers";
 
 import ProductNode from "@/components/ProductNode.vue";
 export default {
   components: {
     ProductNode,
   },
-  mixins: [itemsLoadHandler],
   data() {
     return {};
   },
@@ -42,7 +42,7 @@ export default {
       itemsPaginated: (state) => state.products.itemsPaginated,
     }),
     products() {
-      return this.itemsLoadHandler(this.filtredProducts, 8);
+      return this.filtredProducts({quantity: this.productRequest.per_page})
     },
   },
   methods: {

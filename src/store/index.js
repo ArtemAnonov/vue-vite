@@ -18,7 +18,9 @@ import { productsTermsBrandsModule } from "@/store/modules/productsTermsBrandsMo
 import { productsTermsMaterialsModule } from "@/store/modules/productsTermsMaterialsModule.js"
 import { productsTermsColorsModule } from "@/store/modules/productsTermsColorsModule.js"
 import { productsTermsSizesModule } from "@/store/modules/productsTermsSizesModule.js"
-// import { productsVariationsModule } from "@/store/modules/productsVariationsModule"
+import { paymentGatewaysModule } from "@/store/modules/paymentGatewaysModule.js"
+
+
 
 import { filterModule } from "@/store/modules/filterModule.js"
 import { cartModule } from "@/store/modules/cartModule.js"
@@ -51,7 +53,7 @@ export default createStore({
         productsTermsMaterials: productsTermsMaterialsModule,
         productsTermsColors: productsTermsColorsModule,
         productsTermsSizes: productsTermsSizesModule,
-        // productsVariations: productsVariationsModule,
+        paymentGateways: paymentGatewaysModule,
 
         filter: filterModule,
         auth: authModule,

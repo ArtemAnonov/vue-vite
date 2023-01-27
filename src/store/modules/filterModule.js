@@ -1,4 +1,4 @@
-import { VUE_WP_INSTANCE, createNewDate } from "@/api/utils";
+import { VUE_WP_INSTANCE, handleWPDate } from "@/api/helpers.js";
 const instance = VUE_WP_INSTANCE().state.filter.returned;
 
 /**
@@ -20,8 +20,8 @@ export const filterModule = {
      * @returns
      */
     sortDefault: () => (one, two) => {
-      let dateOne = createNewDate(one.date_created).getTime();
-      let dateTwo = createNewDate(two.date_created).getTime();
+      let dateOne = handleWPDate(one.date_created).getTime();
+      let dateTwo = handleWPDate(two.date_created).getTime();
       if (dateOne > dateTwo) return -1;
       if (dateOne < dateTwo) return 1;
       return 0;

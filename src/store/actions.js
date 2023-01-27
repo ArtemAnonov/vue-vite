@@ -2,6 +2,7 @@
 import Cookies from "js-cookie";
 import { cloneDeep, pickBy, identity } from "lodash-es";
 import { mainFetch } from "@/api";
+import { actionJWTResolver } from "@/api/helpers.js";
 
 /**
  * Основные два метода это getItems() и mainFetchRequest()
@@ -58,6 +59,22 @@ export default {
   },
 
   /**
+   * Для получения базовых вещей типа атрибутов, категорий, меток
+   * @param {*} param0
+   * @param {*} param1
+   */
+  async getItemsBased(
+    { getters, commit },
+    { route_base, type, params, apiType }
+  ) {
+    try {
+      const response = await mainFetch({ route_base, params, apiType });
+      response.data.forEach((item) => commit("ADD_ITEM", { type, item }));
+    } catch (error) {
+      console.log(error, type);
+    }
+  },
+  /**
    * (*) - копирование объекта параметров (params), а не присвоение позволяет
    * поддерживать уникальность объекта параметров (params) в компоненте,
    * таким образом при новых передоваемых параметрах (page) в компонент,
@@ -69,7 +86,15 @@ export default {
    */
   async getItems(
     { state, getters, commit },
-    { route_base, type, apiType, params, onDownloadProgress = null }
+    {
+      route_base,
+      type,
+      apiType,
+      params,
+      onDownloadProgress = null,
+      maintainJWT = true,
+      reqiredJWT = true,
+    }
   ) {
     let response;
     let request = getters.request({ type, params });
@@ -78,13 +103,14 @@ export default {
      */
     params = pickBy(params, identity);
 
-    const config = {
+    let config = {
       onDownloadProgress,
       params,
     };
 
     if (!request) {
       try {
+        config = actionJWTResolver({maintainJWT, reqiredJWT, config})
         response = await mainFetch({ route_base, config, apiType }); //: Object.assign({}, optionalParams, params)
         if (!response) {
           throw "Response Undefined";
@@ -116,23 +142,6 @@ export default {
     }
 
     return { request, response };
-  },
-
-  /**
-   * Для получения базовых вещей типа атрибутов, категорий, меток
-   * @param {*} param0
-   * @param {*} param1
-   */
-  async getItemsBased(
-    { getters, commit },
-    { route_base, type, params, apiType }
-  ) {
-    try {
-      const response = await mainFetch({ route_base, params, apiType });
-      response.data.forEach((item) => commit("ADD_ITEM", { type, item }));
-    } catch (error) {
-      console.log(error, type);
-    }
   },
 
   /**
@@ -173,31 +182,15 @@ export default {
       method,
       data,
       config = {},
-      maintainJWT = false,
-      reqiredJWT = false,
+      maintainJWT = true,
+      reqiredJWT = true,
     }
   ) {
     let response;
     let request;
-    let JWTToken;
+
     try {
-      if (reqiredJWT && maintainJWT === false) {
-        throw 'Использование флага "reqiredJWT" подразумевает установку maintainJWT = true';
-      }
-      if (maintainJWT) {
-        JWTToken = Cookies.get("jwt-token");
-        if (JWTToken) {
-          if (!config.hasOwnProperty("headers")) {
-            config["headers"] = {};
-          }
-          // if(!config.hasOwnProperty('headers')) throw 'Для выполнения запроса с '
-          config.headers["Authorization"] = "Bearer " + JWTToken;
-        } else {
-          if (reqiredJWT) {
-            throw "Для выполнения запроса необходим токен";
-          }
-        }
-      }
+      config = actionJWTResolver({maintainJWT, reqiredJWT, config})
       response = await mainFetch({ route_base, config, apiType, method, data });
     } catch (error) {
       console.log(error, { route_base, config, apiType, method, data });

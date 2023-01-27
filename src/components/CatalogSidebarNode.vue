@@ -41,7 +41,7 @@
                     : ''
                 "
                 @click="
-                  routeToCategory(
+                  routeToCategoryLocal(
                     productsCategory,
                     itemById({
                       type: productsCategoriesRequest.type,
@@ -72,15 +72,7 @@
                       :class="
                         category.id == productsSubCategory.id ? 'active' : ''
                       "
-                      @click="
-                        routeToCategory(
-                          productsSubCategory,
-                          itemById({
-                            type: productsCategoriesRequest.type,
-                            id: productsCategory.parent,
-                          }).slug
-                        )
-                      "
+                      @click="routeToCategoryLocal"
                     >
                       {{ productsSubCategory.name
                       }}<span>{{ productsSubCategory.count }}</span>
@@ -98,9 +90,9 @@
 
 <script>
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
-import routeToCategoryMixin from "@/mixins/routeToCategoryMixin";
+import { routeToCategory } from "@/api/helpers";
+
 export default {
-  mixins: [routeToCategoryMixin],
   components: {},
   props: {
     mainCategory: Object,
@@ -137,6 +129,9 @@ export default {
       return this.itemsMatchedOneProperty(this.productsCategoriesRequest, {
         parent: id,
       });
+    },
+    routeToCategoryLocal(category, parentCategorySlug) {
+      routeToCategory(category, parentCategorySlug);
     },
   },
   created() {},

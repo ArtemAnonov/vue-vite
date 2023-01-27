@@ -20,18 +20,18 @@
           </ProductPricesNode>
         </div>
         <div class="cart-item__count">
-          <cart-btn-node class="cart-item__button cart-btn_iconable icon-minus"
+          <CartBtnNode class="cart-item__button cart-btn_iconable icon-minus"
             :class="{ disabled: cartItem?.quantity == 1 }" :disabled="cartItem?.quantity == 1"
             :params="paramsUpdateMinusItem" route_base="cart/update-item" />
           <div class="cart-item__quantity">{{ cartItem?.quantity }}</div>
-          <cart-btn-node class="cart-item__button cart-btn_iconable icon-plus" :params="paramsUpdatePlusItem"
+          <CartBtnNode class="cart-item__button cart-btn_iconable icon-plus" :params="paramsUpdatePlusItem"
             route_base="cart/update-item" />
         </div>
         <div class="cart-item__other">
           <div class="cart-item__bonus">+ 0 баллов</div>
-          <cart-btn-node class="cart-item__button cart-item__button_trash icon-trash" :params="paramsRemoveItem"
+          <CartBtnNode class="cart-item__button cart-item__button_trash icon-trash" :params="paramsRemoveItem"
             route_base="cart/remove-item">
-          </cart-btn-node>
+          </CartBtnNode>
         </div>
       </div>
     </div>

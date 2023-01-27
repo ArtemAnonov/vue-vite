@@ -6,17 +6,12 @@
           <div class="footer__logo">
             <RouterLink to="/">LO<span>GOTYPE</span></RouterLink>
           </div>
-          <spoilers-block-node
-            class="footer__columns"
-            spoilerBlockName="footer"
-            :spoilersAmount="3"
-            v-slot="slotProps"
-          >
+          <div class="footer__spoilers">
             <div class="footer__column">
-              {{ slotProps.spoilers[Object.keys(slotProps.spoilers)[0]] }}
+              <!-- {{ slotProps.spoilers[Object.keys(slotProps.spoilers)[0]] }} -->
               <div class="footer__block">
                 <div class="footer__text">Присоединяйтесь в соц. сетях</div>
-                <social-networks-node></social-networks-node>
+                <SocialNetworksNode></SocialNetworksNode>
               </div>
               <div class="footer__block">
                 <div class="footer__text">Бесплатно по России:</div>
@@ -32,42 +27,38 @@
                 <div class="footer__text_semi-transp">Другие магазины</div>
               </div>
             </div>
-            <div class="footer__column">
-              <div class="footer__title">Покупки онлайн</div>
-              <ul class="footer__list">
-                <li>Доставка по всей России</li>
-                <li>Оплата</li>
-                <li>Выбор размера</li>
-                <li>Возврат</li>
-                <li>Отслеживание заказа</li>
-              </ul>
+            <!-- {{footerShopingOnline}} -->
+
+            <div
+              class="footer__column"
+              v-for="(menu, key, index) in menus"
+              :key="index"
+            >
+              <SpoilerNode
+                :item="{
+                  name: key,
+                  default: windowWidth < 767,
+                }"
+              >
+                <template #button
+                  ><div class="footer__title">
+                    {{ menu.name }}
+                  </div></template
+                >
+                <template #list>
+                  <ul class="footer__list">
+                    <li
+                      class="spoiler__item"
+                      v-for="(item, index) in menu.items"
+                      :key="index"
+                    >
+                      {{ item.content }}
+                    </li>
+                  </ul></template
+                >
+              </SpoilerNode>
             </div>
-            <div class="footer__column">
-              <div class="footer__title">Покупателям</div>
-              <ul class="footer__list">
-                <li>Магазины</li>
-                <li>Программа лояльности</li>
-                <li>Подарочные бонусы</li>
-                <li>Условия возврата</li>
-                <li>Подарочные карты</li>
-                <li>Подарочные карты</li>
-                <li>Обратная связь</li>
-                <li>Правила продажи</li>
-              </ul>
-            </div>
-            <div class="footer__column">
-              <div class="footer__title">Компания</div>
-              <ul class="footer__list">
-                <li>Вакансии</li>
-                <li>Fashion-блог</li>
-                <li>О компании</li>
-                <li>Пресс-офис</li>
-                <li>Пресс-релизы</li>
-                <li>Партнерам</li>
-                <li>Контакты</li>
-              </ul>
-            </div>
-          </spoilers-block-node>
+          </div>
         </div>
       </ContainerNode>
     </section>
@@ -85,16 +76,31 @@
 </template>
 
 <script>
+import { useStore } from "vuex";
+import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
+
 import SocialNetworksNode from "@/components/SocialNetworksNode.vue";
-import SpoilersBlockNode from "@/components/SpoilersBlockNode.vue";
+import SpoilerNode from "@/components/SpoilerNode.vue";
 
 export default {
   components: {
     SocialNetworksNode,
-    SpoilersBlockNode,
+    SpoilerNode,
   },
-  data() {
-    return {};
+  computed: {
+    ...mapState({
+      windowWidth: (state) => state.common.windowWidth,
+      footerShopingOnline: (state) => state.menus.footerShopingOnline,
+      footerForCustomers: (state) => state.menus.footerForCustomers,
+      footerCompany: (state) => state.menus.footerCompany,
+    }),
+    menus() {
+      return {
+        footerShopingOnline: this.footerShopingOnline,
+        footerForCustomers: this.footerForCustomers,
+        footerCompany: this.footerCompany,
+      };
+    },
   },
 };
 </script>
@@ -103,10 +109,21 @@ export default {
 .footer {
   color: #d8d8d8;
 
+  // .spoiler_default {
+  //   .footer__title {
+  //     &::before {
+  //       transform: translate(0, -50%) rotate(-180deg);
+  //     }
+  //   }
+  // }
+
   &__main {
     background-color: #1e242c;
     padding-top: 2.6666666667rem;
     padding-bottom: 2.6666666667rem;
+    @media (max-width: ($md3+px)) {
+      padding-top: 1.3rem;
+    }
   }
 
   &__main-body {
@@ -117,9 +134,12 @@ export default {
     margin: 0 0 2.6666666667rem;
     font-weight: 700;
     font-size: 30px;
+    @media (max-width: ($md3+px)) {
+      display: none;
+    }
   }
 
-  &__columns {
+  &__spoilers {
     display: grid;
     grid-template-columns: repeat(12, 1fr);
     grid-gap: 0.6666666667rem 0;
@@ -221,10 +241,11 @@ export default {
     font-weight: 700;
     font-size: 1.1333333333rem;
     color: #fff;
-    margin: 0 0 1.3333333333rem;
   }
 
   &__list {
+    padding: 1.3333333333rem 0 0;
+
     li {
       margin: 0 0 0.6666666667rem;
     }

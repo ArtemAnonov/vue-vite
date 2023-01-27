@@ -1,5 +1,8 @@
-import { isEmpty, cloneDeep } from 'lodash-es'
-import { VUE_WP_INSTANCE } from "@/api/utils";
+import { isEmpty, cloneDeep } from "lodash-es";
+import {
+  VUE_WP_INSTANCE,
+  mutateObjectForReplaceProperty,
+} from "@/api/helpers.js";
 
 /**
  * Фильтрация и сортировка во фроненде работает для предзагрузки товаров,
@@ -20,10 +23,12 @@ export const productsModule = {
    */
   state: () => ({
     basedRequest: {
-      apiType: instance.basedRequest.apiType,
-      type: instance.basedRequest.type,
-      route_base: instance.basedRequest.route_base,
-      params: Object.assign({}, instance.params),
+      apiType: instance.apiType,
+      type: instance.type,
+      route_base: instance.route_base,
+      params: import.meta.env.VITE_LIKE_A_SPA
+        ? instance.params
+        : mutateObjectForReplaceProperty(instance.params, { per_page: 8 }),
       preparedParams: {},
     },
     requests: instance.requests,
@@ -31,67 +36,30 @@ export const productsModule = {
     itemsPaginated: {},
     totalPages: null,
     total: null,
-
-    // itemsIds: [],
   }),
   getters: {
-    // productsSearchWoo:
-    //   (state, getters) =>
-    //   ({ type, params }) => {
-    //     let reqired = [];
-    //     let properties = ["name", "short_description"];
-    //     for (const key in state[type]["items"]) {
-    //       if (Object.hasOwnProperty.call(state[type]["items"], key)) {
-    //         const element = state[type]["items"][key];
-    //         let bool = properties.find((prop) => {
-    //           return element[prop]
-    //             .toLowerCase()
-    //             .includes(params.search.toLowerCase());
-    //         });
-    //         if (bool) reqired.push(key);
-    //       }
-    //     }
-    //     return reqired.map((id) => state[type]["items"][id]);
-    //   },
-
     /**
-     * Возвращает товары по шаблону itemsPaginated.page
-     * 
-     * @param {*} state
-     * @param {*} getters
+     * Присваивает id-шникам соответвующие объекты из items
+     *
      * @returns
      */
-    filtredProducts: (state, getters, rootState, rootGetters) => {
-      let items = [];
-      if (
-        !isEmpty(state.itemsPaginated) &&
-        state.itemsPaginated.hasOwnProperty(state.basedRequest.params.page)
-      ) {
-        const ids = state.itemsPaginated[state.basedRequest.params.page];
-        items = ids.map(el => state.items[el])
-        // for (const key in state.items) {
-        //   if (Object.hasOwnProperty.call(state.items, key)) {
-        //     const item = state.items[key];
-        //     ids.forEach((id) => {
-        //       if (id == key) {
-        //         items.push(item);
-        //       }
-        //     });
-        //   }
-        // }
-      }
-      return items;
-    },
-
-    /**
-     * Устаревшая функция
-     */
-    // sortingProducts:
-    //   (state, getters, rootState, rootGetters) => (items, id) => {
-    //     if (id == 0) return items.sort(rootGetters["filter/sortDefault"]); //
-    //     if (id == 1) return items.sort(rootGetters["filter/sortPriceMinToMax"]); // цена, по убыванию
-    //     if (id == 2) return items.sort(rootGetters["filter/sortPriceMaxToMin"]); // цены по возрастанию
-    //   },
+    filtredProducts:
+      (state, getters, rootState, rootGetters) =>
+      ({ quantity }) => {
+        let items = [];
+        if (
+          !isEmpty(state.itemsPaginated) &&
+          state.itemsPaginated.hasOwnProperty(state.basedRequest.params.page)
+        ) {
+          const ids = state.itemsPaginated[state.basedRequest.params.page];
+          for (let i = 0; i < ids.length; i++) {
+            if (i === quantity) break;
+            const el = ids[i];
+            items.push(state.items[el]);
+          }
+        }
+        return items;
+      },
 
     /**
      * @param {*} Параметры с опциями: {brand: {name: "Бренд", options: []}, materials: {} }
@@ -161,20 +129,23 @@ export const productsModule = {
         100 - (product.sale_price / product.regular_price) * 100
       );
     },
-    singleProductAttribute: (state) => ({ productId, attrId }) => {
-      return state.items?.[productId]?.attributes.find((i) => i.id == attrId);
-    },
+    singleProductAttribute:
+      (state) =>
+      ({ productId, attrId }) => {
+        return state.items?.[productId]?.attributes.find((i) => i.id == attrId);
+      },
   },
   mutations: {
     /**
      * 3 типа значений:
-     * 1) В объекте (nestedValue) происходит поиск свойств, в products.state.params, и если есть совпадение по ключу, значение записывается (*)
+     * 1) В объекте (nestedValue) происходит поиск свойств, в products.state.basedRequest.params, и если есть совпадение по ключу, значение записывается (*)
      * 2) Обычная запись примитива (**)
      * 3) Объекты могут иметь свойство options, при этом в параметр записывается массив значений (***)
      * @param {*} state
      * @param {*} filterParams
      */
     setProductsParams(state, filterParams) {
+      const params = state.basedRequest.params;
       /**
        * Цикл для запроса
        */
@@ -186,29 +157,26 @@ export const productsModule = {
         ) {
           // (*)
           for (const neastedValueKey in neastedValue) {
-            // {id: orderby: 'price', order: 'desc'}
             if (Object.hasOwnProperty.call(neastedValue, neastedValueKey)) {
               const element = neastedValue[neastedValueKey];
-              if (state.basedRequest.params.hasOwnProperty(neastedValueKey)) {
-                state.basedRequest.params[neastedValueKey] = element;
+              if (params.hasOwnProperty(neastedValueKey)) {
+                params[neastedValueKey] = element;
               }
             }
           }
         }
-        if (state.basedRequest.params.hasOwnProperty(key)) {
+        if (params.hasOwnProperty(key)) {
           // (**)
           if (
             typeof neastedValue === "number" ||
             typeof neastedValue === "string" ||
             typeof neastedValue === "array"
           ) {
-            state.basedRequest.params[key] = neastedValue; // params.price = 500
+            params[key] = neastedValue;
           } else if (typeof neastedValue === "object") {
             // (***)
             if (neastedValue.hasOwnProperty("options")) {
-              state.basedRequest.params[key] = neastedValue.options.map(
-                (object) => object.id
-              );
+              params[key] = neastedValue.options.map((object) => object.id);
             }
           }
         }
@@ -239,7 +207,7 @@ export const productsModule = {
       state.basedRequest.params.category = value;
     },
     // setExclude(state, value) {
-    //     state.basedRequest.optionalParams.exclude = value;
+    //     state.optionalParams.exclude = value;
     // },
 
     setItemsPaginated(state, { pageNumber, value }) {
@@ -261,7 +229,6 @@ export const productsModule = {
        */
       let requestAttributes = {};
       let items = [];
-      var confirmed = false;
       /**
        * Цикл для атрибутов - если options пуст, значит атрибуты не заданы -> данный атрибут в проверку
        * не включается
@@ -279,13 +246,18 @@ export const productsModule = {
        * Перебираем items, поэтапно проверяя свойства. Для добавления item'а необходимо,
        * чтобы confirmed был TRUE
        */
-      let indexAddedObjects = 0;
+      // let indexAddedObjects = 0;
+
       for (const key in state.items) {
+        var confirmed = false;
         if (Object.hasOwnProperty.call(state.items, key)) {
           let item = state.items[key];
+          // console.log(item.categories, preparedParams.category);
           item.categories.forEach((category) => {
             if (category.id == preparedParams.category) {
               confirmed = true;
+            } else {
+              confirmed = false;
             }
           });
           if (
@@ -310,36 +282,36 @@ export const productsModule = {
 
           if (confirmed) {
             items.push(item);
-            indexAddedObjects++;
+            // indexAddedObjects++;
           }
         }
       }
+      let per_page = state.basedRequest.params.per_page;
 
-      // items = getters.sortingProducts(items, preparedParams.orderAndOrderBy.id);
+      commit("setTotalPages", Math.ceil(items.length / per_page));
 
       commit("unsetItemsPaginated");
       /**
-       * Создаются шаблоны для страниц пагинации. Для отображения товаров 
+       * Создаются шаблоны для страниц пагинации. Для отображения товаров
        * исрользуется getter filtredProducts
        */
-      let pre_page = state.basedRequest.params.per_page;
-      let pageCount = Math.ceil(items.length / pre_page);
+      let pageCount = Math.ceil(items.length / per_page);
       var itemMarker = 0;
       for (let pageNumber = 1; pageNumber <= pageCount; pageNumber++) {
         commit("setItemsPaginated", {
           pageNumber: pageNumber,
           value: items
-            .slice(itemMarker, itemMarker + pre_page)
+            .slice(itemMarker, itemMarker + per_page)
             .map((i) => i.id),
         });
-        itemMarker = itemMarker + pre_page;
+        itemMarker = itemMarker + per_page;
       }
     },
 
     changePage({ state, dispatch, commit, getters, rootGetters }, page) {
       let value = Number(page);
       const pushObj = { name: "" };
-      if (value != 1) pushObj["route_base"] = { page: value };
+      if (value != 1) pushObj.query = { page: value };
       let type = state.basedRequest.type;
       commit("SET_PAGE", { type, value }, { root: true });
       return pushObj;
@@ -350,9 +322,8 @@ export const productsModule = {
      *
      * @param {*} param0
      */
-    updateRequestParams({ dispatch, commit, getters, rootGetters }) {
+    updateRequestParams({ state, dispatch, commit, getters, rootGetters }) {
       commit("setProductsParams", rootGetters["filter/params"]);
     },
-
   },
 };

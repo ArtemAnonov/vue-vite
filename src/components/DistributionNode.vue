@@ -13,8 +13,8 @@
           <InputNode class="main" v-model="email">
             <template #before><label>Ваш E-mail:</label></template>
           </InputNode>
-          <input-checkbox-node v-model="forMen" labelText="Для мужчин"></input-checkbox-node>
-          <input-checkbox-node v-model="forWomen" labelText="Для женщин"></input-checkbox-node>
+          <InputCheckboxNode v-model="forMen" labelText="Для мужчин"></InputCheckboxNode>
+          <InputCheckboxNode v-model="forWomen" labelText="Для женщин"></InputCheckboxNode>
         </div>
         <ButtonNode class="distr__btn" buttonStyle="dark">Подписаться</ButtonNode>
       </form>

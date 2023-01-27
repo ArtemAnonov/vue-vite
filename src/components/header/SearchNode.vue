@@ -1,14 +1,14 @@
 <template>
-  <div class="search" @click.stop>
+  <div class="search">
     <button
       v-show="scrollY < 99"
+      @click.stop="setPopup({ name: 'search' })"
       class="search__header-button"
-      @click="popupVisability"
     >
       <button class="search__header-btn icon-search"></button>
       <span>Поиск</span>
     </button>
-    <popup-node name="search">
+    <PopupNode :item="{ name: 'search' }">
       <div class="">Блок находится в разработке...</div>
       <form action="">
         <div class="icon-search"></div>
@@ -17,9 +17,9 @@
           placeholder="Введите запрос..."
           type="text"
         />
-        <close-btn-node @click.prevent="popupInputButton"></close-btn-node>
+        <CloseBtnNode @click.prevent="popupInputButton"></CloseBtnNode>
       </form>
-    </popup-node>
+    </PopupNode>
   </div>
 </template>
 
@@ -28,28 +28,20 @@ import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 export default {
   data() {
     return {
-      searchInputValue: '',
+      searchInputValue: "",
     };
   },
   computed: {
     ...mapGetters({}),
     ...mapState({
       scrollY: (state) => state.common.scrollY,
-      popup: (state) => state.common.revs.search,
     }),
   },
   methods: {
     ...mapMutations({
-      updateRev: "common/updateRev",
+      setPopup: "common/setPopup",
     }),
-    ...mapActions({}),
 
-    popupVisability() {
-      this.updateRev({
-        name: "search",
-        value: this.popup.visible,
-      });
-    },
     /**
      * Кнопка очищает input или закрывает popup
      */
@@ -57,7 +49,7 @@ export default {
       if (this.searchInputValue) {
         this.searchInputValue = "";
       } else {
-        this.popupVisible();
+        this.setPopup({ name: "search" });
       }
     },
   },

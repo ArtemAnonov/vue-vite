@@ -2,7 +2,6 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import express from "express";
-import { createServer as createViteServer } from "vite";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const resolve = (p) => path.resolve(__dirname, p);
@@ -32,6 +31,7 @@ async function createServer(
       await import("vite")
     ).createServer({
       server: {
+        // hmr: false,
         middlewareMode: true,
       },
       appType: "custom",

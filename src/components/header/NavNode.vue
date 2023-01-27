@@ -1,19 +1,25 @@
 <template>
   <nav class="header-nav">
     <ul class="header-nav__list">
-      <slot name="choise-location"></slot>
+      <slot></slot>
+      <li class="header-nav__item">
+        <button class="header-nav__btn" @click="$router.push('/')">
+          г.Москва
+        </button>
+      </li>
       <li class="header-nav__item" v-for="item in items" :key="item.id">
         <button class="header-nav__btn" @click="$router.push('/')">
           {{ item.content }}
         </button>
       </li>
     </ul>
-    <slot name="my-account"></slot>
   </nav>
 </template>
 
 <script>
-import { mapState, mapGetters } from "vuex";
+// <a href="tel:88009999999">88009999999</a>
+import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
+
 export default {
   props: {
     menuName: {
@@ -26,7 +32,19 @@ export default {
   },
   computed: {
     ...mapState({
-      items: (state) => state.menus.top_header,
+      userAuth: (state) => state.auth.userAuth,
+
+      items: (state) => state.menus.top_header.items,
+    }),
+  },
+  methods: {
+    ...mapMutations({
+      setPopup: "common/setPopup",
+      setRevealing: "common/setRevealing",
+    }),
+    ...mapActions({
+      logout: "auth/logout",
+
     }),
   },
 };
@@ -56,6 +74,11 @@ export default {
     white-space: nowrap;
     &:last-child {
       margin-left: 10px;
+    }
+    &.icon-profile {
+      &::before {
+        margin-right: 5px;
+      }
     }
   }
 }

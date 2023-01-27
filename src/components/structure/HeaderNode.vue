@@ -9,44 +9,58 @@
         <div class="header-top">
           <ContainerNode>
             <NavNode name="top_header">
-              <template #choise-location>
-                <li class="header-nav__item">
-                  <button class="header-nav__btn" @click="$router.push('/')">
-                    г.Москва
-                  </button>
-                </li>
-              </template>
-              <template #number-one>
-                <a href="tel:88009999999">88009999999</a>
-              </template>
-              <template #my-account>
+              <li class="header-nav__item">
                 <button
                   class="header-nav__btn icon-profile"
-                  @click="loginPopupVisible"
+                  @click.stop="
+                    userAuth
+                      ? setRevealing({
+                          name: 'profileLoginned',
+                        })
+                      : setPopup({
+                          name: 'login',
+                        })
+                  "
                 >
                   {{ userAuth ? "Личный кабинет" : "Вход/Регистрация" }}
                 </button>
-              </template>
+                <RevealingNode :item="{ name: 'profileLoginned' }"
+                  ><ul class="header__profile-list">
+                    <li>
+                      <RouterLink to="/personal/favorite">Избранное</RouterLink>
+                    </li>
+                    <li>
+                      <RouterLink to="/personal/orders">Мои заказы</RouterLink>
+                    </li>
+                    <li>
+                      <RouterLink to="/personal/profile">Профиль</RouterLink>
+                    </li>
+                    <li><RouterLink to="/">Карта лояльности</RouterLink></li>
+                    <li>
+                      <button @click="logout({ route: $route })">Выйти</button>
+                    </li>
+                  </ul></RevealingNode
+                >
+              </li>
             </NavNode>
           </ContainerNode>
         </div>
         <div class="header-main">
           <ContainerNode>
             <div class="header-main__body">
-              <HeaderMenuPopupNode> </HeaderMenuPopupNode>
+              <HeaderMenuNode />
               <div class="header__logo">
-                <!-- <img src="/images/icons/logo.svg" alt=""> -->
                 <RouterLink to="/">LO<span>GOTYPE</span></RouterLink>
               </div>
               <div class="header-bot header-bot_scroller" v-show="scrollY > 99">
                 <CategoriesNode
-                  :parent="0"
+                  :parentID="0"
                   :neastedLevel="0"
                   v-slot="slotProps"
                 >
                   <CategoriesNode
                     :neastedLevel="1"
-                    :parent="slotProps.parent"
+                    :parentID="slotProps.parentID"
                     :parentCategorySlug="slotProps.parentCategorySlug"
                   ></CategoriesNode>
                 </CategoriesNode>
@@ -67,10 +81,10 @@
         </div>
         <div class="header-bot" v-show="scrollY < 99">
           <ContainerNode>
-            <CategoriesNode :parent="0" :neastedLevel="0" v-slot="slotProps">
+            <CategoriesNode :parentID="0" :neastedLevel="0" v-slot="slotProps">
               <CategoriesNode
                 :neastedLevel="1"
-                :parent="slotProps.parent"
+                :parentID="slotProps.parentID"
                 :parentCategorySlug="slotProps.parentCategorySlug"
               ></CategoriesNode>
             </CategoriesNode>
@@ -86,9 +100,8 @@ import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 import NavNode from "@/components/header/NavNode.vue";
 import SearchNode from "@/components/header/SearchNode.vue";
 import HeaderButtonNode from "@/components/header/HeaderButtonNode.vue";
-import HeaderMenuPopupNode from "@/components/header/HeaderMenuPopupNode.vue";
+import HeaderMenuNode from "@/components/header/HeaderMenuNode.vue";
 import CategoriesNode from "@/components/header/CategoriesNode.vue";
-// import RevealingNode from "@/components/RevealingNode.vue";
 
 export default {
   components: {
@@ -96,12 +109,10 @@ export default {
     SearchNode,
     HeaderButtonNode,
     CategoriesNode,
-    HeaderMenuPopupNode,
-    // RevealingNode,
+    HeaderMenuNode,
   },
   data() {
     return {
-      popupShow: false,
       headerWrapper: {
         height: 99,
         default: true,
@@ -110,15 +121,15 @@ export default {
   },
   watch: {
     scrollY(newValue) {
-        if (this.windowWidth < 1024) {
-          this.headerWrapper.default = true;
-          return;
-        }
-        if (newValue > this.headerWrapper.height) {
-          this.headerWrapper.default = false;
-        } else {
-          this.headerWrapper.default = true;
-        }
+      if (this.windowWidth < 1024) {
+        this.headerWrapper.default = true;
+        return;
+      }
+      if (newValue > this.headerWrapper.height) {
+        this.headerWrapper.default = false;
+      } else {
+        this.headerWrapper.default = true;
+      }
     },
   },
   computed: {
@@ -136,16 +147,10 @@ export default {
   },
   methods: {
     ...mapMutations({
-      addRev: "common/addRev",
-      updateRev: "common/updateRev",
+      setPopup: "common/setPopup",
+      setRevealing: "common/setRevealing",
     }),
     ...mapActions({}),
-    loginPopupVisible() {
-      this.updateRev({
-        name: "login",
-        value: this.loginPopup.visible,
-      });
-    },
   },
 };
 </script>
@@ -153,9 +158,7 @@ export default {
 <style lang="scss">
 .header {
   position: relative;
-  // padding-bottom: 40px;
   padding-bottom: 205px;
-
   @media (max-width: ($md2+px)) {
     padding-bottom: 60px;
   }
@@ -168,7 +171,6 @@ export default {
     &_scrolled {
       .header-main {
         padding: 0 !important;
-
         &__actions {
           display: flex;
 
@@ -177,21 +179,17 @@ export default {
           }
         }
       }
-
       .header-top {
         display: none !important;
       }
-
       .header__logo {
         a {
           font-size: 30px;
         }
-
         span {
           display: none;
         }
       }
-
       .header-bot,
       .header-bot_scroller {
         flex: 1 1 auto;
@@ -200,50 +198,38 @@ export default {
       }
     }
   }
-
   &__body {
     background: #fff;
     z-index: 2;
     position: relative;
   }
-
   &__actions {
   }
-
   &__logo {
     display: flex;
-
     @media (max-width: ($md2+px)) {
       flex: 1 1 auto;
       margin-right: 1.3333333333rem;
     }
-
     a {
       font-weight: 700;
-      // margin-top: 30px;
       font-size: 50px;
-
       @media (max-width: ($md2+px)) {
-        // margin-top: 15px;
         font-size: 30px;
       }
-
       @media (max-width: ($md3+px)) {
         font-size: 25px;
       }
     }
-
     img {
       position: relative;
       top: 10px;
       width: 70px;
-
       @media (max-width: ($md2+px)) {
         width: 50px;
       }
     }
   }
-
   .header-top {
     display: block;
     background: #f7f7f7;
@@ -259,7 +245,6 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-
     &::after {
       content: "";
       position: absolute;
@@ -270,7 +255,6 @@ export default {
       background: #fff;
       z-index: -1;
     }
-
     @media (max-width: ($md2+px)) {
       padding: 0.5rem 0;
     }
@@ -288,14 +272,11 @@ export default {
 
     &__actions {
       display: flex;
-
       a {
         margin-left: 40px;
-
         @media (max-width: ($md3+px)) {
           margin-left: 20px;
         }
-
         &::before {
           font-size: 22px;
         }
@@ -322,11 +303,11 @@ export default {
     @media (max-width: ($md2+px)) {
       display: none;
     }
-    .categories-list {
-      &__item {
+    .categories__list {
+      .categories__item {
         @media (any-hover: hover) {
           &:hover {
-            .categories-sub-list {
+            .categories__sub-list {
               opacity: 1;
               visibility: visible;
             }
@@ -335,7 +316,9 @@ export default {
       }
     }
 
-    .categories-sub-list {
+    .categories__sub-list {
+            opacity: 0;
+      visibility: hidden;
       &::before {
         z-index: -1;
         content: "";
@@ -350,17 +333,12 @@ export default {
       }
     }
 
-    .categories-list__item,
-    .categories-sub-list__item {
+    .categories__item,
+    .categories__sub-item {
       &::before {
         display: none;
       }
     }
-  }
-}
-.header-nav__btn.icon-profile {
-  &::before {
-    margin-right: 5px;
   }
 }
 </style>

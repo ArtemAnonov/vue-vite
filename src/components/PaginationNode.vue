@@ -5,7 +5,7 @@
       :class="currentPage == page ? 'active' : ''"
       v-for="(page, index) in totalPages"
       :key="index"
-      @click="changePageProducts(page)"
+      @click="changePageLocal(page)"
     >
       {{ page }}
     </button>
@@ -35,7 +35,7 @@ export default {
     ...mapActions({
       changePage: "products/changePage",
     }),
-    async changePageProducts(page) {
+    async changePageLocal(page) {
       this.$router.push(await this.changePage(page));
     },
   },

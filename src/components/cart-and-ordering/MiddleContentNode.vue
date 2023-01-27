@@ -5,33 +5,15 @@
         <slot name="items"></slot>
       </ul>
       <div class="middle-content__sidebar">
-        <preload-wrap-node :targetPreloadElement="cartStore">
+        <PreloadWrapNode :targetPreloadElement="cartStore">
           <slot name="sidebar"></slot>
-        </preload-wrap-node>
+        </PreloadWrapNode>
       </div>
     </div>
   </div>
 </template>
 
-<script>
-import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 
-export default {
-  components: {},
-  data() {
-    return {};
-  },
-  computed: {
-    ...mapGetters({}),
-    ...mapState({}),
-  },
-  methods: {
-    ...mapMutations({}),
-    ...mapActions({}),
-  },
-  created() {},
-};
-</script>
 
 <style lang="scss">
 .middle-content {
@@ -40,7 +22,7 @@ export default {
     display: grid;
     grid-template-columns: 2fr 1fr;
     align-items: start;
-
+    column-gap: 3.75rem;
     @media (max-width: ($md2+px)) {
       grid-template-columns: 0.5fr 27.75rem 0.5fr;
     }
@@ -52,17 +34,7 @@ export default {
 
   // .middle-content__items
   &__items {
-    margin-right: 3.75rem;
-    border-top: 0.0625rem solid rgba(0, 0, 0, 0.08);
 
-    @media (max-width: ($md2+px)) {
-      margin: 0;
-      grid-column: 2/3;
-    }
-
-    @media (max-width: ($md3+px)) {
-      grid-column: 1/2;
-    }
   }
 
   // .middle-content__sidebar

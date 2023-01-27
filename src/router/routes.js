@@ -1,56 +1,25 @@
-import { VUE_WP_INSTANCE } from "@/api/utils";
-import paths from "@/router/paths";
-import { categorySlugFromParams, pageFromPath } from "./utils";
-import Home from "@/pages/Home.vue";
-import SingleSubCategory from "@/pages/SingleSubCategory.vue";
-import SingleCategory from "@/pages/SingleCategory.vue";
-import SingleProduct from "@/pages/SingleProduct.vue";
-import Cart from "@/pages/Cart.vue";
-import Checkout from "@/pages/Checkout.vue";
-import Favorite from "@/pages/Favorite.vue";
-import Personal from "@/pages/Personal.vue";
-import BlogPage from "@/pages/BlogPage.vue";
+// import { VUE_WP_INSTANCE } from "@/api/helpers.js";
+import Home from "@/pages/common/Home.vue";
+import SingleSubCategory from "@/pages/common/SingleSubCategory.vue";
+import SingleCategory from "@/pages/common/SingleCategory.vue";
+import SingleProduct from "@/pages/common/SingleProduct.vue";
+import BlogPage from "@/pages/common/BlogPage.vue";
 
+import Cart from "@/pages/private/Cart.vue";
+import Payment from "@/pages/private/Payment.vue";
+import Checkout from "@/pages/private/Checkout.vue";
+
+import Favorite from "@/pages/private/Favorite.vue";
+import Orders from "@/pages/private/Orders.vue";
+import Profile from "@/pages/private/Profile.vue";
+import NotFound from "@/pages/private/NotFound.vue";
+// console.log(VUE_WP_INSTANCE());
 /**
  * params нельзя использовать вместе с path
  */
-const { show_on_front, page_for_posts, page_on_front } =
-  VUE_WP_INSTANCE().routing.returned;
+// const { page_on_front } =
+//   VUE_WP_INSTANCE().routing.returned;
 
-/**
- * Первый маршрут работает, если установлена кастомная домашняя страница
- */
-const rootRoute =
-  show_on_front === "page" && page_on_front
-    ? {
-        path: "/",
-        component: Home,
-        name: "Home",
-        props: () => ({ slug: page_on_front }),
-      }
-    : {
-        path: paths.postsPage(),
-        component: Home,
-        name: "Home",
-        props: (route) => ({ page: pageFromPath(route.path) }),
-      };
-
-/**
- * Первый маршрут работает, если установлена страница для постов
- */
-// const postsPageRoute =
-//   show_on_front === "page" && page_for_posts
-//     ? {
-//         path: paths.postsPage(page_for_posts),
-//         component: Posts,
-//         name: "Posts",
-//         props: (route) => ({ page: pageFromPath(route.path) }),
-//       }
-//     : null;
-
-/**
- *
- */
 export const truncatedComponents = [
   {
     path: "/cart",
@@ -62,24 +31,20 @@ export const truncatedComponents = [
     component: Checkout,
     name: "Checkout",
   },
+  {
+    path: "/payment",
+    component: Payment,
+    name: "Payment",
+  },
 ];
 
 export const commonComponents = [
-  rootRoute,
-  // () => {
-  //     return show_on_front === 'page' && page_on_front ? {
-  //         path: '/',
-  //         component: Home,
-  //         name: 'Home',
-  //         props: () => ({ slug: page_on_front }),
-  //     } : {
-  //         path: paths.postsPage(),
-  //         component: Home,
-  //         name: 'Home',
-  //         props: route => ({ page: pageFromPath(route.path) }),
-  //     }
-  // },
-  // postsPageRoute,
+  {
+    path: "/",
+    component: Home,
+    name: "Home",
+    props: () => ({ slug: 'home' }),
+  },
   {
     path: "/product-category/:mainCategorySlug",
     component: SingleCategory,
@@ -100,28 +65,30 @@ export const commonComponents = [
   },
 
   {
-    path: "/favorite",
+    path: "/personal/favorite",
     component: Favorite,
     name: "Favorite",
-    // props: route => ({ params: route.params, query: route.query }),
   },
   {
-    path: "/personal",
-    component: Personal,
-    name: "Personal",
-    // props: route => ({ params: route.params, query: route.query }),
+    path: "/personal/orders",
+    component: Orders,
+    name: "Orders",
+  },
+  {
+    path: "/personal/profile",
+    component: Profile,
+    name: "Profile",
   },
   {
     path: "/blog-page",
     component: BlogPage,
     name: "BlogPage",
-    // props: route => ({ params: route.params, query: route.query }),
   },
-  // {
-  //     path: '/:pathMatch(.*)*',
-  //     name: 'NotFound',
-  //     component: NotFound,
-  // },
+  {
+    path: "/:pathMatch(.*)*",
+    name: "NotFound",
+    component: NotFound,
+  },
 ];
 export const routes = truncatedComponents
   .concat(commonComponents)

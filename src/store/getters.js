@@ -16,7 +16,7 @@ export default {
    * Функция ищет правильный объект request в store
    *
    * @param {*} state
-   * @returns request
+   * @returns {Boolean} - найден ли request в requests
    */
   request:
     (state) =>

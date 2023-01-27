@@ -12,7 +12,7 @@
           :key="index"
           class="category-grid__item"
         >
-          <preload-wrap-node :targetPreloadElement="true" paddingBottom="100"></preload-wrap-node>
+          <PreloadWrapNode :targetPreloadElement="true" paddingBottom="100"></PreloadWrapNode>
         </article>
       </div>
       <div class="category-grid__items">
@@ -21,7 +21,7 @@
           v-for="productSubCategory in productsCategories"
           :key="productSubCategory.id"
         >
-          <preload-wrap-node>
+          <PreloadWrapNode>
             <button
               v-if="productSubCategory"
               @click="routeToCategory(productSubCategory, productCategory.slug)"
@@ -42,7 +42,7 @@
                 </div>
               </div>
             </button>
-          </preload-wrap-node>
+          </PreloadWrapNode>
         </article>
       </div>
     </div>
@@ -51,15 +51,12 @@
 
 <script>
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
-import routeToCategoryMixin from "@/mixins/routeToCategoryMixin";
-import itemsLoadHandler from "@/mixins/itemsLoadHandler";
 import PreloadWrapContainerNode from "@/components/structure/PreloadWrapContainerNode.vue";
 
 export default {
   components: {
     PreloadWrapContainerNode
   },
-  mixins: [routeToCategoryMixin, itemsLoadHandler],
   props: {
     productCategory: {
       reqired: true,
