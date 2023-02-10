@@ -4,12 +4,12 @@
       <div class="slider-banners__body">
         <div class="slider-banners__items">
           <slot name="banner-category-name"></slot>
-          <arrows-slider-node
+          <ArrowsSliderNode
             v-show="banners?.length !== 0"
             :identificator="identificator"
-          ></arrows-slider-node>
+          ></ArrowsSliderNode>
         </div>
-        <swiper
+        <Swiper
           v-bind="$attrs"
           :modules="modules"
           :loop="true"
@@ -24,14 +24,18 @@
           @swiper="onSwiper"
           @slideChange="onSlideChange"
         >
-          <swiper-slide v-if="banners?.length === 0">
+          <SwiperSlide v-if="banners?.length === 0">
             <PreloadWrapNode :targetPreloadElement="true">
               <div class="slider-banners__image">
                 <img src="" alt="" />
               </div>
             </PreloadWrapNode>
-          </swiper-slide>
-          <swiper-slide @click="$router.push('/blog-page')" v-for="banner in banners" :key="banner.id">
+          </SwiperSlide>
+          <SwiperSlide
+            @click="$router.push('/blog-page')"
+            v-for="banner in banners"
+            :key="banner.id"
+          >
             <!-- Если src картинки равен пустой строке, то отображается псевдоэлемент -->
             <PreloadWrapNode
               :targetPreloadElement="
@@ -47,8 +51,8 @@
               </div>
               <slot name="banner-title" :banner="banner"></slot>
             </PreloadWrapNode>
-          </swiper-slide>
-        </swiper>
+          </SwiperSlide>
+        </Swiper>
       </div>
     </ContainerNode>
   </section>
@@ -153,7 +157,9 @@ export default {
      */
     async getBanners() {
       this.setBannerCategoriesIds(this.bannerCategoryId);
-      const banners = await this.getItems(this.bannersRequest);
+      const banners = await this.getItems({
+        basedRequest: this.bannersRequest,
+      });
 
       if (isEmpty(banners.response)) return;
 
@@ -161,19 +167,19 @@ export default {
         type: this.mediaRequest.type,
         value: this.mediaIds(),
       });
-      const media = await this.getItems(this.mediaRequest);
+      const media = await this.getItems({ basedRequest: this.mediaRequest });
     },
 
     bannerOneMedia(value) {
       let item;
       if (import.meta.env.VITE_LIKE_A_SPA) {
-        item = this.mediaBanners[value]
+        item = this.mediaBanners[value];
       } else {
-        item = this.itemById({type: this.mediaRequest.type, id: value})
+        item = this.itemById({ type: this.mediaRequest.type, id: value });
       }
-      return item.guid.rendered || ""
+      return item.guid.rendered || "";
     },
-        /**
+    /**
      * ONLY (VITE_LIKE_A_SPA)
      */
     bannersIds() {
@@ -183,7 +189,7 @@ export default {
       });
       return request?.data;
     },
-        /**
+    /**
      * ONLY (VITE_LIKE_A_SPA)
      */
     mediaIds() {
@@ -219,6 +225,9 @@ export default {
   &__body {
     padding: 2.6666666667rem 0;
     position: relative;
+    @media (max-width: ($md2+px)) {
+      padding: 0 0 1.6666666667rem 0;
+    }
   }
 
   &__image {
@@ -226,6 +235,9 @@ export default {
     position: relative;
     padding-bottom: 40%;
     // @include adaptiv-value("width",1000, 100, 0);
+    @media (max-width: ($md3+px)) {
+      padding-bottom: 55% !important;
+    }
     img {
       max-width: 100%;
       object-fit: cover;

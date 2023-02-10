@@ -1,59 +1,68 @@
 <template>
   <section class="catalog-sidebar">
-    <button
-      class="catalog-sidebar__title catalog-sidebar__title_main icon-arrow"
-      @click="bodyShow = !bodyShow"
+    <SpoilerNode
+      :item="{
+        name: 'catalogSidebar',
+        default: windowWidth < 1024,
+      }"
     >
-      Одежда
-    </button>
-    <Transition>
-      <div v-if="mainCategory" v-show="bodyShow" class="catalog-sidebar__body">
-        <button
-          class="catalog-sidebar__title icon-arrow"
-          :class="category ? (category.id ? '' : 'active') : ''"
-          @click="
-            routeToCategory(
-              itemById({
-                type: productsCategoriesRequest.type,
-                id: mainCategory.id,
-              })
-            )
-          "
-        >
-          Вся одежда
-          <!-- {{ windowWidth > 768 ? "Одежда" :  "Вся одежда"}} -->
-          <span v-html="total ? total : 0"></span>
-        </button>
-        <div class="catalog-sidebar__items">
-          <ul class="catalog-sidebar__list">
-            <li
-              class="catalog-sidebar__item"
-              v-for="productsCategory in items(mainCategory.id)"
-              :key="productsCategory.id"
-            >
-              <button
-                class="catalog-sidebar__category icon-arrow"
-                :class="
-                  category
-                    ? category.id == productsCategory.id
-                      ? 'active'
-                      : ''
-                    : ''
-                "
-                @click="
-                  routeToCategoryLocal(
-                    productsCategory,
-                    itemById({
-                      type: productsCategoriesRequest.type,
-                      id: productsCategory.parent,
-                    }).slug
-                  )
-                "
+      <template #button>
+        <div class="catalog-sidebar__title catalog-sidebar__title_main">
+          Одежда
+        </div></template
+      >
+      <template #list>
+        <!-- <Transition> -->
+        <div v-if="mainCategory" class="catalog-sidebar__body">
+          <button
+            class="catalog-sidebar__title icon-arrow"
+            :class="category ? (category.id ? '' : 'active') : ''"
+            @click="
+              routeToCategoryLocal(
+                itemById({
+                  type: productsCategoriesRequest.type,
+                  id: mainCategory.id,
+                })
+              )
+            "
+          >
+            Вся одежда
+            <span v-html="total ? total : 0"></span>
+          </button>
+          <div class="catalog-sidebar__items">
+            <ul class="catalog-sidebar__list">
+              <li
+                class="catalog-sidebar__item"
+                v-for="productsCategory in items(mainCategory.id)"
+                :key="productsCategory.id"
               >
-                {{ productsCategory.name
-                }}<span>{{ productsCategory.count }}</span>
-              </button>
-              <Transition>
+                <!--                   :class="
+                    category
+                      ? category.id == productsCategory.id
+                        ? 'active'
+                        : ''
+                      : ''
+                  " -->
+                <button
+                  class="catalog-sidebar__category icon-arrow"
+                  :class="{
+                    'active': category?.id == productsCategory?.id,
+                    'disable-arrow': productsCategory.count == 0,
+                  }"
+                  @click="
+                    routeToCategoryLocal(
+                      productsCategory,
+                      itemById({
+                        type: productsCategoriesRequest.type,
+                        id: productsCategory.parent,
+                      }).slug
+                    )
+                  "
+                >
+                  {{ productsCategory.name
+                  }}<span>{{ productsCategory.count }}</span>
+                </button>
+                <!-- <Transition> -->
                 <ul
                   class="catalog-sidebar__sub-list"
                   v-if="category"
@@ -69,46 +78,53 @@
                   >
                     <button
                       class="catalog-sidebar__sub-category icon-arrow"
-                      :class="
-                        category.id == productsSubCategory.id ? 'active' : ''
+                      :class="{
+                        active: category.id == productsSubCategory.id,
+                        'disable-arrow': productsSubCategory.count == 0,
+                      }"
+                      @click="
+                        routeToCategoryLocal(
+                          productsSubCategory,
+                          itemById({
+                            type: productsCategoriesRequest.type,
+                            id: productsCategory.parent,
+                          }).slug
+                        )
                       "
-                      @click="routeToCategoryLocal"
                     >
                       {{ productsSubCategory.name
                       }}<span>{{ productsSubCategory.count }}</span>
                     </button>
                   </li>
                 </ul>
-              </Transition>
-            </li>
-          </ul>
+                <!-- </Transition> -->
+              </li>
+            </ul>
+          </div>
         </div>
-      </div>
-    </Transition>
+        <!-- </Transition> -->
+      </template>
+    </SpoilerNode>
   </section>
 </template>
 
 <script>
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 import { routeToCategory } from "@/api/helpers";
+import SpoilerNode from "@/components/SpoilerNode.vue";
 
 export default {
-  components: {},
+  components: { SpoilerNode },
   props: {
     mainCategory: Object,
     category: Object,
     total: [String, Number],
   },
-  data() {
-    return {
-      bodyShow: true,
-    };
-  },
-  watch: {
-    windowWidth(newValue) {
-      if (newValue > 767) this.bodyShow = true;
-    },
-  },
+  // watch: {
+  //   windowWidth(newValue) {
+  //     if (newValue > 767) this.bodyShow = true;
+  //   },
+  // },
   computed: {
     ...mapGetters({
       itemsMatchedOneProperty: "itemsMatchedOneProperty",
@@ -138,23 +154,13 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
-.v-enter-active,
-.v-leave-active {
-  transition: opacity 0.5s ease;
-}
-
-.v-enter-from,
-.v-leave-to {
-  opacity: 0;
-}
+<style lang="scss">
 .catalog-sidebar {
   position: sticky;
   // top: 1em;
   @media (max-width: ($md3+px)) {
   }
   span {
-    // line-height: .8666666667rem;
     font-size: 0.8666666667rem;
     font-weight: 400;
     margin: 0 0 0 0.5rem;
@@ -184,10 +190,17 @@ export default {
       margin-left: 0.7rem;
       transform: rotate(90deg) translate(0, 0);
     }
+    &.active {
+      color: #231f20;
+    }
+    &.disable-arrow {
+      &::before {
+        opacity: 0 !important;
+      }
+    }
   }
 
   .active {
-    // border-left: .1333333333rem solid #231f20;
     &::after {
       content: "";
       position: absolute;
@@ -195,27 +208,20 @@ export default {
       height: 70%;
       transform: translate(0, 23%);
       pointer-events: none;
-      // top: .5333333333rem;
-      // bottom: .5333333333rem;
       left: 0;
       top: 0;
     }
-  }
-  &__body {
   }
 
   &__title {
     font-weight: 700;
     font-size: 1.1333333333rem;
     line-height: 1.6rem;
-    padding: 0.2rem 0.7rem 0.2rem 1.3rem;
+    padding: 0.2rem .4rem 0.2rem 1.3rem;
     margin-left: -1.3rem;
     &_main {
       &::before {
         opacity: 1 !important;
-      }
-      @media (max-width: ($md3+px)) {
-        display: none;
       }
     }
     &:hover {
@@ -227,26 +233,26 @@ export default {
         display: none;
       }
     }
-  }
-
-  &__items {
-  }
-
-  &__sub-list {
-  }
-
-  &__item {
+    &::before,
+    span {
+      position: relative;
+      left: 1.3rem;
+    }
   }
 
   &__category {
+    color: #868686;
     position: relative;
     font-size: 1.1333333333rem;
     line-height: 1.6rem;
-    padding: 0.5333333333rem 2rem 0.4rem 1.3333333333rem;
+    padding: 0.5333333333rem 0.4rem 0.4rem 1.3333333333rem;
+    span {
+      color: #231f20;
+    }
   }
 
   &__sub-category {
-    padding: 0.2rem 2rem 0.2rem 2.6666666667rem;
+    padding: 0.2rem 0.4rem 0.2rem 2.6666666667rem;
     font-size: 1rem;
     line-height: 1.4rem;
     color: #868686;
@@ -261,6 +267,26 @@ export default {
     }
     &::before {
       opacity: 0;
+    }
+  }
+  .spoiler {
+    &_active {
+      & > .spoiler__button {
+        &::before {
+          // transform: translate(0, 0) rotate(-90deg) !important;
+        }
+      }
+    }
+    &__button {
+      // position: relative;
+      // display: inline-flex;
+      // flex-direction: row-reverse;
+      &::before {
+        right: auto;
+        top: 60%;
+        left: 4.8rem;
+        // transform: translate(0, 0) rotate(90deg);
+      }
     }
   }
 }

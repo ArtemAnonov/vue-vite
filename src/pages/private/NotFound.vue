@@ -8,8 +8,8 @@
             {{ location }}
           </div>
           <div class="not-found__text">не существует маршрута!</div>
-          <button-node buttonStyle="dark" @click="$router.push('/')"
-            >Вернуться на Главную</button-node
+          <ButtonNode buttonStyle="dark" @click="$router.push('/')"
+            >Вернуться на Главную</ButtonNode
           >
         </div>
       </ContainerNode>

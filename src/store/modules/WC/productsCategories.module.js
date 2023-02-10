@@ -10,7 +10,7 @@ export const productsCategoriesModule = {
       params: Object.assign({}, instance.params),
     },
     requests: instance.requests,
-    settings: instance.settings,
+     
     items: instance.items,
   }),
 

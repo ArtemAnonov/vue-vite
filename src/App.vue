@@ -4,7 +4,7 @@
     <router-view v-if="showAppContent" v-slot="{ Component, route }">
       <WidgetsNode />
       <HeaderLightNode v-if="truncatedComponent(route.name)"></HeaderLightNode>
-      <HeaderNode v-if="!truncatedComponent(route.name)"></HeaderNode>
+      <HeaderNode v-else></HeaderNode>
       <component :is="Component"></component>
       <FooterNode v-if="!truncatedComponent(route.name)"></FooterNode>
     </router-view>
@@ -14,6 +14,7 @@
 <script>
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 import { truncatedComponents, routes } from "@/router/routes";
+import { isEmpty } from "lodash-es";
 import HeaderLightNode from "@/components/structure/HeaderLightNode.vue";
 import HeaderNode from "@/components/structure/HeaderNode.vue";
 import FooterNode from "@/components/structure/FooterNode.vue";
@@ -39,10 +40,27 @@ export default {
     scrollFlag() {
       this.scrollDocument();
     },
+    userAuth: {
+      async handler(userAuth) {
+        if (userAuth === true && isEmpty(this.userData)) {
+          await this.getUser();
+          await this.getWishlistByUser();
+          this.getWishlistProductsByShareKey();
+        }
+        if (userAuth === false) {
+          this.setUserData()
+          await this.getWishlistByUser();
+          this.getWishlistProductsByShareKey();
+        }
+      },
+      immediate: true,
+    },
   },
   computed: {
     ...mapGetters({}),
     ...mapState({
+      userAuth: (state) => state.auth.userAuth,
+      userData: (state) => state.auth.userData,
       scrollFlag: (state) => state.common.scrollFlag,
       productsCategories: (state) => state.productsCategories,
       windowWidth: (state) => state.common.windowWidth,
@@ -56,22 +74,29 @@ export default {
       setBreakpoint: "common/setBreakpoint",
       closeRevs: "common/closeRevs",
       setBrowserReady: "common/setBrowserReady",
+      setUserData: 'auth/setUserData',
     }),
     ...mapActions({
       getItems: "getItems",
       getCart: "cart/getCart",
+      getUser: "auth/getUser",
       updateUserAuth: "auth/updateUserAuth",
       updateAllOpeningTypeItems: "common/updateAllOpeningTypeItems",
+      getWishlistByUser: "wishlist/getWishlistByUser",
+      getWishlistProductsByShareKey: "wishlist/getWishlistProductsByShareKey",
     }),
     onResize(value) {
       this.setWindowWidth(value);
     },
     scrollDocument() {
       if (this.scrollFlag) {
-        document.documentElement.style.overflow = "auto";
+        document.body.style.overflow = "auto";
+        document.body.style.paddingRight = "0px";
+
         return;
       }
-      document.documentElement.style.overflow = "hidden";
+      document.body.style.overflow = "hidden";
+      document.body.style.paddingRight = "20px";
     },
     truncatedComponent(value) {
       return truncatedComponents.find((el) => el.name === value) ? true : false;
@@ -85,7 +110,7 @@ export default {
   created() {
     // this.updateUserAuth();
     if (import.meta.env.VITE_LIKE_A_SPA) {
-      this.getItems(this.productsCategories.basedRequest);
+      this.getItems({basedRequest: this.productsCategories.basedRequest});
     }
     this.getCart();
   },
@@ -137,6 +162,7 @@ export default {
   max-width: 100%;
   max-height: 100%;
   min-height: 0;
+  height: 100%;
   min-width: 0;
 }
 </style>

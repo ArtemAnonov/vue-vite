@@ -8,9 +8,9 @@
         {{ pricesObject?.sale_price }}<span class="product-prices__currency"> ₽</span>
       </div>
       <div class="product-prices__regular-price" :class="haveSale ? '' : 'product-prices__regular-price_only'">
-        <span v-if="customOptions.brackets">(</span>
+        <span v-if="customOptions.brackets && haveSale">(</span>
         {{ pricesObject?.regular_price }}<span class="product-prices__currency"> ₽</span>
-        <span v-if="customOptions.brackets">)</span>
+        <span v-if="customOptions.brackets && haveSale">)</span>
       </div>
     </div>
   </div>

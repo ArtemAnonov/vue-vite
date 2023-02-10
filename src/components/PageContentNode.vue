@@ -21,6 +21,11 @@ export default {
 .page-content {
   color: #000;
   padding: 1.3333333333rem 0;
+  &__content {
+    @media (max-width: ($md2+px)) {
+      padding: 0 10px;
+    }
+  }
   &__title {
     margin: 0 0 1.6666666667rem;
   }

@@ -33,7 +33,6 @@
           class="catalog-revealing__button"
           button-style="dark"
           @click.stop="apply"
-
           >Применить</ButtonNode
         >
       </div>
@@ -103,6 +102,11 @@ export default {
         box-shadow: 0 0.3333333333rem 1rem 0 transparent;
       }
     }
+    .catalog-revealing__arrow {
+      &::before {
+        transform: translate(0, 20%) rotate(-90deg);
+      }
+    }
   }
   &__actions {
     position: relative;
@@ -121,10 +125,13 @@ export default {
   }
 
   &__arrow {
-    transform: rotate(90deg);
-    font-size: 0.7rem;
-    color: #868686;
-    position: relative;
+    &::before {
+      transition: 0.1s;
+      transform: translate(0, 20%) rotate(90deg);
+      font-size: 12px;
+      color: #868686;
+      position: relative;
+    }
   }
 
   &__button {

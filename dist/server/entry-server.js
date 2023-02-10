@@ -1,15 +1,15 @@
 import { basename } from "node:path";
-import { ssrRenderAttrs, ssrRenderSlot, ssrRenderList, ssrRenderAttr, ssrInterpolate, ssrRenderClass, ssrRenderComponent, ssrRenderStyle, ssrRenderVNode, renderToString } from "vue/server-renderer";
-import { useSSRContext, mergeProps, resolveComponent, withCtx, openBlock, createBlock, createCommentVNode, createVNode, Fragment, renderList, toDisplayString, withDirectives, vShow, renderSlot, createTextVNode, ref, vModelText, withModifiers, resolveDynamicComponent, createSSRApp } from "vue";
-import { mapState, mapMutations, mapActions, mapGetters, createStore } from "vuex";
-import { isEmpty, cloneDeep, isEqual, pickBy, identity } from "lodash-es";
+import { ssrRenderAttrs, ssrRenderSlot, ssrRenderList, ssrRenderAttr, ssrInterpolate, ssrRenderClass, ssrRenderComponent, ssrRenderStyle, ssrRenderSuspense, ssrRenderVNode, renderToString } from "vue/server-renderer";
+import { useSSRContext, mergeProps, watchEffect, resolveComponent, withCtx, createTextVNode, createVNode, openBlock, createBlock, createCommentVNode, Fragment, renderList, toDisplayString, renderSlot, withDirectives, vShow, watch, withModifiers, ref, Suspense, vModelText, resolveDynamicComponent, createSSRApp } from "vue";
+import { useStore, mapState, mapGetters, mapMutations, mapActions, createStore } from "vuex";
+import { isEmpty, isEqual, cloneDeep, pickBy, identity } from "lodash-es";
 import Cookies from "js-cookie";
-import axios from "axios";
 import { Navigation, Pagination, Autoplay, FreeMode, Thumbs } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/vue";
-import VueSlider from "vue-slider-component/dist-css/vue-slider-component.umd.min.js";
 import Sticky from "sticky-js";
+import VueSlider from "vue-slider-component/dist-css/vue-slider-component.umd.min.js";
 import { createRouter, createMemoryHistory } from "vue-router";
+import axios from "axios";
 const main = "";
 const ButtonNode_vue_vue_type_style_index_0_lang = "";
 const _export_sfc = (sfc, props) => {
@@ -19,7 +19,7 @@ const _export_sfc = (sfc, props) => {
   }
   return target;
 };
-const _sfc_main$X = {
+const _sfc_main$10 = {
   name: "ButtonNode",
   props: {
     buttonStyle: {
@@ -29,22 +29,22 @@ const _sfc_main$X = {
   },
   computed: {}
 };
-function _sfc_ssrRender$X(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$10(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   _push(`<button${ssrRenderAttrs(mergeProps({
     class: ["button", `button_${$props.buttonStyle}`]
   }, _attrs))}><span class="button__span">`);
   ssrRenderSlot(_ctx.$slots, "default", {}, null, _push, _parent);
   _push(`</span></button>`);
 }
-const _sfc_setup$X = _sfc_main$X.setup;
-_sfc_main$X.setup = (props, ctx) => {
+const _sfc_setup$10 = _sfc_main$10.setup;
+_sfc_main$10.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/UI/ButtonNode.vue");
-  return _sfc_setup$X ? _sfc_setup$X(props, ctx) : void 0;
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/common/ButtonNode.vue");
+  return _sfc_setup$10 ? _sfc_setup$10(props, ctx) : void 0;
 };
-const ButtonNode = /* @__PURE__ */ _export_sfc(_sfc_main$X, [["ssrRender", _sfc_ssrRender$X]]);
+const ButtonNode = /* @__PURE__ */ _export_sfc(_sfc_main$10, [["ssrRender", _sfc_ssrRender$10]]);
 const InputNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$W = {
+const _sfc_main$$ = {
   name: "InputNode",
   inheritAttrs: false,
   props: {
@@ -64,7 +64,7 @@ const _sfc_main$W = {
     }
   }
 };
-function _sfc_ssrRender$W(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$$(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   _push(`<div${ssrRenderAttrs(mergeProps({
     class: ["input input_text", [_ctx.$attrs.class, { input_text_focus: $data.focus }]]
   }, _attrs))}>`);
@@ -76,106 +76,55 @@ function _sfc_ssrRender$W(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
   ssrRenderSlot(_ctx.$slots, "after", {}, null, _push, _parent);
   _push(`</div>`);
 }
-const _sfc_setup$W = _sfc_main$W.setup;
-_sfc_main$W.setup = (props, ctx) => {
+const _sfc_setup$$ = _sfc_main$$.setup;
+_sfc_main$$.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/UI/InputNode.vue");
-  return _sfc_setup$W ? _sfc_setup$W(props, ctx) : void 0;
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/common/InputNode.vue");
+  return _sfc_setup$$ ? _sfc_setup$$(props, ctx) : void 0;
 };
-const InputNode = /* @__PURE__ */ _export_sfc(_sfc_main$W, [["ssrRender", _sfc_ssrRender$W]]);
-const popupRevealingMixin = {
-  props: {
-    name: {
-      type: String
-    }
-  },
-  computed: {
-    ...mapState({
-      state(state2) {
-        return state2.common.revs[this.name];
-      }
-    })
-  },
-  methods: {
-    ...mapMutations({
-      updateRev: "common/updateRev",
-      closeRevs: "common/closeRevs"
-    }),
-    ...mapActions({}),
-    bodyVisible() {
-      this.closeRevs(this.name);
-      this.updateRev({
-        name: this.name,
-        value: this.state.visible
-      });
-    }
-  }
-};
-const PopupNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$V = {
-  name: "PopupNode",
-  components: {},
-  mixins: [popupRevealingMixin],
-  data() {
-    return {
-      popups: {
-        [this.name]: {
-          default: true,
-          visible: false,
-          off: false
-        }
-      }
-    };
-  },
-  watch: {
-    popup: {
-      handler() {
-        this.setScrollFlag({ value: !this.popup.visible, toggle: false });
-      },
-      deep: true
-    }
-  },
-  computed: {
-    ...mapGetters({}),
-    ...mapState({
-      popup(state2) {
-        return state2.common.revs[this.name];
-      }
-    })
-  },
-  methods: {
-    ...mapMutations({
-      addRev: "common/addRev",
-      setScrollFlag: "common/setScrollFlag"
-    }),
-    ...mapActions({}),
-    popupVisability() {
-      this.updateRev({
-        name: this.name,
-        value: this.popup.visible
-      });
-    }
-  },
-  created() {
-    this.addRev(this.popups);
-  }
-};
-function _sfc_ssrRender$V(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
-  _push(`<div${ssrRenderAttrs(mergeProps({
-    style: _ctx.popup.visible ? null : { display: "none" },
-    class: "popup"
-  }, _attrs))}><div class="popup__wrapper"><div class="popup__inner">`);
-  ssrRenderSlot(_ctx.$slots, "default", {}, null, _push, _parent);
-  _push(`</div></div></div>`);
+const InputNode = /* @__PURE__ */ _export_sfc(_sfc_main$$, [["ssrRender", _sfc_ssrRender$$]]);
+function useOpening(item) {
+  const store2 = useStore();
+  store2.commit("common/addOpening", item);
+  let element = store2.state.common.openings[item.type][item.name];
+  return {
+    element
+  };
 }
-const _sfc_setup$V = _sfc_main$V.setup;
-_sfc_main$V.setup = (props, ctx) => {
-  const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/UI/PopupNode.vue");
-  return _sfc_setup$V ? _sfc_setup$V(props, ctx) : void 0;
+const PopupNode_vue_vue_type_style_index_0_lang = "";
+const _sfc_main$_ = {
+  name: "PopupNode",
+  props: {
+    item: Object
+  },
+  setup(props) {
+    const store2 = useStore();
+    const item = { ...{ type: "popup" }, ...props.item };
+    const { element } = useOpening(item);
+    watchEffect(() => {
+      if (element.active) {
+        store2.commit("common/setScrollFlag", { value: false });
+      }
+    });
+    return { element };
+  }
 };
-const PopupNode = /* @__PURE__ */ _export_sfc(_sfc_main$V, [["ssrRender", _sfc_ssrRender$V]]);
-const _sfc_main$U = {
+function _sfc_ssrRender$_(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  _push(`<div${ssrRenderAttrs(mergeProps({
+    style: $setup.element.active ? null : { display: "none" },
+    class: "popup"
+  }, _attrs))}><div class="popup__scroll-wrapper"><div class="popup__wrapper"><div class="popup__inner">`);
+  ssrRenderSlot(_ctx.$slots, "default", {}, null, _push, _parent);
+  _push(`</div></div></div></div>`);
+}
+const _sfc_setup$_ = _sfc_main$_.setup;
+_sfc_main$_.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/common/PopupNode.vue");
+  return _sfc_setup$_ ? _sfc_setup$_(props, ctx) : void 0;
+};
+const PopupNode = /* @__PURE__ */ _export_sfc(_sfc_main$_, [["ssrRender", _sfc_ssrRender$_]]);
+const _sfc_main$Z = {
   name: "select-model",
   props: {
     modelValue: {
@@ -192,7 +141,7 @@ const _sfc_main$U = {
     }
   }
 };
-function _sfc_ssrRender$U(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$Z(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   _push(`<select${ssrRenderAttrs(mergeProps({
     name: "",
     id: ""
@@ -202,16 +151,16 @@ function _sfc_ssrRender$U(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
   });
   _push(`<!--]--></select>`);
 }
-const _sfc_setup$U = _sfc_main$U.setup;
-_sfc_main$U.setup = (props, ctx) => {
+const _sfc_setup$Z = _sfc_main$Z.setup;
+_sfc_main$Z.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/UI/SelectModel.vue");
-  return _sfc_setup$U ? _sfc_setup$U(props, ctx) : void 0;
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/common/SelectModel.vue");
+  return _sfc_setup$Z ? _sfc_setup$Z(props, ctx) : void 0;
 };
-const SelectModel = /* @__PURE__ */ _export_sfc(_sfc_main$U, [["ssrRender", _sfc_ssrRender$U]]);
+const SelectModel = /* @__PURE__ */ _export_sfc(_sfc_main$Z, [["ssrRender", _sfc_ssrRender$Z]]);
 const _imports_0 = "/wp-content/themes/logotype-ssr/vue-vite-ssr/dist/static/assets/spinner.f13e5c14.gif";
-const LoadingNode_vue_vue_type_style_index_0_scoped_aec178a8_lang = "";
-const _sfc_main$T = {
+const LoadingNode_vue_vue_type_style_index_0_scoped_2e7b3bb8_lang = "";
+const _sfc_main$Y = {
   name: "loading-node",
   props: {
     loading: Boolean
@@ -219,40 +168,40 @@ const _sfc_main$T = {
   ...mapState({}),
   ...mapGetters({})
 };
-function _sfc_ssrRender$T(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$Y(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   _push(`<div${ssrRenderAttrs(mergeProps({
     style: _ctx.$props.loading ? null : { display: "none" },
     class: "loading"
-  }, _attrs))} data-v-aec178a8><div class="loading__image" data-v-aec178a8><img${ssrRenderAttr("src", _imports_0)} alt="" data-v-aec178a8></div>`);
+  }, _attrs))} data-v-2e7b3bb8><div class="loading__image" data-v-2e7b3bb8><img${ssrRenderAttr("src", _imports_0)} alt="" data-v-2e7b3bb8></div>`);
   ssrRenderSlot(_ctx.$slots, "default", {}, null, _push, _parent);
   _push(`</div>`);
 }
-const _sfc_setup$T = _sfc_main$T.setup;
-_sfc_main$T.setup = (props, ctx) => {
+const _sfc_setup$Y = _sfc_main$Y.setup;
+_sfc_main$Y.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/UI/LoadingNode.vue");
-  return _sfc_setup$T ? _sfc_setup$T(props, ctx) : void 0;
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/common/LoadingNode.vue");
+  return _sfc_setup$Y ? _sfc_setup$Y(props, ctx) : void 0;
 };
-const LoadingNode = /* @__PURE__ */ _export_sfc(_sfc_main$T, [["ssrRender", _sfc_ssrRender$T], ["__scopeId", "data-v-aec178a8"]]);
-const CloseBtnNode_vue_vue_type_style_index_0_scoped_2dc446aa_lang = "";
-const _sfc_main$S = {
-  name: "close-btn-node",
+const LoadingNode = /* @__PURE__ */ _export_sfc(_sfc_main$Y, [["ssrRender", _sfc_ssrRender$Y], ["__scopeId", "data-v-2e7b3bb8"]]);
+const CloseBtnNode_vue_vue_type_style_index_0_scoped_9b36f8a5_lang = "";
+const _sfc_main$X = {
+  name: "CloseBtnNode",
   data() {
     return {};
   }
 };
-function _sfc_ssrRender$S(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
-  _push(`<button${ssrRenderAttrs(_attrs)} data-v-2dc446aa></button>`);
+function _sfc_ssrRender$X(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  _push(`<button${ssrRenderAttrs(_attrs)} data-v-9b36f8a5></button>`);
 }
-const _sfc_setup$S = _sfc_main$S.setup;
-_sfc_main$S.setup = (props, ctx) => {
+const _sfc_setup$X = _sfc_main$X.setup;
+_sfc_main$X.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/UI/CloseBtnNode.vue");
-  return _sfc_setup$S ? _sfc_setup$S(props, ctx) : void 0;
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/common/CloseBtnNode.vue");
+  return _sfc_setup$X ? _sfc_setup$X(props, ctx) : void 0;
 };
-const CloseBtnNode = /* @__PURE__ */ _export_sfc(_sfc_main$S, [["ssrRender", _sfc_ssrRender$S], ["__scopeId", "data-v-2dc446aa"]]);
-const ContainerNode_vue_vue_type_style_index_0_scoped_46f23a33_lang = "";
-const _sfc_main$R = {
+const CloseBtnNode = /* @__PURE__ */ _export_sfc(_sfc_main$X, [["ssrRender", _sfc_ssrRender$X], ["__scopeId", "data-v-9b36f8a5"]]);
+const ContainerNode_vue_vue_type_style_index_0_lang = "";
+const _sfc_main$W = {
   name: "ContainerNode",
   props: {
     containerStylesOff: {
@@ -261,22 +210,22 @@ const _sfc_main$R = {
     }
   }
 };
-function _sfc_ssrRender$R(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$W(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   _push(`<div${ssrRenderAttrs(mergeProps({
     class: [$props.containerStylesOff ? "styles-off" : "", "container"]
-  }, _attrs))} data-v-46f23a33>`);
+  }, _attrs))}>`);
   ssrRenderSlot(_ctx.$slots, "default", {}, null, _push, _parent);
   _push(`</div>`);
 }
-const _sfc_setup$R = _sfc_main$R.setup;
-_sfc_main$R.setup = (props, ctx) => {
+const _sfc_setup$W = _sfc_main$W.setup;
+_sfc_main$W.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/UI/ContainerNode.vue");
-  return _sfc_setup$R ? _sfc_setup$R(props, ctx) : void 0;
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/common/ContainerNode.vue");
+  return _sfc_setup$W ? _sfc_setup$W(props, ctx) : void 0;
 };
-const ContainerNode = /* @__PURE__ */ _export_sfc(_sfc_main$R, [["ssrRender", _sfc_ssrRender$R], ["__scopeId", "data-v-46f23a33"]]);
-const InputStoreNode_vue_vue_type_style_index_0_scoped_67ec1d67_lang = "";
-const _sfc_main$Q = {
+const ContainerNode = /* @__PURE__ */ _export_sfc(_sfc_main$W, [["ssrRender", _sfc_ssrRender$W]]);
+const InputStoreNode_vue_vue_type_style_index_0_scoped_0f806f09_lang = "";
+const _sfc_main$V = {
   name: "input-store-node",
   inheritAttrs: false,
   props: {
@@ -288,20 +237,20 @@ const _sfc_main$Q = {
     }
   }
 };
-function _sfc_ssrRender$Q(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
-  _push(`<div${ssrRenderAttrs(mergeProps({ class: "input" }, _attrs))} data-v-67ec1d67>`);
+function _sfc_ssrRender$V(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  _push(`<div${ssrRenderAttrs(mergeProps({ class: "input" }, _attrs))} data-v-0f806f09>`);
   ssrRenderSlot(_ctx.$slots, "default", {}, null, _push, _parent);
-  _push(`<input${ssrRenderAttrs(mergeProps(_ctx.$attrs, { value: $props.modelValue }))} data-v-67ec1d67></div>`);
+  _push(`<input${ssrRenderAttrs(mergeProps(_ctx.$attrs, { value: $props.modelValue }))} data-v-0f806f09></div>`);
 }
-const _sfc_setup$Q = _sfc_main$Q.setup;
-_sfc_main$Q.setup = (props, ctx) => {
+const _sfc_setup$V = _sfc_main$V.setup;
+_sfc_main$V.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/UI/InputStoreNode.vue");
-  return _sfc_setup$Q ? _sfc_setup$Q(props, ctx) : void 0;
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/common/InputStoreNode.vue");
+  return _sfc_setup$V ? _sfc_setup$V(props, ctx) : void 0;
 };
-const InputStoreNode = /* @__PURE__ */ _export_sfc(_sfc_main$Q, [["ssrRender", _sfc_ssrRender$Q], ["__scopeId", "data-v-67ec1d67"]]);
-const InputCheckboxNode_vue_vue_type_style_index_0_scoped_206b4a3b_lang = "";
-const _sfc_main$P = {
+const InputStoreNode = /* @__PURE__ */ _export_sfc(_sfc_main$V, [["ssrRender", _sfc_ssrRender$V], ["__scopeId", "data-v-0f806f09"]]);
+const InputCheckboxNode_vue_vue_type_style_index_0_scoped_db19f9a9_lang = "";
+const _sfc_main$U = {
   name: "InputCheckboxNode",
   inheritAttrs: false,
   props: {
@@ -309,18 +258,18 @@ const _sfc_main$P = {
     labelText: String
   }
 };
-function _sfc_ssrRender$P(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
-  _push(`<div${ssrRenderAttrs(mergeProps({ class: "input input_checkbox" }, _attrs))} data-v-206b4a3b><span class="${ssrRenderClass([$props.modelValue ? "checked" : "", "icon-check"])}" data-v-206b4a3b></span><label for="" data-v-206b4a3b>${ssrInterpolate(_ctx.$props.labelText)}</label><input${ssrRenderAttrs(mergeProps({ type: "checkbox" }, _ctx.$attrs, { value: $props.modelValue }))} data-v-206b4a3b></div>`);
+function _sfc_ssrRender$U(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  _push(`<div${ssrRenderAttrs(mergeProps({ class: "input input_checkbox" }, _attrs))} data-v-db19f9a9><span class="${ssrRenderClass([$props.modelValue ? "checked" : "", "icon-check"])}" data-v-db19f9a9></span><label for="" data-v-db19f9a9>${ssrInterpolate(_ctx.$props.labelText)}</label><input${ssrRenderAttrs(mergeProps({ type: "checkbox" }, _ctx.$attrs, { value: $props.modelValue }))} data-v-db19f9a9></div>`);
 }
-const _sfc_setup$P = _sfc_main$P.setup;
-_sfc_main$P.setup = (props, ctx) => {
+const _sfc_setup$U = _sfc_main$U.setup;
+_sfc_main$U.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/UI/InputCheckboxNode.vue");
-  return _sfc_setup$P ? _sfc_setup$P(props, ctx) : void 0;
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/common/InputCheckboxNode.vue");
+  return _sfc_setup$U ? _sfc_setup$U(props, ctx) : void 0;
 };
-const InputCheckboxNode = /* @__PURE__ */ _export_sfc(_sfc_main$P, [["ssrRender", _sfc_ssrRender$P], ["__scopeId", "data-v-206b4a3b"]]);
-const InputRadioNode_vue_vue_type_style_index_0_scoped_229e7c9c_lang = "";
-const _sfc_main$O = {
+const InputCheckboxNode = /* @__PURE__ */ _export_sfc(_sfc_main$U, [["ssrRender", _sfc_ssrRender$U], ["__scopeId", "data-v-db19f9a9"]]);
+const InputRadioNode_vue_vue_type_style_index_0_scoped_2d4ca9cf_lang = "";
+const _sfc_main$T = {
   name: "InputRadioNode",
   inheritAttrs: false,
   props: {
@@ -338,62 +287,56 @@ const _sfc_main$O = {
   created() {
   }
 };
-function _sfc_ssrRender$O(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$T(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   _push(`<div${ssrRenderAttrs(mergeProps({
     class: ["input input_radio", $props.disabled ? "disabled" : ""]
-  }, _attrs))} data-v-229e7c9c><input${ssrRenderAttrs(mergeProps({
+  }, _attrs))} data-v-2d4ca9cf><input${ssrRenderAttrs(mergeProps({
     disabled: $props.disabled ? true : false,
     type: "radio"
-  }, _ctx.$attrs))} data-v-229e7c9c><span class="${ssrRenderClass($props.modelValue ? "checked" : "")}" data-v-229e7c9c></span><label for="" data-v-229e7c9c>${ssrInterpolate(_ctx.$props.labelText)}</label></div>`);
+  }, _ctx.$attrs))} data-v-2d4ca9cf><span class="${ssrRenderClass($props.modelValue ? "checked" : "")}" data-v-2d4ca9cf></span><label for="" data-v-2d4ca9cf>${ssrInterpolate(_ctx.$props.labelText)}</label></div>`);
 }
-const _sfc_setup$O = _sfc_main$O.setup;
-_sfc_main$O.setup = (props, ctx) => {
+const _sfc_setup$T = _sfc_main$T.setup;
+_sfc_main$T.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/UI/InputRadioNode.vue");
-  return _sfc_setup$O ? _sfc_setup$O(props, ctx) : void 0;
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/common/InputRadioNode.vue");
+  return _sfc_setup$T ? _sfc_setup$T(props, ctx) : void 0;
 };
-const InputRadioNode = /* @__PURE__ */ _export_sfc(_sfc_main$O, [["ssrRender", _sfc_ssrRender$O], ["__scopeId", "data-v-229e7c9c"]]);
+const InputRadioNode = /* @__PURE__ */ _export_sfc(_sfc_main$T, [["ssrRender", _sfc_ssrRender$T], ["__scopeId", "data-v-2d4ca9cf"]]);
 const MessageNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$N = {
+const _sfc_main$S = {
   name: "MessageNode",
   emits: ["showMessage"],
-  props: [
-    "show"
-  ],
-  data() {
-    return {
-      showTemplate: false
-    };
-  },
-  watch: {
-    show(newValue) {
-      if (newValue === "")
-        return;
-      this.showTemplate = true;
-      setTimeout(() => {
-        this.showTemplate = false;
-        this.$emit("showMessage", false);
-      }, 3e3);
+  props: {
+    item: {
+      type: Object
     }
   },
-  computed: {}
+  computed: {
+    classes() {
+      return {
+        active: this.item.visible,
+        "icon-check": this.item.type === "success",
+        error: this.item.type === "error"
+      };
+    }
+  }
 };
-function _sfc_ssrRender$N(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$S(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   _push(`<div${ssrRenderAttrs(mergeProps({
-    class: ["message", $data.showTemplate ? "active" : ""]
+    class: ["message", $options.classes]
   }, _attrs))}><span>`);
   ssrRenderSlot(_ctx.$slots, "default", {}, null, _push, _parent);
   _push(`</span></div>`);
 }
-const _sfc_setup$N = _sfc_main$N.setup;
-_sfc_main$N.setup = (props, ctx) => {
+const _sfc_setup$S = _sfc_main$S.setup;
+_sfc_main$S.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/UI/MessageNode.vue");
-  return _sfc_setup$N ? _sfc_setup$N(props, ctx) : void 0;
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/common/MessageNode.vue");
+  return _sfc_setup$S ? _sfc_setup$S(props, ctx) : void 0;
 };
-const MessageNode = /* @__PURE__ */ _export_sfc(_sfc_main$N, [["ssrRender", _sfc_ssrRender$N]]);
+const MessageNode = /* @__PURE__ */ _export_sfc(_sfc_main$S, [["ssrRender", _sfc_ssrRender$S]]);
 const PreloadWrapNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$M = {
+const _sfc_main$R = {
   name: "PreloadWrapNode",
   props: {
     route: Object,
@@ -423,7 +366,7 @@ const _sfc_main$M = {
   updated() {
   }
 };
-function _sfc_ssrRender$M(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$R(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   _push(`<div${ssrRenderAttrs(mergeProps({
     class: ["preload-wrap", $options.targetPreloadElementHandled ? "empty" : ""],
     style: $props.paddingBottom ? { paddingBottom: `${$props.paddingBottom}%` } : {}
@@ -431,14 +374,41 @@ function _sfc_ssrRender$M(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
   ssrRenderSlot(_ctx.$slots, "default", {}, null, _push, _parent);
   _push(`</div>`);
 }
-const _sfc_setup$M = _sfc_main$M.setup;
-_sfc_main$M.setup = (props, ctx) => {
+const _sfc_setup$R = _sfc_main$R.setup;
+_sfc_main$R.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/UI/PreloadWrapNode.vue");
-  return _sfc_setup$M ? _sfc_setup$M(props, ctx) : void 0;
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/common/PreloadWrapNode.vue");
+  return _sfc_setup$R ? _sfc_setup$R(props, ctx) : void 0;
 };
-const PreloadWrapNode = /* @__PURE__ */ _export_sfc(_sfc_main$M, [["ssrRender", _sfc_ssrRender$M]]);
-const UI = [
+const PreloadWrapNode = /* @__PURE__ */ _export_sfc(_sfc_main$R, [["ssrRender", _sfc_ssrRender$R]]);
+const RevealingNode_vue_vue_type_style_index_0_lang = "";
+const _sfc_main$Q = {
+  name: "RevealingNode",
+  props: {
+    item: Object
+  },
+  setup(props) {
+    const item = { ...{ type: "revealing" }, ...props.item };
+    const { element } = useOpening(item);
+    return { element };
+  }
+};
+function _sfc_ssrRender$Q(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  _push(`<div${ssrRenderAttrs(mergeProps({
+    style: $setup.element.active ? null : { display: "none" },
+    class: "revealing"
+  }, _attrs))}><div class="revealing__body">`);
+  ssrRenderSlot(_ctx.$slots, "default", {}, null, _push, _parent);
+  _push(`</div></div>`);
+}
+const _sfc_setup$Q = _sfc_main$Q.setup;
+_sfc_main$Q.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/common/RevealingNode.vue");
+  return _sfc_setup$Q ? _sfc_setup$Q(props, ctx) : void 0;
+};
+const RevealingNode = /* @__PURE__ */ _export_sfc(_sfc_main$Q, [["ssrRender", _sfc_ssrRender$Q]]);
+const common = [
   ButtonNode,
   InputNode,
   PopupNode,
@@ -450,90 +420,9 @@ const UI = [
   InputCheckboxNode,
   PreloadWrapNode,
   MessageNode,
-  InputRadioNode
+  InputRadioNode,
+  RevealingNode
 ];
-const commonModule = {
-  namespaced: true,
-  state: () => ({
-    scrollY: null,
-    scrollFlag: true,
-    browserReady: false,
-    windowWidth: null,
-    breakpoint: "",
-    revs: {},
-    progressLoad: {
-      visible: false,
-      percent: 0
-    },
-    progress: []
-  }),
-  getters: {},
-  mutations: {
-    setScrollFlag(state2, { value, toggle = true }) {
-      if (toggle) {
-        value ? value = false : value = true;
-      }
-      state2.scrollFlag = value;
-    },
-    setWindowWidth(state2, value) {
-      state2.windowWidth = value;
-    },
-    setBreakpoint(state2, value) {
-      state2.breakpoint = value;
-    },
-    setScrollY(state2, value) {
-      state2.scrollY = value;
-    },
-    updateRev(state2, { name, value, toggleValue = true, prop = "visible" }) {
-      if (toggleValue)
-        value ? value = false : value = true;
-      state2.revs[name][prop] = value;
-    },
-    addRev(state2, object) {
-      for (const key in object) {
-        if (Object.hasOwnProperty.call(object, key)) {
-          let element = object[key];
-          element = {
-            default: element.default ? element.default : true,
-            visible: element.active ? element.active : false,
-            off: element.off ? element.off : false
-          };
-          state2.revs[key] = element;
-        }
-      }
-    },
-    closeRevs(state2, value) {
-      mark:
-        for (let key in state2.revs) {
-          if (Object.hasOwnProperty.call(state2.revs, key)) {
-            const element = state2.revs[key];
-            if (element.off)
-              continue mark;
-            if (Array.isArray(value)) {
-              for (let index = 0; index < value.length; index++) {
-                const element2 = value[index];
-                if (element2 === key)
-                  continue mark;
-              }
-            } else {
-              if (value == key)
-                continue;
-            }
-            state2.revs[key].visible = false;
-          }
-        }
-    },
-    setProgressLoad(state2, value) {
-      state2.progressLoad = value;
-    },
-    setProgress(state2, value) {
-      state2.progress.push(value);
-    },
-    setBrowserReady(state2, value) {
-      state2.browserReady = value;
-    }
-  }
-};
 const routing = {
   returned: {
     category_base: "",
@@ -545,71 +434,46 @@ const routing = {
     url: "http://localhost"
   }
 };
-const state$2 = {
+const state$1 = {
   auth: {
     route_base: "auth",
     type: "auth",
     apiType: "/jwt-auth/v1/",
-    specific_params: [],
     single_params: [],
-    params: {
-      per_page: 100
-    },
-    basedRequest: {
-      route_base: "auth",
-      type: "auth",
-      apiType: "/jwt-auth/v1/"
-    },
-    items: {},
-    requests: []
+    specific_params: [],
+    params: {},
+    items: {}
   },
   cart: {
-    apiType: "/wc/store/v1/",
     route_base: "cart",
     type: "cart",
-    single_params: [],
-    specific_params: [],
+    apiType: "/wc/store/v1/",
     params: {
       per_page: 100
     },
-    basedRequest: {
-      route_base: "cart",
-      type: "cart",
-      apiType: "/wc/store/v1/"
-    },
     items: {},
-    requests: []
+    requests: [],
+    single_params: [],
+    specific_params: []
   },
   checkout: {
-    apiType: "/wc/store/v1/",
     route_base: "checkout",
     type: "checkout",
-    single_params: [],
-    specific_params: [],
+    apiType: "/wc/store/v1/",
     params: {
       per_page: 100
     },
-    basedRequest: {
-      route_base: "checkout",
-      type: "checkout",
-      apiType: "/wc/store/v1/"
-    },
     items: {},
-    requests: []
+    requests: [],
+    single_params: [],
+    specific_params: []
   },
   pages: {
     route_base: "pages",
     type: "pages",
     apiType: "/wp/v2/",
-    specific_params: [],
-    single_params: [],
     params: {
       per_page: 100
-    },
-    basedRequest: {
-      route_base: "pages",
-      type: "pages",
-      apiType: "/wp/v2/"
     },
     items: {
       "36": {
@@ -1453,6 +1317,92 @@ const state$2 = {
             }
           ]
         }
+      },
+      "438": {
+        id: 438,
+        date: "2023-02-02T12:36:33",
+        date_gmt: "2023-02-02T09:36:33",
+        guid: {
+          rendered: "http://localhost/?page_id=438"
+        },
+        modified: "2023-02-02T12:36:33",
+        modified_gmt: "2023-02-02T09:36:33",
+        slug: "wishlist",
+        status: "publish",
+        type: "page",
+        link: "http://localhost/wishlist/",
+        title: {
+          rendered: "\u0421\u043F\u0438\u0441\u043E\u043A \u0436\u0435\u043B\u0430\u043D\u0438\u0439"
+        },
+        content: {
+          rendered: '<div class="tinv-wishlist woocommerce">\n	<div class="tinv-header">\n	<h2>Default wishlist</h2>\n	</div>\n		<p class="cart-empty woocommerce-info">\n					\u0412\u0430\u0448 \u0441\u043F\u0438\u0441\u043E\u043A \u0436\u0435\u043B\u0430\u043D\u0438\u0439 \u0432 \u043D\u0430\u0441\u0442\u043E\u044F\u0449\u0435\u0435 \u0432\u0440\u0435\u043C\u044F \u043F\u0443\u0441\u0442.			</p>\n\n	\n	<p class="return-to-shop">\n		<a class="button wc-backward"\n		   href="http://localhost/shop/">\u0412\u0435\u0440\u043D\u0443\u0442\u044C\u0441\u044F \u0432 \u043C\u0430\u0433\u0430\u0437\u0438\u043D</a>\n	</p>\n</div>\n\n',
+          "protected": false
+        },
+        excerpt: {
+          rendered: "",
+          "protected": false
+        },
+        author: 8,
+        featured_media: 0,
+        parent: 0,
+        menu_order: 0,
+        comment_status: "closed",
+        ping_status: "closed",
+        template: "",
+        meta: [],
+        _links: {
+          self: [
+            {
+              href: "http://localhost/wp-json/wp/v2/pages/438"
+            }
+          ],
+          collection: [
+            {
+              href: "http://localhost/wp-json/wp/v2/pages"
+            }
+          ],
+          about: [
+            {
+              href: "http://localhost/wp-json/wp/v2/types/page"
+            }
+          ],
+          author: [
+            {
+              embeddable: true,
+              href: "http://localhost/wp-json/wp/v2/users/8"
+            }
+          ],
+          replies: [
+            {
+              embeddable: true,
+              href: "http://localhost/wp-json/wp/v2/comments?post=438"
+            }
+          ],
+          "version-history": [
+            {
+              count: 1,
+              href: "http://localhost/wp-json/wp/v2/pages/438/revisions"
+            }
+          ],
+          "predecessor-version": [
+            {
+              id: 439,
+              href: "http://localhost/wp-json/wp/v2/pages/438/revisions/439"
+            }
+          ],
+          "wp:attachment": [
+            {
+              href: "http://localhost/wp-json/wp/v2/media?parent=438"
+            }
+          ],
+          curies: [
+            {
+              name: "wp",
+              href: "https://api.w.org/{rel}",
+              templated: true
+            }
+          ]
+        }
       }
     },
     requests: [
@@ -1461,6 +1411,7 @@ const state$2 = {
           per_page: 100
         },
         data: [
+          438,
           296,
           279,
           275,
@@ -1472,27 +1423,23 @@ const state$2 = {
           39,
           36
         ],
-        total: 10,
+        total: 11,
         totalPages: 1
       }
-    ]
+    ],
+    single_params: [],
+    specific_params: []
   },
   banners: {
     route_base: "banners",
     type: "banners",
-    apiType: "/wp/v2/",
     specific_params: {
       banner_categories: ""
     },
-    single_params: [],
+    apiType: "/wp/v2/",
     params: {
       banner_categories: "",
       per_page: 100
-    },
-    basedRequest: {
-      route_base: "banners",
-      type: "banners",
-      apiType: "/wp/v2/"
     },
     items: {
       "176": {
@@ -1570,14 +1517,14 @@ const state$2 = {
         guid: {
           rendered: "http://localhost/?post_type=banner&#038;p=178"
         },
-        modified: "2022-07-24T20:13:20",
-        modified_gmt: "2022-07-24T17:13:20",
+        modified: "2023-02-01T03:35:42",
+        modified_gmt: "2023-02-01T00:35:42",
         slug: "178",
         status: "publish",
         type: "banner",
         link: "http://localhost/banner/178/",
         title: {
-          rendered: "Test title"
+          rendered: "\u0418\u043D\u043E\u0433\u0434\u0430 \u043D\u0430\u043C \u043D\u0443\u0436\u043D\u043E \u043D\u0435\u043C\u043D\u043E\u0433\u043E \u043F\u043E\u0434\u043E\u0436\u0434\u0430\u0442\u044C"
         },
         content: {
           rendered: "",
@@ -1706,14 +1653,14 @@ const state$2 = {
         guid: {
           rendered: "http://localhost/?post_type=banner&#038;p=204"
         },
-        modified: "2022-07-24T20:17:08",
-        modified_gmt: "2022-07-24T17:17:08",
+        modified: "2023-02-01T03:36:08",
+        modified_gmt: "2023-02-01T00:36:08",
         slug: "top-home-banner-2",
         status: "publish",
         type: "banner",
         link: "http://localhost/banner/top-home-banner-2/",
         title: {
-          rendered: "Test name"
+          rendered: "\u042D\u0442\u043E \u043C\u043E\u0436\u043D\u043E \u0441\u0432\u044F\u0437\u0430\u0442\u044C \u0441 \u0441\u043E\u0431\u044B\u0442\u0438\u044F\u043C\u0438 \u0438\u0437 \u043A\u043E\u043C\u043F\u043E\u043D\u0435\u043D\u0442\u0430"
         },
         content: {
           rendered: "",
@@ -1921,21 +1868,16 @@ const state$2 = {
         total: 6,
         totalPages: 1
       }
-    ]
+    ],
+    single_params: []
   },
   media: {
     route_base: "media",
     type: "media",
-    apiType: "/wp/v2/",
     specific_params: [],
-    single_params: [],
+    apiType: "/wp/v2/",
     params: {
       per_page: 100
-    },
-    basedRequest: {
-      route_base: "media",
-      type: "media",
-      apiType: "/wp/v2/"
     },
     items: {
       "103": {
@@ -7144,7 +7086,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/Sayt_2360kh1000-1.webp'><img width="300" height="127" src="http://localhost/wp-content/uploads/2022/07/Sayt_2360kh1000-1-300x127.webp" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/Sayt_2360kh1000-1-300x127.webp 300w, http://localhost/wp-content/uploads/2022/07/Sayt_2360kh1000-1-1024x434.webp 1024w, http://localhost/wp-content/uploads/2022/07/Sayt_2360kh1000-1-768x326.webp 768w, http://localhost/wp-content/uploads/2022/07/Sayt_2360kh1000-1-600x254.webp 600w, http://localhost/wp-content/uploads/2022/07/Sayt_2360kh1000-1.webp 1179w" sizes="(max-width: 300px) 100vw, 300px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/Sayt_2360kh1000-1.webp'><img width="300" height="127" src="http://localhost/wp-content/uploads/2022/07/Sayt_2360kh1000-1-300x127.webp" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/Sayt_2360kh1000-1-300x127.webp 300w, http://localhost/wp-content/uploads/2022/07/Sayt_2360kh1000-1-600x254.webp 600w, http://localhost/wp-content/uploads/2022/07/Sayt_2360kh1000-1-1024x434.webp 1024w, http://localhost/wp-content/uploads/2022/07/Sayt_2360kh1000-1-768x326.webp 768w, http://localhost/wp-content/uploads/2022/07/Sayt_2360kh1000-1.webp 1179w" sizes="(max-width: 300px) 100vw, 300px" /></a></p>
 `
         },
         caption: {
@@ -7159,6 +7101,31 @@ const state$2 = {
           file: "2022/07/Sayt_2360kh1000-1.webp",
           filesize: 8166,
           sizes: {
+            woocommerce_thumbnail: {
+              file: "Sayt_2360kh1000-1-300x300.webp",
+              width: 300,
+              height: 300,
+              filesize: 2370,
+              uncropped: false,
+              mime_type: "image/webp",
+              source_url: "http://localhost/wp-content/uploads/2022/07/Sayt_2360kh1000-1-300x300.webp"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "Sayt_2360kh1000-1-100x100.webp",
+              width: 100,
+              height: 100,
+              filesize: 1170,
+              mime_type: "image/webp",
+              source_url: "http://localhost/wp-content/uploads/2022/07/Sayt_2360kh1000-1-100x100.webp"
+            },
+            woocommerce_single: {
+              file: "Sayt_2360kh1000-1-600x254.webp",
+              width: 600,
+              height: 254,
+              filesize: 4408,
+              mime_type: "image/webp",
+              source_url: "http://localhost/wp-content/uploads/2022/07/Sayt_2360kh1000-1-600x254.webp"
+            },
             medium: {
               file: "Sayt_2360kh1000-1-300x127.webp",
               width: 300,
@@ -7190,31 +7157,6 @@ const state$2 = {
               filesize: 5462,
               mime_type: "image/webp",
               source_url: "http://localhost/wp-content/uploads/2022/07/Sayt_2360kh1000-1-768x326.webp"
-            },
-            woocommerce_thumbnail: {
-              file: "Sayt_2360kh1000-1-300x300.webp",
-              width: 300,
-              height: 300,
-              filesize: 2370,
-              uncropped: false,
-              mime_type: "image/webp",
-              source_url: "http://localhost/wp-content/uploads/2022/07/Sayt_2360kh1000-1-300x300.webp"
-            },
-            woocommerce_single: {
-              file: "Sayt_2360kh1000-1-600x254.webp",
-              width: 600,
-              height: 254,
-              filesize: 4408,
-              mime_type: "image/webp",
-              source_url: "http://localhost/wp-content/uploads/2022/07/Sayt_2360kh1000-1-600x254.webp"
-            },
-            woocommerce_gallery_thumbnail: {
-              file: "Sayt_2360kh1000-1-100x100.webp",
-              width: 100,
-              height: 100,
-              filesize: 1170,
-              mime_type: "image/webp",
-              source_url: "http://localhost/wp-content/uploads/2022/07/Sayt_2360kh1000-1-100x100.webp"
             },
             shop_catalog: {
               file: "Sayt_2360kh1000-1-300x300.webp",
@@ -7318,7 +7260,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/top-home-1-1.jpg'><img width="300" height="127" src="http://localhost/wp-content/uploads/2022/07/top-home-1-1-300x127.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/top-home-1-1-300x127.jpg 300w, http://localhost/wp-content/uploads/2022/07/top-home-1-1-1024x434.jpg 1024w, http://localhost/wp-content/uploads/2022/07/top-home-1-1-768x326.jpg 768w, http://localhost/wp-content/uploads/2022/07/top-home-1-1-600x254.jpg 600w, http://localhost/wp-content/uploads/2022/07/top-home-1-1.jpg 1179w" sizes="(max-width: 300px) 100vw, 300px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/top-home-1-1.jpg'><img width="300" height="127" src="http://localhost/wp-content/uploads/2022/07/top-home-1-1-300x127.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/top-home-1-1-300x127.jpg 300w, http://localhost/wp-content/uploads/2022/07/top-home-1-1-600x254.jpg 600w, http://localhost/wp-content/uploads/2022/07/top-home-1-1-1024x434.jpg 1024w, http://localhost/wp-content/uploads/2022/07/top-home-1-1-768x326.jpg 768w, http://localhost/wp-content/uploads/2022/07/top-home-1-1.jpg 1179w" sizes="(max-width: 300px) 100vw, 300px" /></a></p>
 `
         },
         caption: {
@@ -7333,6 +7275,31 @@ const state$2 = {
           file: "2022/07/top-home-1-1.jpg",
           filesize: 275514,
           sizes: {
+            woocommerce_thumbnail: {
+              file: "top-home-1-1-300x300.jpg",
+              width: 300,
+              height: 300,
+              filesize: 13217,
+              uncropped: false,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/top-home-1-1-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "top-home-1-1-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 2774,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/top-home-1-1-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "top-home-1-1-600x254.jpg",
+              width: 600,
+              height: 254,
+              filesize: 27840,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/top-home-1-1-600x254.jpg"
+            },
             medium: {
               file: "top-home-1-1-300x127.jpg",
               width: 300,
@@ -7364,31 +7331,6 @@ const state$2 = {
               filesize: 38686,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/top-home-1-1-768x326.jpg"
-            },
-            woocommerce_thumbnail: {
-              file: "top-home-1-1-300x300.jpg",
-              width: 300,
-              height: 300,
-              filesize: 13217,
-              uncropped: false,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/top-home-1-1-300x300.jpg"
-            },
-            woocommerce_single: {
-              file: "top-home-1-1-600x254.jpg",
-              width: 600,
-              height: 254,
-              filesize: 27840,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/top-home-1-1-600x254.jpg"
-            },
-            woocommerce_gallery_thumbnail: {
-              file: "top-home-1-1-100x100.jpg",
-              width: 100,
-              height: 100,
-              filesize: 2774,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/top-home-1-1-100x100.jpg"
             },
             shop_catalog: {
               file: "top-home-1-1-300x300.jpg",
@@ -7492,7 +7434,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/middle-home-0-1.png'><img width="300" height="180" src="http://localhost/wp-content/uploads/2022/07/middle-home-0-1-300x180.png" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/middle-home-0-1-300x180.png 300w, http://localhost/wp-content/uploads/2022/07/middle-home-0-1.png 500w" sizes="(max-width: 300px) 100vw, 300px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/middle-home-0-1.png'><img width="300" height="180" src="http://localhost/wp-content/uploads/2022/07/middle-home-0-1-300x180.png" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/middle-home-0-1-300x180.png 300w, http://localhost/wp-content/uploads/2022/07/middle-home-0-1-416x250.png 416w, http://localhost/wp-content/uploads/2022/07/middle-home-0-1.png 500w" sizes="(max-width: 300px) 100vw, 300px" /></a></p>
 `
         },
         caption: {
@@ -7507,22 +7449,6 @@ const state$2 = {
           file: "2022/07/middle-home-0-1.png",
           filesize: 145795,
           sizes: {
-            medium: {
-              file: "middle-home-0-1-300x180.png",
-              width: 300,
-              height: 180,
-              filesize: 61320,
-              mime_type: "image/png",
-              source_url: "http://localhost/wp-content/uploads/2022/07/middle-home-0-1-300x180.png"
-            },
-            thumbnail: {
-              file: "middle-home-0-1-150x150.png",
-              width: 150,
-              height: 150,
-              filesize: 28740,
-              mime_type: "image/png",
-              source_url: "http://localhost/wp-content/uploads/2022/07/middle-home-0-1-150x150.png"
-            },
             woocommerce_thumbnail: {
               file: "middle-home-0-1-300x300.png",
               width: 300,
@@ -7539,6 +7465,30 @@ const state$2 = {
               filesize: 14972,
               mime_type: "image/png",
               source_url: "http://localhost/wp-content/uploads/2022/07/middle-home-0-1-100x100.png"
+            },
+            woocommerce_single: {
+              file: "middle-home-0-1-416x250.png",
+              width: 416,
+              height: 250,
+              filesize: 102930,
+              mime_type: "image/png",
+              source_url: "http://localhost/wp-content/uploads/2022/07/middle-home-0-1.png"
+            },
+            medium: {
+              file: "middle-home-0-1-300x180.png",
+              width: 300,
+              height: 180,
+              filesize: 61320,
+              mime_type: "image/png",
+              source_url: "http://localhost/wp-content/uploads/2022/07/middle-home-0-1-300x180.png"
+            },
+            thumbnail: {
+              file: "middle-home-0-1-150x150.png",
+              width: 150,
+              height: 150,
+              filesize: 28740,
+              mime_type: "image/png",
+              source_url: "http://localhost/wp-content/uploads/2022/07/middle-home-0-1-150x150.png"
             },
             shop_catalog: {
               file: "middle-home-0-1-300x300.png",
@@ -7634,7 +7584,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/middle-home-1-1.png'><img width="300" height="181" src="http://localhost/wp-content/uploads/2022/07/middle-home-1-1-300x181.png" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/middle-home-1-1-300x181.png 300w, http://localhost/wp-content/uploads/2022/07/middle-home-1-1.png 497w" sizes="(max-width: 300px) 100vw, 300px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/middle-home-1-1.png'><img width="300" height="181" src="http://localhost/wp-content/uploads/2022/07/middle-home-1-1-300x181.png" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/middle-home-1-1-300x181.png 300w, http://localhost/wp-content/uploads/2022/07/middle-home-1-1-416x251.png 416w, http://localhost/wp-content/uploads/2022/07/middle-home-1-1.png 497w" sizes="(max-width: 300px) 100vw, 300px" /></a></p>
 `
         },
         caption: {
@@ -7649,22 +7599,6 @@ const state$2 = {
           file: "2022/07/middle-home-1-1.png",
           filesize: 194153,
           sizes: {
-            medium: {
-              file: "middle-home-1-1-300x181.png",
-              width: 300,
-              height: 181,
-              filesize: 78015,
-              mime_type: "image/png",
-              source_url: "http://localhost/wp-content/uploads/2022/07/middle-home-1-1-300x181.png"
-            },
-            thumbnail: {
-              file: "middle-home-1-1-150x150.png",
-              width: 150,
-              height: 150,
-              filesize: 35514,
-              mime_type: "image/png",
-              source_url: "http://localhost/wp-content/uploads/2022/07/middle-home-1-1-150x150.png"
-            },
             woocommerce_thumbnail: {
               file: "middle-home-1-1-300x300.png",
               width: 300,
@@ -7681,6 +7615,30 @@ const state$2 = {
               filesize: 17033,
               mime_type: "image/png",
               source_url: "http://localhost/wp-content/uploads/2022/07/middle-home-1-1-100x100.png"
+            },
+            woocommerce_single: {
+              file: "middle-home-1-1-416x251.png",
+              width: 416,
+              height: 251,
+              filesize: 138201,
+              mime_type: "image/png",
+              source_url: "http://localhost/wp-content/uploads/2022/07/middle-home-1-1.png"
+            },
+            medium: {
+              file: "middle-home-1-1-300x181.png",
+              width: 300,
+              height: 181,
+              filesize: 78015,
+              mime_type: "image/png",
+              source_url: "http://localhost/wp-content/uploads/2022/07/middle-home-1-1-300x181.png"
+            },
+            thumbnail: {
+              file: "middle-home-1-1-150x150.png",
+              width: 150,
+              height: 150,
+              filesize: 35514,
+              mime_type: "image/png",
+              source_url: "http://localhost/wp-content/uploads/2022/07/middle-home-1-1-150x150.png"
             },
             shop_catalog: {
               file: "middle-home-1-1-300x300.png",
@@ -7776,7 +7734,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/middle-home-2.png'><img width="300" height="180" src="http://localhost/wp-content/uploads/2022/07/middle-home-2-300x180.png" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/middle-home-2-300x180.png 300w, http://localhost/wp-content/uploads/2022/07/middle-home-2.png 500w" sizes="(max-width: 300px) 100vw, 300px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/middle-home-2.png'><img width="300" height="180" src="http://localhost/wp-content/uploads/2022/07/middle-home-2-300x180.png" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/middle-home-2-300x180.png 300w, http://localhost/wp-content/uploads/2022/07/middle-home-2-416x250.png 416w, http://localhost/wp-content/uploads/2022/07/middle-home-2.png 500w" sizes="(max-width: 300px) 100vw, 300px" /></a></p>
 `
         },
         caption: {
@@ -7791,22 +7749,6 @@ const state$2 = {
           file: "2022/07/middle-home-2.png",
           filesize: 212850,
           sizes: {
-            medium: {
-              file: "middle-home-2-300x180.png",
-              width: 300,
-              height: 180,
-              filesize: 76599,
-              mime_type: "image/png",
-              source_url: "http://localhost/wp-content/uploads/2022/07/middle-home-2-300x180.png"
-            },
-            thumbnail: {
-              file: "middle-home-2-150x150.png",
-              width: 150,
-              height: 150,
-              filesize: 25364,
-              mime_type: "image/png",
-              source_url: "http://localhost/wp-content/uploads/2022/07/middle-home-2-150x150.png"
-            },
             woocommerce_thumbnail: {
               file: "middle-home-2-300x300.png",
               width: 300,
@@ -7823,6 +7765,30 @@ const state$2 = {
               filesize: 12584,
               mime_type: "image/png",
               source_url: "http://localhost/wp-content/uploads/2022/07/middle-home-2-100x100.png"
+            },
+            woocommerce_single: {
+              file: "middle-home-2-416x250.png",
+              width: 416,
+              height: 250,
+              filesize: 136254,
+              mime_type: "image/png",
+              source_url: "http://localhost/wp-content/uploads/2022/07/middle-home-2.png"
+            },
+            medium: {
+              file: "middle-home-2-300x180.png",
+              width: 300,
+              height: 180,
+              filesize: 76599,
+              mime_type: "image/png",
+              source_url: "http://localhost/wp-content/uploads/2022/07/middle-home-2-300x180.png"
+            },
+            thumbnail: {
+              file: "middle-home-2-150x150.png",
+              width: 150,
+              height: 150,
+              filesize: 25364,
+              mime_type: "image/png",
+              source_url: "http://localhost/wp-content/uploads/2022/07/middle-home-2-150x150.png"
             },
             shop_catalog: {
               file: "middle-home-2-300x300.png",
@@ -7918,7 +7884,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/top-home-2.jpg'><img width="300" height="127" src="http://localhost/wp-content/uploads/2022/07/top-home-2-300x127.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/top-home-2-300x127.jpg 300w, http://localhost/wp-content/uploads/2022/07/top-home-2-1024x434.jpg 1024w, http://localhost/wp-content/uploads/2022/07/top-home-2-768x326.jpg 768w, http://localhost/wp-content/uploads/2022/07/top-home-2-600x254.jpg 600w, http://localhost/wp-content/uploads/2022/07/top-home-2.jpg 1179w" sizes="(max-width: 300px) 100vw, 300px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/top-home-2.jpg'><img width="300" height="127" src="http://localhost/wp-content/uploads/2022/07/top-home-2-300x127.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/top-home-2-300x127.jpg 300w, http://localhost/wp-content/uploads/2022/07/top-home-2-600x254.jpg 600w, http://localhost/wp-content/uploads/2022/07/top-home-2-1024x434.jpg 1024w, http://localhost/wp-content/uploads/2022/07/top-home-2-768x326.jpg 768w, http://localhost/wp-content/uploads/2022/07/top-home-2.jpg 1179w" sizes="(max-width: 300px) 100vw, 300px" /></a></p>
 `
         },
         caption: {
@@ -7933,6 +7899,31 @@ const state$2 = {
           file: "2022/07/top-home-2.jpg",
           filesize: 237634,
           sizes: {
+            woocommerce_thumbnail: {
+              file: "top-home-2-300x300.jpg",
+              width: 300,
+              height: 300,
+              filesize: 14760,
+              uncropped: false,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/top-home-2-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "top-home-2-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 3184,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/top-home-2-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "top-home-2-600x254.jpg",
+              width: 600,
+              height: 254,
+              filesize: 24162,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/top-home-2-600x254.jpg"
+            },
             medium: {
               file: "top-home-2-300x127.jpg",
               width: 300,
@@ -7964,31 +7955,6 @@ const state$2 = {
               filesize: 34003,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/top-home-2-768x326.jpg"
-            },
-            woocommerce_thumbnail: {
-              file: "top-home-2-300x300.jpg",
-              width: 300,
-              height: 300,
-              filesize: 14760,
-              uncropped: false,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/top-home-2-300x300.jpg"
-            },
-            woocommerce_single: {
-              file: "top-home-2-600x254.jpg",
-              width: 600,
-              height: 254,
-              filesize: 24162,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/top-home-2-600x254.jpg"
-            },
-            woocommerce_gallery_thumbnail: {
-              file: "top-home-2-100x100.jpg",
-              width: 100,
-              height: 100,
-              filesize: 3184,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/top-home-2-100x100.jpg"
             },
             shop_catalog: {
               file: "top-home-2-300x300.jpg",
@@ -8092,7 +8058,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4508350_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4508350_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4508350_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4508350_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4508350_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4508350_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4508350_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4508350_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4508350_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4508350_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4508350_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4508350_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4508350_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4508350_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -8107,6 +8073,31 @@ const state$2 = {
           file: "2022/07/4508350_1.jpg",
           filesize: 149251,
           sizes: {
+            woocommerce_thumbnail: {
+              file: "4508350_1-300x300.jpg",
+              width: 300,
+              height: 300,
+              filesize: 7833,
+              uncropped: false,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4508350_1-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "4508350_1-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 1878,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4508350_1-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "4508350_1-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 47330,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4508350_1-600x900.jpg"
+            },
             medium: {
               file: "4508350_1-200x300.jpg",
               width: 200,
@@ -8138,31 +8129,6 @@ const state$2 = {
               filesize: 78325,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/4508350_1-768x1152.jpg"
-            },
-            woocommerce_thumbnail: {
-              file: "4508350_1-300x300.jpg",
-              width: 300,
-              height: 300,
-              filesize: 7833,
-              uncropped: false,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4508350_1-300x300.jpg"
-            },
-            woocommerce_single: {
-              file: "4508350_1-600x900.jpg",
-              width: 600,
-              height: 900,
-              filesize: 47330,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4508350_1-600x900.jpg"
-            },
-            woocommerce_gallery_thumbnail: {
-              file: "4508350_1-100x100.jpg",
-              width: 100,
-              height: 100,
-              filesize: 1878,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4508350_1-100x100.jpg"
             },
             shop_catalog: {
               file: "4508350_1-300x300.jpg",
@@ -8266,7 +8232,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4508350_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4508350_2-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4508350_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4508350_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4508350_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4508350_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4508350_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4508350_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4508350_2-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4508350_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4508350_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4508350_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4508350_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4508350_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -8281,6 +8247,31 @@ const state$2 = {
           file: "2022/07/4508350_2.jpg",
           filesize: 83897,
           sizes: {
+            woocommerce_thumbnail: {
+              file: "4508350_2-300x300.jpg",
+              width: 300,
+              height: 300,
+              filesize: 6890,
+              uncropped: false,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4508350_2-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "4508350_2-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 1831,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4508350_2-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "4508350_2-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 31627,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4508350_2-600x900.jpg"
+            },
             medium: {
               file: "4508350_2-200x300.jpg",
               width: 200,
@@ -8312,31 +8303,6 @@ const state$2 = {
               filesize: 48705,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/4508350_2-768x1152.jpg"
-            },
-            woocommerce_thumbnail: {
-              file: "4508350_2-300x300.jpg",
-              width: 300,
-              height: 300,
-              filesize: 6890,
-              uncropped: false,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4508350_2-300x300.jpg"
-            },
-            woocommerce_single: {
-              file: "4508350_2-600x900.jpg",
-              width: 600,
-              height: 900,
-              filesize: 31627,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4508350_2-600x900.jpg"
-            },
-            woocommerce_gallery_thumbnail: {
-              file: "4508350_2-100x100.jpg",
-              width: 100,
-              height: 100,
-              filesize: 1831,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4508350_2-100x100.jpg"
             },
             shop_catalog: {
               file: "4508350_2-300x300.jpg",
@@ -8440,7 +8406,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4508350_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4508350_3-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4508350_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4508350_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4508350_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4508350_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4508350_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4508350_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4508350_3-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4508350_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4508350_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4508350_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4508350_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4508350_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -8455,6 +8421,31 @@ const state$2 = {
           file: "2022/07/4508350_3.jpg",
           filesize: 154518,
           sizes: {
+            woocommerce_thumbnail: {
+              file: "4508350_3-300x300.jpg",
+              width: 300,
+              height: 300,
+              filesize: 8697,
+              uncropped: false,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4508350_3-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "4508350_3-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 1982,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4508350_3-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "4508350_3-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 49496,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4508350_3-600x900.jpg"
+            },
             medium: {
               file: "4508350_3-200x300.jpg",
               width: 200,
@@ -8486,31 +8477,6 @@ const state$2 = {
               filesize: 81616,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/4508350_3-768x1152.jpg"
-            },
-            woocommerce_thumbnail: {
-              file: "4508350_3-300x300.jpg",
-              width: 300,
-              height: 300,
-              filesize: 8697,
-              uncropped: false,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4508350_3-300x300.jpg"
-            },
-            woocommerce_single: {
-              file: "4508350_3-600x900.jpg",
-              width: 600,
-              height: 900,
-              filesize: 49496,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4508350_3-600x900.jpg"
-            },
-            woocommerce_gallery_thumbnail: {
-              file: "4508350_3-100x100.jpg",
-              width: 100,
-              height: 100,
-              filesize: 1982,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4508350_3-100x100.jpg"
             },
             shop_catalog: {
               file: "4508350_3-300x300.jpg",
@@ -8614,7 +8580,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4508350_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4508350_4-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4508350_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4508350_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4508350_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4508350_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4508350_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4508350_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4508350_4-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4508350_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4508350_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4508350_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4508350_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4508350_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -8629,6 +8595,31 @@ const state$2 = {
           file: "2022/07/4508350_4.jpg",
           filesize: 564354,
           sizes: {
+            woocommerce_thumbnail: {
+              file: "4508350_4-300x300.jpg",
+              width: 300,
+              height: 300,
+              filesize: 28660,
+              uncropped: false,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4508350_4-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "4508350_4-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 3069,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4508350_4-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "4508350_4-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 194870,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4508350_4-600x900.jpg"
+            },
             medium: {
               file: "4508350_4-200x300.jpg",
               width: 200,
@@ -8660,31 +8651,6 @@ const state$2 = {
               filesize: 333698,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/4508350_4-768x1152.jpg"
-            },
-            woocommerce_thumbnail: {
-              file: "4508350_4-300x300.jpg",
-              width: 300,
-              height: 300,
-              filesize: 28660,
-              uncropped: false,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4508350_4-300x300.jpg"
-            },
-            woocommerce_single: {
-              file: "4508350_4-600x900.jpg",
-              width: 600,
-              height: 900,
-              filesize: 194870,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4508350_4-600x900.jpg"
-            },
-            woocommerce_gallery_thumbnail: {
-              file: "4508350_4-100x100.jpg",
-              width: 100,
-              height: 100,
-              filesize: 3069,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4508350_4-100x100.jpg"
             },
             shop_catalog: {
               file: "4508350_4-300x300.jpg",
@@ -8788,7 +8754,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4603336_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4603336_1.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4603336_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4603336_1.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4603336_1.jpg 1020w, http://localhost/wp-content/uploads/2022/07/4603336_1-600x900.jpg 600w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -8811,6 +8777,22 @@ const state$2 = {
               uncropped: false,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/4603336_1-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "4603336_1-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 1976,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4603336_1-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "4603336_1-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 34610,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4603336_1-600x900.jpg"
             },
             full: {
               file: "4603336_1.jpg",
@@ -8889,7 +8871,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4603336_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4603336_2-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4603336_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4603336_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4603336_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4603336_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4603336_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4603336_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4603336_2-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4603336_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4603336_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4603336_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4603336_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4603336_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -8904,6 +8886,31 @@ const state$2 = {
           file: "2022/07/4603336_2.jpg",
           filesize: 77606,
           sizes: {
+            woocommerce_thumbnail: {
+              file: "4603336_2-300x300.jpg",
+              width: 300,
+              height: 300,
+              filesize: 7223,
+              uncropped: false,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4603336_2-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "4603336_2-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 1859,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4603336_2-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "4603336_2-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 29640,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4603336_2-600x900.jpg"
+            },
             medium: {
               file: "4603336_2-200x300.jpg",
               width: 200,
@@ -8935,31 +8942,6 @@ const state$2 = {
               filesize: 45205,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/4603336_2-768x1152.jpg"
-            },
-            woocommerce_thumbnail: {
-              file: "4603336_2-300x300.jpg",
-              width: 300,
-              height: 300,
-              filesize: 7223,
-              uncropped: false,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4603336_2-300x300.jpg"
-            },
-            woocommerce_single: {
-              file: "4603336_2-600x900.jpg",
-              width: 600,
-              height: 900,
-              filesize: 29640,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4603336_2-600x900.jpg"
-            },
-            woocommerce_gallery_thumbnail: {
-              file: "4603336_2-100x100.jpg",
-              width: 100,
-              height: 100,
-              filesize: 1859,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4603336_2-100x100.jpg"
             },
             shop_catalog: {
               file: "4603336_2-300x300.jpg",
@@ -9063,7 +9045,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4603336_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4603336_3-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4603336_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4603336_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4603336_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4603336_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4603336_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4603336_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4603336_3-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4603336_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4603336_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4603336_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4603336_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4603336_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -9078,6 +9060,31 @@ const state$2 = {
           file: "2022/07/4603336_3.jpg",
           filesize: 89218,
           sizes: {
+            woocommerce_thumbnail: {
+              file: "4603336_3-300x300.jpg",
+              width: 300,
+              height: 300,
+              filesize: 7291,
+              uncropped: false,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4603336_3-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "4603336_3-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 1915,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4603336_3-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "4603336_3-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 33900,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4603336_3-600x900.jpg"
+            },
             medium: {
               file: "4603336_3-200x300.jpg",
               width: 200,
@@ -9109,31 +9116,6 @@ const state$2 = {
               filesize: 51679,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/4603336_3-768x1152.jpg"
-            },
-            woocommerce_thumbnail: {
-              file: "4603336_3-300x300.jpg",
-              width: 300,
-              height: 300,
-              filesize: 7291,
-              uncropped: false,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4603336_3-300x300.jpg"
-            },
-            woocommerce_single: {
-              file: "4603336_3-600x900.jpg",
-              width: 600,
-              height: 900,
-              filesize: 33900,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4603336_3-600x900.jpg"
-            },
-            woocommerce_gallery_thumbnail: {
-              file: "4603336_3-100x100.jpg",
-              width: 100,
-              height: 100,
-              filesize: 1915,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4603336_3-100x100.jpg"
             },
             shop_catalog: {
               file: "4603336_3-300x300.jpg",
@@ -9237,7 +9219,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4603336_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4603336_4-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4603336_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4603336_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4603336_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4603336_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4603336_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4603336_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4603336_4-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4603336_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4603336_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4603336_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4603336_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4603336_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -9252,6 +9234,31 @@ const state$2 = {
           file: "2022/07/4603336_4.jpg",
           filesize: 145988,
           sizes: {
+            woocommerce_thumbnail: {
+              file: "4603336_4-300x300.jpg",
+              width: 300,
+              height: 300,
+              filesize: 10387,
+              uncropped: false,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4603336_4-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "4603336_4-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 2467,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4603336_4-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "4603336_4-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 46393,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4603336_4-600x900.jpg"
+            },
             medium: {
               file: "4603336_4-200x300.jpg",
               width: 200,
@@ -9283,31 +9290,6 @@ const state$2 = {
               filesize: 76779,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/4603336_4-768x1152.jpg"
-            },
-            woocommerce_thumbnail: {
-              file: "4603336_4-300x300.jpg",
-              width: 300,
-              height: 300,
-              filesize: 10387,
-              uncropped: false,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4603336_4-300x300.jpg"
-            },
-            woocommerce_single: {
-              file: "4603336_4-600x900.jpg",
-              width: 600,
-              height: 900,
-              filesize: 46393,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4603336_4-600x900.jpg"
-            },
-            woocommerce_gallery_thumbnail: {
-              file: "4603336_4-100x100.jpg",
-              width: 100,
-              height: 100,
-              filesize: 2467,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4603336_4-100x100.jpg"
             },
             shop_catalog: {
               file: "4603336_4-300x300.jpg",
@@ -9411,7 +9393,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4647038_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4647038_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4647038_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4647038_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4647038_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4647038_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4647038_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4647038_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4647038_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4647038_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4647038_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4647038_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4647038_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4647038_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -9426,6 +9408,31 @@ const state$2 = {
           file: "2022/07/4647038_1.jpg",
           filesize: 92405,
           sizes: {
+            woocommerce_thumbnail: {
+              file: "4647038_1-300x300.jpg",
+              width: 300,
+              height: 300,
+              filesize: 8428,
+              uncropped: false,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4647038_1-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "4647038_1-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 1886,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4647038_1-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "4647038_1-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 36376,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4647038_1-600x900.jpg"
+            },
             medium: {
               file: "4647038_1-200x300.jpg",
               width: 200,
@@ -9457,31 +9464,6 @@ const state$2 = {
               filesize: 55499,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/4647038_1-768x1152.jpg"
-            },
-            woocommerce_thumbnail: {
-              file: "4647038_1-300x300.jpg",
-              width: 300,
-              height: 300,
-              filesize: 8428,
-              uncropped: false,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4647038_1-300x300.jpg"
-            },
-            woocommerce_single: {
-              file: "4647038_1-600x900.jpg",
-              width: 600,
-              height: 900,
-              filesize: 36376,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4647038_1-600x900.jpg"
-            },
-            woocommerce_gallery_thumbnail: {
-              file: "4647038_1-100x100.jpg",
-              width: 100,
-              height: 100,
-              filesize: 1886,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4647038_1-100x100.jpg"
             },
             shop_catalog: {
               file: "4647038_1-300x300.jpg",
@@ -9585,7 +9567,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4647038_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4647038_2-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4647038_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4647038_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4647038_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4647038_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4647038_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4647038_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4647038_2-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4647038_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4647038_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4647038_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4647038_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4647038_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -9600,6 +9582,31 @@ const state$2 = {
           file: "2022/07/4647038_2.jpg",
           filesize: 98442,
           sizes: {
+            woocommerce_thumbnail: {
+              file: "4647038_2-300x300.jpg",
+              width: 300,
+              height: 300,
+              filesize: 8170,
+              uncropped: false,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4647038_2-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "4647038_2-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 1933,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4647038_2-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "4647038_2-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 37590,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4647038_2-600x900.jpg"
+            },
             medium: {
               file: "4647038_2-200x300.jpg",
               width: 200,
@@ -9631,31 +9638,6 @@ const state$2 = {
               filesize: 57567,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/4647038_2-768x1152.jpg"
-            },
-            woocommerce_thumbnail: {
-              file: "4647038_2-300x300.jpg",
-              width: 300,
-              height: 300,
-              filesize: 8170,
-              uncropped: false,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4647038_2-300x300.jpg"
-            },
-            woocommerce_single: {
-              file: "4647038_2-600x900.jpg",
-              width: 600,
-              height: 900,
-              filesize: 37590,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4647038_2-600x900.jpg"
-            },
-            woocommerce_gallery_thumbnail: {
-              file: "4647038_2-100x100.jpg",
-              width: 100,
-              height: 100,
-              filesize: 1933,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4647038_2-100x100.jpg"
             },
             shop_catalog: {
               file: "4647038_2-300x300.jpg",
@@ -9759,7 +9741,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4647038_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4647038_3-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4647038_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4647038_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4647038_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4647038_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4647038_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4647038_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4647038_3-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4647038_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4647038_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4647038_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4647038_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4647038_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -9774,6 +9756,31 @@ const state$2 = {
           file: "2022/07/4647038_3.jpg",
           filesize: 83401,
           sizes: {
+            woocommerce_thumbnail: {
+              file: "4647038_3-300x300.jpg",
+              width: 300,
+              height: 300,
+              filesize: 7174,
+              uncropped: false,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4647038_3-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "4647038_3-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 1802,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4647038_3-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "4647038_3-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 32080,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4647038_3-600x900.jpg"
+            },
             medium: {
               file: "4647038_3-200x300.jpg",
               width: 200,
@@ -9805,31 +9812,6 @@ const state$2 = {
               filesize: 48946,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/4647038_3-768x1152.jpg"
-            },
-            woocommerce_thumbnail: {
-              file: "4647038_3-300x300.jpg",
-              width: 300,
-              height: 300,
-              filesize: 7174,
-              uncropped: false,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4647038_3-300x300.jpg"
-            },
-            woocommerce_single: {
-              file: "4647038_3-600x900.jpg",
-              width: 600,
-              height: 900,
-              filesize: 32080,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4647038_3-600x900.jpg"
-            },
-            woocommerce_gallery_thumbnail: {
-              file: "4647038_3-100x100.jpg",
-              width: 100,
-              height: 100,
-              filesize: 1802,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4647038_3-100x100.jpg"
             },
             shop_catalog: {
               file: "4647038_3-300x300.jpg",
@@ -9933,7 +9915,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4647038_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4647038_4-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4647038_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4647038_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4647038_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4647038_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4647038_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4647038_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4647038_4-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4647038_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4647038_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4647038_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4647038_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4647038_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -9948,6 +9930,31 @@ const state$2 = {
           file: "2022/07/4647038_4.jpg",
           filesize: 306672,
           sizes: {
+            woocommerce_thumbnail: {
+              file: "4647038_4-300x300.jpg",
+              width: 300,
+              height: 300,
+              filesize: 12665,
+              uncropped: false,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4647038_4-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "4647038_4-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 2349,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4647038_4-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "4647038_4-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 83184,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4647038_4-600x900.jpg"
+            },
             medium: {
               file: "4647038_4-200x300.jpg",
               width: 200,
@@ -9979,31 +9986,6 @@ const state$2 = {
               filesize: 149487,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/4647038_4-768x1152.jpg"
-            },
-            woocommerce_thumbnail: {
-              file: "4647038_4-300x300.jpg",
-              width: 300,
-              height: 300,
-              filesize: 12665,
-              uncropped: false,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4647038_4-300x300.jpg"
-            },
-            woocommerce_single: {
-              file: "4647038_4-600x900.jpg",
-              width: 600,
-              height: 900,
-              filesize: 83184,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4647038_4-600x900.jpg"
-            },
-            woocommerce_gallery_thumbnail: {
-              file: "4647038_4-100x100.jpg",
-              width: 100,
-              height: 100,
-              filesize: 2349,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4647038_4-100x100.jpg"
             },
             shop_catalog: {
               file: "4647038_4-300x300.jpg",
@@ -10107,7 +10089,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4770127_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4770127_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4770127_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4770127_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4770127_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4770127_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4770127_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4770127_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4770127_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4770127_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4770127_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4770127_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4770127_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4770127_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -10122,6 +10104,31 @@ const state$2 = {
           file: "2022/07/4770127_1.jpg",
           filesize: 205886,
           sizes: {
+            woocommerce_thumbnail: {
+              file: "4770127_1-300x300.jpg",
+              width: 300,
+              height: 300,
+              filesize: 16582,
+              uncropped: false,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4770127_1-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "4770127_1-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 2453,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4770127_1-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "4770127_1-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 75672,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4770127_1-600x900.jpg"
+            },
             medium: {
               file: "4770127_1-200x300.jpg",
               width: 200,
@@ -10153,31 +10160,6 @@ const state$2 = {
               filesize: 117494,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/4770127_1-768x1152.jpg"
-            },
-            woocommerce_thumbnail: {
-              file: "4770127_1-300x300.jpg",
-              width: 300,
-              height: 300,
-              filesize: 16582,
-              uncropped: false,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4770127_1-300x300.jpg"
-            },
-            woocommerce_single: {
-              file: "4770127_1-600x900.jpg",
-              width: 600,
-              height: 900,
-              filesize: 75672,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4770127_1-600x900.jpg"
-            },
-            woocommerce_gallery_thumbnail: {
-              file: "4770127_1-100x100.jpg",
-              width: 100,
-              height: 100,
-              filesize: 2453,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4770127_1-100x100.jpg"
             },
             shop_catalog: {
               file: "4770127_1-300x300.jpg",
@@ -10281,7 +10263,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4770127_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4770127_2-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4770127_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4770127_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4770127_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4770127_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4770127_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4770127_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4770127_2-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4770127_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4770127_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4770127_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4770127_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4770127_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -10296,6 +10278,31 @@ const state$2 = {
           file: "2022/07/4770127_2.jpg",
           filesize: 281119,
           sizes: {
+            woocommerce_thumbnail: {
+              file: "4770127_2-300x300.jpg",
+              width: 300,
+              height: 300,
+              filesize: 21849,
+              uncropped: false,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4770127_2-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "4770127_2-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 2603,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4770127_2-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "4770127_2-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 104274,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4770127_2-600x900.jpg"
+            },
             medium: {
               file: "4770127_2-200x300.jpg",
               width: 200,
@@ -10327,31 +10334,6 @@ const state$2 = {
               filesize: 162266,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/4770127_2-768x1152.jpg"
-            },
-            woocommerce_thumbnail: {
-              file: "4770127_2-300x300.jpg",
-              width: 300,
-              height: 300,
-              filesize: 21849,
-              uncropped: false,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4770127_2-300x300.jpg"
-            },
-            woocommerce_single: {
-              file: "4770127_2-600x900.jpg",
-              width: 600,
-              height: 900,
-              filesize: 104274,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4770127_2-600x900.jpg"
-            },
-            woocommerce_gallery_thumbnail: {
-              file: "4770127_2-100x100.jpg",
-              width: 100,
-              height: 100,
-              filesize: 2603,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4770127_2-100x100.jpg"
             },
             shop_catalog: {
               file: "4770127_2-300x300.jpg",
@@ -10455,7 +10437,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4770127_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4770127_3-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4770127_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4770127_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4770127_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4770127_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4770127_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4770127_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4770127_3-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4770127_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4770127_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4770127_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4770127_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4770127_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -10470,6 +10452,31 @@ const state$2 = {
           file: "2022/07/4770127_3.jpg",
           filesize: 274611,
           sizes: {
+            woocommerce_thumbnail: {
+              file: "4770127_3-300x300.jpg",
+              width: 300,
+              height: 300,
+              filesize: 21407,
+              uncropped: false,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4770127_3-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "4770127_3-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 2480,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4770127_3-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "4770127_3-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 99324,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4770127_3-600x900.jpg"
+            },
             medium: {
               file: "4770127_3-200x300.jpg",
               width: 200,
@@ -10501,31 +10508,6 @@ const state$2 = {
               filesize: 155823,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/4770127_3-768x1152.jpg"
-            },
-            woocommerce_thumbnail: {
-              file: "4770127_3-300x300.jpg",
-              width: 300,
-              height: 300,
-              filesize: 21407,
-              uncropped: false,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4770127_3-300x300.jpg"
-            },
-            woocommerce_single: {
-              file: "4770127_3-600x900.jpg",
-              width: 600,
-              height: 900,
-              filesize: 99324,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4770127_3-600x900.jpg"
-            },
-            woocommerce_gallery_thumbnail: {
-              file: "4770127_3-100x100.jpg",
-              width: 100,
-              height: 100,
-              filesize: 2480,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4770127_3-100x100.jpg"
             },
             shop_catalog: {
               file: "4770127_3-300x300.jpg",
@@ -10629,7 +10611,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4770127_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4770127_4-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4770127_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4770127_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4770127_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4770127_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4770127_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4770127_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4770127_4-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4770127_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4770127_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4770127_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4770127_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4770127_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -10644,6 +10626,31 @@ const state$2 = {
           file: "2022/07/4770127_4.jpg",
           filesize: 429222,
           sizes: {
+            woocommerce_thumbnail: {
+              file: "4770127_4-300x300.jpg",
+              width: 300,
+              height: 300,
+              filesize: 40685,
+              uncropped: false,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4770127_4-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "4770127_4-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 5465,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4770127_4-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "4770127_4-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 189689,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4770127_4-600x900.jpg"
+            },
             medium: {
               file: "4770127_4-200x300.jpg",
               width: 200,
@@ -10675,31 +10682,6 @@ const state$2 = {
               filesize: 275450,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/4770127_4-768x1152.jpg"
-            },
-            woocommerce_thumbnail: {
-              file: "4770127_4-300x300.jpg",
-              width: 300,
-              height: 300,
-              filesize: 40685,
-              uncropped: false,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4770127_4-300x300.jpg"
-            },
-            woocommerce_single: {
-              file: "4770127_4-600x900.jpg",
-              width: 600,
-              height: 900,
-              filesize: 189689,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4770127_4-600x900.jpg"
-            },
-            woocommerce_gallery_thumbnail: {
-              file: "4770127_4-100x100.jpg",
-              width: 100,
-              height: 100,
-              filesize: 5465,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4770127_4-100x100.jpg"
             },
             shop_catalog: {
               file: "4770127_4-300x300.jpg",
@@ -10803,7 +10785,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4770129_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4770129_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4770129_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4770129_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4770129_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4770129_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4770129_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4770129_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4770129_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4770129_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4770129_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4770129_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4770129_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4770129_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -10818,6 +10800,31 @@ const state$2 = {
           file: "2022/07/4770129_1.jpg",
           filesize: 80059,
           sizes: {
+            woocommerce_thumbnail: {
+              file: "4770129_1-300x300.jpg",
+              width: 300,
+              height: 300,
+              filesize: 7634,
+              uncropped: false,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4770129_1-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "4770129_1-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 1910,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4770129_1-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "4770129_1-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 33344,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4770129_1-600x900.jpg"
+            },
             medium: {
               file: "4770129_1-200x300.jpg",
               width: 200,
@@ -10849,31 +10856,6 @@ const state$2 = {
               filesize: 50426,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/4770129_1-768x1152.jpg"
-            },
-            woocommerce_thumbnail: {
-              file: "4770129_1-300x300.jpg",
-              width: 300,
-              height: 300,
-              filesize: 7634,
-              uncropped: false,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4770129_1-300x300.jpg"
-            },
-            woocommerce_single: {
-              file: "4770129_1-600x900.jpg",
-              width: 600,
-              height: 900,
-              filesize: 33344,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4770129_1-600x900.jpg"
-            },
-            woocommerce_gallery_thumbnail: {
-              file: "4770129_1-100x100.jpg",
-              width: 100,
-              height: 100,
-              filesize: 1910,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4770129_1-100x100.jpg"
             },
             shop_catalog: {
               file: "4770129_1-300x300.jpg",
@@ -10977,7 +10959,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4770129_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4770129_2-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4770129_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4770129_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4770129_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4770129_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4770129_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4770129_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4770129_2-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4770129_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4770129_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4770129_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4770129_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4770129_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -10992,6 +10974,31 @@ const state$2 = {
           file: "2022/07/4770129_2.jpg",
           filesize: 101814,
           sizes: {
+            woocommerce_thumbnail: {
+              file: "4770129_2-300x300.jpg",
+              width: 300,
+              height: 300,
+              filesize: 9370,
+              uncropped: false,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4770129_2-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "4770129_2-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 2231,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4770129_2-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "4770129_2-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 41168,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4770129_2-600x900.jpg"
+            },
             medium: {
               file: "4770129_2-200x300.jpg",
               width: 200,
@@ -11023,31 +11030,6 @@ const state$2 = {
               filesize: 62135,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/4770129_2-768x1152.jpg"
-            },
-            woocommerce_thumbnail: {
-              file: "4770129_2-300x300.jpg",
-              width: 300,
-              height: 300,
-              filesize: 9370,
-              uncropped: false,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4770129_2-300x300.jpg"
-            },
-            woocommerce_single: {
-              file: "4770129_2-600x900.jpg",
-              width: 600,
-              height: 900,
-              filesize: 41168,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4770129_2-600x900.jpg"
-            },
-            woocommerce_gallery_thumbnail: {
-              file: "4770129_2-100x100.jpg",
-              width: 100,
-              height: 100,
-              filesize: 2231,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4770129_2-100x100.jpg"
             },
             shop_catalog: {
               file: "4770129_2-300x300.jpg",
@@ -11151,7 +11133,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4770129_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4770129_3-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4770129_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4770129_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4770129_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4770129_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4770129_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4770129_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4770129_3-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4770129_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4770129_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4770129_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4770129_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4770129_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -11166,6 +11148,31 @@ const state$2 = {
           file: "2022/07/4770129_3.jpg",
           filesize: 111215,
           sizes: {
+            woocommerce_thumbnail: {
+              file: "4770129_3-300x300.jpg",
+              width: 300,
+              height: 300,
+              filesize: 9538,
+              uncropped: false,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4770129_3-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "4770129_3-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 2159,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4770129_3-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "4770129_3-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 43715,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4770129_3-600x900.jpg"
+            },
             medium: {
               file: "4770129_3-200x300.jpg",
               width: 200,
@@ -11197,31 +11204,6 @@ const state$2 = {
               filesize: 66508,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/4770129_3-768x1152.jpg"
-            },
-            woocommerce_thumbnail: {
-              file: "4770129_3-300x300.jpg",
-              width: 300,
-              height: 300,
-              filesize: 9538,
-              uncropped: false,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4770129_3-300x300.jpg"
-            },
-            woocommerce_single: {
-              file: "4770129_3-600x900.jpg",
-              width: 600,
-              height: 900,
-              filesize: 43715,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4770129_3-600x900.jpg"
-            },
-            woocommerce_gallery_thumbnail: {
-              file: "4770129_3-100x100.jpg",
-              width: 100,
-              height: 100,
-              filesize: 2159,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4770129_3-100x100.jpg"
             },
             shop_catalog: {
               file: "4770129_3-300x300.jpg",
@@ -11325,7 +11307,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4770129_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4770129_4-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4770129_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4770129_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4770129_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4770129_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4770129_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4770129_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4770129_4-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4770129_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4770129_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4770129_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4770129_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4770129_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -11340,6 +11322,31 @@ const state$2 = {
           file: "2022/07/4770129_4.jpg",
           filesize: 128911,
           sizes: {
+            woocommerce_thumbnail: {
+              file: "4770129_4-300x300.jpg",
+              width: 300,
+              height: 300,
+              filesize: 10079,
+              uncropped: false,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4770129_4-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "4770129_4-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 2398,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4770129_4-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "4770129_4-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 46454,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4770129_4-600x900.jpg"
+            },
             medium: {
               file: "4770129_4-200x300.jpg",
               width: 200,
@@ -11371,31 +11378,6 @@ const state$2 = {
               filesize: 73377,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/4770129_4-768x1152.jpg"
-            },
-            woocommerce_thumbnail: {
-              file: "4770129_4-300x300.jpg",
-              width: 300,
-              height: 300,
-              filesize: 10079,
-              uncropped: false,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4770129_4-300x300.jpg"
-            },
-            woocommerce_single: {
-              file: "4770129_4-600x900.jpg",
-              width: 600,
-              height: 900,
-              filesize: 46454,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4770129_4-600x900.jpg"
-            },
-            woocommerce_gallery_thumbnail: {
-              file: "4770129_4-100x100.jpg",
-              width: 100,
-              height: 100,
-              filesize: 2398,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4770129_4-100x100.jpg"
             },
             shop_catalog: {
               file: "4770129_4-300x300.jpg",
@@ -11499,7 +11481,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4776490_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4776490_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4776490_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4776490_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4776490_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4776490_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4776490_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4776490_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4776490_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4776490_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4776490_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4776490_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4776490_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4776490_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -11514,6 +11496,31 @@ const state$2 = {
           file: "2022/07/4776490_1.jpg",
           filesize: 86552,
           sizes: {
+            woocommerce_thumbnail: {
+              file: "4776490_1-300x300.jpg",
+              width: 300,
+              height: 300,
+              filesize: 8933,
+              uncropped: false,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4776490_1-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "4776490_1-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 2093,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4776490_1-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "4776490_1-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 36669,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4776490_1-600x900.jpg"
+            },
             medium: {
               file: "4776490_1-200x300.jpg",
               width: 200,
@@ -11545,31 +11552,6 @@ const state$2 = {
               filesize: 54192,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/4776490_1-768x1152.jpg"
-            },
-            woocommerce_thumbnail: {
-              file: "4776490_1-300x300.jpg",
-              width: 300,
-              height: 300,
-              filesize: 8933,
-              uncropped: false,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4776490_1-300x300.jpg"
-            },
-            woocommerce_single: {
-              file: "4776490_1-600x900.jpg",
-              width: 600,
-              height: 900,
-              filesize: 36669,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4776490_1-600x900.jpg"
-            },
-            woocommerce_gallery_thumbnail: {
-              file: "4776490_1-100x100.jpg",
-              width: 100,
-              height: 100,
-              filesize: 2093,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4776490_1-100x100.jpg"
             },
             shop_catalog: {
               file: "4776490_1-300x300.jpg",
@@ -11673,7 +11655,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4776490_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4776490_2-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4776490_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4776490_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4776490_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4776490_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4776490_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4776490_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4776490_2-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4776490_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4776490_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4776490_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4776490_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4776490_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -11688,6 +11670,31 @@ const state$2 = {
           file: "2022/07/4776490_2.jpg",
           filesize: 98178,
           sizes: {
+            woocommerce_thumbnail: {
+              file: "4776490_2-300x300.jpg",
+              width: 300,
+              height: 300,
+              filesize: 9615,
+              uncropped: false,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4776490_2-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "4776490_2-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 2247,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4776490_2-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "4776490_2-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 41397,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4776490_2-600x900.jpg"
+            },
             medium: {
               file: "4776490_2-200x300.jpg",
               width: 200,
@@ -11719,31 +11726,6 @@ const state$2 = {
               filesize: 61512,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/4776490_2-768x1152.jpg"
-            },
-            woocommerce_thumbnail: {
-              file: "4776490_2-300x300.jpg",
-              width: 300,
-              height: 300,
-              filesize: 9615,
-              uncropped: false,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4776490_2-300x300.jpg"
-            },
-            woocommerce_single: {
-              file: "4776490_2-600x900.jpg",
-              width: 600,
-              height: 900,
-              filesize: 41397,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4776490_2-600x900.jpg"
-            },
-            woocommerce_gallery_thumbnail: {
-              file: "4776490_2-100x100.jpg",
-              width: 100,
-              height: 100,
-              filesize: 2247,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4776490_2-100x100.jpg"
             },
             shop_catalog: {
               file: "4776490_2-300x300.jpg",
@@ -11847,7 +11829,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4776490_4-1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4776490_4-1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4776490_4-1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4776490_4-1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4776490_4-1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4776490_4-1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4776490_4-1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4776490_4-1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4776490_4-1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4776490_4-1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4776490_4-1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4776490_4-1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4776490_4-1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4776490_4-1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -11862,6 +11844,31 @@ const state$2 = {
           file: "2022/07/4776490_4-1.jpg",
           filesize: 214599,
           sizes: {
+            woocommerce_thumbnail: {
+              file: "4776490_4-1-300x300.jpg",
+              width: 300,
+              height: 300,
+              filesize: 19658,
+              uncropped: false,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4776490_4-1-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "4776490_4-1-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 3836,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4776490_4-1-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "4776490_4-1-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 80975,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4776490_4-1-600x900.jpg"
+            },
             medium: {
               file: "4776490_4-1-200x300.jpg",
               width: 200,
@@ -11893,31 +11900,6 @@ const state$2 = {
               filesize: 124569,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/4776490_4-1-768x1152.jpg"
-            },
-            woocommerce_thumbnail: {
-              file: "4776490_4-1-300x300.jpg",
-              width: 300,
-              height: 300,
-              filesize: 19658,
-              uncropped: false,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4776490_4-1-300x300.jpg"
-            },
-            woocommerce_single: {
-              file: "4776490_4-1-600x900.jpg",
-              width: 600,
-              height: 900,
-              filesize: 80975,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4776490_4-1-600x900.jpg"
-            },
-            woocommerce_gallery_thumbnail: {
-              file: "4776490_4-1-100x100.jpg",
-              width: 100,
-              height: 100,
-              filesize: 3836,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4776490_4-1-100x100.jpg"
             },
             shop_catalog: {
               file: "4776490_4-1-300x300.jpg",
@@ -12021,7 +12003,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4776490_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4776490_4-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4776490_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4776490_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4776490_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4776490_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4776490_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4776490_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4776490_4-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4776490_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4776490_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4776490_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4776490_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4776490_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -12036,6 +12018,31 @@ const state$2 = {
           file: "2022/07/4776490_4.jpg",
           filesize: 214599,
           sizes: {
+            woocommerce_thumbnail: {
+              file: "4776490_4-300x300.jpg",
+              width: 300,
+              height: 300,
+              filesize: 19658,
+              uncropped: false,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4776490_4-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "4776490_4-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 3836,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4776490_4-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "4776490_4-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 80975,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4776490_4-600x900.jpg"
+            },
             medium: {
               file: "4776490_4-200x300.jpg",
               width: 200,
@@ -12067,31 +12074,6 @@ const state$2 = {
               filesize: 124569,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/4776490_4-768x1152.jpg"
-            },
-            woocommerce_thumbnail: {
-              file: "4776490_4-300x300.jpg",
-              width: 300,
-              height: 300,
-              filesize: 19658,
-              uncropped: false,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4776490_4-300x300.jpg"
-            },
-            woocommerce_single: {
-              file: "4776490_4-600x900.jpg",
-              width: 600,
-              height: 900,
-              filesize: 80975,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4776490_4-600x900.jpg"
-            },
-            woocommerce_gallery_thumbnail: {
-              file: "4776490_4-100x100.jpg",
-              width: 100,
-              height: 100,
-              filesize: 3836,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4776490_4-100x100.jpg"
             },
             shop_catalog: {
               file: "4776490_4-300x300.jpg",
@@ -12195,7 +12177,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4782543_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4782543_1.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4782543_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4782543_1.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4782543_1.jpg 1020w, http://localhost/wp-content/uploads/2022/07/4782543_1-600x900.jpg 600w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -12218,6 +12200,22 @@ const state$2 = {
               uncropped: false,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/4782543_1-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "4782543_1-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 1876,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4782543_1-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "4782543_1-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 29873,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4782543_1-600x900.jpg"
             },
             full: {
               file: "4782543_1.jpg",
@@ -12296,7 +12294,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4782543_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4782543_2-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4782543_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4782543_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4782543_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4782543_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4782543_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4782543_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4782543_2-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4782543_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4782543_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4782543_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4782543_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4782543_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -12311,6 +12309,31 @@ const state$2 = {
           file: "2022/07/4782543_2.jpg",
           filesize: 57021,
           sizes: {
+            woocommerce_thumbnail: {
+              file: "4782543_2-300x300.jpg",
+              width: 300,
+              height: 300,
+              filesize: 6113,
+              uncropped: false,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4782543_2-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "4782543_2-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 1719,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4782543_2-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "4782543_2-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 24723,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4782543_2-600x900.jpg"
+            },
             medium: {
               file: "4782543_2-200x300.jpg",
               width: 200,
@@ -12342,31 +12365,6 @@ const state$2 = {
               filesize: 36326,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/4782543_2-768x1152.jpg"
-            },
-            woocommerce_thumbnail: {
-              file: "4782543_2-300x300.jpg",
-              width: 300,
-              height: 300,
-              filesize: 6113,
-              uncropped: false,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4782543_2-300x300.jpg"
-            },
-            woocommerce_single: {
-              file: "4782543_2-600x900.jpg",
-              width: 600,
-              height: 900,
-              filesize: 24723,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4782543_2-600x900.jpg"
-            },
-            woocommerce_gallery_thumbnail: {
-              file: "4782543_2-100x100.jpg",
-              width: 100,
-              height: 100,
-              filesize: 1719,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4782543_2-100x100.jpg"
             },
             shop_catalog: {
               file: "4782543_2-300x300.jpg",
@@ -12470,7 +12468,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4782543_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4782543_3-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4782543_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4782543_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4782543_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4782543_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4782543_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4782543_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4782543_3-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4782543_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4782543_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4782543_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4782543_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4782543_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -12485,6 +12483,31 @@ const state$2 = {
           file: "2022/07/4782543_3.jpg",
           filesize: 62295,
           sizes: {
+            woocommerce_thumbnail: {
+              file: "4782543_3-300x300.jpg",
+              width: 300,
+              height: 300,
+              filesize: 5963,
+              uncropped: false,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4782543_3-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "4782543_3-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 1626,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4782543_3-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "4782543_3-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 25873,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4782543_3-600x900.jpg"
+            },
             medium: {
               file: "4782543_3-200x300.jpg",
               width: 200,
@@ -12516,31 +12539,6 @@ const state$2 = {
               filesize: 38633,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/4782543_3-768x1152.jpg"
-            },
-            woocommerce_thumbnail: {
-              file: "4782543_3-300x300.jpg",
-              width: 300,
-              height: 300,
-              filesize: 5963,
-              uncropped: false,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4782543_3-300x300.jpg"
-            },
-            woocommerce_single: {
-              file: "4782543_3-600x900.jpg",
-              width: 600,
-              height: 900,
-              filesize: 25873,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4782543_3-600x900.jpg"
-            },
-            woocommerce_gallery_thumbnail: {
-              file: "4782543_3-100x100.jpg",
-              width: 100,
-              height: 100,
-              filesize: 1626,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4782543_3-100x100.jpg"
             },
             shop_catalog: {
               file: "4782543_3-300x300.jpg",
@@ -12644,7 +12642,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4782543_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4782543_4-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4782543_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4782543_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4782543_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4782543_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4782543_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4782543_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4782543_4-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4782543_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4782543_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4782543_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4782543_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4782543_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -12659,6 +12657,31 @@ const state$2 = {
           file: "2022/07/4782543_4.jpg",
           filesize: 62569,
           sizes: {
+            woocommerce_thumbnail: {
+              file: "4782543_4-300x300.jpg",
+              width: 300,
+              height: 300,
+              filesize: 2341,
+              uncropped: false,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4782543_4-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "4782543_4-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 883,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4782543_4-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "4782543_4-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 18358,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4782543_4-600x900.jpg"
+            },
             medium: {
               file: "4782543_4-200x300.jpg",
               width: 200,
@@ -12690,31 +12713,6 @@ const state$2 = {
               filesize: 31611,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/4782543_4-768x1152.jpg"
-            },
-            woocommerce_thumbnail: {
-              file: "4782543_4-300x300.jpg",
-              width: 300,
-              height: 300,
-              filesize: 2341,
-              uncropped: false,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4782543_4-300x300.jpg"
-            },
-            woocommerce_single: {
-              file: "4782543_4-600x900.jpg",
-              width: 600,
-              height: 900,
-              filesize: 18358,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4782543_4-600x900.jpg"
-            },
-            woocommerce_gallery_thumbnail: {
-              file: "4782543_4-100x100.jpg",
-              width: 100,
-              height: 100,
-              filesize: 883,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4782543_4-100x100.jpg"
             },
             shop_catalog: {
               file: "4782543_4-300x300.jpg",
@@ -12818,7 +12816,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4787313_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4787313_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4787313_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4787313_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4787313_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4787313_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4787313_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4787313_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4787313_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4787313_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4787313_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4787313_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4787313_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4787313_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -12833,6 +12831,31 @@ const state$2 = {
           file: "2022/07/4787313_1.jpg",
           filesize: 260936,
           sizes: {
+            woocommerce_thumbnail: {
+              file: "4787313_1-300x300.jpg",
+              width: 300,
+              height: 300,
+              filesize: 11158,
+              uncropped: false,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4787313_1-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "4787313_1-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 1626,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4787313_1-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "4787313_1-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 75922,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4787313_1-600x900.jpg"
+            },
             medium: {
               file: "4787313_1-200x300.jpg",
               width: 200,
@@ -12864,31 +12887,6 @@ const state$2 = {
               filesize: 133478,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/4787313_1-768x1152.jpg"
-            },
-            woocommerce_thumbnail: {
-              file: "4787313_1-300x300.jpg",
-              width: 300,
-              height: 300,
-              filesize: 11158,
-              uncropped: false,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4787313_1-300x300.jpg"
-            },
-            woocommerce_single: {
-              file: "4787313_1-600x900.jpg",
-              width: 600,
-              height: 900,
-              filesize: 75922,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4787313_1-600x900.jpg"
-            },
-            woocommerce_gallery_thumbnail: {
-              file: "4787313_1-100x100.jpg",
-              width: 100,
-              height: 100,
-              filesize: 1626,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4787313_1-100x100.jpg"
             },
             shop_catalog: {
               file: "4787313_1-300x300.jpg",
@@ -12992,7 +12990,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4787313_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4787313_2.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4787313_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4787313_2.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4787313_2.jpg 1020w, http://localhost/wp-content/uploads/2022/07/4787313_2-600x900.jpg 600w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -13015,6 +13013,22 @@ const state$2 = {
               uncropped: false,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/4787313_2-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "4787313_2-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 2047,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4787313_2-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "4787313_2-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 60886,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4787313_2-600x900.jpg"
             },
             full: {
               file: "4787313_2.jpg",
@@ -13093,7 +13107,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4787313_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4787313_3-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4787313_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4787313_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4787313_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4787313_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4787313_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4787313_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4787313_3-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4787313_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4787313_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4787313_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4787313_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4787313_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -13108,6 +13122,31 @@ const state$2 = {
           file: "2022/07/4787313_3.jpg",
           filesize: 263630,
           sizes: {
+            woocommerce_thumbnail: {
+              file: "4787313_3-300x300.jpg",
+              width: 300,
+              height: 300,
+              filesize: 11638,
+              uncropped: false,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4787313_3-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "4787313_3-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 1958,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4787313_3-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "4787313_3-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 73751,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4787313_3-600x900.jpg"
+            },
             medium: {
               file: "4787313_3-200x300.jpg",
               width: 200,
@@ -13139,31 +13178,6 @@ const state$2 = {
               filesize: 129975,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/4787313_3-768x1152.jpg"
-            },
-            woocommerce_thumbnail: {
-              file: "4787313_3-300x300.jpg",
-              width: 300,
-              height: 300,
-              filesize: 11638,
-              uncropped: false,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4787313_3-300x300.jpg"
-            },
-            woocommerce_single: {
-              file: "4787313_3-600x900.jpg",
-              width: 600,
-              height: 900,
-              filesize: 73751,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4787313_3-600x900.jpg"
-            },
-            woocommerce_gallery_thumbnail: {
-              file: "4787313_3-100x100.jpg",
-              width: 100,
-              height: 100,
-              filesize: 1958,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4787313_3-100x100.jpg"
             },
             shop_catalog: {
               file: "4787313_3-300x300.jpg",
@@ -13267,7 +13281,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4787313_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4787313_4-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4787313_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4787313_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4787313_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4787313_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4787313_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4787313_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4787313_4-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4787313_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4787313_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4787313_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4787313_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4787313_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -13282,6 +13296,31 @@ const state$2 = {
           file: "2022/07/4787313_4.jpg",
           filesize: 273822,
           sizes: {
+            woocommerce_thumbnail: {
+              file: "4787313_4-300x300.jpg",
+              width: 300,
+              height: 300,
+              filesize: 12559,
+              uncropped: false,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4787313_4-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "4787313_4-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 2091,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4787313_4-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "4787313_4-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 79566,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4787313_4-600x900.jpg"
+            },
             medium: {
               file: "4787313_4-200x300.jpg",
               width: 200,
@@ -13313,31 +13352,6 @@ const state$2 = {
               filesize: 137997,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/4787313_4-768x1152.jpg"
-            },
-            woocommerce_thumbnail: {
-              file: "4787313_4-300x300.jpg",
-              width: 300,
-              height: 300,
-              filesize: 12559,
-              uncropped: false,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4787313_4-300x300.jpg"
-            },
-            woocommerce_single: {
-              file: "4787313_4-600x900.jpg",
-              width: 600,
-              height: 900,
-              filesize: 79566,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4787313_4-600x900.jpg"
-            },
-            woocommerce_gallery_thumbnail: {
-              file: "4787313_4-100x100.jpg",
-              width: 100,
-              height: 100,
-              filesize: 2091,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4787313_4-100x100.jpg"
             },
             shop_catalog: {
               file: "4787313_4-300x300.jpg",
@@ -13441,7 +13455,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4826292_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4826292_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4826292_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4826292_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4826292_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4826292_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4826292_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4826292_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4826292_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4826292_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4826292_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4826292_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4826292_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4826292_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -13456,6 +13470,31 @@ const state$2 = {
           file: "2022/07/4826292_1.jpg",
           filesize: 126459,
           sizes: {
+            woocommerce_thumbnail: {
+              file: "4826292_1-300x300.jpg",
+              width: 300,
+              height: 300,
+              filesize: 9525,
+              uncropped: false,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4826292_1-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "4826292_1-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 2140,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4826292_1-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "4826292_1-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 44811,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4826292_1-600x900.jpg"
+            },
             medium: {
               file: "4826292_1-200x300.jpg",
               width: 200,
@@ -13487,31 +13526,6 @@ const state$2 = {
               filesize: 70803,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/4826292_1-768x1152.jpg"
-            },
-            woocommerce_thumbnail: {
-              file: "4826292_1-300x300.jpg",
-              width: 300,
-              height: 300,
-              filesize: 9525,
-              uncropped: false,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4826292_1-300x300.jpg"
-            },
-            woocommerce_single: {
-              file: "4826292_1-600x900.jpg",
-              width: 600,
-              height: 900,
-              filesize: 44811,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4826292_1-600x900.jpg"
-            },
-            woocommerce_gallery_thumbnail: {
-              file: "4826292_1-100x100.jpg",
-              width: 100,
-              height: 100,
-              filesize: 2140,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4826292_1-100x100.jpg"
             },
             shop_catalog: {
               file: "4826292_1-300x300.jpg",
@@ -13615,7 +13629,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4826292_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4826292_2-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4826292_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4826292_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4826292_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4826292_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4826292_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4826292_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4826292_2-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4826292_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4826292_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4826292_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4826292_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4826292_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -13630,6 +13644,31 @@ const state$2 = {
           file: "2022/07/4826292_2.jpg",
           filesize: 84388,
           sizes: {
+            woocommerce_thumbnail: {
+              file: "4826292_2-300x300.jpg",
+              width: 300,
+              height: 300,
+              filesize: 7868,
+              uncropped: false,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4826292_2-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "4826292_2-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 2062,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4826292_2-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "4826292_2-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 32533,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4826292_2-600x900.jpg"
+            },
             medium: {
               file: "4826292_2-200x300.jpg",
               width: 200,
@@ -13661,31 +13700,6 @@ const state$2 = {
               filesize: 49047,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/4826292_2-768x1152.jpg"
-            },
-            woocommerce_thumbnail: {
-              file: "4826292_2-300x300.jpg",
-              width: 300,
-              height: 300,
-              filesize: 7868,
-              uncropped: false,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4826292_2-300x300.jpg"
-            },
-            woocommerce_single: {
-              file: "4826292_2-600x900.jpg",
-              width: 600,
-              height: 900,
-              filesize: 32533,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4826292_2-600x900.jpg"
-            },
-            woocommerce_gallery_thumbnail: {
-              file: "4826292_2-100x100.jpg",
-              width: 100,
-              height: 100,
-              filesize: 2062,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4826292_2-100x100.jpg"
             },
             shop_catalog: {
               file: "4826292_2-300x300.jpg",
@@ -13789,7 +13803,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4826292_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4826292_3-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4826292_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4826292_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4826292_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4826292_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4826292_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4826292_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4826292_3-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4826292_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4826292_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4826292_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4826292_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4826292_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -13804,6 +13818,31 @@ const state$2 = {
           file: "2022/07/4826292_3.jpg",
           filesize: 75971,
           sizes: {
+            woocommerce_thumbnail: {
+              file: "4826292_3-300x300.jpg",
+              width: 300,
+              height: 300,
+              filesize: 6417,
+              uncropped: false,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4826292_3-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "4826292_3-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 1823,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4826292_3-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "4826292_3-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 27788,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4826292_3-600x900.jpg"
+            },
             medium: {
               file: "4826292_3-200x300.jpg",
               width: 200,
@@ -13835,31 +13874,6 @@ const state$2 = {
               filesize: 42853,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/4826292_3-768x1152.jpg"
-            },
-            woocommerce_thumbnail: {
-              file: "4826292_3-300x300.jpg",
-              width: 300,
-              height: 300,
-              filesize: 6417,
-              uncropped: false,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4826292_3-300x300.jpg"
-            },
-            woocommerce_single: {
-              file: "4826292_3-600x900.jpg",
-              width: 600,
-              height: 900,
-              filesize: 27788,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4826292_3-600x900.jpg"
-            },
-            woocommerce_gallery_thumbnail: {
-              file: "4826292_3-100x100.jpg",
-              width: 100,
-              height: 100,
-              filesize: 1823,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4826292_3-100x100.jpg"
             },
             shop_catalog: {
               file: "4826292_3-300x300.jpg",
@@ -13963,7 +13977,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4826292_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4826292_4-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4826292_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4826292_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4826292_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4826292_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4826292_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4826292_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4826292_4-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4826292_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4826292_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4826292_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4826292_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4826292_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -13978,6 +13992,31 @@ const state$2 = {
           file: "2022/07/4826292_4.jpg",
           filesize: 156923,
           sizes: {
+            woocommerce_thumbnail: {
+              file: "4826292_4-300x300.jpg",
+              width: 300,
+              height: 300,
+              filesize: 7181,
+              uncropped: false,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4826292_4-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "4826292_4-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 1800,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4826292_4-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "4826292_4-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 36924,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4826292_4-600x900.jpg"
+            },
             medium: {
               file: "4826292_4-200x300.jpg",
               width: 200,
@@ -14009,31 +14048,6 @@ const state$2 = {
               filesize: 68247,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/4826292_4-768x1152.jpg"
-            },
-            woocommerce_thumbnail: {
-              file: "4826292_4-300x300.jpg",
-              width: 300,
-              height: 300,
-              filesize: 7181,
-              uncropped: false,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4826292_4-300x300.jpg"
-            },
-            woocommerce_single: {
-              file: "4826292_4-600x900.jpg",
-              width: 600,
-              height: 900,
-              filesize: 36924,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4826292_4-600x900.jpg"
-            },
-            woocommerce_gallery_thumbnail: {
-              file: "4826292_4-100x100.jpg",
-              width: 100,
-              height: 100,
-              filesize: 1800,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4826292_4-100x100.jpg"
             },
             shop_catalog: {
               file: "4826292_4-300x300.jpg",
@@ -14137,7 +14151,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4832898_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4832898_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4832898_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4832898_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4832898_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4832898_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4832898_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4832898_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4832898_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4832898_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4832898_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4832898_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4832898_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4832898_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -14152,6 +14166,31 @@ const state$2 = {
           file: "2022/07/4832898_1.jpg",
           filesize: 84728,
           sizes: {
+            woocommerce_thumbnail: {
+              file: "4832898_1-300x300.jpg",
+              width: 300,
+              height: 300,
+              filesize: 9015,
+              uncropped: false,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4832898_1-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "4832898_1-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 2287,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4832898_1-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "4832898_1-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 35178,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4832898_1-600x900.jpg"
+            },
             medium: {
               file: "4832898_1-200x300.jpg",
               width: 200,
@@ -14183,31 +14222,6 @@ const state$2 = {
               filesize: 51815,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/4832898_1-768x1152.jpg"
-            },
-            woocommerce_thumbnail: {
-              file: "4832898_1-300x300.jpg",
-              width: 300,
-              height: 300,
-              filesize: 9015,
-              uncropped: false,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4832898_1-300x300.jpg"
-            },
-            woocommerce_single: {
-              file: "4832898_1-600x900.jpg",
-              width: 600,
-              height: 900,
-              filesize: 35178,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4832898_1-600x900.jpg"
-            },
-            woocommerce_gallery_thumbnail: {
-              file: "4832898_1-100x100.jpg",
-              width: 100,
-              height: 100,
-              filesize: 2287,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4832898_1-100x100.jpg"
             },
             shop_catalog: {
               file: "4832898_1-300x300.jpg",
@@ -14311,7 +14325,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4832898_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4832898_2-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4832898_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4832898_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4832898_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4832898_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4832898_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4832898_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4832898_2-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4832898_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4832898_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4832898_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4832898_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4832898_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -14326,6 +14340,31 @@ const state$2 = {
           file: "2022/07/4832898_2.jpg",
           filesize: 114239,
           sizes: {
+            woocommerce_thumbnail: {
+              file: "4832898_2-300x300.jpg",
+              width: 300,
+              height: 300,
+              filesize: 9934,
+              uncropped: false,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4832898_2-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "4832898_2-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 2268,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4832898_2-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "4832898_2-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 42726,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4832898_2-600x900.jpg"
+            },
             medium: {
               file: "4832898_2-200x300.jpg",
               width: 200,
@@ -14357,31 +14396,6 @@ const state$2 = {
               filesize: 64886,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/4832898_2-768x1152.jpg"
-            },
-            woocommerce_thumbnail: {
-              file: "4832898_2-300x300.jpg",
-              width: 300,
-              height: 300,
-              filesize: 9934,
-              uncropped: false,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4832898_2-300x300.jpg"
-            },
-            woocommerce_single: {
-              file: "4832898_2-600x900.jpg",
-              width: 600,
-              height: 900,
-              filesize: 42726,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4832898_2-600x900.jpg"
-            },
-            woocommerce_gallery_thumbnail: {
-              file: "4832898_2-100x100.jpg",
-              width: 100,
-              height: 100,
-              filesize: 2268,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4832898_2-100x100.jpg"
             },
             shop_catalog: {
               file: "4832898_2-300x300.jpg",
@@ -14485,7 +14499,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4832898_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4832898_3-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4832898_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4832898_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4832898_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4832898_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4832898_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4832898_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4832898_3-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4832898_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4832898_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4832898_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4832898_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4832898_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -14500,6 +14514,31 @@ const state$2 = {
           file: "2022/07/4832898_3.jpg",
           filesize: 115535,
           sizes: {
+            woocommerce_thumbnail: {
+              file: "4832898_3-300x300.jpg",
+              width: 300,
+              height: 300,
+              filesize: 9675,
+              uncropped: false,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4832898_3-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "4832898_3-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 2281,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4832898_3-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "4832898_3-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 42767,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4832898_3-600x900.jpg"
+            },
             medium: {
               file: "4832898_3-200x300.jpg",
               width: 200,
@@ -14531,31 +14570,6 @@ const state$2 = {
               filesize: 65288,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/4832898_3-768x1152.jpg"
-            },
-            woocommerce_thumbnail: {
-              file: "4832898_3-300x300.jpg",
-              width: 300,
-              height: 300,
-              filesize: 9675,
-              uncropped: false,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4832898_3-300x300.jpg"
-            },
-            woocommerce_single: {
-              file: "4832898_3-600x900.jpg",
-              width: 600,
-              height: 900,
-              filesize: 42767,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4832898_3-600x900.jpg"
-            },
-            woocommerce_gallery_thumbnail: {
-              file: "4832898_3-100x100.jpg",
-              width: 100,
-              height: 100,
-              filesize: 2281,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4832898_3-100x100.jpg"
             },
             shop_catalog: {
               file: "4832898_3-300x300.jpg",
@@ -14659,7 +14673,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4832898_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4832898_4-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4832898_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4832898_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4832898_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4832898_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4832898_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4832898_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4832898_4-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4832898_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4832898_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4832898_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4832898_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4832898_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -14674,6 +14688,31 @@ const state$2 = {
           file: "2022/07/4832898_4.jpg",
           filesize: 257161,
           sizes: {
+            woocommerce_thumbnail: {
+              file: "4832898_4-300x300.jpg",
+              width: 300,
+              height: 300,
+              filesize: 13927,
+              uncropped: false,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4832898_4-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "4832898_4-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 2404,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4832898_4-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "4832898_4-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 71672,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4832898_4-600x900.jpg"
+            },
             medium: {
               file: "4832898_4-200x300.jpg",
               width: 200,
@@ -14705,31 +14744,6 @@ const state$2 = {
               filesize: 122735,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/4832898_4-768x1152.jpg"
-            },
-            woocommerce_thumbnail: {
-              file: "4832898_4-300x300.jpg",
-              width: 300,
-              height: 300,
-              filesize: 13927,
-              uncropped: false,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4832898_4-300x300.jpg"
-            },
-            woocommerce_single: {
-              file: "4832898_4-600x900.jpg",
-              width: 600,
-              height: 900,
-              filesize: 71672,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4832898_4-600x900.jpg"
-            },
-            woocommerce_gallery_thumbnail: {
-              file: "4832898_4-100x100.jpg",
-              width: 100,
-              height: 100,
-              filesize: 2404,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4832898_4-100x100.jpg"
             },
             shop_catalog: {
               file: "4832898_4-300x300.jpg",
@@ -14833,7 +14847,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4835549_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4835549_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4835549_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4835549_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4835549_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4835549_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4835549_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4835549_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4835549_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4835549_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4835549_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4835549_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4835549_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4835549_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -14848,6 +14862,31 @@ const state$2 = {
           file: "2022/07/4835549_1.jpg",
           filesize: 228301,
           sizes: {
+            woocommerce_thumbnail: {
+              file: "4835549_1-300x300.jpg",
+              width: 300,
+              height: 300,
+              filesize: 11614,
+              uncropped: false,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4835549_1-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "4835549_1-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 2208,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4835549_1-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "4835549_1-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 64237,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4835549_1-600x900.jpg"
+            },
             medium: {
               file: "4835549_1-200x300.jpg",
               width: 200,
@@ -14879,31 +14918,6 @@ const state$2 = {
               filesize: 111537,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/4835549_1-768x1152.jpg"
-            },
-            woocommerce_thumbnail: {
-              file: "4835549_1-300x300.jpg",
-              width: 300,
-              height: 300,
-              filesize: 11614,
-              uncropped: false,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4835549_1-300x300.jpg"
-            },
-            woocommerce_single: {
-              file: "4835549_1-600x900.jpg",
-              width: 600,
-              height: 900,
-              filesize: 64237,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4835549_1-600x900.jpg"
-            },
-            woocommerce_gallery_thumbnail: {
-              file: "4835549_1-100x100.jpg",
-              width: 100,
-              height: 100,
-              filesize: 2208,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4835549_1-100x100.jpg"
             },
             shop_catalog: {
               file: "4835549_1-300x300.jpg",
@@ -15007,7 +15021,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4835549_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4835549_2-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4835549_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4835549_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4835549_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4835549_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4835549_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4835549_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4835549_2-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4835549_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4835549_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4835549_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4835549_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4835549_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -15022,6 +15036,31 @@ const state$2 = {
           file: "2022/07/4835549_2.jpg",
           filesize: 84058,
           sizes: {
+            woocommerce_thumbnail: {
+              file: "4835549_2-300x300.jpg",
+              width: 300,
+              height: 300,
+              filesize: 7080,
+              uncropped: false,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4835549_2-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "4835549_2-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 1772,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4835549_2-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "4835549_2-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 32859,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4835549_2-600x900.jpg"
+            },
             medium: {
               file: "4835549_2-200x300.jpg",
               width: 200,
@@ -15053,31 +15092,6 @@ const state$2 = {
               filesize: 50457,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/4835549_2-768x1152.jpg"
-            },
-            woocommerce_thumbnail: {
-              file: "4835549_2-300x300.jpg",
-              width: 300,
-              height: 300,
-              filesize: 7080,
-              uncropped: false,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4835549_2-300x300.jpg"
-            },
-            woocommerce_single: {
-              file: "4835549_2-600x900.jpg",
-              width: 600,
-              height: 900,
-              filesize: 32859,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4835549_2-600x900.jpg"
-            },
-            woocommerce_gallery_thumbnail: {
-              file: "4835549_2-100x100.jpg",
-              width: 100,
-              height: 100,
-              filesize: 1772,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4835549_2-100x100.jpg"
             },
             shop_catalog: {
               file: "4835549_2-300x300.jpg",
@@ -15181,7 +15195,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4835549_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4835549_3-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4835549_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4835549_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4835549_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4835549_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4835549_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4835549_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4835549_3-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4835549_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4835549_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4835549_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4835549_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4835549_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -15196,6 +15210,31 @@ const state$2 = {
           file: "2022/07/4835549_3.jpg",
           filesize: 208737,
           sizes: {
+            woocommerce_thumbnail: {
+              file: "4835549_3-300x300.jpg",
+              width: 300,
+              height: 300,
+              filesize: 9603,
+              uncropped: false,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4835549_3-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "4835549_3-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 1796,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4835549_3-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "4835549_3-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 58501,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4835549_3-600x900.jpg"
+            },
             medium: {
               file: "4835549_3-200x300.jpg",
               width: 200,
@@ -15227,31 +15266,6 @@ const state$2 = {
               filesize: 102568,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/4835549_3-768x1152.jpg"
-            },
-            woocommerce_thumbnail: {
-              file: "4835549_3-300x300.jpg",
-              width: 300,
-              height: 300,
-              filesize: 9603,
-              uncropped: false,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4835549_3-300x300.jpg"
-            },
-            woocommerce_single: {
-              file: "4835549_3-600x900.jpg",
-              width: 600,
-              height: 900,
-              filesize: 58501,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4835549_3-600x900.jpg"
-            },
-            woocommerce_gallery_thumbnail: {
-              file: "4835549_3-100x100.jpg",
-              width: 100,
-              height: 100,
-              filesize: 1796,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4835549_3-100x100.jpg"
             },
             shop_catalog: {
               file: "4835549_3-300x300.jpg",
@@ -15355,7 +15369,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4835549_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4835549_4-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4835549_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4835549_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4835549_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4835549_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4835549_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4835549_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4835549_4-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4835549_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4835549_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4835549_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4835549_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4835549_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -15370,6 +15384,31 @@ const state$2 = {
           file: "2022/07/4835549_4.jpg",
           filesize: 399502,
           sizes: {
+            woocommerce_thumbnail: {
+              file: "4835549_4-300x300.jpg",
+              width: 300,
+              height: 300,
+              filesize: 12856,
+              uncropped: false,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4835549_4-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "4835549_4-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 1698,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4835549_4-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "4835549_4-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 106287,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4835549_4-600x900.jpg"
+            },
             medium: {
               file: "4835549_4-200x300.jpg",
               width: 200,
@@ -15401,31 +15440,6 @@ const state$2 = {
               filesize: 194083,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/4835549_4-768x1152.jpg"
-            },
-            woocommerce_thumbnail: {
-              file: "4835549_4-300x300.jpg",
-              width: 300,
-              height: 300,
-              filesize: 12856,
-              uncropped: false,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4835549_4-300x300.jpg"
-            },
-            woocommerce_single: {
-              file: "4835549_4-600x900.jpg",
-              width: 600,
-              height: 900,
-              filesize: 106287,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4835549_4-600x900.jpg"
-            },
-            woocommerce_gallery_thumbnail: {
-              file: "4835549_4-100x100.jpg",
-              width: 100,
-              height: 100,
-              filesize: 1698,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4835549_4-100x100.jpg"
             },
             shop_catalog: {
               file: "4835549_4-300x300.jpg",
@@ -15529,7 +15543,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4848125_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4848125_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4848125_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4848125_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4848125_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4848125_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4848125_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4848125_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4848125_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4848125_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4848125_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4848125_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4848125_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4848125_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -15544,6 +15558,31 @@ const state$2 = {
           file: "2022/07/4848125_1.jpg",
           filesize: 67140,
           sizes: {
+            woocommerce_thumbnail: {
+              file: "4848125_1-300x300.jpg",
+              width: 300,
+              height: 300,
+              filesize: 6404,
+              uncropped: false,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4848125_1-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "4848125_1-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 1720,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4848125_1-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "4848125_1-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 26149,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4848125_1-600x900.jpg"
+            },
             medium: {
               file: "4848125_1-200x300.jpg",
               width: 200,
@@ -15575,31 +15614,6 @@ const state$2 = {
               filesize: 40033,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/4848125_1-768x1152.jpg"
-            },
-            woocommerce_thumbnail: {
-              file: "4848125_1-300x300.jpg",
-              width: 300,
-              height: 300,
-              filesize: 6404,
-              uncropped: false,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4848125_1-300x300.jpg"
-            },
-            woocommerce_single: {
-              file: "4848125_1-600x900.jpg",
-              width: 600,
-              height: 900,
-              filesize: 26149,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4848125_1-600x900.jpg"
-            },
-            woocommerce_gallery_thumbnail: {
-              file: "4848125_1-100x100.jpg",
-              width: 100,
-              height: 100,
-              filesize: 1720,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4848125_1-100x100.jpg"
             },
             shop_catalog: {
               file: "4848125_1-300x300.jpg",
@@ -15703,7 +15717,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4848125_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4848125_2-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4848125_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4848125_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4848125_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4848125_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4848125_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4848125_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4848125_2-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4848125_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4848125_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4848125_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4848125_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4848125_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -15718,6 +15732,31 @@ const state$2 = {
           file: "2022/07/4848125_2.jpg",
           filesize: 73463,
           sizes: {
+            woocommerce_thumbnail: {
+              file: "4848125_2-300x300.jpg",
+              width: 300,
+              height: 300,
+              filesize: 6231,
+              uncropped: false,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4848125_2-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "4848125_2-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 1765,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4848125_2-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "4848125_2-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 27390,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4848125_2-600x900.jpg"
+            },
             medium: {
               file: "4848125_2-200x300.jpg",
               width: 200,
@@ -15749,31 +15788,6 @@ const state$2 = {
               filesize: 42298,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/4848125_2-768x1152.jpg"
-            },
-            woocommerce_thumbnail: {
-              file: "4848125_2-300x300.jpg",
-              width: 300,
-              height: 300,
-              filesize: 6231,
-              uncropped: false,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4848125_2-300x300.jpg"
-            },
-            woocommerce_single: {
-              file: "4848125_2-600x900.jpg",
-              width: 600,
-              height: 900,
-              filesize: 27390,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4848125_2-600x900.jpg"
-            },
-            woocommerce_gallery_thumbnail: {
-              file: "4848125_2-100x100.jpg",
-              width: 100,
-              height: 100,
-              filesize: 1765,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4848125_2-100x100.jpg"
             },
             shop_catalog: {
               file: "4848125_2-300x300.jpg",
@@ -15877,7 +15891,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4848125_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4848125_3-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4848125_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4848125_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4848125_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4848125_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4848125_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4848125_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4848125_3-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4848125_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4848125_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4848125_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4848125_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4848125_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -15892,6 +15906,31 @@ const state$2 = {
           file: "2022/07/4848125_3.jpg",
           filesize: 82504,
           sizes: {
+            woocommerce_thumbnail: {
+              file: "4848125_3-300x300.jpg",
+              width: 300,
+              height: 300,
+              filesize: 6145,
+              uncropped: false,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4848125_3-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "4848125_3-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 1755,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4848125_3-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "4848125_3-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 29348,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4848125_3-600x900.jpg"
+            },
             medium: {
               file: "4848125_3-200x300.jpg",
               width: 200,
@@ -15923,31 +15962,6 @@ const state$2 = {
               filesize: 45936,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/4848125_3-768x1152.jpg"
-            },
-            woocommerce_thumbnail: {
-              file: "4848125_3-300x300.jpg",
-              width: 300,
-              height: 300,
-              filesize: 6145,
-              uncropped: false,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4848125_3-300x300.jpg"
-            },
-            woocommerce_single: {
-              file: "4848125_3-600x900.jpg",
-              width: 600,
-              height: 900,
-              filesize: 29348,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4848125_3-600x900.jpg"
-            },
-            woocommerce_gallery_thumbnail: {
-              file: "4848125_3-100x100.jpg",
-              width: 100,
-              height: 100,
-              filesize: 1755,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4848125_3-100x100.jpg"
             },
             shop_catalog: {
               file: "4848125_3-300x300.jpg",
@@ -16051,7 +16065,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4848125_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4848125_4-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4848125_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4848125_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4848125_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4848125_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4848125_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4848125_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4848125_4-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4848125_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4848125_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4848125_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4848125_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4848125_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -16066,6 +16080,31 @@ const state$2 = {
           file: "2022/07/4848125_4.jpg",
           filesize: 132661,
           sizes: {
+            woocommerce_thumbnail: {
+              file: "4848125_4-300x300.jpg",
+              width: 300,
+              height: 300,
+              filesize: 6353,
+              uncropped: false,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4848125_4-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "4848125_4-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 1628,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4848125_4-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "4848125_4-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 33485,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4848125_4-600x900.jpg"
+            },
             medium: {
               file: "4848125_4-200x300.jpg",
               width: 200,
@@ -16097,31 +16136,6 @@ const state$2 = {
               filesize: 59283,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/4848125_4-768x1152.jpg"
-            },
-            woocommerce_thumbnail: {
-              file: "4848125_4-300x300.jpg",
-              width: 300,
-              height: 300,
-              filesize: 6353,
-              uncropped: false,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4848125_4-300x300.jpg"
-            },
-            woocommerce_single: {
-              file: "4848125_4-600x900.jpg",
-              width: 600,
-              height: 900,
-              filesize: 33485,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4848125_4-600x900.jpg"
-            },
-            woocommerce_gallery_thumbnail: {
-              file: "4848125_4-100x100.jpg",
-              width: 100,
-              height: 100,
-              filesize: 1628,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4848125_4-100x100.jpg"
             },
             shop_catalog: {
               file: "4848125_4-300x300.jpg",
@@ -16225,7 +16239,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4852616_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4852616_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4852616_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4852616_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4852616_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4852616_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4852616_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4852616_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4852616_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4852616_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4852616_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4852616_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4852616_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4852616_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -16240,6 +16254,31 @@ const state$2 = {
           file: "2022/07/4852616_1.jpg",
           filesize: 125386,
           sizes: {
+            woocommerce_thumbnail: {
+              file: "4852616_1-300x300.jpg",
+              width: 300,
+              height: 300,
+              filesize: 11390,
+              uncropped: false,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4852616_1-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "4852616_1-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 2339,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4852616_1-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "4852616_1-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 47966,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4852616_1-600x900.jpg"
+            },
             medium: {
               file: "4852616_1-200x300.jpg",
               width: 200,
@@ -16271,31 +16310,6 @@ const state$2 = {
               filesize: 72635,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/4852616_1-768x1152.jpg"
-            },
-            woocommerce_thumbnail: {
-              file: "4852616_1-300x300.jpg",
-              width: 300,
-              height: 300,
-              filesize: 11390,
-              uncropped: false,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4852616_1-300x300.jpg"
-            },
-            woocommerce_single: {
-              file: "4852616_1-600x900.jpg",
-              width: 600,
-              height: 900,
-              filesize: 47966,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4852616_1-600x900.jpg"
-            },
-            woocommerce_gallery_thumbnail: {
-              file: "4852616_1-100x100.jpg",
-              width: 100,
-              height: 100,
-              filesize: 2339,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4852616_1-100x100.jpg"
             },
             shop_catalog: {
               file: "4852616_1-300x300.jpg",
@@ -16399,7 +16413,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4852616_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4852616_2-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4852616_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4852616_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4852616_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4852616_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4852616_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4852616_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4852616_2-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4852616_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4852616_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4852616_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4852616_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4852616_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -16414,6 +16428,31 @@ const state$2 = {
           file: "2022/07/4852616_2.jpg",
           filesize: 135232,
           sizes: {
+            woocommerce_thumbnail: {
+              file: "4852616_2-300x300.jpg",
+              width: 300,
+              height: 300,
+              filesize: 11843,
+              uncropped: false,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4852616_2-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "4852616_2-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 2187,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4852616_2-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "4852616_2-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 54263,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4852616_2-600x900.jpg"
+            },
             medium: {
               file: "4852616_2-200x300.jpg",
               width: 200,
@@ -16445,31 +16484,6 @@ const state$2 = {
               filesize: 81626,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/4852616_2-768x1152.jpg"
-            },
-            woocommerce_thumbnail: {
-              file: "4852616_2-300x300.jpg",
-              width: 300,
-              height: 300,
-              filesize: 11843,
-              uncropped: false,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4852616_2-300x300.jpg"
-            },
-            woocommerce_single: {
-              file: "4852616_2-600x900.jpg",
-              width: 600,
-              height: 900,
-              filesize: 54263,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4852616_2-600x900.jpg"
-            },
-            woocommerce_gallery_thumbnail: {
-              file: "4852616_2-100x100.jpg",
-              width: 100,
-              height: 100,
-              filesize: 2187,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4852616_2-100x100.jpg"
             },
             shop_catalog: {
               file: "4852616_2-300x300.jpg",
@@ -16573,7 +16587,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4852616_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4852616_3.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4852616_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4852616_3.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4852616_3.jpg 1020w, http://localhost/wp-content/uploads/2022/07/4852616_3-600x900.jpg 600w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -16596,6 +16610,22 @@ const state$2 = {
               uncropped: false,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/4852616_3-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "4852616_3-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 2175,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4852616_3-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "4852616_3-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 54425,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4852616_3-600x900.jpg"
             },
             full: {
               file: "4852616_3.jpg",
@@ -16674,7 +16704,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4852616_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4852616_4-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4852616_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4852616_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4852616_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4852616_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4852616_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4852616_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4852616_4-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4852616_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4852616_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4852616_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4852616_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4852616_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -16689,6 +16719,31 @@ const state$2 = {
           file: "2022/07/4852616_4.jpg",
           filesize: 284132,
           sizes: {
+            woocommerce_thumbnail: {
+              file: "4852616_4-300x300.jpg",
+              width: 300,
+              height: 300,
+              filesize: 20797,
+              uncropped: false,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4852616_4-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "4852616_4-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 3871,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4852616_4-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "4852616_4-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 97035,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/4852616_4-600x900.jpg"
+            },
             medium: {
               file: "4852616_4-200x300.jpg",
               width: 200,
@@ -16720,31 +16775,6 @@ const state$2 = {
               filesize: 151954,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/4852616_4-768x1152.jpg"
-            },
-            woocommerce_thumbnail: {
-              file: "4852616_4-300x300.jpg",
-              width: 300,
-              height: 300,
-              filesize: 20797,
-              uncropped: false,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4852616_4-300x300.jpg"
-            },
-            woocommerce_single: {
-              file: "4852616_4-600x900.jpg",
-              width: 600,
-              height: 900,
-              filesize: 97035,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4852616_4-600x900.jpg"
-            },
-            woocommerce_gallery_thumbnail: {
-              file: "4852616_4-100x100.jpg",
-              width: 100,
-              height: 100,
-              filesize: 3871,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/4852616_4-100x100.jpg"
             },
             shop_catalog: {
               file: "4852616_4-300x300.jpg",
@@ -16848,7 +16878,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/5066454_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/5066454_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/5066454_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/5066454_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/5066454_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/5066454_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/5066454_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/5066454_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/5066454_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/5066454_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/5066454_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/5066454_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/5066454_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/5066454_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -16863,6 +16893,31 @@ const state$2 = {
           file: "2022/07/5066454_1.jpg",
           filesize: 98887,
           sizes: {
+            woocommerce_thumbnail: {
+              file: "5066454_1-300x300.jpg",
+              width: 300,
+              height: 300,
+              filesize: 7640,
+              uncropped: false,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/5066454_1-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "5066454_1-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 2039,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/5066454_1-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "5066454_1-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 37053,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/5066454_1-600x900.jpg"
+            },
             medium: {
               file: "5066454_1-200x300.jpg",
               width: 200,
@@ -16894,31 +16949,6 @@ const state$2 = {
               filesize: 57854,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/5066454_1-768x1152.jpg"
-            },
-            woocommerce_thumbnail: {
-              file: "5066454_1-300x300.jpg",
-              width: 300,
-              height: 300,
-              filesize: 7640,
-              uncropped: false,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/5066454_1-300x300.jpg"
-            },
-            woocommerce_single: {
-              file: "5066454_1-600x900.jpg",
-              width: 600,
-              height: 900,
-              filesize: 37053,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/5066454_1-600x900.jpg"
-            },
-            woocommerce_gallery_thumbnail: {
-              file: "5066454_1-100x100.jpg",
-              width: 100,
-              height: 100,
-              filesize: 2039,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/5066454_1-100x100.jpg"
             },
             shop_catalog: {
               file: "5066454_1-300x300.jpg",
@@ -17022,7 +17052,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/5066454_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/5066454_2-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/5066454_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/5066454_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/5066454_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/5066454_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/5066454_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/5066454_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/5066454_2-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/5066454_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/5066454_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/5066454_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/5066454_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/5066454_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -17037,6 +17067,31 @@ const state$2 = {
           file: "2022/07/5066454_2.jpg",
           filesize: 85382,
           sizes: {
+            woocommerce_thumbnail: {
+              file: "5066454_2-300x300.jpg",
+              width: 300,
+              height: 300,
+              filesize: 8168,
+              uncropped: false,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/5066454_2-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "5066454_2-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 2066,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/5066454_2-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "5066454_2-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 35225,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/5066454_2-600x900.jpg"
+            },
             medium: {
               file: "5066454_2-200x300.jpg",
               width: 200,
@@ -17068,31 +17123,6 @@ const state$2 = {
               filesize: 52918,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/5066454_2-768x1152.jpg"
-            },
-            woocommerce_thumbnail: {
-              file: "5066454_2-300x300.jpg",
-              width: 300,
-              height: 300,
-              filesize: 8168,
-              uncropped: false,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/5066454_2-300x300.jpg"
-            },
-            woocommerce_single: {
-              file: "5066454_2-600x900.jpg",
-              width: 600,
-              height: 900,
-              filesize: 35225,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/5066454_2-600x900.jpg"
-            },
-            woocommerce_gallery_thumbnail: {
-              file: "5066454_2-100x100.jpg",
-              width: 100,
-              height: 100,
-              filesize: 2066,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/5066454_2-100x100.jpg"
             },
             shop_catalog: {
               file: "5066454_2-300x300.jpg",
@@ -17196,7 +17226,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/5066454_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/5066454_3-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/5066454_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/5066454_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/5066454_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/5066454_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/5066454_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/5066454_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/5066454_3-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/5066454_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/5066454_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/5066454_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/5066454_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/5066454_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -17211,6 +17241,31 @@ const state$2 = {
           file: "2022/07/5066454_3.jpg",
           filesize: 79595,
           sizes: {
+            woocommerce_thumbnail: {
+              file: "5066454_3-300x300.jpg",
+              width: 300,
+              height: 300,
+              filesize: 5826,
+              uncropped: false,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/5066454_3-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "5066454_3-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 1695,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/5066454_3-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "5066454_3-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 30050,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/5066454_3-600x900.jpg"
+            },
             medium: {
               file: "5066454_3-200x300.jpg",
               width: 200,
@@ -17242,31 +17297,6 @@ const state$2 = {
               filesize: 46844,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/5066454_3-768x1152.jpg"
-            },
-            woocommerce_thumbnail: {
-              file: "5066454_3-300x300.jpg",
-              width: 300,
-              height: 300,
-              filesize: 5826,
-              uncropped: false,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/5066454_3-300x300.jpg"
-            },
-            woocommerce_single: {
-              file: "5066454_3-600x900.jpg",
-              width: 600,
-              height: 900,
-              filesize: 30050,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/5066454_3-600x900.jpg"
-            },
-            woocommerce_gallery_thumbnail: {
-              file: "5066454_3-100x100.jpg",
-              width: 100,
-              height: 100,
-              filesize: 1695,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/5066454_3-100x100.jpg"
             },
             shop_catalog: {
               file: "5066454_3-300x300.jpg",
@@ -17370,7 +17400,7 @@ const state$2 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/5066454_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/5066454_4-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/5066454_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/5066454_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/5066454_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/5066454_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/5066454_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/5066454_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/5066454_4-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/5066454_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/5066454_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/5066454_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/5066454_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/5066454_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -17385,6 +17415,31 @@ const state$2 = {
           file: "2022/07/5066454_4.jpg",
           filesize: 140414,
           sizes: {
+            woocommerce_thumbnail: {
+              file: "5066454_4-300x300.jpg",
+              width: 300,
+              height: 300,
+              filesize: 7790,
+              uncropped: false,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/5066454_4-300x300.jpg"
+            },
+            woocommerce_gallery_thumbnail: {
+              file: "5066454_4-100x100.jpg",
+              width: 100,
+              height: 100,
+              filesize: 1920,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/5066454_4-100x100.jpg"
+            },
+            woocommerce_single: {
+              file: "5066454_4-600x900.jpg",
+              width: 600,
+              height: 900,
+              filesize: 41100,
+              mime_type: "image/jpeg",
+              source_url: "http://localhost/wp-content/uploads/2022/07/5066454_4-600x900.jpg"
+            },
             medium: {
               file: "5066454_4-200x300.jpg",
               width: 200,
@@ -17416,31 +17471,6 @@ const state$2 = {
               filesize: 70661,
               mime_type: "image/jpeg",
               source_url: "http://localhost/wp-content/uploads/2022/07/5066454_4-768x1152.jpg"
-            },
-            woocommerce_thumbnail: {
-              file: "5066454_4-300x300.jpg",
-              width: 300,
-              height: 300,
-              filesize: 7790,
-              uncropped: false,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/5066454_4-300x300.jpg"
-            },
-            woocommerce_single: {
-              file: "5066454_4-600x900.jpg",
-              width: 600,
-              height: 900,
-              filesize: 41100,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/5066454_4-600x900.jpg"
-            },
-            woocommerce_gallery_thumbnail: {
-              file: "5066454_4-100x100.jpg",
-              width: 100,
-              height: 100,
-              filesize: 1920,
-              mime_type: "image/jpeg",
-              source_url: "http://localhost/wp-content/uploads/2022/07/5066454_4-100x100.jpg"
             },
             shop_catalog: {
               file: "5066454_4-300x300.jpg",
@@ -17559,14 +17589,6 @@ const state$2 = {
           file: "2022/08/273_kh_204.png",
           filesize: 67936,
           sizes: {
-            thumbnail: {
-              file: "273_kh_204-150x150.png",
-              width: 150,
-              height: 150,
-              filesize: 34246,
-              mime_type: "image/png",
-              source_url: "http://localhost/wp-content/uploads/2022/08/273_kh_204-150x150.png"
-            },
             woocommerce_gallery_thumbnail: {
               file: "273_kh_204-100x100.png",
               width: 100,
@@ -17574,6 +17596,14 @@ const state$2 = {
               filesize: 17356,
               mime_type: "image/png",
               source_url: "http://localhost/wp-content/uploads/2022/08/273_kh_204-100x100.png"
+            },
+            thumbnail: {
+              file: "273_kh_204-150x150.png",
+              width: 150,
+              height: 150,
+              filesize: 34246,
+              mime_type: "image/png",
+              source_url: "http://localhost/wp-content/uploads/2022/08/273_kh_204-150x150.png"
             },
             shop_thumbnail: {
               file: "273_kh_204-100x100.png",
@@ -17675,14 +17705,6 @@ const state$2 = {
           file: "2022/08/outerwear2.png",
           filesize: 67671,
           sizes: {
-            thumbnail: {
-              file: "outerwear2-150x150.png",
-              width: 150,
-              height: 150,
-              filesize: 27626,
-              mime_type: "image/png",
-              source_url: "http://localhost/wp-content/uploads/2022/08/outerwear2-150x150.png"
-            },
             woocommerce_gallery_thumbnail: {
               file: "outerwear2-100x100.png",
               width: 100,
@@ -17690,6 +17712,14 @@ const state$2 = {
               filesize: 13462,
               mime_type: "image/png",
               source_url: "http://localhost/wp-content/uploads/2022/08/outerwear2-100x100.png"
+            },
+            thumbnail: {
+              file: "outerwear2-150x150.png",
+              width: 150,
+              height: 150,
+              filesize: 27626,
+              mime_type: "image/png",
+              source_url: "http://localhost/wp-content/uploads/2022/08/outerwear2-150x150.png"
             },
             shop_thumbnail: {
               file: "outerwear2-100x100.png",
@@ -17791,14 +17821,6 @@ const state$2 = {
           file: "2022/08/skirt.png",
           filesize: 74689,
           sizes: {
-            thumbnail: {
-              file: "skirt-150x150.png",
-              width: 150,
-              height: 150,
-              filesize: 30980,
-              mime_type: "image/png",
-              source_url: "http://localhost/wp-content/uploads/2022/08/skirt-150x150.png"
-            },
             woocommerce_gallery_thumbnail: {
               file: "skirt-100x100.png",
               width: 100,
@@ -17806,6 +17828,14 @@ const state$2 = {
               filesize: 15541,
               mime_type: "image/png",
               source_url: "http://localhost/wp-content/uploads/2022/08/skirt-100x100.png"
+            },
+            thumbnail: {
+              file: "skirt-150x150.png",
+              width: 150,
+              height: 150,
+              filesize: 30980,
+              mime_type: "image/png",
+              source_url: "http://localhost/wp-content/uploads/2022/08/skirt-150x150.png"
             },
             shop_thumbnail: {
               file: "skirt-100x100.png",
@@ -17907,14 +17937,6 @@ const state$2 = {
           file: "2022/08/273kh204_razdel_zhenshchiny_1.png",
           filesize: 106912,
           sizes: {
-            thumbnail: {
-              file: "273kh204_razdel_zhenshchiny_1-150x150.png",
-              width: 150,
-              height: 150,
-              filesize: 43666,
-              mime_type: "image/png",
-              source_url: "http://localhost/wp-content/uploads/2022/08/273kh204_razdel_zhenshchiny_1-150x150.png"
-            },
             woocommerce_gallery_thumbnail: {
               file: "273kh204_razdel_zhenshchiny_1-100x100.png",
               width: 100,
@@ -17922,6 +17944,14 @@ const state$2 = {
               filesize: 21109,
               mime_type: "image/png",
               source_url: "http://localhost/wp-content/uploads/2022/08/273kh204_razdel_zhenshchiny_1-100x100.png"
+            },
+            thumbnail: {
+              file: "273kh204_razdel_zhenshchiny_1-150x150.png",
+              width: 150,
+              height: 150,
+              filesize: 43666,
+              mime_type: "image/png",
+              source_url: "http://localhost/wp-content/uploads/2022/08/273kh204_razdel_zhenshchiny_1-150x150.png"
             },
             shop_thumbnail: {
               file: "273kh204_razdel_zhenshchiny_1-100x100.png",
@@ -18023,14 +18053,6 @@ const state$2 = {
           file: "2022/08/273kh204_razdel_zhenshchiny_2.png",
           filesize: 35611,
           sizes: {
-            thumbnail: {
-              file: "273kh204_razdel_zhenshchiny_2-150x150.png",
-              width: 150,
-              height: 150,
-              filesize: 19763,
-              mime_type: "image/png",
-              source_url: "http://localhost/wp-content/uploads/2022/08/273kh204_razdel_zhenshchiny_2-150x150.png"
-            },
             woocommerce_gallery_thumbnail: {
               file: "273kh204_razdel_zhenshchiny_2-100x100.png",
               width: 100,
@@ -18038,6 +18060,14 @@ const state$2 = {
               filesize: 9847,
               mime_type: "image/png",
               source_url: "http://localhost/wp-content/uploads/2022/08/273kh204_razdel_zhenshchiny_2-100x100.png"
+            },
+            thumbnail: {
+              file: "273kh204_razdel_zhenshchiny_2-150x150.png",
+              width: 150,
+              height: 150,
+              filesize: 19763,
+              mime_type: "image/png",
+              source_url: "http://localhost/wp-content/uploads/2022/08/273kh204_razdel_zhenshchiny_2-150x150.png"
             },
             shop_thumbnail: {
               file: "273kh204_razdel_zhenshchiny_2-100x100.png",
@@ -18139,14 +18169,6 @@ const state$2 = {
           file: "2022/08/scarf.png",
           filesize: 85252,
           sizes: {
-            thumbnail: {
-              file: "scarf-150x150.png",
-              width: 150,
-              height: 150,
-              filesize: 34974,
-              mime_type: "image/png",
-              source_url: "http://localhost/wp-content/uploads/2022/08/scarf-150x150.png"
-            },
             woocommerce_gallery_thumbnail: {
               file: "scarf-100x100.png",
               width: 100,
@@ -18154,6 +18176,14 @@ const state$2 = {
               filesize: 16746,
               mime_type: "image/png",
               source_url: "http://localhost/wp-content/uploads/2022/08/scarf-100x100.png"
+            },
+            thumbnail: {
+              file: "scarf-150x150.png",
+              width: 150,
+              height: 150,
+              filesize: 34974,
+              mime_type: "image/png",
+              source_url: "http://localhost/wp-content/uploads/2022/08/scarf-150x150.png"
             },
             shop_thumbnail: {
               file: "scarf-100x100.png",
@@ -18329,7 +18359,8 @@ const state$2 = {
         total: 126,
         totalPages: 2
       }
-    ]
+    ],
+    single_params: []
   },
   products: {
     route_base: "products",
@@ -18348,7 +18379,6 @@ const state$2 = {
       orderby: ""
     },
     apiType: "/wc/v3/",
-    single_params: [],
     params: {
       page: 1,
       category: "",
@@ -18362,11 +18392,6 @@ const state$2 = {
       order: "",
       orderby: "",
       per_page: 100
-    },
-    basedRequest: {
-      route_base: "products",
-      type: "products",
-      apiType: "/wc/v3/"
     },
     items: {
       "66": {
@@ -18595,7 +18620,7 @@ const state$2 = {
         date_on_sale_to_gmt: null,
         on_sale: true,
         purchasable: true,
-        total_sales: 0,
+        total_sales: 3,
         virtual: false,
         downloadable: false,
         downloads: [],
@@ -18749,11 +18774,11 @@ const state$2 = {
         menu_order: 0,
         price_html: '<del aria-hidden="true"><span class="woocommerce-Price-amount amount"><bdi>20000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8381;</span></bdi></span></del> <ins><span class="woocommerce-Price-amount amount"><bdi>18000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8381;</span></bdi></span></ins>',
         related_ids: [
-          121,
+          85,
+          96,
           118,
           112,
-          117,
-          90
+          274
         ],
         meta_data: [
           {
@@ -18804,7 +18829,7 @@ const state$2 = {
         date_on_sale_to_gmt: null,
         on_sale: true,
         purchasable: true,
-        total_sales: 0,
+        total_sales: 4,
         virtual: false,
         downloadable: false,
         downloads: [],
@@ -18966,11 +18991,11 @@ const state$2 = {
         menu_order: 0,
         price_html: '<del aria-hidden="true"><span class="woocommerce-Price-amount amount"><bdi>19000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8381;</span></bdi></span></del> <ins><span class="woocommerce-Price-amount amount"><bdi>18000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8381;</span></bdi></span></ins>',
         related_ids: [
-          85,
           102,
-          67,
-          90,
-          117
+          66,
+          117,
+          118,
+          85
         ],
         meta_data: [],
         stock_status: "instock",
@@ -19015,7 +19040,7 @@ const state$2 = {
         date_on_sale_to_gmt: null,
         on_sale: false,
         purchasable: true,
-        total_sales: 0,
+        total_sales: 2,
         virtual: false,
         downloadable: false,
         downloads: [],
@@ -19169,11 +19194,11 @@ const state$2 = {
         menu_order: 0,
         price_html: '<span class="woocommerce-Price-amount amount"><bdi>10000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8381;</span></bdi></span>',
         related_ids: [
-          118,
-          121,
-          120,
-          119,
-          274
+          117,
+          274,
+          112,
+          102,
+          121
         ],
         meta_data: [],
         stock_status: "instock",
@@ -19378,11 +19403,11 @@ const state$2 = {
         menu_order: 0,
         price_html: '<span class="woocommerce-Price-amount amount"><bdi>27190&nbsp;<span class="woocommerce-Price-currencySymbol">&#8381;</span></bdi></span>',
         related_ids: [
-          121,
           118,
-          120,
-          96,
-          102
+          119,
+          81,
+          112,
+          121
         ],
         meta_data: [],
         stock_status: "instock",
@@ -19580,11 +19605,11 @@ const state$2 = {
         menu_order: 0,
         price_html: '<span class="woocommerce-Price-amount amount"><bdi>24999&nbsp;<span class="woocommerce-Price-currencySymbol">&#8381;</span></bdi></span>',
         related_ids: [
-          117,
-          112,
-          85,
-          274,
-          121
+          121,
+          81,
+          119,
+          102,
+          85
         ],
         meta_data: [],
         stock_status: "instock",
@@ -19782,11 +19807,11 @@ const state$2 = {
         menu_order: 0,
         price_html: '<del aria-hidden="true"><span class="woocommerce-Price-amount amount"><bdi>28000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8381;</span></bdi></span></del> <ins><span class="woocommerce-Price-amount amount"><bdi>18000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8381;</span></bdi></span></ins>',
         related_ids: [
-          96,
+          112,
+          119,
+          81,
           85,
-          274,
-          67,
-          90
+          274
         ],
         meta_data: [],
         stock_status: "instock",
@@ -19983,11 +20008,11 @@ const state$2 = {
         menu_order: 0,
         price_html: '<del aria-hidden="true"><span class="woocommerce-Price-amount amount"><bdi>30555&nbsp;<span class="woocommerce-Price-currencySymbol">&#8381;</span></bdi></span></del> <ins><span class="woocommerce-Price-amount amount"><bdi>29400&nbsp;<span class="woocommerce-Price-currencySymbol">&#8381;</span></bdi></span></ins>',
         related_ids: [
-          117,
-          90,
+          119,
           121,
-          67,
-          120
+          102,
+          117,
+          85
         ],
         meta_data: [],
         stock_status: "instock",
@@ -20186,11 +20211,11 @@ const state$2 = {
         menu_order: 0,
         price_html: '<del aria-hidden="true"><span class="woocommerce-Price-amount amount"><bdi>27190&nbsp;<span class="woocommerce-Price-currencySymbol">&#8381;</span></bdi></span></del> <ins><span class="woocommerce-Price-amount amount"><bdi>18000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8381;</span></bdi></span></ins>',
         related_ids: [
-          118,
           102,
           274,
-          81,
-          90
+          90,
+          85,
+          119
         ],
         meta_data: [],
         stock_status: "outofstock",
@@ -20393,11 +20418,11 @@ const state$2 = {
         menu_order: 0,
         price_html: '<span class="woocommerce-Price-amount amount"><bdi>86000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8381;</span></bdi></span>',
         related_ids: [
-          119,
           81,
-          121,
-          120,
-          117
+          90,
+          274,
+          85,
+          96
         ],
         meta_data: [],
         stock_status: "instock",
@@ -20604,10 +20629,10 @@ const state$2 = {
         price_html: '<span class="woocommerce-Price-amount amount"><bdi>30000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8381;</span></bdi></span>',
         related_ids: [
           118,
+          274,
           90,
-          85,
-          112,
-          67
+          117,
+          120
         ],
         meta_data: [],
         stock_status: "instock",
@@ -20811,11 +20836,11 @@ const state$2 = {
         menu_order: 0,
         price_html: '<span class="woocommerce-Price-amount amount"><bdi>54000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8381;</span></bdi></span>',
         related_ids: [
-          67,
-          102,
           117,
-          118,
-          81
+          96,
+          67,
+          81,
+          119
         ],
         meta_data: [],
         stock_status: "instock",
@@ -21014,11 +21039,11 @@ const state$2 = {
         menu_order: 0,
         price_html: '<del aria-hidden="true"><span class="woocommerce-Price-amount amount"><bdi>13000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8381;</span></bdi></span></del> <ins><span class="woocommerce-Price-amount amount"><bdi>10000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8381;</span></bdi></span></ins>',
         related_ids: [
-          85,
-          96,
-          67,
+          120,
+          117,
           119,
-          117
+          102,
+          67
         ],
         meta_data: [],
         stock_status: "instock",
@@ -21071,7 +21096,8 @@ const state$2 = {
         total: 13,
         totalPages: 1
       }
-    ]
+    ],
+    single_params: []
   },
   productsCategories: {
     route_base: "products/categories",
@@ -21082,17 +21108,11 @@ const state$2 = {
       ]
     },
     apiType: "/wc/v3/",
-    single_params: [],
     params: {
       exclude: [
         17
       ],
       per_page: 100
-    },
-    basedRequest: {
-      route_base: "products/categories",
-      type: "productsCategories",
-      apiType: "/wc/v3/"
     },
     items: {
       "20": {
@@ -21732,21 +21752,16 @@ const state$2 = {
         total: 21,
         totalPages: 1
       }
-    ]
+    ],
+    single_params: []
   },
   productsAttributes: {
     route_base: "products/attributes",
     type: "productsAttributes",
     specific_params: [],
     apiType: "/wc/v3/",
-    single_params: [],
     params: {
       per_page: 100
-    },
-    basedRequest: {
-      route_base: "products/attributes",
-      type: "productsAttributes",
-      apiType: "/wc/v3/"
     },
     items: {
       "1": {
@@ -21828,6 +21843,46 @@ const state$2 = {
             }
           ]
         }
+      },
+      "6": {
+        id: 6,
+        name: "\u041F\u0440\u0438\u0437\u043D\u0430\u043A \u043F\u0440\u0435\u0434\u043C\u0435\u0442\u0430 \u0440\u0430\u0441\u0447\u0435\u0442\u0430",
+        slug: "pa_yookassa_payment_subject",
+        type: "select",
+        order_by: "menu_order",
+        has_archives: false,
+        _links: {
+          self: [
+            {
+              href: "http://localhost/wp-json/wc/v3/products/attributes/6"
+            }
+          ],
+          collection: [
+            {
+              href: "http://localhost/wp-json/wc/v3/products/attributes"
+            }
+          ]
+        }
+      },
+      "7": {
+        id: 7,
+        name: "\u041F\u0440\u0438\u0437\u043D\u0430\u043A \u0441\u043F\u043E\u0441\u043E\u0431\u0430 \u0440\u0430\u0441\u0447\u0451\u0442\u0430",
+        slug: "pa_yookassa_payment_mode",
+        type: "select",
+        order_by: "menu_order",
+        has_archives: false,
+        _links: {
+          self: [
+            {
+              href: "http://localhost/wp-json/wc/v3/products/attributes/7"
+            }
+          ],
+          collection: [
+            {
+              href: "http://localhost/wp-json/wc/v3/products/attributes"
+            }
+          ]
+        }
       }
     },
     requests: [
@@ -21839,26 +21894,23 @@ const state$2 = {
           1,
           3,
           4,
-          5
+          5,
+          7,
+          6
         ],
-        total: 4,
+        total: 6,
         totalPages: 1
       }
-    ]
+    ],
+    single_params: []
   },
   productsTermsBrands: {
     route_base: "products/attributes/1/terms",
     type: "productsTermsBrands",
     specific_params: [],
     apiType: "/wc/v3/",
-    single_params: [],
     params: {
       per_page: 100
-    },
-    basedRequest: {
-      route_base: "products/attributes/1/terms",
-      type: "productsTermsBrands",
-      apiType: "/wc/v3/"
     },
     items: {
       "26": {
@@ -21956,21 +22008,16 @@ const state$2 = {
         total: 4,
         totalPages: 1
       }
-    ]
+    ],
+    single_params: []
   },
   productsTermsMaterials: {
     route_base: "products/attributes/3/terms",
     type: "productsTermsMaterials",
     specific_params: [],
     apiType: "/wc/v3/",
-    single_params: [],
     params: {
       per_page: 100
-    },
-    basedRequest: {
-      route_base: "products/attributes/3/terms",
-      type: "productsTermsMaterials",
-      apiType: "/wc/v3/"
     },
     items: {
       "31": {
@@ -22068,21 +22115,16 @@ const state$2 = {
         total: 4,
         totalPages: 1
       }
-    ]
+    ],
+    single_params: []
   },
   productsTermsSizes: {
     route_base: "products/attributes/4/terms",
     type: "productsTermsSizes",
     specific_params: [],
     apiType: "/wc/v3/",
-    single_params: [],
     params: {
       per_page: 100
-    },
-    basedRequest: {
-      route_base: "products/attributes/4/terms",
-      type: "productsTermsSizes",
-      apiType: "/wc/v3/"
     },
     items: {
       "34": {
@@ -22180,21 +22222,16 @@ const state$2 = {
         total: 4,
         totalPages: 1
       }
-    ]
+    ],
+    single_params: []
   },
   productsTermsColors: {
     route_base: "products/attributes/5/terms",
     type: "productsTermsColors",
     specific_params: [],
     apiType: "/wc/v3/",
-    single_params: [],
     params: {
       per_page: 100
-    },
-    basedRequest: {
-      route_base: "products/attributes/5/terms",
-      type: "productsTermsColors",
-      apiType: "/wc/v3/"
     },
     items: {
       "41": {
@@ -22439,41 +22476,628 @@ const state$2 = {
         total: 11,
         totalPages: 1
       }
-    ]
+    ],
+    single_params: []
+  },
+  paymentGateways: {
+    route_base: "payment_gateways",
+    type: "payment_gateways",
+    specific_params: [],
+    apiType: "/wc/v3/",
+    params: {
+      per_page: 100
+    },
+    items: {
+      bacs: {
+        id: "bacs",
+        title: "Direct bank transfer",
+        description: "Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order will not be shipped until the funds have cleared in our account.",
+        order: 0,
+        enabled: false,
+        method_title: "\u041F\u0440\u044F\u043C\u043E\u0439 \u0431\u0430\u043D\u043A\u043E\u0432\u0441\u043A\u0438\u0439 \u043F\u0435\u0440\u0435\u0432\u043E\u0434",
+        method_description: "\u041F\u0440\u0438\u043D\u0438\u043C\u0430\u0442\u044C \u043F\u043B\u0430\u0442\u0435\u0436\u0438 \u043B\u0438\u0447\u043D\u043E \u043F\u043E\u0441\u0440\u0435\u0434\u0441\u0442\u0432\u043E\u043C \u043F\u0440\u044F\u043C\u043E\u0433\u043E \u0431\u0430\u043D\u043A\u043E\u0432\u0441\u043A\u043E\u0433\u043E \u043F\u0435\u0440\u0435\u0432\u043E\u0434\u0430 (BACS).",
+        method_supports: [
+          "products"
+        ],
+        settings: {
+          title: {
+            id: "title",
+            label: "\u041D\u0430\u0438\u043C\u0435\u043D\u043E\u0432\u0430\u043D\u0438\u0435",
+            description: "\u0417\u0430\u0433\u043E\u043B\u043E\u0432\u043E\u043A, \u043A\u043E\u0442\u043E\u0440\u044B\u0439 \u0432\u0438\u0434\u0438\u0442 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C \u0432 \u043F\u0440\u043E\u0446\u0435\u0441\u0441\u0435 \u043E\u0444\u043E\u0440\u043C\u043B\u0435\u043D\u0438\u044F \u0437\u0430\u043A\u0430\u0437\u0430.",
+            type: "text",
+            value: "Direct bank transfer",
+            "default": "\u041F\u0440\u044F\u043C\u043E\u0439 \u0431\u0430\u043D\u043A\u043E\u0432\u0441\u043A\u0438\u0439 \u043F\u0435\u0440\u0435\u0432\u043E\u0434",
+            tip: "\u0417\u0430\u0433\u043E\u043B\u043E\u0432\u043E\u043A, \u043A\u043E\u0442\u043E\u0440\u044B\u0439 \u0432\u0438\u0434\u0438\u0442 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C \u0432 \u043F\u0440\u043E\u0446\u0435\u0441\u0441\u0435 \u043E\u0444\u043E\u0440\u043C\u043B\u0435\u043D\u0438\u044F \u0437\u0430\u043A\u0430\u0437\u0430.",
+            placeholder: ""
+          },
+          instructions: {
+            id: "instructions",
+            label: "\u0418\u043D\u0441\u0442\u0440\u0443\u043A\u0446\u0438\u0438",
+            description: "\u0418\u043D\u0441\u0442\u0440\u0443\u043A\u0446\u0438\u0438, \u043A\u043E\u0442\u043E\u0440\u044B\u0435 \u0431\u0443\u0434\u0443\u0442 \u0434\u043E\u0431\u0430\u0432\u043B\u0435\u043D\u044B \u043D\u0430 \u0441\u0442\u0440\u0430\u043D\u0438\u0446\u0443 \u0431\u043B\u0430\u0433\u043E\u0434\u0430\u0440\u043D\u043E\u0441\u0442\u0438 \u0438 \u0432 \u043F\u0438\u0441\u044C\u043C\u043E.",
+            type: "textarea",
+            value: "",
+            "default": "",
+            tip: "\u0418\u043D\u0441\u0442\u0440\u0443\u043A\u0446\u0438\u0438, \u043A\u043E\u0442\u043E\u0440\u044B\u0435 \u0431\u0443\u0434\u0443\u0442 \u0434\u043E\u0431\u0430\u0432\u043B\u0435\u043D\u044B \u043D\u0430 \u0441\u0442\u0440\u0430\u043D\u0438\u0446\u0443 \u0431\u043B\u0430\u0433\u043E\u0434\u0430\u0440\u043D\u043E\u0441\u0442\u0438 \u0438 \u0432 \u043F\u0438\u0441\u044C\u043C\u043E.",
+            placeholder: ""
+          }
+        },
+        _links: {
+          self: [
+            {
+              href: "http://localhost/wp-json/wc/v3/payment_gateways/bacs"
+            }
+          ],
+          collection: [
+            {
+              href: "http://localhost/wp-json/wc/v3/payment_gateways"
+            }
+          ]
+        }
+      },
+      cheque: {
+        id: "cheque",
+        title: "\u0427\u0435\u043A\u043E\u0432\u044B\u0435 \u043F\u043B\u0430\u0442\u0435\u0436\u0438",
+        description: "\u041F\u043E\u0436\u0430\u043B\u0443\u0439\u0441\u0442\u0430, \u043E\u0442\u043F\u0440\u0430\u0432\u044C\u0442\u0435 \u0432\u0430\u0448 \u0447\u0435\u043A, \u0443\u043A\u0430\u0437\u0430\u0432 \u0434\u0430\u043D\u043D\u044B\u0435 \u043C\u0430\u0433\u0430\u0437\u0438\u043D\u0430: \u043D\u0430\u0437\u0432\u0430\u043D\u0438\u0435, \u0443\u043B\u0438\u0446\u0443, \u0433\u043E\u0440\u043E\u0434, \u043E\u0431\u043B\u0430\u0441\u0442\u044C / \u0440\u0430\u0439\u043E\u043D, \u0441\u0442\u0440\u0430\u043D\u0443, \u043F\u043E\u0447\u0442\u043E\u0432\u044B\u0439 \u0438\u043D\u0434\u0435\u043A\u0441.",
+        order: 1,
+        enabled: false,
+        method_title: "\u0427\u0435\u043A\u043E\u0432\u044B\u0435 \u043F\u043B\u0430\u0442\u0435\u0436\u0438",
+        method_description: "\u041F\u0440\u0438\u043D\u0438\u043C\u0430\u0442\u044C \u043F\u043B\u0430\u0442\u0435\u0436\u0438 \u043B\u0438\u0447\u043D\u043E \u043F\u043E\u0441\u0440\u0435\u0434\u0441\u0442\u0432\u043E\u043C \u0447\u0435\u043A\u043E\u0432. \u0414\u0430\u043D\u043D\u044B\u0439 \u0430\u0432\u0442\u043E\u043D\u043E\u043C\u043D\u044B\u0439 \u0448\u043B\u044E\u0437 \u043C\u043E\u0436\u043D\u043E \u0438\u0441\u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u044C \u0434\u043B\u044F \u0442\u0435\u0441\u0442\u043E\u0432\u044B\u0445 \u043F\u043E\u043A\u0443\u043F\u043E\u043A.",
+        method_supports: [
+          "products"
+        ],
+        settings: {
+          title: {
+            id: "title",
+            label: "\u041D\u0430\u0438\u043C\u0435\u043D\u043E\u0432\u0430\u043D\u0438\u0435",
+            description: "\u0417\u0430\u0433\u043E\u043B\u043E\u0432\u043E\u043A, \u043A\u043E\u0442\u043E\u0440\u044B\u0439 \u0432\u0438\u0434\u0438\u0442 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C \u0432 \u043F\u0440\u043E\u0446\u0435\u0441\u0441\u0435 \u043E\u0444\u043E\u0440\u043C\u043B\u0435\u043D\u0438\u044F \u0437\u0430\u043A\u0430\u0437\u0430.",
+            type: "text",
+            value: "\u0427\u0435\u043A\u043E\u0432\u044B\u0435 \u043F\u043B\u0430\u0442\u0435\u0436\u0438",
+            "default": "\u0427\u0435\u043A\u043E\u0432\u044B\u0435 \u043F\u043B\u0430\u0442\u0435\u0436\u0438",
+            tip: "\u0417\u0430\u0433\u043E\u043B\u043E\u0432\u043E\u043A, \u043A\u043E\u0442\u043E\u0440\u044B\u0439 \u0432\u0438\u0434\u0438\u0442 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C \u0432 \u043F\u0440\u043E\u0446\u0435\u0441\u0441\u0435 \u043E\u0444\u043E\u0440\u043C\u043B\u0435\u043D\u0438\u044F \u0437\u0430\u043A\u0430\u0437\u0430.",
+            placeholder: ""
+          },
+          instructions: {
+            id: "instructions",
+            label: "\u0418\u043D\u0441\u0442\u0440\u0443\u043A\u0446\u0438\u0438",
+            description: "\u0418\u043D\u0441\u0442\u0440\u0443\u043A\u0446\u0438\u0438, \u043A\u043E\u0442\u043E\u0440\u044B\u0435 \u0431\u0443\u0434\u0443\u0442 \u0434\u043E\u0431\u0430\u0432\u043B\u0435\u043D\u044B \u043D\u0430 \u0441\u0442\u0440\u0430\u043D\u0438\u0446\u0443 \u0431\u043B\u0430\u0433\u043E\u0434\u0430\u0440\u043D\u043E\u0441\u0442\u0438 \u0438 \u0432 \u043F\u0438\u0441\u044C\u043C\u043E.",
+            type: "textarea",
+            value: "",
+            "default": "",
+            tip: "\u0418\u043D\u0441\u0442\u0440\u0443\u043A\u0446\u0438\u0438, \u043A\u043E\u0442\u043E\u0440\u044B\u0435 \u0431\u0443\u0434\u0443\u0442 \u0434\u043E\u0431\u0430\u0432\u043B\u0435\u043D\u044B \u043D\u0430 \u0441\u0442\u0440\u0430\u043D\u0438\u0446\u0443 \u0431\u043B\u0430\u0433\u043E\u0434\u0430\u0440\u043D\u043E\u0441\u0442\u0438 \u0438 \u0432 \u043F\u0438\u0441\u044C\u043C\u043E.",
+            placeholder: ""
+          }
+        },
+        _links: {
+          self: [
+            {
+              href: "http://localhost/wp-json/wc/v3/payment_gateways/cheque"
+            }
+          ],
+          collection: [
+            {
+              href: "http://localhost/wp-json/wc/v3/payment_gateways"
+            }
+          ]
+        }
+      },
+      cod: {
+        id: "cod",
+        title: "Cash on delivery",
+        description: "Pay with cash upon delivery.",
+        order: 2,
+        enabled: true,
+        method_title: "\u041E\u043F\u043B\u0430\u0442\u0430 \u043F\u0440\u0438 \u0434\u043E\u0441\u0442\u0430\u0432\u043A\u0435",
+        method_description: "\u041E\u043F\u043B\u0430\u0442\u0430 \u043D\u0430\u043B\u0438\u0447\u043D\u044B\u043C\u0438 (\u0438\u043B\u0438 \u0438\u043D\u044B\u043C \u043C\u0435\u0442\u043E\u0434\u043E\u043C) \u043F\u043E \u0444\u0430\u043A\u0442\u0443 \u0434\u043E\u0441\u0442\u0430\u0432\u043A\u0438.",
+        method_supports: [
+          "products"
+        ],
+        settings: {
+          title: {
+            id: "title",
+            label: "\u041D\u0430\u0438\u043C\u0435\u043D\u043E\u0432\u0430\u043D\u0438\u0435",
+            description: "\u041E\u043F\u0438\u0441\u0430\u043D\u0438\u0435 \u043C\u0435\u0442\u043E\u0434\u0430 \u043E\u043F\u043B\u0430\u0442\u044B, \u043A\u043E\u0442\u043E\u0440\u043E\u0435 \u043A\u043B\u0438\u0435\u043D\u0442 \u0431\u0443\u0434\u0435\u0442 \u0432\u0438\u0434\u0435\u0442\u044C \u043F\u0440\u0438 \u043E\u0444\u043E\u0440\u043C\u043B\u0435\u043D\u0438\u0438 \u0437\u0430\u043A\u0430\u0437\u0430.",
+            type: "text",
+            value: "Cash on delivery",
+            "default": "\u041E\u043F\u043B\u0430\u0442\u0430 \u043F\u0440\u0438 \u0434\u043E\u0441\u0442\u0430\u0432\u043A\u0435",
+            tip: "\u041E\u043F\u0438\u0441\u0430\u043D\u0438\u0435 \u043C\u0435\u0442\u043E\u0434\u0430 \u043E\u043F\u043B\u0430\u0442\u044B, \u043A\u043E\u0442\u043E\u0440\u043E\u0435 \u043A\u043B\u0438\u0435\u043D\u0442 \u0431\u0443\u0434\u0435\u0442 \u0432\u0438\u0434\u0435\u0442\u044C \u043F\u0440\u0438 \u043E\u0444\u043E\u0440\u043C\u043B\u0435\u043D\u0438\u0438 \u0437\u0430\u043A\u0430\u0437\u0430.",
+            placeholder: ""
+          },
+          instructions: {
+            id: "instructions",
+            label: "\u0418\u043D\u0441\u0442\u0440\u0443\u043A\u0446\u0438\u0438",
+            description: "\u0418\u043D\u0441\u0442\u0440\u0443\u043A\u0446\u0438\u0438, \u043A\u043E\u0442\u043E\u0440\u044B\u0435 \u0431\u0443\u0434\u0443\u0442 \u0434\u043E\u0431\u0430\u0432\u043B\u0435\u043D\u044B \u043D\u0430 \u0441\u0442\u0440\u0430\u043D\u0438\u0446\u0443 \u0431\u043B\u0430\u0433\u043E\u0434\u0430\u0440\u043D\u043E\u0441\u0442\u0435\u0439.",
+            type: "textarea",
+            value: "Pay with cash upon delivery.",
+            "default": "\u041E\u043F\u043B\u0430\u0442\u0430 \u043D\u0430\u043B\u0438\u0447\u043D\u044B\u043C\u0438 \u043F\u0440\u0438 \u0434\u043E\u0441\u0442\u0430\u0432\u043A\u0435 \u0437\u0430\u043A\u0430\u0437\u0430.",
+            tip: "\u0418\u043D\u0441\u0442\u0440\u0443\u043A\u0446\u0438\u0438, \u043A\u043E\u0442\u043E\u0440\u044B\u0435 \u0431\u0443\u0434\u0443\u0442 \u0434\u043E\u0431\u0430\u0432\u043B\u0435\u043D\u044B \u043D\u0430 \u0441\u0442\u0440\u0430\u043D\u0438\u0446\u0443 \u0431\u043B\u0430\u0433\u043E\u0434\u0430\u0440\u043D\u043E\u0441\u0442\u0435\u0439.",
+            placeholder: ""
+          },
+          enable_for_methods: {
+            id: "enable_for_methods",
+            label: "\u0412\u043A\u043B\u044E\u0447\u0435\u043D\u043E \u0434\u043B\u044F \u0441\u043F\u043E\u0441\u043E\u0431\u043E\u0432 \u0434\u043E\u0441\u0442\u0430\u0432\u043A\u0438",
+            description: "\u0415\u0441\u043B\u0438 \u043E\u043F\u043B\u0430\u0442\u0430 \u043D\u0430\u043B\u043E\u0436\u0435\u043D\u043D\u044B\u043C \u043F\u043B\u0430\u0442\u0435\u0436\u043E\u043C \u0434\u043E\u0441\u0442\u0443\u043F\u043D\u0430 \u0442\u043E\u043B\u044C\u043A\u043E \u0434\u043B\u044F \u043E\u043F\u0440\u0435\u0434\u0435\u043B\u0435\u043D\u043D\u044B\u0445 \u0441\u043F\u043E\u0441\u043E\u0431\u043E\u0432 \u0434\u043E\u0441\u0442\u0430\u0432\u043A\u0438, \u0437\u0430\u0434\u0430\u0439\u0442\u0435 \u0438\u0445 \u0437\u0434\u0435\u0441\u044C. \u041E\u0441\u0442\u0430\u0432\u044C\u0442\u0435 \u043F\u043E\u043B\u0435 \u043F\u0443\u0441\u0442\u044B\u043C, \u0447\u0442\u043E\u0431\u044B \u0432\u043A\u043B\u044E\u0447\u0438\u0442\u044C \u0434\u043B\u044F \u0432\u0441\u0435\u0445 \u043C\u0435\u0442\u043E\u0434\u043E\u0432.",
+            type: "multiselect",
+            value: "",
+            "default": "",
+            tip: "\u0415\u0441\u043B\u0438 \u043E\u043F\u043B\u0430\u0442\u0430 \u043D\u0430\u043B\u043E\u0436\u0435\u043D\u043D\u044B\u043C \u043F\u043B\u0430\u0442\u0435\u0436\u043E\u043C \u0434\u043E\u0441\u0442\u0443\u043F\u043D\u0430 \u0442\u043E\u043B\u044C\u043A\u043E \u0434\u043B\u044F \u043E\u043F\u0440\u0435\u0434\u0435\u043B\u0435\u043D\u043D\u044B\u0445 \u0441\u043F\u043E\u0441\u043E\u0431\u043E\u0432 \u0434\u043E\u0441\u0442\u0430\u0432\u043A\u0438, \u0437\u0430\u0434\u0430\u0439\u0442\u0435 \u0438\u0445 \u0437\u0434\u0435\u0441\u044C. \u041E\u0441\u0442\u0430\u0432\u044C\u0442\u0435 \u043F\u043E\u043B\u0435 \u043F\u0443\u0441\u0442\u044B\u043C, \u0447\u0442\u043E\u0431\u044B \u0432\u043A\u043B\u044E\u0447\u0438\u0442\u044C \u0434\u043B\u044F \u0432\u0441\u0435\u0445 \u043C\u0435\u0442\u043E\u0434\u043E\u0432.",
+            placeholder: ""
+          },
+          enable_for_virtual: {
+            id: "enable_for_virtual",
+            label: "\u0420\u0430\u0437\u0440\u0435\u0448\u0438\u0442\u044C \u043E\u043F\u043B\u0430\u0442\u0443 \u043D\u0430\u043B\u043E\u0436\u0435\u043D\u043D\u044B\u043C \u043F\u043B\u0430\u0442\u0435\u0436\u043E\u043C \u0434\u043B\u044F \u0432\u0438\u0440\u0442\u0443\u0430\u043B\u044C\u043D\u044B\u0445 \u0437\u0430\u043A\u0430\u0437\u043E\u0432",
+            description: "",
+            type: "checkbox",
+            value: "yes",
+            "default": "yes",
+            tip: "",
+            placeholder: ""
+          }
+        },
+        _links: {
+          self: [
+            {
+              href: "http://localhost/wp-json/wc/v3/payment_gateways/cod"
+            }
+          ],
+          collection: [
+            {
+              href: "http://localhost/wp-json/wc/v3/payment_gateways"
+            }
+          ]
+        }
+      },
+      yookassa_widget: {
+        id: "yookassa_widget",
+        title: "\u0411\u0430\u043D\u043A\u043E\u0432\u0441\u043A\u0438\u0435 \u043A\u0430\u0440\u0442\u044B, Apple Pay, Google Pay",
+        description: "\u041E\u043F\u043B\u0430\u0442\u0430 \u0431\u0430\u043D\u043A\u043E\u0432\u0441\u043A\u043E\u0439 \u043A\u0430\u0440\u0442\u043E\u0439 \u043D\u0430 \u0441\u0430\u0439\u0442\u0435",
+        order: 3,
+        enabled: false,
+        method_title: "\u041F\u043B\u0430\u0442\u0451\u0436\u043D\u044B\u0439 \u0432\u0438\u0434\u0436\u0435\u0442 \u042EKassa (\u043A\u0430\u0440\u0442\u044B, Apple Pay \u0438 Google Pay)",
+        method_description: "\u041F\u043E\u043A\u0443\u043F\u0430\u0442\u0435\u043B\u044C \u0432\u0432\u043E\u0434\u0438\u0442 \u043F\u043B\u0430\u0442\u0451\u0436\u043D\u044B\u0435 \u0434\u0430\u043D\u043D\u044B\u0435 \u043F\u0440\u044F\u043C\u043E \u0432\u043E \u0432\u0440\u0435\u043C\u044F \u0437\u0430\u043A\u0430\u0437\u0430, \u0431\u0435\u0437 \u0440\u0435\u0434\u0438\u0440\u0435\u043A\u0442\u0430 \u043D\u0430 \u0441\u0442\u0440\u0430\u043D\u0438\u0446\u0443 \u042EKassa. \u041E\u043F\u0446\u0438\u044F \u0440\u0430\u0431\u043E\u0442\u0430\u0435\u0442 \u0434\u043B\u044F \u043F\u043B\u0430\u0442\u0435\u0436\u0435\u0439 \u0441 \u043A\u0430\u0440\u0442 (\u0432 \u0442\u043E\u043C \u0447\u0438\u0441\u043B\u0435, \u0447\u0435\u0440\u0435\u0437 Apple Pay \u0438 Google Pay).",
+        method_supports: [
+          "products"
+        ],
+        settings: {
+          title: {
+            id: "title",
+            label: "\u0417\u0430\u0433\u043E\u043B\u043E\u0432\u043E\u043A",
+            description: "\u041D\u0430\u0437\u0432\u0430\u043D\u0438\u0435, \u043A\u043E\u0442\u043E\u0440\u043E\u0435 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C \u0432\u0438\u0434\u0438\u0442 \u0432\u043E \u0432\u0440\u0435\u043C\u044F \u043E\u043F\u043B\u0430\u0442\u044B",
+            type: "text",
+            value: "",
+            "default": "\u0411\u0430\u043D\u043A\u043E\u0432\u0441\u043A\u0438\u0435 \u043A\u0430\u0440\u0442\u044B, Apple Pay, Google Pay",
+            tip: "\u041D\u0430\u0437\u0432\u0430\u043D\u0438\u0435, \u043A\u043E\u0442\u043E\u0440\u043E\u0435 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C \u0432\u0438\u0434\u0438\u0442 \u0432\u043E \u0432\u0440\u0435\u043C\u044F \u043E\u043F\u043B\u0430\u0442\u044B",
+            placeholder: ""
+          }
+        },
+        _links: {
+          self: [
+            {
+              href: "http://localhost/wp-json/wc/v3/payment_gateways/yookassa_widget"
+            }
+          ],
+          collection: [
+            {
+              href: "http://localhost/wp-json/wc/v3/payment_gateways"
+            }
+          ]
+        }
+      },
+      yookassa_bank_card: {
+        id: "yookassa_bank_card",
+        title: "\u0411\u0430\u043D\u043A\u043E\u0432\u0441\u043A\u0438\u0435 \u043A\u0430\u0440\u0442\u044B \u2014 Visa, Mastercard \u0438 Maestro, \xAB\u041C\u0438\u0440\xBB",
+        description: "\u041E\u043F\u043B\u0430\u0442\u0430 \u0441 \u043F\u0440\u043E\u0438\u0437\u0432\u043E\u043B\u044C\u043D\u043E\u0439 \u0431\u0430\u043D\u043A\u043E\u0432\u0441\u043A\u043E\u0439 \u043A\u0430\u0440\u0442\u044B",
+        order: 4,
+        enabled: true,
+        method_title: "\u0411\u0430\u043D\u043A\u043E\u0432\u0441\u043A\u0438\u0435 \u043A\u0430\u0440\u0442\u044B",
+        method_description: "\u041E\u043F\u043B\u0430\u0442\u0430 \u0441 \u043F\u0440\u043E\u0438\u0437\u0432\u043E\u043B\u044C\u043D\u043E\u0439 \u0431\u0430\u043D\u043A\u043E\u0432\u0441\u043A\u043E\u0439 \u043A\u0430\u0440\u0442\u044B",
+        method_supports: [
+          "products",
+          "subscriptions",
+          "tokenization",
+          "subscription_cancellation",
+          "subscription_suspension",
+          "subscription_reactivation",
+          "subscription_date_changes"
+        ],
+        settings: {
+          title: {
+            id: "title",
+            label: "\u0417\u0430\u0433\u043E\u043B\u043E\u0432\u043E\u043A",
+            description: "\u041D\u0430\u0437\u0432\u0430\u043D\u0438\u0435, \u043A\u043E\u0442\u043E\u0440\u043E\u0435 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C \u0432\u0438\u0434\u0438\u0442 \u0432\u043E \u0432\u0440\u0435\u043C\u044F \u043E\u043F\u043B\u0430\u0442\u044B",
+            type: "text",
+            value: "",
+            "default": "\u0411\u0430\u043D\u043A\u043E\u0432\u0441\u043A\u0438\u0435 \u043A\u0430\u0440\u0442\u044B \u2014 Visa, Mastercard \u0438 Maestro, \xAB\u041C\u0438\u0440\xBB",
+            tip: "\u041D\u0430\u0437\u0432\u0430\u043D\u0438\u0435, \u043A\u043E\u0442\u043E\u0440\u043E\u0435 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C \u0432\u0438\u0434\u0438\u0442 \u0432\u043E \u0432\u0440\u0435\u043C\u044F \u043E\u043F\u043B\u0430\u0442\u044B",
+            placeholder: ""
+          },
+          save_payment_method: {
+            id: "save_payment_method",
+            label: "\u041F\u043E\u043A\u0443\u043F\u0430\u0442\u0435\u043B\u0438 \u043C\u043E\u0433\u0443\u0442 \u0441\u043E\u0445\u0440\u0430\u043D\u044F\u0442\u044C \u043A\u0430\u0440\u0442\u0443 \u0434\u043B\u044F \u043F\u043E\u0432\u0442\u043E\u0440\u043D\u043E\u0439 \u043E\u043F\u043B\u0430\u0442\u044B",
+            description: "",
+            type: "checkbox",
+            value: "no",
+            "default": "no",
+            tip: "",
+            placeholder: ""
+          }
+        },
+        _links: {
+          self: [
+            {
+              href: "http://localhost/wp-json/wc/v3/payment_gateways/yookassa_bank_card"
+            }
+          ],
+          collection: [
+            {
+              href: "http://localhost/wp-json/wc/v3/payment_gateways"
+            }
+          ]
+        }
+      },
+      yookassa_alfabank: {
+        id: "yookassa_alfabank",
+        title: "\u0410\u043B\u044C\u0444\u0430-\u041A\u043B\u0438\u043A",
+        description: "\u041E\u043F\u043B\u0430\u0442\u0430 \u0447\u0435\u0440\u0435\u0437 \u0410\u043B\u044C\u0444\u0430 \u0431\u0430\u043D\u043A",
+        order: 5,
+        enabled: false,
+        method_title: "\u0410\u043B\u044C\u0444\u0430-\u041A\u043B\u0438\u043A",
+        method_description: "\u041E\u043F\u043B\u0430\u0442\u0430 \u0447\u0435\u0440\u0435\u0437 \u0410\u043B\u044C\u0444\u0430 \u0431\u0430\u043D\u043A",
+        method_supports: [
+          "products"
+        ],
+        settings: {
+          title: {
+            id: "title",
+            label: "\u0417\u0430\u0433\u043E\u043B\u043E\u0432\u043E\u043A",
+            description: "\u041D\u0430\u0437\u0432\u0430\u043D\u0438\u0435, \u043A\u043E\u0442\u043E\u0440\u043E\u0435 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C \u0432\u0438\u0434\u0438\u0442 \u0432\u043E \u0432\u0440\u0435\u043C\u044F \u043E\u043F\u043B\u0430\u0442\u044B",
+            type: "text",
+            value: "",
+            "default": "\u0410\u043B\u044C\u0444\u0430-\u041A\u043B\u0438\u043A",
+            tip: "\u041D\u0430\u0437\u0432\u0430\u043D\u0438\u0435, \u043A\u043E\u0442\u043E\u0440\u043E\u0435 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C \u0432\u0438\u0434\u0438\u0442 \u0432\u043E \u0432\u0440\u0435\u043C\u044F \u043E\u043F\u043B\u0430\u0442\u044B",
+            placeholder: ""
+          }
+        },
+        _links: {
+          self: [
+            {
+              href: "http://localhost/wp-json/wc/v3/payment_gateways/yookassa_alfabank"
+            }
+          ],
+          collection: [
+            {
+              href: "http://localhost/wp-json/wc/v3/payment_gateways"
+            }
+          ]
+        }
+      },
+      yookassa_qiwi: {
+        id: "yookassa_qiwi",
+        title: "QIWI Wallet",
+        description: "QIWI Wallet",
+        order: 6,
+        enabled: false,
+        method_title: "QIWI Wallet",
+        method_description: "QIWI Wallet",
+        method_supports: [
+          "products"
+        ],
+        settings: {
+          title: {
+            id: "title",
+            label: "\u0417\u0430\u0433\u043E\u043B\u043E\u0432\u043E\u043A",
+            description: "\u041D\u0430\u0437\u0432\u0430\u043D\u0438\u0435, \u043A\u043E\u0442\u043E\u0440\u043E\u0435 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C \u0432\u0438\u0434\u0438\u0442 \u0432\u043E \u0432\u0440\u0435\u043C\u044F \u043E\u043F\u043B\u0430\u0442\u044B",
+            type: "text",
+            value: "",
+            "default": "QIWI Wallet",
+            tip: "\u041D\u0430\u0437\u0432\u0430\u043D\u0438\u0435, \u043A\u043E\u0442\u043E\u0440\u043E\u0435 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C \u0432\u0438\u0434\u0438\u0442 \u0432\u043E \u0432\u0440\u0435\u043C\u044F \u043E\u043F\u043B\u0430\u0442\u044B",
+            placeholder: ""
+          }
+        },
+        _links: {
+          self: [
+            {
+              href: "http://localhost/wp-json/wc/v3/payment_gateways/yookassa_qiwi"
+            }
+          ],
+          collection: [
+            {
+              href: "http://localhost/wp-json/wc/v3/payment_gateways"
+            }
+          ]
+        }
+      },
+      yookassa_cash: {
+        id: "yookassa_cash",
+        title: "\u041D\u0430\u043B\u0438\u0447\u043D\u044B\u0435",
+        description: "\u041D\u0430\u043B\u0438\u0447\u043D\u044B\u0435",
+        order: 7,
+        enabled: false,
+        method_title: "\u041D\u0430\u043B\u0438\u0447\u043D\u044B\u0435",
+        method_description: "\u041D\u0430\u043B\u0438\u0447\u043D\u044B\u0435",
+        method_supports: [
+          "products"
+        ],
+        settings: {
+          title: {
+            id: "title",
+            label: "\u0417\u0430\u0433\u043E\u043B\u043E\u0432\u043E\u043A",
+            description: "\u041D\u0430\u0437\u0432\u0430\u043D\u0438\u0435, \u043A\u043E\u0442\u043E\u0440\u043E\u0435 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C \u0432\u0438\u0434\u0438\u0442 \u0432\u043E \u0432\u0440\u0435\u043C\u044F \u043E\u043F\u043B\u0430\u0442\u044B",
+            type: "text",
+            value: "",
+            "default": "\u041D\u0430\u043B\u0438\u0447\u043D\u044B\u0435",
+            tip: "\u041D\u0430\u0437\u0432\u0430\u043D\u0438\u0435, \u043A\u043E\u0442\u043E\u0440\u043E\u0435 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C \u0432\u0438\u0434\u0438\u0442 \u0432\u043E \u0432\u0440\u0435\u043C\u044F \u043E\u043F\u043B\u0430\u0442\u044B",
+            placeholder: ""
+          }
+        },
+        _links: {
+          self: [
+            {
+              href: "http://localhost/wp-json/wc/v3/payment_gateways/yookassa_cash"
+            }
+          ],
+          collection: [
+            {
+              href: "http://localhost/wp-json/wc/v3/payment_gateways"
+            }
+          ]
+        }
+      },
+      yookassa_sberbank: {
+        id: "yookassa_sberbank",
+        title: "\u041E\u043F\u043B\u0430\u0442\u0430 \u0447\u0435\u0440\u0435\u0437 \u0421\u0431\u0435\u0440\u0431\u0430\u043D\u043A",
+        description: "SberPay",
+        order: 8,
+        enabled: false,
+        method_title: "SberPay",
+        method_description: "\u041E\u043F\u043B\u0430\u0442\u0430 \u0447\u0435\u0440\u0435\u0437 \u0421\u0431\u0435\u0440\u0431\u0430\u043D\u043A",
+        method_supports: [
+          "products"
+        ],
+        settings: {
+          title: {
+            id: "title",
+            label: "\u0417\u0430\u0433\u043E\u043B\u043E\u0432\u043E\u043A",
+            description: "\u041D\u0430\u0437\u0432\u0430\u043D\u0438\u0435, \u043A\u043E\u0442\u043E\u0440\u043E\u0435 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C \u0432\u0438\u0434\u0438\u0442 \u0432\u043E \u0432\u0440\u0435\u043C\u044F \u043E\u043F\u043B\u0430\u0442\u044B",
+            type: "text",
+            value: "",
+            "default": "\u041E\u043F\u043B\u0430\u0442\u0430 \u0447\u0435\u0440\u0435\u0437 \u0421\u0431\u0435\u0440\u0431\u0430\u043D\u043A",
+            tip: "\u041D\u0430\u0437\u0432\u0430\u043D\u0438\u0435, \u043A\u043E\u0442\u043E\u0440\u043E\u0435 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C \u0432\u0438\u0434\u0438\u0442 \u0432\u043E \u0432\u0440\u0435\u043C\u044F \u043E\u043F\u043B\u0430\u0442\u044B",
+            placeholder: ""
+          }
+        },
+        _links: {
+          self: [
+            {
+              href: "http://localhost/wp-json/wc/v3/payment_gateways/yookassa_sberbank"
+            }
+          ],
+          collection: [
+            {
+              href: "http://localhost/wp-json/wc/v3/payment_gateways"
+            }
+          ]
+        }
+      },
+      yookassa_wallet: {
+        id: "yookassa_wallet",
+        title: "\u041A\u043E\u0448\u0435\u043B\u0435\u043A \u042EMoney",
+        description: "\u041E\u043F\u043B\u0430\u0442\u0430 \u043A\u043E\u0448\u0435\u043B\u044C\u043A\u043E\u043C \u042EMoney",
+        order: 9,
+        enabled: false,
+        method_title: "\u041A\u043E\u0448\u0435\u043B\u0435\u043A \u042EMoney",
+        method_description: "\u041E\u043F\u043B\u0430\u0442\u0430 \u043A\u043E\u0448\u0435\u043B\u044C\u043A\u043E\u043C \u042EMoney",
+        method_supports: [
+          "products",
+          "subscriptions",
+          "tokenization",
+          "subscription_cancellation",
+          "subscription_suspension",
+          "subscription_reactivation",
+          "subscription_date_changes"
+        ],
+        settings: {
+          title: {
+            id: "title",
+            label: "\u0417\u0430\u0433\u043E\u043B\u043E\u0432\u043E\u043A",
+            description: "\u041D\u0430\u0437\u0432\u0430\u043D\u0438\u0435, \u043A\u043E\u0442\u043E\u0440\u043E\u0435 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C \u0432\u0438\u0434\u0438\u0442 \u0432\u043E \u0432\u0440\u0435\u043C\u044F \u043E\u043F\u043B\u0430\u0442\u044B",
+            type: "text",
+            value: "",
+            "default": "\u041A\u043E\u0448\u0435\u043B\u0435\u043A \u042EMoney",
+            tip: "\u041D\u0430\u0437\u0432\u0430\u043D\u0438\u0435, \u043A\u043E\u0442\u043E\u0440\u043E\u0435 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C \u0432\u0438\u0434\u0438\u0442 \u0432\u043E \u0432\u0440\u0435\u043C\u044F \u043E\u043F\u043B\u0430\u0442\u044B",
+            placeholder: ""
+          },
+          save_payment_method: {
+            id: "save_payment_method",
+            label: "\u041F\u043E\u043A\u0443\u043F\u0430\u0442\u0435\u043B\u0438 \u043C\u043E\u0433\u0443\u0442 \u0441\u043E\u0445\u0440\u0430\u043D\u044F\u0442\u044C \u043A\u043E\u0448\u0435\u043B\u0451\u043A \u0434\u043B\u044F \u043F\u043E\u0432\u0442\u043E\u0440\u043D\u043E\u0439 \u043E\u043F\u043B\u0430\u0442\u044B",
+            description: "",
+            type: "checkbox",
+            value: "no",
+            "default": "no",
+            tip: "",
+            placeholder: ""
+          }
+        },
+        _links: {
+          self: [
+            {
+              href: "http://localhost/wp-json/wc/v3/payment_gateways/yookassa_wallet"
+            }
+          ],
+          collection: [
+            {
+              href: "http://localhost/wp-json/wc/v3/payment_gateways"
+            }
+          ]
+        }
+      },
+      yookassa_tinkoff: {
+        id: "yookassa_tinkoff",
+        title: "\u0418\u043D\u0442\u0435\u0440\u043D\u0435\u0442-\u0431\u0430\u043D\u043A \u0422\u0438\u043D\u044C\u043A\u043E\u0444\u0444",
+        description: "\u0418\u043D\u0442\u0435\u0440\u043D\u0435\u0442-\u0431\u0430\u043D\u043A \u0422\u0438\u043D\u044C\u043A\u043E\u0444\u0444",
+        order: 10,
+        enabled: false,
+        method_title: "\u0418\u043D\u0442\u0435\u0440\u043D\u0435\u0442-\u0431\u0430\u043D\u043A \u0422\u0438\u043D\u044C\u043A\u043E\u0444\u0444",
+        method_description: "\u0418\u043D\u0442\u0435\u0440\u043D\u0435\u0442-\u0431\u0430\u043D\u043A \u0422\u0438\u043D\u044C\u043A\u043E\u0444\u0444",
+        method_supports: [
+          "products"
+        ],
+        settings: {
+          title: {
+            id: "title",
+            label: "\u0417\u0430\u0433\u043E\u043B\u043E\u0432\u043E\u043A",
+            description: "\u041D\u0430\u0437\u0432\u0430\u043D\u0438\u0435, \u043A\u043E\u0442\u043E\u0440\u043E\u0435 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C \u0432\u0438\u0434\u0438\u0442 \u0432\u043E \u0432\u0440\u0435\u043C\u044F \u043E\u043F\u043B\u0430\u0442\u044B",
+            type: "text",
+            value: "",
+            "default": "\u0418\u043D\u0442\u0435\u0440\u043D\u0435\u0442-\u0431\u0430\u043D\u043A \u0422\u0438\u043D\u044C\u043A\u043E\u0444\u0444",
+            tip: "\u041D\u0430\u0437\u0432\u0430\u043D\u0438\u0435, \u043A\u043E\u0442\u043E\u0440\u043E\u0435 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C \u0432\u0438\u0434\u0438\u0442 \u0432\u043E \u0432\u0440\u0435\u043C\u044F \u043E\u043F\u043B\u0430\u0442\u044B",
+            placeholder: ""
+          }
+        },
+        _links: {
+          self: [
+            {
+              href: "http://localhost/wp-json/wc/v3/payment_gateways/yookassa_tinkoff"
+            }
+          ],
+          collection: [
+            {
+              href: "http://localhost/wp-json/wc/v3/payment_gateways"
+            }
+          ]
+        }
+      },
+      yookassa_sbp: {
+        id: "yookassa_sbp",
+        title: "\u0421\u0411\u041F",
+        description: "\u0421\u0438\u0441\u0442\u0435\u043C\u0430 \u0431\u044B\u0441\u0442\u0440\u044B\u0445 \u043F\u043B\u0430\u0442\u0435\u0436\u0435\u0439 \u0426\u0411 \u0420\u0424 \u0434\u043B\u044F \u043C\u0433\u043D\u043E\u0432\u0435\u043D\u043D\u043E\u0433\u043E \u043F\u0435\u0440\u0435\u0432\u043E\u0434\u0430 \u0434\u0435\u043D\u0435\u0433 \u0432 \u0434\u0440\u0443\u0433\u0438\u0435 \u0431\u0430\u043D\u043A\u0438",
+        order: 11,
+        enabled: false,
+        method_title: "\u0421\u0411\u041F",
+        method_description: "\u0421\u0438\u0441\u0442\u0435\u043C\u0430 \u0431\u044B\u0441\u0442\u0440\u044B\u0445 \u043F\u043B\u0430\u0442\u0435\u0436\u0435\u0439 \u0426\u0411 \u0420\u0424 \u0434\u043B\u044F \u043C\u0433\u043D\u043E\u0432\u0435\u043D\u043D\u043E\u0433\u043E \u043F\u0435\u0440\u0435\u0432\u043E\u0434\u0430 \u0434\u0435\u043D\u0435\u0433 \u0432 \u0434\u0440\u0443\u0433\u0438\u0435 \u0431\u0430\u043D\u043A\u0438",
+        method_supports: [
+          "products"
+        ],
+        settings: {
+          title: {
+            id: "title",
+            label: "\u0417\u0430\u0433\u043E\u043B\u043E\u0432\u043E\u043A",
+            description: "\u041D\u0430\u0437\u0432\u0430\u043D\u0438\u0435, \u043A\u043E\u0442\u043E\u0440\u043E\u0435 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C \u0432\u0438\u0434\u0438\u0442 \u0432\u043E \u0432\u0440\u0435\u043C\u044F \u043E\u043F\u043B\u0430\u0442\u044B",
+            type: "text",
+            value: "",
+            "default": "\u0421\u0411\u041F",
+            tip: "\u041D\u0430\u0437\u0432\u0430\u043D\u0438\u0435, \u043A\u043E\u0442\u043E\u0440\u043E\u0435 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C \u0432\u0438\u0434\u0438\u0442 \u0432\u043E \u0432\u0440\u0435\u043C\u044F \u043E\u043F\u043B\u0430\u0442\u044B",
+            placeholder: ""
+          }
+        },
+        _links: {
+          self: [
+            {
+              href: "http://localhost/wp-json/wc/v3/payment_gateways/yookassa_sbp"
+            }
+          ],
+          collection: [
+            {
+              href: "http://localhost/wp-json/wc/v3/payment_gateways"
+            }
+          ]
+        }
+      },
+      yookassa_installments: {
+        id: "yookassa_installments",
+        title: "\u0417\u0430\u043F\u043B\u0430\u0442\u0438\u0442\u044C \u043F\u043E \u0447\u0430\u0441\u0442\u044F\u043C",
+        description: "\u0417\u0430\u043F\u043B\u0430\u0442\u0438\u0442\u044C \u043F\u043E \u0447\u0430\u0441\u0442\u044F\u043C",
+        order: 12,
+        enabled: false,
+        method_title: "\u0417\u0430\u043F\u043B\u0430\u0442\u0438\u0442\u044C \u043F\u043E \u0447\u0430\u0441\u0442\u044F\u043C",
+        method_description: "\u0417\u0430\u043F\u043B\u0430\u0442\u0438\u0442\u044C \u043F\u043E \u0447\u0430\u0441\u0442\u044F\u043C",
+        method_supports: [
+          "products"
+        ],
+        settings: {
+          title: {
+            id: "title",
+            label: "\u0417\u0430\u0433\u043E\u043B\u043E\u0432\u043E\u043A",
+            description: "\u041D\u0430\u0437\u0432\u0430\u043D\u0438\u0435, \u043A\u043E\u0442\u043E\u0440\u043E\u0435 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C \u0432\u0438\u0434\u0438\u0442 \u0432\u043E \u0432\u0440\u0435\u043C\u044F \u043E\u043F\u043B\u0430\u0442\u044B",
+            type: "text",
+            value: "",
+            "default": "\u0417\u0430\u043F\u043B\u0430\u0442\u0438\u0442\u044C \u043F\u043E \u0447\u0430\u0441\u0442\u044F\u043C",
+            tip: "\u041D\u0430\u0437\u0432\u0430\u043D\u0438\u0435, \u043A\u043E\u0442\u043E\u0440\u043E\u0435 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C \u0432\u0438\u0434\u0438\u0442 \u0432\u043E \u0432\u0440\u0435\u043C\u044F \u043E\u043F\u043B\u0430\u0442\u044B",
+            placeholder: ""
+          }
+        },
+        _links: {
+          self: [
+            {
+              href: "http://localhost/wp-json/wc/v3/payment_gateways/yookassa_installments"
+            }
+          ],
+          collection: [
+            {
+              href: "http://localhost/wp-json/wc/v3/payment_gateways"
+            }
+          ]
+        }
+      }
+    },
+    requests: [
+      {
+        params: {
+          per_page: 100
+        },
+        data: [
+          "bacs",
+          "cheque",
+          "cod",
+          "yookassa_widget",
+          "yookassa_bank_card",
+          "yookassa_alfabank",
+          "yookassa_qiwi",
+          "yookassa_cash",
+          "yookassa_sberbank",
+          "yookassa_wallet",
+          "yookassa_tinkoff",
+          "yookassa_sbp",
+          "yookassa_installments"
+        ]
+      }
+    ],
+    single_params: []
+  },
+  wishlist: {
+    route_base: "wishlist",
+    type: "wishlist",
+    specific_params: [],
+    apiType: "/wc/v3/",
+    params: {
+      per_page: 100
+    },
+    items: {},
+    requests: [],
+    single_params: []
   },
   orders: {
     route_base: "orders",
     type: "orders",
     specific_params: [],
-    apiType: "/wc/v3/",
-    single_params: [],
+    apiType: "/vwssg/v1/",
     params: {
       per_page: 100
     },
-    basedRequest: {
-      route_base: "orders",
-      type: "orders",
-      apiType: "/wc/v3/"
-    },
     items: {},
-    requests: []
+    requests: [],
+    single_params: []
   },
   customers: {
     route_base: "customers",
     type: "customers",
     specific_params: [],
-    apiType: "/wc/v3/",
-    single_params: [],
+    apiType: "/vwssg/v1/",
     params: {
       per_page: 100
     },
-    basedRequest: {
-      route_base: "customers",
-      type: "customers",
-      apiType: "/wc/v3/"
-    },
     items: {},
-    requests: []
+    requests: [],
+    single_params: []
   },
   site: {
     returned: {
@@ -22488,66 +23112,299 @@ const state$2 = {
   },
   menus: {
     returned: {
-      top_header: [
-        {
-          id: 153,
-          parent: "0",
-          target: "",
-          content: "8 800 770 09 90",
-          title: "",
-          url: "tel:88007700990"
-        },
-        {
-          id: 154,
-          parent: "0",
-          target: "",
-          content: "8 495 775 09 44",
-          title: "",
-          url: "tel:84957750944"
-        },
-        {
-          id: 156,
-          parent: "0",
-          target: "",
-          content: "Fashion-\u0431\u043B\u043E\u0433",
-          title: "",
-          url: "http://localhost/posts/"
-        },
-        {
-          id: 157,
-          parent: "0",
-          target: "",
-          content: "\u041C\u0430\u0433\u0430\u0437\u0438\u043D\u044B",
-          title: "",
-          url: "http://localhost/posts/"
-        },
-        {
-          id: 158,
-          parent: "0",
-          target: "",
-          content: "\u0410\u043A\u0446\u0438\u0438 \u0438 \u043D\u043E\u0432\u043E\u0441\u0442\u0438",
-          title: "",
-          url: "http://localhost/posts/"
-        },
-        {
-          id: 159,
-          parent: "0",
-          target: "",
-          content: "\u0414\u043E\u0441\u0442\u0430\u0432\u043A\u0430 \u043F\u043E \u0432\u0441\u0435\u0439 \u0420\u043E\u0441\u0441\u0438\u0438",
-          title: "",
-          url: "http://localhost/posts/"
-        },
-        {
-          id: 160,
-          parent: "0",
-          target: "",
-          content: "\u041F\u043E\u0434\u0430\u0440\u043E\u0447\u043D\u044B\u0435 \u043A\u0430\u0440\u0442\u044B",
-          title: "",
-          url: "http://localhost/posts/"
-        }
-      ],
-      main_category: [],
-      banners: []
+      top_header: {
+        name: "Top Header Menu",
+        items: [
+          {
+            id: 153,
+            parent: "0",
+            target: "",
+            content: "8 800 770 09 90",
+            title: "",
+            url: "tel:88007700990"
+          },
+          {
+            id: 154,
+            parent: "0",
+            target: "",
+            content: "8 495 775 09 44",
+            title: "",
+            url: "tel:84957750944"
+          },
+          {
+            id: 156,
+            parent: "0",
+            target: "",
+            content: "Fashion-\u0431\u043B\u043E\u0433",
+            title: "",
+            url: "http://localhost/posts/"
+          },
+          {
+            id: 157,
+            parent: "0",
+            target: "",
+            content: "\u041C\u0430\u0433\u0430\u0437\u0438\u043D\u044B",
+            title: "",
+            url: "http://localhost/posts/"
+          },
+          {
+            id: 158,
+            parent: "0",
+            target: "",
+            content: "\u0410\u043A\u0446\u0438\u0438 \u0438 \u043D\u043E\u0432\u043E\u0441\u0442\u0438",
+            title: "",
+            url: "http://localhost/posts/"
+          },
+          {
+            id: 159,
+            parent: "0",
+            target: "",
+            content: "\u0414\u043E\u0441\u0442\u0430\u0432\u043A\u0430 \u043F\u043E \u0432\u0441\u0435\u0439 \u0420\u043E\u0441\u0441\u0438\u0438",
+            title: "",
+            url: "http://localhost/posts/"
+          },
+          {
+            id: 160,
+            parent: "0",
+            target: "",
+            content: "\u041F\u043E\u0434\u0430\u0440\u043E\u0447\u043D\u044B\u0435 \u043A\u0430\u0440\u0442\u044B",
+            title: "",
+            url: "http://localhost/posts/"
+          }
+        ]
+      },
+      main_category: {
+        name: "Top Header Menu",
+        items: [
+          {
+            id: 153,
+            parent: "0",
+            target: "",
+            content: "8 800 770 09 90",
+            title: "",
+            url: "tel:88007700990"
+          },
+          {
+            id: 154,
+            parent: "0",
+            target: "",
+            content: "8 495 775 09 44",
+            title: "",
+            url: "tel:84957750944"
+          },
+          {
+            id: 156,
+            parent: "0",
+            target: "",
+            content: "Fashion-\u0431\u043B\u043E\u0433",
+            title: "",
+            url: "http://localhost/posts/"
+          },
+          {
+            id: 157,
+            parent: "0",
+            target: "",
+            content: "\u041C\u0430\u0433\u0430\u0437\u0438\u043D\u044B",
+            title: "",
+            url: "http://localhost/posts/"
+          },
+          {
+            id: 158,
+            parent: "0",
+            target: "",
+            content: "\u0410\u043A\u0446\u0438\u0438 \u0438 \u043D\u043E\u0432\u043E\u0441\u0442\u0438",
+            title: "",
+            url: "http://localhost/posts/"
+          },
+          {
+            id: 159,
+            parent: "0",
+            target: "",
+            content: "\u0414\u043E\u0441\u0442\u0430\u0432\u043A\u0430 \u043F\u043E \u0432\u0441\u0435\u0439 \u0420\u043E\u0441\u0441\u0438\u0438",
+            title: "",
+            url: "http://localhost/posts/"
+          },
+          {
+            id: 160,
+            parent: "0",
+            target: "",
+            content: "\u041F\u043E\u0434\u0430\u0440\u043E\u0447\u043D\u044B\u0435 \u043A\u0430\u0440\u0442\u044B",
+            title: "",
+            url: "http://localhost/posts/"
+          }
+        ]
+      },
+      banners: {
+        name: "",
+        items: []
+      },
+      footerShopingOnline: {
+        name: "\u041F\u043E\u043A\u0443\u043F\u043A\u0438 \u043E\u043D\u043B\u0430\u0439\u043D",
+        items: [
+          {
+            id: 388,
+            parent: "0",
+            target: "",
+            content: "\u0414\u043E\u0441\u0442\u0430\u0432\u043A\u0430 \u043F\u043E \u0432\u0441\u0435\u0439 \u0420\u043E\u0441\u0441\u0438\u0438",
+            title: "",
+            url: "/"
+          },
+          {
+            id: 389,
+            parent: "0",
+            target: "",
+            content: "\u041E\u043F\u043B\u0430\u0442\u0430",
+            title: "",
+            url: "/"
+          },
+          {
+            id: 390,
+            parent: "0",
+            target: "",
+            content: "\u0412\u044B\u0431\u043E\u0440 \u0440\u0430\u0437\u043C\u0435\u0440\u0430",
+            title: "",
+            url: "/"
+          },
+          {
+            id: 391,
+            parent: "0",
+            target: "",
+            content: "\u0412\u043E\u0437\u0432\u0440\u0430\u0442",
+            title: "",
+            url: "/"
+          },
+          {
+            id: 392,
+            parent: "0",
+            target: "",
+            content: "\u041E\u0442\u0441\u043B\u0435\u0436\u0438\u0432\u0430\u043D\u0438\u0435 \u0437\u0430\u043A\u0430\u0437\u0430",
+            title: "",
+            url: "/"
+          }
+        ]
+      },
+      footerForCustomers: {
+        name: "\u041F\u043E\u043A\u0443\u043F\u0430\u0442\u0435\u043B\u044F\u043C",
+        items: [
+          {
+            id: 393,
+            parent: "0",
+            target: "",
+            content: "\u041C\u0430\u0433\u0430\u0437\u0438\u043D\u044B",
+            title: "",
+            url: "/"
+          },
+          {
+            id: 394,
+            parent: "0",
+            target: "",
+            content: "\u041F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0430 \u043B\u043E\u044F\u043B\u044C\u043D\u043E\u0441\u0442\u0438",
+            title: "",
+            url: "/"
+          },
+          {
+            id: 395,
+            parent: "0",
+            target: "",
+            content: "\u041F\u043E\u0434\u0430\u0440\u043E\u0447\u043D\u044B\u0435 \u0431\u043E\u043D\u0443\u0441\u044B",
+            title: "",
+            url: "/"
+          },
+          {
+            id: 396,
+            parent: "0",
+            target: "",
+            content: "\u0423\u0441\u043B\u043E\u0432\u0438\u044F \u0432\u043E\u0437\u0432\u0440\u0430\u0442\u0430",
+            title: "",
+            url: "/"
+          },
+          {
+            id: 397,
+            parent: "0",
+            target: "",
+            content: "\u041F\u043E\u0434\u0430\u0440\u043E\u0447\u043D\u044B\u0435 \u043A\u0430\u0440\u0442\u044B",
+            title: "",
+            url: "/"
+          },
+          {
+            id: 398,
+            parent: "0",
+            target: "",
+            content: "\u041E\u0431\u0440\u0430\u0442\u043D\u0430\u044F \u0441\u0432\u044F\u0437\u044C",
+            title: "",
+            url: "/"
+          },
+          {
+            id: 399,
+            parent: "0",
+            target: "",
+            content: "\u041F\u0440\u0430\u0432\u0438\u043B\u0430 \u043F\u0440\u043E\u0434\u0430\u0436\u0438",
+            title: "",
+            url: "/"
+          }
+        ]
+      },
+      footerCompany: {
+        name: "\u041A\u043E\u043C\u043F\u0430\u043D\u0438\u044F",
+        items: [
+          {
+            id: 400,
+            parent: "0",
+            target: "",
+            content: "\u0412\u0430\u043A\u0430\u043D\u0441\u0438\u0438",
+            title: "",
+            url: "/"
+          },
+          {
+            id: 401,
+            parent: "0",
+            target: "",
+            content: "Fashion-\u0431\u043B\u043E\u0433",
+            title: "",
+            url: "/"
+          },
+          {
+            id: 402,
+            parent: "0",
+            target: "",
+            content: "\u041E \u043A\u043E\u043C\u043F\u0430\u043D\u0438\u0438",
+            title: "",
+            url: "/"
+          },
+          {
+            id: 403,
+            parent: "0",
+            target: "",
+            content: "\u041F\u0440\u0435\u0441\u0441-\u043E\u0444\u0438\u0441",
+            title: "",
+            url: "/"
+          },
+          {
+            id: 404,
+            parent: "0",
+            target: "",
+            content: "\u041F\u0440\u0435\u0441\u0441-\u0440\u0435\u043B\u0438\u0437\u044B",
+            title: "",
+            url: "/"
+          },
+          {
+            id: 405,
+            parent: "0",
+            target: "",
+            content: "\u041F\u0430\u0440\u0442\u043D\u0435\u0440\u0430\u043C",
+            title: "",
+            url: "/"
+          },
+          {
+            id: 406,
+            parent: "0",
+            target: "",
+            content: "\u041A\u043E\u043D\u0442\u0430\u043A\u0442\u044B",
+            title: "",
+            url: "/"
+          }
+        ]
+      }
     }
   },
   filter: {
@@ -22579,6 +23436,14 @@ const state$2 = {
         },
         pa_tcvet: {
           id: 5,
+          options: []
+        },
+        pa_yookassa_payment_mode: {
+          id: 7,
+          options: []
+        },
+        pa_yookassa_payment_subject: {
+          id: 6,
           options: []
         }
       },
@@ -22621,1039 +23486,10 @@ const state$2 = {
 };
 const __VUE_WORDPRESS__ = {
   routing,
-  state: state$2
+  state: state$1
 };
-function getNonceToken(obj = {}) {
-  let nonceToken = Cookies.get("nonce-token");
-  obj["Nonce"] = nonceToken;
-  return obj;
-}
-function findAllPositions(str, separator) {
-  let stop = false;
-  let pos = 0;
-  let foundPositions = [];
-  while (true) {
-    let foundPos = str.indexOf(separator, pos);
-    if (foundPos == -1 && !stop) {
-      foundPositions.push(str.length);
-      stop = true;
-    } else {
-      foundPositions.push(foundPos);
-      pos = foundPos + 1;
-    }
-    if (stop)
-      break;
-  }
-  return foundPositions;
-}
-function separateStringByArrayPositions(str, foundPositions) {
-  let subStrs = [];
-  let start = 0;
-  for (let index = 0; index < foundPositions.length; index++) {
-    let end = foundPositions[index];
-    let substr = str.slice(start, end);
-    subStrs.push(substr);
-    start += substr.length + 1;
-  }
-  return subStrs;
-}
-function createNewDate(value) {
-  let separator = value.indexOf("T");
-  let yearMonthDate = value.slice(0, separator);
-  let hoursMinutesSeconds = value.slice(separator + 1);
-  yearMonthDate = separateStringByArrayPositions(
-    yearMonthDate,
-    findAllPositions(yearMonthDate, "-")
-  );
-  hoursMinutesSeconds = separateStringByArrayPositions(
-    hoursMinutesSeconds,
-    findAllPositions(hoursMinutesSeconds, ":")
-  );
-  return new Date(...yearMonthDate, ...hoursMinutesSeconds);
-}
-function VUE_WP_INSTANCE() {
-  return __VUE_WORDPRESS__;
-}
-const items$1 = VUE_WP_INSTANCE().state.menus.returned;
-const menusModule = {
-  namespaced: true,
-  state: () => items$1,
-  getters: {
-    menu: (state2) => ({ name }) => {
-      return state2.menus[name];
-    }
-  }
-};
-const items = VUE_WP_INSTANCE().state.site.returned;
-const siteModule = {
-  namespaced: true,
-  state: () => items,
-  getters: {
-    loading: (state2) => () => {
-      return state2.site.loading;
-    }
-  }
-};
-const instance$f = VUE_WP_INSTANCE().state.pages;
-const pagesModule = {
-  namespaced: true,
-  state: () => ({
-    basedRequest: {
-      apiType: instance$f.basedRequest.apiType,
-      type: instance$f.basedRequest.type,
-      route_base: instance$f.basedRequest.route_base,
-      params: instance$f.params,
-      single_params: instance$f.single_params
-    },
-    requests: instance$f.requests,
-    settings: instance$f.settings,
-    items: instance$f.items
-  }),
-  getters: {
-    menu: (state2) => ({ name }) => {
-      return state2.menus[name];
-    }
-  }
-};
-const instance$e = VUE_WP_INSTANCE().state.banners;
-const bannersModule = {
-  namespaced: true,
-  state: () => ({
-    basedRequest: {
-      apiType: instance$e.basedRequest.apiType,
-      type: instance$e.basedRequest.type,
-      route_base: instance$e.basedRequest.route_base,
-      params: Object.assign({}, instance$e.params),
-      slug: null
-    },
-    requests: instance$e.requests,
-    settings: instance$e.settings,
-    items: instance$e.items
-  }),
-  getters: {},
-  mutations: {
-    setBannerCategoriesIds(state2, value) {
-      state2.basedRequest.params.banner_categories = value;
-    }
-  }
-};
-const instance$d = VUE_WP_INSTANCE().state.media;
-const mediaModule = {
-  namespaced: true,
-  state: () => ({
-    basedRequest: {
-      apiType: instance$d.basedRequest.apiType,
-      type: instance$d.basedRequest.type,
-      route_base: instance$d.basedRequest.route_base,
-      params: Object.assign({}, instance$d.params)
-    },
-    requests: instance$d.requests,
-    settings: instance$d.settings,
-    items: instance$d.items
-  })
-};
-const instance$c = VUE_WP_INSTANCE().state.customers;
-const customersModule = {
-  namespaced: true,
-  state: () => ({
-    basedRequest: {
-      apiType: instance$c.basedRequest.apiType,
-      type: instance$c.basedRequest.type,
-      route_base: instance$c.basedRequest.route_base,
-      slug: null
-    },
-    requests: instance$c.requests,
-    settings: instance$c.settings,
-    items: instance$c.items
-  }),
-  getters: {},
-  mutations: {}
-};
-const instance$b = VUE_WP_INSTANCE().state.orders;
-const ordersModule = {
-  namespaced: true,
-  state: () => ({
-    basedRequest: {
-      apiType: instance$b.basedRequest.apiType,
-      type: instance$b.basedRequest.type,
-      route_base: instance$b.basedRequest.route_base,
-      slug: null
-    },
-    requests: instance$b.requests,
-    settings: instance$b.settings,
-    items: instance$b.items
-  }),
-  getters: {},
-  mutations: {}
-};
-const instance$a = VUE_WP_INSTANCE().state.productsCategories;
-const productsCategoriesModule = {
-  namespaced: true,
-  state: () => ({
-    basedRequest: {
-      apiType: instance$a.basedRequest.apiType,
-      type: instance$a.basedRequest.type,
-      route_base: instance$a.basedRequest.route_base,
-      params: Object.assign({}, instance$a.params)
-    },
-    requests: instance$a.requests,
-    settings: instance$a.settings,
-    items: instance$a.items
-  }),
-  getters: {},
-  mutations: {}
-};
-const instance$9 = VUE_WP_INSTANCE().state.products;
-const productsModule = {
-  namespaced: true,
-  state: () => ({
-    basedRequest: {
-      apiType: instance$9.basedRequest.apiType,
-      type: instance$9.basedRequest.type,
-      route_base: instance$9.basedRequest.route_base,
-      params: Object.assign({}, instance$9.params),
-      preparedParams: {}
-    },
-    requests: instance$9.requests,
-    items: instance$9.items,
-    itemsPaginated: {},
-    totalPages: null,
-    total: null
-  }),
-  getters: {
-    filtredProducts: (state2, getters2, rootState, rootGetters) => {
-      let items2 = [];
-      if (!isEmpty(state2.itemsPaginated) && state2.itemsPaginated.hasOwnProperty(state2.basedRequest.params.page)) {
-        const ids = state2.itemsPaginated[state2.basedRequest.params.page];
-        items2 = ids.map((el) => state2.items[el]);
-      }
-      return items2;
-    },
-    filtredProductAttributes: (state2, getters2, rootState, rootGetters) => ({ requestAttributes, item }) => {
-      let confirmed = true;
-      let filter = {};
-      requestAttributes:
-        for (const reqAttrKey in requestAttributes) {
-          if (Object.hasOwnProperty.call(requestAttributes, reqAttrKey)) {
-            const reqAttrObject = requestAttributes[reqAttrKey];
-            for (let i = 0; i < item.attributes.length; i++) {
-              const itemAtrrObject = item.attributes[i];
-              if (itemAtrrObject.id == reqAttrObject.id) {
-                for (let index = 0; index < itemAtrrObject.options.length; index++) {
-                  const itemOption = itemAtrrObject.options[index];
-                  for (let index2 = 0; index2 < reqAttrObject.options.length; index2++) {
-                    const inputOption = reqAttrObject.options[index2];
-                    if (inputOption.name == itemOption) {
-                      filter[reqAttrKey] = true;
-                      continue requestAttributes;
-                    } else {
-                      filter[reqAttrKey] = false;
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      for (const opt in filter) {
-        if (Object.hasOwnProperty.call(filter, opt)) {
-          const bool = filter[opt];
-          if (!bool) {
-            confirmed = false;
-            break;
-          }
-        }
-      }
-      return confirmed;
-    },
-    procentPriceSale: (state2) => (product) => {
-      return Math.round(
-        100 - product.sale_price / product.regular_price * 100
-      );
-    },
-    singleProductAttribute: (state2) => ({ productId, attrId }) => {
-      var _a, _b;
-      return (_b = (_a = state2.items) == null ? void 0 : _a[productId]) == null ? void 0 : _b.attributes.find((i) => i.id == attrId);
-    }
-  },
-  mutations: {
-    setProductsParams(state2, filterParams) {
-      for (const key in filterParams) {
-        const neastedValue = filterParams[key];
-        if (typeof neastedValue === "object" && !neastedValue.hasOwnProperty("options")) {
-          for (const neastedValueKey in neastedValue) {
-            if (Object.hasOwnProperty.call(neastedValue, neastedValueKey)) {
-              const element = neastedValue[neastedValueKey];
-              if (state2.basedRequest.params.hasOwnProperty(neastedValueKey)) {
-                state2.basedRequest.params[neastedValueKey] = element;
-              }
-            }
-          }
-        }
-        if (state2.basedRequest.params.hasOwnProperty(key)) {
-          if (typeof neastedValue === "number" || typeof neastedValue === "string" || typeof neastedValue === "array") {
-            state2.basedRequest.params[key] = neastedValue;
-          } else if (typeof neastedValue === "object") {
-            if (neastedValue.hasOwnProperty("options")) {
-              state2.basedRequest.params[key] = neastedValue.options.map(
-                (object) => object.id
-              );
-            }
-          }
-        }
-      }
-      for (const key in filterParams) {
-        const filterParam = filterParams[key];
-        if (typeof filterParam === "number" || typeof filterParam === "string") {
-          state2.basedRequest.preparedParams[key] = filterParam;
-        } else {
-          state2.basedRequest.preparedParams[key] = cloneDeep(filterParam);
-        }
-      }
-    },
-    setTotalPages(state2, value) {
-      state2.totalPages = value;
-    },
-    setTotal(state2, value) {
-      state2.total = value;
-    },
-    setProductsCategoryId(state2, value) {
-      state2.basedRequest.params.category = value;
-    },
-    setItemsPaginated(state2, { pageNumber, value }) {
-      state2.itemsPaginated[pageNumber] = value;
-    },
-    unsetItemsPaginated(state2) {
-      state2.itemsPaginated = {};
-    }
-  },
-  actions: {
-    filterAndPaginate: ({ state: state2, dispatch, commit, getters: getters2, rootGetters }) => {
-      const preparedParams = state2.basedRequest.preparedParams;
-      let requestAttributes = {};
-      let items2 = [];
-      var confirmed = false;
-      for (const key in preparedParams) {
-        if (Object.hasOwnProperty.call(preparedParams, key)) {
-          const param = preparedParams[key];
-          if (key.match(/^pa_[a-z]+/) && param.options.length) {
-            requestAttributes[key] = param;
-          }
-        }
-      }
-      for (const key in state2.items) {
-        if (Object.hasOwnProperty.call(state2.items, key)) {
-          let item = state2.items[key];
-          item.categories.forEach((category) => {
-            if (category.id == preparedParams.category) {
-              confirmed = true;
-            }
-          });
-          if (item.price > preparedParams.min_price && item.price < preparedParams.max_price && confirmed) {
-            confirmed = true;
-          } else {
-            confirmed = false;
-          }
-          if (!isEmpty(requestAttributes) && !isEmpty(item.attributes) && confirmed) {
-            confirmed = getters2.filtredProductAttributes({
-              requestAttributes,
-              item
-            });
-          }
-          if (confirmed) {
-            items2.push(item);
-          }
-        }
-      }
-      commit("unsetItemsPaginated");
-      let pre_page = state2.basedRequest.params.per_page;
-      let pageCount = Math.ceil(items2.length / pre_page);
-      var itemMarker = 0;
-      for (let pageNumber = 1; pageNumber <= pageCount; pageNumber++) {
-        commit("setItemsPaginated", {
-          pageNumber,
-          value: items2.slice(itemMarker, itemMarker + pre_page).map((i) => i.id)
-        });
-        itemMarker = itemMarker + pre_page;
-      }
-    },
-    changePage({ state: state2, dispatch, commit, getters: getters2, rootGetters }, page) {
-      let value = Number(page);
-      const pushObj = { name: "" };
-      if (value != 1)
-        pushObj["route_base"] = { page: value };
-      let type = state2.basedRequest.type;
-      commit("SET_PAGE", { type, value }, { root: true });
-      return pushObj;
-    },
-    updateRequestParams({ dispatch, commit, getters: getters2, rootGetters }) {
-      commit("setProductsParams", rootGetters["filter/params"]);
-    }
-  }
-};
-const instance$8 = VUE_WP_INSTANCE().state.productsAttributes;
-const productsAttributesModule = {
-  namespaced: true,
-  state: () => ({
-    basedRequest: {
-      apiType: instance$8.basedRequest.apiType,
-      type: instance$8.basedRequest.type,
-      route_base: instance$8.basedRequest.route_base,
-      params: Object.assign({}, instance$8.params)
-    },
-    requests: instance$8.requests,
-    settings: instance$8.settings,
-    items: instance$8.items
-  }),
-  getters: {
-    attributesSlugs(state2) {
-      const slugs = [];
-      for (let key in state2.items) {
-        if (Object.hasOwnProperty.call(state2.items, key)) {
-          const element = state2.items[key];
-          slugs.push(element.slug);
-        }
-      }
-      return slugs;
-    }
-  }
-};
-const instance$7 = VUE_WP_INSTANCE().state.productsTermsBrands;
-const productsTermsBrandsModule = {
-  namespaced: true,
-  state: () => ({
-    basedRequest: {
-      apiType: instance$7.basedRequest.apiType,
-      type: instance$7.basedRequest.type,
-      route_base: instance$7.basedRequest.route_base,
-      params: Object.assign({}, instance$7.params)
-    },
-    requests: instance$7.requests,
-    settings: instance$7.settings,
-    items: instance$7.items || {}
-  })
-};
-const instance$6 = VUE_WP_INSTANCE().state.productsTermsMaterials;
-const productsTermsMaterialsModule = {
-  namespaced: true,
-  state: () => ({
-    basedRequest: {
-      apiType: instance$6.basedRequest.apiType,
-      type: instance$6.basedRequest.type,
-      route_base: instance$6.basedRequest.route_base,
-      params: Object.assign({}, instance$6.params)
-    },
-    requests: instance$6.requests,
-    settings: instance$6.settings,
-    items: instance$6.items
-  })
-};
-const instance$5 = VUE_WP_INSTANCE().state.productsTermsColors;
-const productsTermsColorsModule = {
-  namespaced: true,
-  state: () => ({
-    basedRequest: {
-      apiType: instance$5.basedRequest.apiType,
-      type: instance$5.basedRequest.type,
-      route_base: instance$5.basedRequest.route_base,
-      params: Object.assign({}, instance$5.params)
-    },
-    requests: instance$5.requests,
-    settings: instance$5.settings,
-    items: instance$5.items || {}
-  })
-};
-const instance$4 = VUE_WP_INSTANCE().state.productsTermsSizes;
-const productsTermsSizesModule = {
-  namespaced: true,
-  state: () => ({
-    basedRequest: {
-      apiType: instance$4.basedRequest.apiType,
-      type: instance$4.basedRequest.type,
-      route_base: instance$4.basedRequest.route_base,
-      params: Object.assign({}, instance$4.params)
-    },
-    requests: instance$4.requests,
-    settings: instance$4.settings,
-    items: instance$4.items
-  })
-};
-const instance$3 = VUE_WP_INSTANCE().state.filter.returned;
-const filterModule = {
-  namespaced: true,
-  state: () => instance$3,
-  getters: {
-    params(state2, getters2, rootState) {
-      return state2.params;
-    },
-    sortDefault: () => (one, two) => {
-      let dateOne = createNewDate(one.date_created).getTime();
-      let dateTwo = createNewDate(two.date_created).getTime();
-      if (dateOne > dateTwo)
-        return -1;
-      if (dateOne < dateTwo)
-        return 1;
-      return 0;
-    },
-    sortPriceMinToMax: (state2, getters2, rootState) => (one, two) => {
-      if (one.price < two.price)
-        return -1;
-      if (one.price > two.price)
-        return 1;
-      return 0;
-    },
-    sortPriceMaxToMin: () => (one, two) => {
-      if (one.price < two.price)
-        return 1;
-      if (one.price > two.price)
-        return -1;
-      return 0;
-    }
-  },
-  mutations: {
-    setCategoryId(state2, value) {
-      state2.params.category = value;
-    },
-    setMinPrice(state2, value) {
-      state2.params.min_price = value;
-    },
-    setMaxPrice(state2, value) {
-      state2.params.max_price = value;
-    },
-    setMinCost(state2, value) {
-      state2.minCost = value;
-    },
-    setMaxCost(state2, value) {
-      state2.maxCost = value;
-    },
-    setAttributeTerms(state2, { type, value }) {
-      const foundItem = state2.params[type].options.find((el, index, array) => {
-        let condition = el.id === value.id;
-        if (condition)
-          array.splice(index, 1);
-        return condition;
-      });
-      if (foundItem)
-        return;
-      else
-        state2.params[type].options.push(value);
-    },
-    setOrderAndOrderBy(state2, value) {
-      state2.params.orderAndOrderBy = value;
-    },
-    setPage(state2, value) {
-      state2.params.page = Number(value);
-    },
-    unsetDefaultAttributeOptions(state2, atrrSlug) {
-      state2.params[atrrSlug].options = [];
-    },
-    setDefaultPrices(state2) {
-      state2.params.min_price = state2.minCost;
-      state2.params.max_price = state2.maxCost;
-    }
-  },
-  actions: {
-    setDefaultFilter({ state: state2, commit, getters: getters2, rootGetters }) {
-      commit("setDefaultPrices");
-      const attrs = rootGetters["productsAttributes/attributesSlugs"];
-      attrs.forEach((element) => {
-        commit("unsetDefaultAttributeOptions", element);
-      });
-    },
-    validateValues({ state: state2, commit, getters: getters2, rootGetters }) {
-      if (state2.params.min_price < state2.minCost) {
-        commit("setMinPrice", state2.minCost);
-      }
-      if (state2.params.max_price > state2.maxCost) {
-        commit("setMaxPrice", state2.maxCost);
-      }
-    }
-  }
-};
-const instance$2 = VUE_WP_INSTANCE().state.cart;
-const cartModule = {
-  namespaced: true,
-  state: () => ({
-    basedRequest: {
-      apiType: instance$2.basedRequest.apiType,
-      type: instance$2.basedRequest.type,
-      route_base: instance$2.basedRequest.route_base
-    },
-    store: {},
-    aditionalStore: {}
-  }),
-  getters: {},
-  actions: {
-    async getCart({ state: state2, getters: getters2, commit, dispatch }) {
-      try {
-        const requested = await dispatch(
-          "mainFetchRequest",
-          {
-            route_base: state2.basedRequest.route_base,
-            apiType: state2.basedRequest.apiType,
-            maintainJWT: true
-          },
-          { root: true }
-        );
-        const headers = requested.response.headers;
-        Cookies.set("nonce-token", headers.nonce);
-        commit("setAditionalStoreProperty", {
-          key: "customer_id",
-          value: Number(headers["user-id"])
-        });
-        commit("setCart", requested.response.data);
-        return requested;
-      } catch (error) {
-        console.log(error);
-      }
-    },
-    async updateCart({ state: state2, getters: getters2, commit, dispatch }, { route_base, config }) {
-      try {
-        config.headers = getNonceToken();
-        const requested = await dispatch(
-          "mainFetchRequest",
-          {
-            apiType: state2.basedRequest.apiType,
-            route_base,
-            config,
-            method: "post",
-            maintainJWT: true,
-            reqiredJWT: false
-          },
-          { root: true }
-        );
-        commit("setCart", requested.response.data);
-        return requested;
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  },
-  mutations: {
-    setCart(state2, value) {
-      state2.store = value;
-    },
-    setAditionalStoreProperty(state2, { key, value }) {
-      state2.aditionalStore[key] = value;
-    }
-  }
-};
-const instance$1 = VUE_WP_INSTANCE().state.checkout;
-const checkoutModule = {
-  namespaced: true,
-  state: () => ({
-    basedRequest: {
-      apiType: instance$1.basedRequest.apiType,
-      type: instance$1.basedRequest.type,
-      route_base: instance$1.basedRequest.route_base
-    }
-  }),
-  getters: {},
-  actions: {},
-  mutations: {}
-};
-const instance = VUE_WP_INSTANCE().state.auth;
-const authModule = {
-  namespaced: true,
-  state: () => ({
-    userAuth: false,
-    basedRequest: {
-      apiType: instance.basedRequest.apiType,
-      type: instance.basedRequest.type,
-      route_base: instance.basedRequest.route_base,
-      params: Object.assign({}, instance.params)
-    }
-  }),
-  getters: {},
-  actions: {
-    updateUserAuth({ dispatch, commit, getters: getters2 }) {
-      commit("setUserAuth", Boolean(Cookies.get("jwt-token")));
-    },
-    login({ dispatch, commit, getters: getters2 }, token) {
-      Cookies.set("jwt-token", token);
-      commit("setUserAuth", true);
-    },
-    logout({ dispatch, commit, getters: getters2 }) {
-      Cookies.remove("jwt-token");
-      commit("setUserAuth", false);
-    }
-  },
-  mutations: {
-    setUserAuth(state2, value) {
-      state2.userAuth = value;
-    }
-  }
-};
-const getters = {
-  total: (state2, getters2) => ({ type, params }, property) => {
-    let request = getters2.request({ type, params });
-    return request ? request[property] : 0;
-  },
-  settings: (state2, getters2) => (type) => {
-    return state2[type]["settings"];
-  },
-  request: (state2) => ({ type, params }) => {
-    return state2[type].requests.find((req) => {
-      return isEqual(req.params, params);
-    });
-  },
-  requestByParam: (state2) => ({ type, params }, { param, value }) => {
-    return state2[type].requests.find((req) => {
-      return req.params[param] == value;
-    });
-  },
-  itemBySlug: (state2) => ({ type, slug }) => {
-    let item;
-    for (let id in state2[type]["items"]) {
-      if (state2[type]["items"][id].slug === slug) {
-        item = state2[type]["items"][id];
-      }
-    }
-    return item;
-  },
-  itemById: (state2, getters2) => ({ type, id }) => {
-    let item;
-    item = state2[type]["items"][id];
-    return item;
-  },
-  requestedItems: (state2, getters2) => ({ type, params }) => {
-    let request = getters2.request({ type, params });
-    return request ? request.data.map((id) => state2[type]["items"][id]) : {};
-  },
-  itemsBased: (state2, getters2) => ({ type }) => {
-    return state2[type]["items"] || [];
-  },
-  itemsMatchedOneProperty: (state2, getters2) => ({ type }, params) => {
-    let items2 = [];
-    let keys = Object.keys(params);
-    for (const key in state2[type]["items"]) {
-      if (Object.hasOwnProperty.call(state2[type]["items"], key)) {
-        const element = state2[type]["items"][key];
-        keys.forEach((key2) => {
-          if (element[key2] == params[key2]) {
-            items2.push(element);
-          }
-        });
-      }
-    }
-    return items2;
-  },
-  itemsMatchedByCallback: (state2, getters2) => ({ type }, params, callback) => {
-    let items2 = [];
-    let approved = false;
-    let keys = Object.keys(params);
-    for (const key in state2[type]["items"]) {
-      if (Object.hasOwnProperty.call(state2[type]["items"], key)) {
-        const element = state2[type]["items"][key];
-        let callbackResult2 = callback(element, keys, params, items2, approved);
-        if (callbackResult2 === true)
-          items2.push(element);
-      } else if (callbackResult === void 0) {
-        break;
-      }
-    }
-    return items2;
-  },
-  itemsInclude: (state2, getters2) => ({ type, params }, includeArray = []) => {
-    let items2 = {};
-    for (const key in state2[type]["items"]) {
-      if (Object.hasOwnProperty.call(state2[type]["items"], key)) {
-        const element = state2[type]["items"][key];
-        includeArray.forEach((include_id) => {
-          if (element.id == include_id) {
-            items2[element.id] = element;
-          }
-        });
-      }
-    }
-    return items2 || {};
-  },
-  mapItemsByKey: (state2, getters2) => ({ type, params }, inputKey) => {
-    let ids = [];
-    for (const key in state2[type]["items"]) {
-      if (Object.hasOwnProperty.call(state2[type]["items"], key)) {
-        const element = state2[type]["items"][key];
-        ids.push(element[inputKey]);
-      }
-    }
-    return ids || [];
-  },
-  requestByItemParam: (state2, getters2) => ({ type, param, value }) => {
-    return state2[type].requests.find((req) => req.params[param] == value);
-  }
-};
-const mutations = {
-  ADD_SETTINGS(state2, { type, settings }) {
-    state2[type].settings = settings;
-  },
-  SET_LOADING(state2, loading) {
-    state2.site.loading = loading;
-  },
-  SET_DOC_TITLE(state2, title) {
-    state2.site.docTitle = title;
-  },
-  ADD_ITEM(state2, { type, item }) {
-    if (item && type && !state2[type]["items"].hasOwnProperty(item.id)) {
-      state2[type]["items"][item.id] = item;
-    }
-  },
-  ADD_ITEMS_IDS(state2, { type, ids }) {
-    state2[type].request.optionalParams.exclude = [...state2[type].request.optionalParams.exclude, ...ids];
-  },
-  ADD_REQUEST(state2, { type, request }) {
-    state2[type].requests.push(request);
-  },
-  SET_PAGE(state2, { type, value }) {
-    state2[type].basedRequest.params.page = value;
-  },
-  SET_INCLUDE(state2, { type, value }) {
-    state2[type].basedRequest.params.include = value;
-  },
-  SET_PARAM(state2, { type, paramKey, slug }) {
-    state2[type].basedRequest.params[paramKey] = slug;
-  },
-  SET_SINGLE_PARAM(state2, { type, paramKey, slug }) {
-    state2[type].basedRequest.single_params[paramKey] = slug;
-  },
-  SET_VALUE(state2, { type, key, value }) {
-    if (type) {
-      state2[type][key] = value;
-    } else {
-      state2[key] = value;
-    }
-  }
-};
-let { url: url$1 } = VUE_WP_INSTANCE().routing.returned;
-url$1 = new URL(url$1);
-url$1 = url$1.protocol + "//" + url$1.hostname;
-const defaultAjax = (apiType = "/wp/v2/") => axios.create({
-  baseURL: `${url$1}/wp-json${apiType}`,
-  headers: {
-    Accept: "application/json",
-    "Content-Type": "application/json"
-  },
-  timeout: 2e4
-});
-async function mainFetch({
-  id = null,
-  route_base = "",
-  apiType = "/wp/v2/",
-  method = "get",
-  config = {},
-  data = {}
-}) {
-  let showProgress = config.hasOwnProperty("onDownloadProgress") && config.onDownloadProgress;
-  try {
-    if (showProgress) {
-      config.onDownloadProgress = (progressEvent) => {
-        let percentCompleted = Math.floor(
-          progressEvent.loaded / progressEvent.total * 100
-        );
-        store.commit("common/setProgress", percentCompleted);
-        store.commit("common/setProgressLoad", {
-          visible: true,
-          percent: percentCompleted === Infinity ? 100 : percentCompleted
-        });
-      };
-    }
-    const response = await defaultAjax(apiType)[method](
-      `/${route_base}/${id !== null ? id : ""}`,
-      method === "get" ? config : data,
-      method === "get" ? void 0 : config
-    );
-    return response;
-  } catch (error) {
-    console.log("Error in method 'mainFetch'", error);
-  } finally {
-    if (showProgress) {
-      setTimeout(() => {
-        store.commit("common/setProgressLoad", {
-          visible: false,
-          percent: 0
-        });
-      }, 500);
-    }
-  }
-}
-const actions = {
-  updateDocTitle({ state: state2, commit }, { parts = [], sep = " \u2013 " }) {
-    commit("SET_DOC_TITLE", parts.join(sep));
-    document.title = state2.site.docTitle;
-  },
-  async getSingleById({ getters: getters2, commit }, { basedRequest: { route_base, type, apiType }, params }) {
-    if (getters2.itemById({ type, id: params.id }))
-      return;
-    let request;
-    let response;
-    try {
-      response = await mainFetch({
-        id: params.id,
-        route_base,
-        config: { params },
-        apiType
-      });
-      commit("ADD_ITEM", { type, item: response.data });
-    } catch (error) {
-      console.log(error, type);
-    }
-    return { request, response };
-  },
-  async getSingleBySlug({ state: state2, getters: getters2, commit }, { basedRequest: { route_base, type, apiType }, params }) {
-    if (getters2.itemBySlug({ type, slug: params.slug }))
-      return;
-    let request;
-    let response;
-    try {
-      response = await mainFetch({ route_base, config: { params }, apiType });
-      commit("ADD_ITEM", { type, item: response.data[0] });
-    } catch (error) {
-      console.log(error, type);
-    }
-    return { request, response };
-  },
-  async getItems({ state: state2, getters: getters2, commit }, { route_base, type, apiType, params, onDownloadProgress = null }) {
-    let response;
-    let request = getters2.request({ type, params });
-    params = pickBy(params, identity);
-    const config = {
-      onDownloadProgress,
-      params
-    };
-    if (!request) {
-      try {
-        response = await mainFetch({ route_base, config, apiType });
-        if (!response) {
-          throw "Response Undefined";
-        }
-        response.data.forEach((item) => commit("ADD_ITEM", { type, item }));
-        if (state2[type].hasOwnProperty("requests")) {
-          params = cloneDeep(params);
-          let ids = response.data.map((i) => i.id);
-          request = {
-            params,
-            total: Number(response.headers["x-wp-total"]),
-            totalPages: Number(response.headers["x-wp-totalpages"]),
-            data: ids
-          };
-          commit("ADD_REQUEST", {
-            type,
-            request
-          });
-        }
-      } catch (error) {
-        console.log(error, type);
-      }
-    } else {
-      console.log("\u041F\u043E\u043F\u044B\u0442\u043A\u0430 \u0432\u044B\u0437\u043E\u0432\u0430 \u0437\u0430\u043F\u0440\u043E\u0441\u0430 \u0441 \u0442\u0430\u043A\u0438\u043C\u0438 \u0436\u0435 \u043F\u0430\u0440\u0430\u043C\u0435\u0442\u0440\u0430\u043C\u0438");
-    }
-    return { request, response };
-  },
-  async getItemsBased({ getters: getters2, commit }, { route_base, type, params, apiType }) {
-    try {
-      const response = await mainFetch({ route_base, params, apiType });
-      response.data.forEach((item) => commit("ADD_ITEM", { type, item }));
-    } catch (error) {
-      console.log(error, type);
-    }
-  },
-  async mainFetchRequest({ getters: getters2, commit, rootState }, {
-    route_base,
-    apiType,
-    method,
-    data,
-    config = {},
-    maintainJWT = false,
-    reqiredJWT = false
-  }) {
-    let response;
-    let request;
-    let JWTToken;
-    try {
-      if (reqiredJWT && maintainJWT === false) {
-        throw '\u0418\u0441\u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u043D\u0438\u0435 \u0444\u043B\u0430\u0433\u0430 "reqiredJWT" \u043F\u043E\u0434\u0440\u0430\u0437\u0443\u043C\u0435\u0432\u0430\u0435\u0442 \u0443\u0441\u0442\u0430\u043D\u043E\u0432\u043A\u0443 maintainJWT = true';
-      }
-      if (maintainJWT) {
-        JWTToken = Cookies.get("jwt-token");
-        if (JWTToken) {
-          if (!config.hasOwnProperty("headers")) {
-            config["headers"] = {};
-          }
-          config.headers["Authorization"] = "Bearer " + JWTToken;
-        } else {
-          if (reqiredJWT) {
-            throw "\u0414\u043B\u044F \u0432\u044B\u043F\u043E\u043B\u043D\u0435\u043D\u0438\u044F \u0437\u0430\u043F\u0440\u043E\u0441\u0430 \u043D\u0435\u043E\u0431\u0445\u043E\u0434\u0438\u043C \u0442\u043E\u043A\u0435\u043D";
-          }
-        }
-      }
-      response = await mainFetch({ route_base, config, apiType, method, data });
-    } catch (error) {
-      console.log(error, { route_base, config, apiType, method, data });
-    }
-    return { request, response };
-  }
-};
-const state$1 = {};
-const store = createStore({
-  modules: {
-    common: commonModule,
-    menus: menusModule,
-    site: siteModule,
-    pages: pagesModule,
-    banners: bannersModule,
-    media: mediaModule,
-    customers: customersModule,
-    orders: ordersModule,
-    productsCategories: productsCategoriesModule,
-    productsAttributes: productsAttributesModule,
-    products: productsModule,
-    productsTermsBrands: productsTermsBrandsModule,
-    productsTermsMaterials: productsTermsMaterialsModule,
-    productsTermsColors: productsTermsColorsModule,
-    productsTermsSizes: productsTermsSizesModule,
-    filter: filterModule,
-    auth: authModule,
-    cart: cartModule,
-    checkout: checkoutModule
-  },
-  state: state$1,
-  getters,
-  mutations,
-  actions
-});
-const { permalink_structure, category_base, tag_base } = VUE_WP_INSTANCE().routing.returned;
-const tagToParam = {
-  author: ":author",
-  postname: ":slug",
-  post_id: ":id(\\d+)",
-  category: ":cat1/:cat2?/:cat3?",
-  year: ":year(\\d{4})",
-  monthnum: ":month(\\d{2})",
-  day: ":day(\\d{2})",
-  hour: ":hour(\\d{2})",
-  minute: ":min(\\d{2})",
-  second: ":sec(\\d{2})"
-};
-const defaultTaxonomyBase = permalink_structure.slice(0, permalink_structure.indexOf("%"));
-const paginateParam = ":page(page/\\d+)?";
-const paths = {
-  authorArchive: `${defaultTaxonomyBase}author/:slug/${paginateParam}`,
-  categoryArchive: category_base ? `/${category_base}/${tagToParam.category}/${paginateParam}` : `${defaultTaxonomyBase}category/${tagToParam.category}/${paginateParam}`,
-  dateArchive: `${defaultTaxonomyBase}:year(\\d{4})/:month(\\d{2})?/:day(\\d{2})?/${paginateParam}`,
-  single: permalink_structure.replace(/\%[a-z_]+\%/g, (match) => tagToParam[match.slice(1, -1)]).slice(0, -1),
-  tagArchive: tag_base ? `/${tag_base}/:slug/${paginateParam}` : `${defaultTaxonomyBase}tag/:slug/${paginateParam}`,
-  postsPage: (slug) => slug ? `/${slug}/${paginateParam}` : `/${paginateParam}`
-};
-function pageFromPath(path) {
-  let p = path.split("/").filter((i) => i);
-  if (p.length > 1 && p[p.length - 2] === "page") {
-    console.log(parseInt(p[p.length - 1]));
-    return parseInt(p[p.length - 1]);
-  } else {
-    return 1;
-  }
-}
 const ProductPricesNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$L = {
+const _sfc_main$P = {
   components: {},
   props: {
     pricesObject: Object,
@@ -23682,7 +23518,7 @@ const _sfc_main$L = {
     ...mapActions({})
   }
 };
-function _sfc_ssrRender$L(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$P(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   var _a, _b;
   _push(`<div${ssrRenderAttrs(mergeProps({ class: "product-prices" }, _attrs))}>`);
   if ($options.haveSale && $props.customOptions.percentSale) {
@@ -23697,35 +23533,157 @@ function _sfc_ssrRender$L(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
     _push(`<!---->`);
   }
   _push(`<div class="${ssrRenderClass([$options.haveSale ? "" : "product-prices__regular-price_only", "product-prices__regular-price"])}">`);
-  if ($props.customOptions.brackets) {
+  if ($props.customOptions.brackets && $options.haveSale) {
     _push(`<span>(</span>`);
   } else {
     _push(`<!---->`);
   }
   _push(` ${ssrInterpolate((_b = $props.pricesObject) == null ? void 0 : _b.regular_price)}<span class="product-prices__currency"> \u20BD</span>`);
-  if ($props.customOptions.brackets) {
+  if ($props.customOptions.brackets && $options.haveSale) {
     _push(`<span>)</span>`);
   } else {
     _push(`<!---->`);
   }
   _push(`</div></div></div>`);
 }
-const _sfc_setup$L = _sfc_main$L.setup;
-_sfc_main$L.setup = (props, ctx) => {
+const _sfc_setup$P = _sfc_main$P.setup;
+_sfc_main$P.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/product/ProductPricesNode.vue");
-  return _sfc_setup$L ? _sfc_setup$L(props, ctx) : void 0;
+  return _sfc_setup$P ? _sfc_setup$P(props, ctx) : void 0;
 };
-const ProductPricesNode = /* @__PURE__ */ _export_sfc(_sfc_main$L, [["ssrRender", _sfc_ssrRender$L]]);
+const ProductPricesNode = /* @__PURE__ */ _export_sfc(_sfc_main$P, [["ssrRender", _sfc_ssrRender$P]]);
+const _sfc_main$O = {
+  props: {
+    productData: Object
+  },
+  data() {
+    return {
+      buttonDisabled: false,
+      contained: null
+    };
+  },
+  watch: {
+    wishlistProducts: {
+      handler(wishlistProducts) {
+        this.contained = this.productContanedInWishlist(this.productData.id);
+      },
+      immediate: true
+    }
+  },
+  computed: {
+    ...mapGetters({
+      productContanedInWishlist: "wishlist/productContanedInWishlist"
+    }),
+    ...mapState({
+      basedRequest: (state2) => state2.wishlist.basedRequest,
+      wishlistProducts: (state2) => state2.wishlist.items,
+      messages: (state2) => state2.common.messages
+    })
+  },
+  methods: {
+    ...mapMutations({ ADD_ITEM: "ADD_ITEM" }),
+    ...mapActions({
+      getWishlistProductsByShareKey: "wishlist/getWishlistProductsByShareKey",
+      updateWishlist: "wishlist/updateWishlist",
+      updateMessage: "common/updateMessage"
+    }),
+    async updateWishlistAndHandleResponse() {
+      this.buttonDisabled = true;
+      const response = await this.updateWishlist({
+        basedRequest: this.basedRequest,
+        contained: this.contained,
+        productData: this.productData
+      });
+      this.buttonDisabled = false;
+      if (response === void 0)
+        this.updateMessage({ name: "allError" });
+      else {
+        this.ADD_ITEM({ type: this.basedRequest.type, item: response.data[0] });
+      }
+    },
+    shareKey() {
+      return Cookies.get("share_key");
+    }
+  }
+};
+function _sfc_ssrRender$O(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  const _component_MessageNode = resolveComponent("MessageNode");
+  const _component_ButtonNode = resolveComponent("ButtonNode");
+  _push(`<button${ssrRenderAttrs(mergeProps({
+    class: "wishlist-btn",
+    disabled: $data.buttonDisabled || !$options.shareKey
+  }, _attrs))}>`);
+  ssrRenderSlot(_ctx.$slots, "default", {}, null, _push, _parent);
+  _push(ssrRenderComponent(_component_MessageNode, {
+    item: _ctx.messages.productAddedToWishlist
+  }, {
+    default: withCtx((_, _push2, _parent2, _scopeId) => {
+      if (_push2) {
+        _push2(` \u0422\u043E\u0432\u0430\u0440 \u0434\u043E\u0431\u0430\u0432\u043B\u0435\u043D \u0432 \u0412\u0430\u0448 \u0441\u043F\u0438\u0441\u043E\u043A \u0436\u0435\u043B\u0430\u043D\u0438\u0439.`);
+        _push2(ssrRenderComponent(_component_ButtonNode, {
+          onClick: ($event) => _ctx.$router.push({ name: "Wishlist" })
+        }, {
+          default: withCtx((_2, _push3, _parent3, _scopeId2) => {
+            if (_push3) {
+              _push3(` \u0418\u0437\u0431\u0440\u0430\u043D\u043D\u043E\u0435 `);
+            } else {
+              return [
+                createTextVNode(" \u0418\u0437\u0431\u0440\u0430\u043D\u043D\u043E\u0435 ")
+              ];
+            }
+          }),
+          _: 1
+        }, _parent2, _scopeId));
+      } else {
+        return [
+          createTextVNode(" \u0422\u043E\u0432\u0430\u0440 \u0434\u043E\u0431\u0430\u0432\u043B\u0435\u043D \u0432 \u0412\u0430\u0448 \u0441\u043F\u0438\u0441\u043E\u043A \u0436\u0435\u043B\u0430\u043D\u0438\u0439."),
+          createVNode(_component_ButtonNode, {
+            onClick: ($event) => _ctx.$router.push({ name: "Wishlist" })
+          }, {
+            default: withCtx(() => [
+              createTextVNode(" \u0418\u0437\u0431\u0440\u0430\u043D\u043D\u043E\u0435 ")
+            ]),
+            _: 1
+          }, 8, ["onClick"])
+        ];
+      }
+    }),
+    _: 1
+  }, _parent));
+  _push(ssrRenderComponent(_component_MessageNode, {
+    item: _ctx.messages.allError
+  }, {
+    default: withCtx((_, _push2, _parent2, _scopeId) => {
+      if (_push2) {
+        _push2(`\u041F\u0440\u043E\u0438\u0437\u043E\u0448\u043B\u0430 \u043E\u0448\u0438\u0431\u043A\u0430 \u043F\u0440\u0438 \u0432\u044B\u043F\u043E\u043B\u043D\u0435\u043D\u0438\u0438 \u043E\u043F\u0435\u0440\u0430\u0446\u0438\u0438...`);
+      } else {
+        return [
+          createTextVNode("\u041F\u0440\u043E\u0438\u0437\u043E\u0448\u043B\u0430 \u043E\u0448\u0438\u0431\u043A\u0430 \u043F\u0440\u0438 \u0432\u044B\u043F\u043E\u043B\u043D\u0435\u043D\u0438\u0438 \u043E\u043F\u0435\u0440\u0430\u0446\u0438\u0438...")
+        ];
+      }
+    }),
+    _: 1
+  }, _parent));
+  _push(`</button>`);
+}
+const _sfc_setup$O = _sfc_main$O.setup;
+_sfc_main$O.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/preparing/WishlistBtnNode.vue");
+  return _sfc_setup$O ? _sfc_setup$O(props, ctx) : void 0;
+};
+const WishlistBtnNode = /* @__PURE__ */ _export_sfc(_sfc_main$O, [["ssrRender", _sfc_ssrRender$O]]);
 const ProductNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$K = {
+const _sfc_main$N = {
   components: {
-    ProductPricesNode
+    ProductPricesNode,
+    WishlistBtnNode
   },
   props: {
-    catalogType: {
-      type: Boolean,
-      default: true
+    viewType: {
+      type: String,
+      default: "default"
     },
     product: {
       type: Object,
@@ -23790,6 +23748,12 @@ const _sfc_main$K = {
         productId: (_a = this.product) == null ? void 0 : _a.id,
         attrId
       })) == null ? void 0 : _b.options;
+    },
+    routeToSingle() {
+      $router.push({
+        name: "SingleProduct",
+        params: { productSlug: product == null ? void 0 : product.slug }
+      });
     }
   },
   created() {
@@ -23798,10 +23762,11 @@ const _sfc_main$K = {
     this.colorsRGB();
   }
 };
-function _sfc_ssrRender$K(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$N(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   const _component_ProductPricesNode = resolveComponent("ProductPricesNode");
+  const _component_WishlistBtnNode = resolveComponent("WishlistBtnNode");
   _push(`<div${ssrRenderAttrs(mergeProps({
-    class: ["product", $props.catalogType ? "catalog-type" : ""]
+    class: ["product", `product_${$props.viewType}`]
   }, _attrs))}><div class="product__body"><div class="product__image">`);
   if ($props.product.images[3]) {
     _push(`<img${ssrRenderAttr("src", $props.product.images[3].src)} alt="">`);
@@ -23818,7 +23783,12 @@ function _sfc_ssrRender$K(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
     class: "product__prices",
     pricesObject: $props.product
   }, null, _parent));
-  _push(`</div><div class="product__actions"><button class="product__favorite icon-favorite"></button><ul class="product__colors"><!--[-->`);
+  _push(`</div><div class="product__actions">`);
+  _push(ssrRenderComponent(_component_WishlistBtnNode, {
+    productData: { product_id: $props.product.id },
+    class: "product__wishlist icon-wishlist"
+  }, null, _parent));
+  _push(`<ul class="product__colors"><!--[-->`);
   ssrRenderList($data.colorsRGBList, (color, index) => {
     _push(`<li class="product__color" style="${ssrRenderStyle({ background: `#${color}` })}"></li>`);
   });
@@ -23829,81 +23799,33 @@ function _sfc_ssrRender$K(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
   });
   _push(`<!--]--></ul></div></div></div>`);
 }
-const _sfc_setup$K = _sfc_main$K.setup;
-_sfc_main$K.setup = (props, ctx) => {
+const _sfc_setup$N = _sfc_main$N.setup;
+_sfc_main$N.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/ProductNode.vue");
-  return _sfc_setup$K ? _sfc_setup$K(props, ctx) : void 0;
+  return _sfc_setup$N ? _sfc_setup$N(props, ctx) : void 0;
 };
-const ProductNode = /* @__PURE__ */ _export_sfc(_sfc_main$K, [["ssrRender", _sfc_ssrRender$K]]);
+const ProductNode = /* @__PURE__ */ _export_sfc(_sfc_main$N, [["ssrRender", _sfc_ssrRender$N]]);
 const ArrowsSliderNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$J = {
+const _sfc_main$M = {
   props: {
     identificator: String
   },
   computed: {}
 };
-function _sfc_ssrRender$J(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$M(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   _push(`<div${ssrRenderAttrs(mergeProps({ class: "slider-arrows" }, _attrs))}><div class="${ssrRenderClass(`slider-arrows__arrow slider-arrows__arrow_prev ${$props.identificator}__arrow_prev icon-arrow`)}"></div><div class="${ssrRenderClass(`slider-arrows__arrow slider-arrows__arrow_next ${$props.identificator}__arrow_next icon-arrow`)}"></div></div>`);
 }
-const _sfc_setup$J = _sfc_main$J.setup;
-_sfc_main$J.setup = (props, ctx) => {
+const _sfc_setup$M = _sfc_main$M.setup;
+_sfc_main$M.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/sliders/ArrowsSliderNode.vue");
-  return _sfc_setup$J ? _sfc_setup$J(props, ctx) : void 0;
+  return _sfc_setup$M ? _sfc_setup$M(props, ctx) : void 0;
 };
-const ArrowsSliderNode = /* @__PURE__ */ _export_sfc(_sfc_main$J, [["ssrRender", _sfc_ssrRender$J]]);
+const ArrowsSliderNode = /* @__PURE__ */ _export_sfc(_sfc_main$M, [["ssrRender", _sfc_ssrRender$M]]);
 const swiper_min = "";
-const routeToCategoryMixin = {
-  methods: {
-    routeToCategory(category, parentCategorySlug) {
-      if (isEmpty(category))
-        return;
-      if (category.parent == 0 && (parentCategorySlug === void 0 || parentCategorySlug === "rootCategories")) {
-        return this.$router.push({
-          name: "SingleCategory",
-          params: { mainCategorySlug: category.slug }
-        });
-      } else {
-        return this.$router.push({
-          name: "SingleSubCategory",
-          params: {
-            mainCategorySlug: parentCategorySlug,
-            categorySlug: category.slug
-          }
-        });
-      }
-    }
-  }
-};
-const itemsLoadHandler = {
-  data() {
-    return {
-      itemsLoaded: false
-    };
-  },
-  computed: {
-    ...mapGetters({}),
-    ...mapState({})
-  },
-  methods: {
-    ...mapMutations({}),
-    ...mapActions({}),
-    itemsLoadHandler(callback, quantity = 4) {
-      let items2 = [];
-      items2 = callback;
-      if (isEmpty(items2)) {
-        this.itemsLoaded = false;
-        items2.length = quantity;
-      } else {
-        this.itemsLoaded = true;
-      }
-      return items2;
-    }
-  }
-};
 const SliderProductsNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$I = {
+const _sfc_main$L = {
   inheritAttrs: false,
   components: {
     Swiper,
@@ -23916,7 +23838,6 @@ const _sfc_main$I = {
     title: String,
     breakpoints: Object
   },
-  mixins: [itemsLoadHandler, routeToCategoryMixin],
   data() {
     return {
       defaultBreakpoints: {
@@ -23941,14 +23862,14 @@ const _sfc_main$I = {
       productsCategoriesRequest: (state2) => state2.productsCategories.basedRequest
     }),
     products() {
-      return this.itemsLoadHandler(
+      return itemsLoadHandler(
         this.itemsMatchedByCallback(
           this.productsRequest,
           { categories: this.productsCategoryId },
-          function(product, keys, params, items2, approved) {
+          function(product2, keys, params, items2, approved) {
             keys.forEach((key) => {
-              if (Array.isArray(product[key])) {
-                product[key].forEach((category) => {
+              if (Array.isArray(product2[key])) {
+                product2[key].forEach((category) => {
                   if (params[key] == category.id)
                     approved = true;
                 });
@@ -23977,7 +23898,10 @@ const _sfc_main$I = {
   methods: {
     ...mapActions({
       getItems: "getItems"
-    })
+    }),
+    routeToCategoryLocal(category, parentCategorySlug) {
+      routeToCategory(category, parentCategorySlug);
+    }
   },
   created() {
   },
@@ -23993,22 +23917,19 @@ const _sfc_main$I = {
     };
   }
 };
-function _sfc_ssrRender$I(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$L(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   const _component_ContainerNode = resolveComponent("ContainerNode");
-  const _component_arrows_slider_node = resolveComponent("arrows-slider-node");
+  const _component_ArrowsSliderNode = resolveComponent("ArrowsSliderNode");
   const _component_swiper = resolveComponent("swiper");
-  const _component_swiper_slide = resolveComponent("swiper-slide");
+  const _component_SwiperSlide = resolveComponent("SwiperSlide");
   const _component_PreloadWrapNode = resolveComponent("PreloadWrapNode");
-  const _component_product_node = resolveComponent("product-node");
+  const _component_ProductNode = resolveComponent("ProductNode");
   _push(`<section${ssrRenderAttrs(mergeProps({ class: "slider-products" }, _attrs))}>`);
   _push(ssrRenderComponent(_component_ContainerNode, null, {
     default: withCtx((_, _push2, _parent2, _scopeId) => {
       if (_push2) {
         _push2(`<div class="slider-products__body"${_scopeId}><div class="slider-products__title"${_scopeId}><button${_scopeId}>${ssrInterpolate($props.title)}</button></div><div class="slider-products__slider"${_scopeId}>`);
-        _push2(ssrRenderComponent(_component_arrows_slider_node, {
-          style: _ctx.itemsLoaded ? null : { display: "none" },
-          identificator: $options.identificator
-        }, null, _parent2, _scopeId));
+        _push2(ssrRenderComponent(_component_ArrowsSliderNode, { identificator: $options.identificator }, null, _parent2, _scopeId));
         _push2(ssrRenderComponent(_component_swiper, mergeProps(_ctx.$attrs, {
           loop: true,
           "slides-per-view": 2,
@@ -24025,30 +23946,26 @@ function _sfc_ssrRender$I(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
           default: withCtx((_2, _push3, _parent3, _scopeId2) => {
             if (_push3) {
               _push3(`<!--[-->`);
-              ssrRenderList($options.products, (product, index) => {
-                _push3(ssrRenderComponent(_component_swiper_slide, { key: index }, {
+              ssrRenderList($options.products, (product2, index) => {
+                _push3(ssrRenderComponent(_component_SwiperSlide, { key: index }, {
                   default: withCtx((_3, _push4, _parent4, _scopeId3) => {
                     if (_push4) {
                       _push4(ssrRenderComponent(_component_PreloadWrapNode, {
-                        targetPreloadElement: product ? false : true,
-                        paddingBottom: product ? 0 : 146
+                        targetPreloadElement: product2 ? false : true,
+                        paddingBottom: product2 ? 0 : 146
                       }, {
                         default: withCtx((_4, _push5, _parent5, _scopeId4) => {
                           if (_push5) {
-                            if (product) {
-                              _push5(ssrRenderComponent(_component_product_node, {
-                                product,
-                                catalogType: false
-                              }, null, _parent5, _scopeId4));
+                            if (product2) {
+                              _push5(ssrRenderComponent(_component_ProductNode, { product: product2 }, null, _parent5, _scopeId4));
                             } else {
                               _push5(`<!---->`);
                             }
                           } else {
                             return [
-                              product ? (openBlock(), createBlock(_component_product_node, {
+                              product2 ? (openBlock(), createBlock(_component_ProductNode, {
                                 key: 0,
-                                product,
-                                catalogType: false
+                                product: product2
                               }, null, 8, ["product"])) : createCommentVNode("", true)
                             ];
                           }
@@ -24058,14 +23975,13 @@ function _sfc_ssrRender$I(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
                     } else {
                       return [
                         createVNode(_component_PreloadWrapNode, {
-                          targetPreloadElement: product ? false : true,
-                          paddingBottom: product ? 0 : 146
+                          targetPreloadElement: product2 ? false : true,
+                          paddingBottom: product2 ? 0 : 146
                         }, {
                           default: withCtx(() => [
-                            product ? (openBlock(), createBlock(_component_product_node, {
+                            product2 ? (openBlock(), createBlock(_component_ProductNode, {
                               key: 0,
-                              product,
-                              catalogType: false
+                              product: product2
                             }, null, 8, ["product"])) : createCommentVNode("", true)
                           ]),
                           _: 2
@@ -24079,18 +23995,17 @@ function _sfc_ssrRender$I(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
               _push3(`<!--]-->`);
             } else {
               return [
-                (openBlock(true), createBlock(Fragment, null, renderList($options.products, (product, index) => {
-                  return openBlock(), createBlock(_component_swiper_slide, { key: index }, {
+                (openBlock(true), createBlock(Fragment, null, renderList($options.products, (product2, index) => {
+                  return openBlock(), createBlock(_component_SwiperSlide, { key: index }, {
                     default: withCtx(() => [
                       createVNode(_component_PreloadWrapNode, {
-                        targetPreloadElement: product ? false : true,
-                        paddingBottom: product ? 0 : 146
+                        targetPreloadElement: product2 ? false : true,
+                        paddingBottom: product2 ? 0 : 146
                       }, {
                         default: withCtx(() => [
-                          product ? (openBlock(), createBlock(_component_product_node, {
+                          product2 ? (openBlock(), createBlock(_component_ProductNode, {
                             key: 0,
-                            product,
-                            catalogType: false
+                            product: product2
                           }, null, 8, ["product"])) : createCommentVNode("", true)
                         ]),
                         _: 2
@@ -24110,13 +24025,11 @@ function _sfc_ssrRender$I(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
           createVNode("div", { class: "slider-products__body" }, [
             createVNode("div", { class: "slider-products__title" }, [
               createVNode("button", {
-                onClick: ($event) => _ctx.routeToCategory($options.productsCategory)
+                onClick: ($event) => $options.routeToCategoryLocal($options.productsCategory, null)
               }, toDisplayString($props.title), 9, ["onClick"])
             ]),
             createVNode("div", { class: "slider-products__slider" }, [
-              withDirectives(createVNode(_component_arrows_slider_node, { identificator: $options.identificator }, null, 8, ["identificator"]), [
-                [vShow, _ctx.itemsLoaded]
-              ]),
+              createVNode(_component_ArrowsSliderNode, { identificator: $options.identificator }, null, 8, ["identificator"]),
               createVNode(_component_swiper, mergeProps(_ctx.$attrs, {
                 loop: true,
                 "slides-per-view": 2,
@@ -24131,18 +24044,17 @@ function _sfc_ssrRender$I(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
                 breakpoints: $options.swiperBreakpoints
               }), {
                 default: withCtx(() => [
-                  (openBlock(true), createBlock(Fragment, null, renderList($options.products, (product, index) => {
-                    return openBlock(), createBlock(_component_swiper_slide, { key: index }, {
+                  (openBlock(true), createBlock(Fragment, null, renderList($options.products, (product2, index) => {
+                    return openBlock(), createBlock(_component_SwiperSlide, { key: index }, {
                       default: withCtx(() => [
                         createVNode(_component_PreloadWrapNode, {
-                          targetPreloadElement: product ? false : true,
-                          paddingBottom: product ? 0 : 146
+                          targetPreloadElement: product2 ? false : true,
+                          paddingBottom: product2 ? 0 : 146
                         }, {
                           default: withCtx(() => [
-                            product ? (openBlock(), createBlock(_component_product_node, {
+                            product2 ? (openBlock(), createBlock(_component_ProductNode, {
                               key: 0,
-                              product,
-                              catalogType: false
+                              product: product2
                             }, null, 8, ["product"])) : createCommentVNode("", true)
                           ]),
                           _: 2
@@ -24163,18 +24075,18 @@ function _sfc_ssrRender$I(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
   }, _parent));
   _push(`</section>`);
 }
-const _sfc_setup$I = _sfc_main$I.setup;
-_sfc_main$I.setup = (props, ctx) => {
+const _sfc_setup$L = _sfc_main$L.setup;
+_sfc_main$L.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/sliders/SliderProductsNode.vue");
-  return _sfc_setup$I ? _sfc_setup$I(props, ctx) : void 0;
+  return _sfc_setup$L ? _sfc_setup$L(props, ctx) : void 0;
 };
-const SliderProductsNode = /* @__PURE__ */ _export_sfc(_sfc_main$I, [["ssrRender", _sfc_ssrRender$I]]);
+const SliderProductsNode = /* @__PURE__ */ _export_sfc(_sfc_main$L, [["ssrRender", _sfc_ssrRender$L]]);
 const navigation_min = "";
 const pagination_min = "";
 const autoplay_min = "";
 const SliderBannersNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$H = {
+const _sfc_main$K = {
   inheritAttrs: false,
   components: {
     Swiper,
@@ -24272,11 +24184,11 @@ const _sfc_main$H = {
     };
   }
 };
-function _sfc_ssrRender$H(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$K(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   const _component_ContainerNode = resolveComponent("ContainerNode");
-  const _component_arrows_slider_node = resolveComponent("arrows-slider-node");
+  const _component_ArrowsSliderNode = resolveComponent("ArrowsSliderNode");
   const _component_swiper = resolveComponent("swiper");
-  const _component_swiper_slide = resolveComponent("swiper-slide");
+  const _component_SwiperSlide = resolveComponent("SwiperSlide");
   const _component_PreloadWrapNode = resolveComponent("PreloadWrapNode");
   _push(`<section${ssrRenderAttrs(mergeProps({
     class: ["slider-banners", _ctx.$attrs.class]
@@ -24287,7 +24199,7 @@ function _sfc_ssrRender$H(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
       if (_push2) {
         _push2(`<div class="slider-banners__body"${_scopeId}><div class="slider-banners__items"${_scopeId}>`);
         ssrRenderSlot(_ctx.$slots, "banner-category-name", {}, null, _push2, _parent2, _scopeId);
-        _push2(ssrRenderComponent(_component_arrows_slider_node, {
+        _push2(ssrRenderComponent(_component_ArrowsSliderNode, {
           style: ((_a = $options.banners) == null ? void 0 : _a.length) !== 0 ? null : { display: "none" },
           identificator: $props.identificator
         }, null, _parent2, _scopeId));
@@ -24310,7 +24222,7 @@ function _sfc_ssrRender$H(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
             var _a2, _b2;
             if (_push3) {
               if (((_a2 = $options.banners) == null ? void 0 : _a2.length) === 0) {
-                _push3(ssrRenderComponent(_component_swiper_slide, null, {
+                _push3(ssrRenderComponent(_component_SwiperSlide, null, {
                   default: withCtx((_3, _push4, _parent4, _scopeId3) => {
                     if (_push4) {
                       _push4(ssrRenderComponent(_component_PreloadWrapNode, { targetPreloadElement: true }, {
@@ -24353,7 +24265,7 @@ function _sfc_ssrRender$H(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
               }
               _push3(`<!--[-->`);
               ssrRenderList($options.banners, (banner) => {
-                _push3(ssrRenderComponent(_component_swiper_slide, {
+                _push3(ssrRenderComponent(_component_SwiperSlide, {
                   onClick: ($event) => _ctx.$router.push("/blog-page"),
                   key: banner.id
                 }, {
@@ -24425,7 +24337,7 @@ function _sfc_ssrRender$H(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
               _push3(`<!--]-->`);
             } else {
               return [
-                ((_b2 = $options.banners) == null ? void 0 : _b2.length) === 0 ? (openBlock(), createBlock(_component_swiper_slide, { key: 0 }, {
+                ((_b2 = $options.banners) == null ? void 0 : _b2.length) === 0 ? (openBlock(), createBlock(_component_SwiperSlide, { key: 0 }, {
                   default: withCtx(() => [
                     createVNode(_component_PreloadWrapNode, { targetPreloadElement: true }, {
                       default: withCtx(() => [
@@ -24442,7 +24354,7 @@ function _sfc_ssrRender$H(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
                   _: 1
                 })) : createCommentVNode("", true),
                 (openBlock(true), createBlock(Fragment, null, renderList($options.banners, (banner) => {
-                  return openBlock(), createBlock(_component_swiper_slide, {
+                  return openBlock(), createBlock(_component_SwiperSlide, {
                     onClick: ($event) => _ctx.$router.push("/blog-page"),
                     key: banner.id
                   }, {
@@ -24486,7 +24398,7 @@ function _sfc_ssrRender$H(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
           createVNode("div", { class: "slider-banners__body" }, [
             createVNode("div", { class: "slider-banners__items" }, [
               renderSlot(_ctx.$slots, "banner-category-name"),
-              withDirectives(createVNode(_component_arrows_slider_node, { identificator: $props.identificator }, null, 8, ["identificator"]), [
+              withDirectives(createVNode(_component_ArrowsSliderNode, { identificator: $props.identificator }, null, 8, ["identificator"]), [
                 [vShow, ((_b = $options.banners) == null ? void 0 : _b.length) !== 0]
               ])
             ]),
@@ -24507,7 +24419,7 @@ function _sfc_ssrRender$H(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
               default: withCtx(() => {
                 var _a2;
                 return [
-                  ((_a2 = $options.banners) == null ? void 0 : _a2.length) === 0 ? (openBlock(), createBlock(_component_swiper_slide, { key: 0 }, {
+                  ((_a2 = $options.banners) == null ? void 0 : _a2.length) === 0 ? (openBlock(), createBlock(_component_SwiperSlide, { key: 0 }, {
                     default: withCtx(() => [
                       createVNode(_component_PreloadWrapNode, { targetPreloadElement: true }, {
                         default: withCtx(() => [
@@ -24524,7 +24436,7 @@ function _sfc_ssrRender$H(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
                     _: 1
                   })) : createCommentVNode("", true),
                   (openBlock(true), createBlock(Fragment, null, renderList($options.banners, (banner) => {
-                    return openBlock(), createBlock(_component_swiper_slide, {
+                    return openBlock(), createBlock(_component_SwiperSlide, {
                       onClick: ($event) => _ctx.$router.push("/blog-page"),
                       key: banner.id
                     }, {
@@ -24569,15 +24481,15 @@ function _sfc_ssrRender$H(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
   }, _parent));
   _push(`</section>`);
 }
-const _sfc_setup$H = _sfc_main$H.setup;
-_sfc_main$H.setup = (props, ctx) => {
+const _sfc_setup$K = _sfc_main$K.setup;
+_sfc_main$K.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/sliders/SliderBannersNode.vue");
-  return _sfc_setup$H ? _sfc_setup$H(props, ctx) : void 0;
+  return _sfc_setup$K ? _sfc_setup$K(props, ctx) : void 0;
 };
-const SliderBannersNode = /* @__PURE__ */ _export_sfc(_sfc_main$H, [["ssrRender", _sfc_ssrRender$H]]);
+const SliderBannersNode = /* @__PURE__ */ _export_sfc(_sfc_main$K, [["ssrRender", _sfc_ssrRender$K]]);
 const SliderBannersFashionBlogNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$G = {
+const _sfc_main$J = {
   components: {
     SliderBannersNode
   },
@@ -24588,7 +24500,7 @@ const _sfc_main$G = {
   computed: {},
   methods: {}
 };
-function _sfc_ssrRender$G(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$J(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   const _component_SliderBannersNode = resolveComponent("SliderBannersNode");
   _push(ssrRenderComponent(_component_SliderBannersNode, mergeProps({
     class: "slider-banners-fashion-blog",
@@ -24608,13 +24520,13 @@ function _sfc_ssrRender$G(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
   }, _attrs), {
     "banner-category-name": withCtx((_, _push2, _parent2, _scopeId) => {
       if (_push2) {
-        _push2(`<div class="slider-banners-fashion-blog__title"${_scopeId}>Fashion-\u0431\u043B\u043E\u0433</div>`);
+        _push2(`<div class="slider-banners-fashion-blog__title"${_scopeId}> Fashion-\u0431\u043B\u043E\u0433 </div>`);
       } else {
         return [
           createVNode("div", {
             onClick: ($event) => _ctx.$router.push("/blog-page"),
             class: "slider-banners-fashion-blog__title"
-          }, "Fashion-\u0431\u043B\u043E\u0433", 8, ["onClick"])
+          }, " Fashion-\u0431\u043B\u043E\u0433 ", 8, ["onClick"])
         ];
       }
     }),
@@ -24633,20 +24545,20 @@ function _sfc_ssrRender$G(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
     _: 1
   }, _parent));
 }
-const _sfc_setup$G = _sfc_main$G.setup;
-_sfc_main$G.setup = (props, ctx) => {
+const _sfc_setup$J = _sfc_main$J.setup;
+_sfc_main$J.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/sliders/SliderBannersFashionBlogNode.vue");
-  return _sfc_setup$G ? _sfc_setup$G(props, ctx) : void 0;
+  return _sfc_setup$J ? _sfc_setup$J(props, ctx) : void 0;
 };
-const SliderBannersFashionBlogNode = /* @__PURE__ */ _export_sfc(_sfc_main$G, [["ssrRender", _sfc_ssrRender$G]]);
+const SliderBannersFashionBlogNode = /* @__PURE__ */ _export_sfc(_sfc_main$J, [["ssrRender", _sfc_ssrRender$J]]);
 const PageContentNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$F = {
+const _sfc_main$I = {
   props: {
     page: Object
   }
 };
-function _sfc_ssrRender$F(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$I(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   const _component_ContainerNode = resolveComponent("ContainerNode");
   _push(`<section${ssrRenderAttrs(mergeProps({ class: "page-content" }, _attrs))}>`);
   _push(ssrRenderComponent(_component_ContainerNode, null, {
@@ -24672,15 +24584,15 @@ function _sfc_ssrRender$F(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
   }, _parent));
   _push(`</section>`);
 }
-const _sfc_setup$F = _sfc_main$F.setup;
-_sfc_main$F.setup = (props, ctx) => {
+const _sfc_setup$I = _sfc_main$I.setup;
+_sfc_main$I.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/PageContentNode.vue");
-  return _sfc_setup$F ? _sfc_setup$F(props, ctx) : void 0;
+  return _sfc_setup$I ? _sfc_setup$I(props, ctx) : void 0;
 };
-const PageContentNode = /* @__PURE__ */ _export_sfc(_sfc_main$F, [["ssrRender", _sfc_ssrRender$F]]);
+const PageContentNode = /* @__PURE__ */ _export_sfc(_sfc_main$I, [["ssrRender", _sfc_ssrRender$I]]);
 const DistributionNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$E = {
+const _sfc_main$H = {
   data() {
     return {
       email: "",
@@ -24689,7 +24601,7 @@ const _sfc_main$E = {
     };
   }
 };
-function _sfc_ssrRender$E(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$H(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   const _component_ContainerNode = resolveComponent("ContainerNode");
   const _component_InputNode = resolveComponent("InputNode");
   const _component_InputCheckboxNode = resolveComponent("InputCheckboxNode");
@@ -24788,15 +24700,15 @@ function _sfc_ssrRender$E(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
   }, _parent));
   _push(`</section>`);
 }
-const _sfc_setup$E = _sfc_main$E.setup;
-_sfc_main$E.setup = (props, ctx) => {
+const _sfc_setup$H = _sfc_main$H.setup;
+_sfc_main$H.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/DistributionNode.vue");
-  return _sfc_setup$E ? _sfc_setup$E(props, ctx) : void 0;
+  return _sfc_setup$H ? _sfc_setup$H(props, ctx) : void 0;
 };
-const DistributionNode = /* @__PURE__ */ _export_sfc(_sfc_main$E, [["ssrRender", _sfc_ssrRender$E]]);
-const PageHeadNode_vue_vue_type_style_index_0_scoped_2c34f518_lang = "";
-const _sfc_main$D = {
+const DistributionNode = /* @__PURE__ */ _export_sfc(_sfc_main$H, [["ssrRender", _sfc_ssrRender$H]]);
+const PageHeadNode_vue_vue_type_style_index_0_scoped_0c6994b3_lang = "";
+const _sfc_main$G = {
   name: "PageHeadNode",
   inheritAttrs: false,
   props: {
@@ -24860,23 +24772,23 @@ const _sfc_main$D = {
     ...mapActions({})
   }
 };
-function _sfc_ssrRender$D(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$G(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   const _component_ContainerNode = resolveComponent("ContainerNode");
   const _component_RouterLink = resolveComponent("RouterLink");
   _push(`<section${ssrRenderAttrs(mergeProps({
     class: ["page-head", $props.title ? "" : "page-head_product"]
-  }, _attrs))} data-v-2c34f518>`);
+  }, _attrs))} data-v-0c6994b3>`);
   _push(ssrRenderComponent(_component_ContainerNode, null, {
     default: withCtx((_, _push2, _parent2, _scopeId) => {
       var _a, _b;
       if (_push2) {
-        _push2(`<div${ssrRenderAttrs(mergeProps({ class: "page-head__body" }, _ctx.$attrs))} data-v-2c34f518${_scopeId}><div class="page-head__content" data-v-2c34f518${_scopeId}>`);
+        _push2(`<div${ssrRenderAttrs(mergeProps({ class: "page-head__body" }, _ctx.$attrs))} data-v-0c6994b3${_scopeId}><div class="page-head__content" data-v-0c6994b3${_scopeId}>`);
         if (!$props.title) {
-          _push2(`<button class="page-head__back icon-arrow" data-v-2c34f518${_scopeId}> \u041D\u0430\u0437\u0430\u0434 </button>`);
+          _push2(`<button class="page-head__back icon-arrow" data-v-0c6994b3${_scopeId}> \u041D\u0430\u0437\u0430\u0434 </button>`);
         } else {
           _push2(`<!---->`);
         }
-        _push2(`<ul class="page-head__breadcrumbs" data-v-2c34f518${_scopeId}><li data-v-2c34f518${_scopeId}>`);
+        _push2(`<ul class="page-head__breadcrumbs" data-v-0c6994b3${_scopeId}><li data-v-0c6994b3${_scopeId}>`);
         _push2(ssrRenderComponent(_component_RouterLink, { to: "/" }, {
           default: withCtx((_2, _push3, _parent3, _scopeId2) => {
             if (_push3) {
@@ -24891,7 +24803,7 @@ function _sfc_ssrRender$D(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
         }, _parent2, _scopeId));
         _push2(`</li><!--[-->`);
         ssrRenderList((_a = $options.crumbs) == null ? void 0 : _a.reverse(), (crumb, index) => {
-          _push2(`<li data-v-2c34f518${_scopeId}>`);
+          _push2(`<li data-v-0c6994b3${_scopeId}>`);
           _push2(ssrRenderComponent(_component_RouterLink, {
             to: `/product-category/${crumb.slugs.join("/")}`
           }, {
@@ -24899,7 +24811,7 @@ function _sfc_ssrRender$D(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
               if (_push3) {
                 _push3(`${ssrInterpolate(crumb.name)}\xA0\xA0\xA0`);
                 if ($options.crumbs.length - 1 !== index || $props.additionalTitle) {
-                  _push3(`<span data-v-2c34f518${_scopeId2}>/</span>`);
+                  _push3(`<span data-v-0c6994b3${_scopeId2}>/</span>`);
                 } else {
                   _push3(`<!---->`);
                 }
@@ -24914,15 +24826,15 @@ function _sfc_ssrRender$D(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
           }, _parent2, _scopeId));
           _push2(`</li>`);
         });
-        _push2(`<!--]--><li data-v-2c34f518${_scopeId}>`);
+        _push2(`<!--]--><li data-v-0c6994b3${_scopeId}>`);
         if ($props.additionalTitle) {
-          _push2(`<span data-v-2c34f518${_scopeId}>${ssrInterpolate($props.additionalTitle)}</span>`);
+          _push2(`<span data-v-0c6994b3${_scopeId}>${ssrInterpolate($props.additionalTitle)}</span>`);
         } else {
           _push2(`<!---->`);
         }
         _push2(`</li></ul></div>`);
         if ($props.title) {
-          _push2(`<h1 class="page-head__title" data-v-2c34f518${_scopeId}>${ssrInterpolate($props.title)}</h1>`);
+          _push2(`<h1 class="page-head__title" data-v-0c6994b3${_scopeId}>${ssrInterpolate($props.title)}</h1>`);
         } else {
           _push2(`<!---->`);
         }
@@ -24975,15 +24887,15 @@ function _sfc_ssrRender$D(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
   }, _parent));
   _push(`</section>`);
 }
-const _sfc_setup$D = _sfc_main$D.setup;
-_sfc_main$D.setup = (props, ctx) => {
+const _sfc_setup$G = _sfc_main$G.setup;
+_sfc_main$G.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/structure/PageHeadNode.vue");
-  return _sfc_setup$D ? _sfc_setup$D(props, ctx) : void 0;
+  return _sfc_setup$G ? _sfc_setup$G(props, ctx) : void 0;
 };
-const PageHeadNode = /* @__PURE__ */ _export_sfc(_sfc_main$D, [["ssrRender", _sfc_ssrRender$D], ["__scopeId", "data-v-2c34f518"]]);
+const PageHeadNode = /* @__PURE__ */ _export_sfc(_sfc_main$G, [["ssrRender", _sfc_ssrRender$G], ["__scopeId", "data-v-0c6994b3"]]);
 const MainPageNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$C = {
+const _sfc_main$F = {
   name: "MainPageNode",
   components: {
     PageHeadNode
@@ -25009,7 +24921,7 @@ const _sfc_main$C = {
     ...mapActions({})
   }
 };
-function _sfc_ssrRender$C(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$F(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   const _component_PageHeadNode = resolveComponent("PageHeadNode");
   _push(`<main${ssrRenderAttrs(mergeProps({
     class: ["page", $props.templatePage ? "" : "page_product"]
@@ -25027,18 +24939,19 @@ function _sfc_ssrRender$C(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
       _push(`<!---->`);
     }
   }, _push, _parent);
+  _push(`<div class="page-main">`);
   ssrRenderSlot(_ctx.$slots, "page-main", {}, null, _push, _parent);
-  _push(`</main>`);
+  _push(`</div></main>`);
 }
-const _sfc_setup$C = _sfc_main$C.setup;
-_sfc_main$C.setup = (props, ctx) => {
+const _sfc_setup$F = _sfc_main$F.setup;
+_sfc_main$F.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/structure/MainPageNode.vue");
-  return _sfc_setup$C ? _sfc_setup$C(props, ctx) : void 0;
+  return _sfc_setup$F ? _sfc_setup$F(props, ctx) : void 0;
 };
-const MainPageNode = /* @__PURE__ */ _export_sfc(_sfc_main$C, [["ssrRender", _sfc_ssrRender$C]]);
+const MainPageNode = /* @__PURE__ */ _export_sfc(_sfc_main$F, [["ssrRender", _sfc_ssrRender$F]]);
 const Home_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$B = {
+const _sfc_main$E = {
   components: {
     SliderProductsNode,
     SliderBannersNode,
@@ -25084,7 +24997,7 @@ const _sfc_main$B = {
     this.getTemplatePage();
   }
 };
-function _sfc_ssrRender$B(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$E(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   const _component_MainPageNode = resolveComponent("MainPageNode");
   const _component_SliderBannersNode = resolveComponent("SliderBannersNode");
   const _component_SliderProductsNode = resolveComponent("SliderProductsNode");
@@ -25174,32 +25087,73 @@ function _sfc_ssrRender$B(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
     _: 1
   }, _parent));
 }
-const _sfc_setup$B = _sfc_main$B.setup;
-_sfc_main$B.setup = (props, ctx) => {
+const _sfc_setup$E = _sfc_main$E.setup;
+_sfc_main$E.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/pages/common/Home.vue");
-  return _sfc_setup$B ? _sfc_setup$B(props, ctx) : void 0;
+  return _sfc_setup$E ? _sfc_setup$E(props, ctx) : void 0;
 };
-const Home = /* @__PURE__ */ _export_sfc(_sfc_main$B, [["ssrRender", _sfc_ssrRender$B]]);
-const CatalogSidebarNode_vue_vue_type_style_index_0_scoped_15841d28_lang = "";
-const _sfc_main$A = {
-  mixins: [routeToCategoryMixin],
-  components: {},
+const Home = /* @__PURE__ */ _export_sfc(_sfc_main$E, [["ssrRender", _sfc_ssrRender$E]]);
+const SpoilerNode_vue_vue_type_style_index_0_lang = "";
+const _sfc_main$D = {
+  props: {
+    item: {
+      type: Object
+    }
+  },
+  setup(props) {
+    const store2 = useStore();
+    const item = { ...{ type: "spoiler" }, ...props.item };
+    watch(props, (props2) => {
+      store2.commit("common/setSpoiler", {
+        name: props2.item.name,
+        value: props2.item.default,
+        prop: "default"
+      });
+    });
+    const openSpoiler = function() {
+      store2.commit("common/setSpoiler", {
+        name: element.name,
+        prop: "active"
+      });
+    };
+    const { element } = useOpening(item);
+    return { element, openSpoiler };
+  }
+};
+function _sfc_ssrRender$D(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  _push(`<div${ssrRenderAttrs(_attrs)}>`);
+  if ($setup.element.default) {
+    _push(`<div class="${ssrRenderClass([{
+      spoiler_active: $setup.element.active,
+      spoiler_default: $setup.element.default
+    }, "spoiler"])}"><div class="spoiler__button icon-arrow">`);
+    ssrRenderSlot(_ctx.$slots, "button", {}, null, _push, _parent);
+    _push(`</div><div class="spoiler__list">`);
+    ssrRenderSlot(_ctx.$slots, "list", {}, null, _push, _parent);
+    _push(`</div></div>`);
+  } else {
+    _push(`<div>`);
+    ssrRenderSlot(_ctx.$slots, "button", {}, null, _push, _parent);
+    ssrRenderSlot(_ctx.$slots, "list", {}, null, _push, _parent);
+    _push(`</div>`);
+  }
+  _push(`</div>`);
+}
+const _sfc_setup$D = _sfc_main$D.setup;
+_sfc_main$D.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/SpoilerNode.vue");
+  return _sfc_setup$D ? _sfc_setup$D(props, ctx) : void 0;
+};
+const SpoilerNode = /* @__PURE__ */ _export_sfc(_sfc_main$D, [["ssrRender", _sfc_ssrRender$D]]);
+const CatalogSidebarNode_vue_vue_type_style_index_0_lang = "";
+const _sfc_main$C = {
+  components: { SpoilerNode },
   props: {
     mainCategory: Object,
     category: Object,
     total: [String, Number]
-  },
-  data() {
-    return {
-      bodyShow: true
-    };
-  },
-  watch: {
-    windowWidth(newValue) {
-      if (newValue > 767)
-        this.bodyShow = true;
-    }
   },
   computed: {
     ...mapGetters({
@@ -25218,51 +25172,160 @@ const _sfc_main$A = {
       return this.itemsMatchedOneProperty(this.productsCategoriesRequest, {
         parent: id
       });
+    },
+    routeToCategoryLocal(category, parentCategorySlug) {
+      routeToCategory(category, parentCategorySlug);
     }
   },
   created() {
   }
 };
-function _sfc_ssrRender$A(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
-  _push(`<section${ssrRenderAttrs(mergeProps({ class: "catalog-sidebar" }, _attrs))} data-v-15841d28><button class="catalog-sidebar__title catalog-sidebar__title_main icon-arrow" data-v-15841d28> \u041E\u0434\u0435\u0436\u0434\u0430 </button>`);
-  if ($props.mainCategory) {
-    _push(`<div style="${ssrRenderStyle($data.bodyShow ? null : { display: "none" })}" class="catalog-sidebar__body" data-v-15841d28><button class="${ssrRenderClass([$props.category ? $props.category.id ? "" : "active" : "", "catalog-sidebar__title icon-arrow"])}" data-v-15841d28> \u0412\u0441\u044F \u043E\u0434\u0435\u0436\u0434\u0430 <span data-v-15841d28>${$props.total ? $props.total : 0}</span></button><div class="catalog-sidebar__items" data-v-15841d28><ul class="catalog-sidebar__list" data-v-15841d28><!--[-->`);
-    ssrRenderList($options.items($props.mainCategory.id), (productsCategory) => {
-      _push(`<li class="catalog-sidebar__item" data-v-15841d28><button class="${ssrRenderClass([
-        $props.category ? $props.category.id == productsCategory.id ? "active" : "" : "",
-        "catalog-sidebar__category icon-arrow"
-      ])}" data-v-15841d28>${ssrInterpolate(productsCategory.name)}<span data-v-15841d28>${ssrInterpolate(productsCategory.count)}</span></button>`);
-      if ($props.category) {
-        _push(`<ul class="catalog-sidebar__sub-list" style="${ssrRenderStyle($props.category.id == productsCategory.id || $props.category.parent == productsCategory.id ? null : { display: "none" })}" data-v-15841d28><!--[-->`);
-        ssrRenderList($options.items(productsCategory.id), (productsSubCategory) => {
-          _push(`<li class="catalog-sidebar__sub-item" data-v-15841d28><button class="${ssrRenderClass([
-            $props.category.id == productsSubCategory.id ? "active" : "",
-            "catalog-sidebar__sub-category icon-arrow"
-          ])}" data-v-15841d28>${ssrInterpolate(productsSubCategory.name)}<span data-v-15841d28>${ssrInterpolate(productsSubCategory.count)}</span></button></li>`);
-        });
-        _push(`<!--]--></ul>`);
+function _sfc_ssrRender$C(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  const _component_SpoilerNode = resolveComponent("SpoilerNode");
+  _push(`<section${ssrRenderAttrs(mergeProps({ class: "catalog-sidebar" }, _attrs))}>`);
+  _push(ssrRenderComponent(_component_SpoilerNode, {
+    item: {
+      name: "catalogSidebar",
+      default: _ctx.windowWidth < 1024
+    }
+  }, {
+    button: withCtx((_, _push2, _parent2, _scopeId) => {
+      if (_push2) {
+        _push2(`<div class="catalog-sidebar__title catalog-sidebar__title_main"${_scopeId}> \u041E\u0434\u0435\u0436\u0434\u0430 </div>`);
       } else {
-        _push(`<!---->`);
+        return [
+          createVNode("div", { class: "catalog-sidebar__title catalog-sidebar__title_main" }, " \u041E\u0434\u0435\u0436\u0434\u0430 ")
+        ];
       }
-      _push(`</li>`);
-    });
-    _push(`<!--]--></ul></div></div>`);
-  } else {
-    _push(`<!---->`);
-  }
+    }),
+    list: withCtx((_, _push2, _parent2, _scopeId) => {
+      if (_push2) {
+        if ($props.mainCategory) {
+          _push2(`<div class="catalog-sidebar__body"${_scopeId}><button class="${ssrRenderClass([$props.category ? $props.category.id ? "" : "active" : "", "catalog-sidebar__title icon-arrow"])}"${_scopeId}> \u0412\u0441\u044F \u043E\u0434\u0435\u0436\u0434\u0430 <span${_scopeId}>${$props.total ? $props.total : 0}</span></button><div class="catalog-sidebar__items"${_scopeId}><ul class="catalog-sidebar__list"${_scopeId}><!--[-->`);
+          ssrRenderList($options.items($props.mainCategory.id), (productsCategory) => {
+            var _a;
+            _push2(`<li class="catalog-sidebar__item"${_scopeId}><button class="${ssrRenderClass([{
+              "active": ((_a = $props.category) == null ? void 0 : _a.id) == (productsCategory == null ? void 0 : productsCategory.id),
+              "disable-arrow": productsCategory.count == 0
+            }, "catalog-sidebar__category icon-arrow"])}"${_scopeId}>${ssrInterpolate(productsCategory.name)}<span${_scopeId}>${ssrInterpolate(productsCategory.count)}</span></button>`);
+            if ($props.category) {
+              _push2(`<ul class="catalog-sidebar__sub-list" style="${ssrRenderStyle($props.category.id == productsCategory.id || $props.category.parent == productsCategory.id ? null : { display: "none" })}"${_scopeId}><!--[-->`);
+              ssrRenderList($options.items(productsCategory.id), (productsSubCategory) => {
+                _push2(`<li class="catalog-sidebar__sub-item"${_scopeId}><button class="${ssrRenderClass([{
+                  active: $props.category.id == productsSubCategory.id,
+                  "disable-arrow": productsSubCategory.count == 0
+                }, "catalog-sidebar__sub-category icon-arrow"])}"${_scopeId}>${ssrInterpolate(productsSubCategory.name)}<span${_scopeId}>${ssrInterpolate(productsSubCategory.count)}</span></button></li>`);
+              });
+              _push2(`<!--]--></ul>`);
+            } else {
+              _push2(`<!---->`);
+            }
+            _push2(`</li>`);
+          });
+          _push2(`<!--]--></ul></div></div>`);
+        } else {
+          _push2(`<!---->`);
+        }
+      } else {
+        return [
+          $props.mainCategory ? (openBlock(), createBlock("div", {
+            key: 0,
+            class: "catalog-sidebar__body"
+          }, [
+            createVNode("button", {
+              class: ["catalog-sidebar__title icon-arrow", $props.category ? $props.category.id ? "" : "active" : ""],
+              onClick: ($event) => $options.routeToCategoryLocal(
+                _ctx.itemById({
+                  type: _ctx.productsCategoriesRequest.type,
+                  id: $props.mainCategory.id
+                })
+              )
+            }, [
+              createTextVNode(" \u0412\u0441\u044F \u043E\u0434\u0435\u0436\u0434\u0430 "),
+              createVNode("span", {
+                innerHTML: $props.total ? $props.total : 0
+              }, null, 8, ["innerHTML"])
+            ], 10, ["onClick"]),
+            createVNode("div", { class: "catalog-sidebar__items" }, [
+              createVNode("ul", { class: "catalog-sidebar__list" }, [
+                (openBlock(true), createBlock(Fragment, null, renderList($options.items($props.mainCategory.id), (productsCategory) => {
+                  var _a;
+                  return openBlock(), createBlock("li", {
+                    class: "catalog-sidebar__item",
+                    key: productsCategory.id
+                  }, [
+                    createVNode("button", {
+                      class: ["catalog-sidebar__category icon-arrow", {
+                        "active": ((_a = $props.category) == null ? void 0 : _a.id) == (productsCategory == null ? void 0 : productsCategory.id),
+                        "disable-arrow": productsCategory.count == 0
+                      }],
+                      onClick: ($event) => $options.routeToCategoryLocal(
+                        productsCategory,
+                        _ctx.itemById({
+                          type: _ctx.productsCategoriesRequest.type,
+                          id: productsCategory.parent
+                        }).slug
+                      )
+                    }, [
+                      createTextVNode(toDisplayString(productsCategory.name), 1),
+                      createVNode("span", null, toDisplayString(productsCategory.count), 1)
+                    ], 10, ["onClick"]),
+                    $props.category ? withDirectives((openBlock(), createBlock("ul", {
+                      key: 0,
+                      class: "catalog-sidebar__sub-list"
+                    }, [
+                      (openBlock(true), createBlock(Fragment, null, renderList($options.items(productsCategory.id), (productsSubCategory) => {
+                        return openBlock(), createBlock("li", {
+                          class: "catalog-sidebar__sub-item",
+                          key: productsSubCategory.id
+                        }, [
+                          createVNode("button", {
+                            class: ["catalog-sidebar__sub-category icon-arrow", {
+                              active: $props.category.id == productsSubCategory.id,
+                              "disable-arrow": productsSubCategory.count == 0
+                            }],
+                            onClick: ($event) => $options.routeToCategoryLocal(
+                              productsSubCategory,
+                              _ctx.itemById({
+                                type: _ctx.productsCategoriesRequest.type,
+                                id: productsCategory.parent
+                              }).slug
+                            )
+                          }, [
+                            createTextVNode(toDisplayString(productsSubCategory.name), 1),
+                            createVNode("span", null, toDisplayString(productsSubCategory.count), 1)
+                          ], 10, ["onClick"])
+                        ]);
+                      }), 128))
+                    ], 512)), [
+                      [
+                        vShow,
+                        $props.category.id == productsCategory.id || $props.category.parent == productsCategory.id
+                      ]
+                    ]) : createCommentVNode("", true)
+                  ]);
+                }), 128))
+              ])
+            ])
+          ])) : createCommentVNode("", true)
+        ];
+      }
+    }),
+    _: 1
+  }, _parent));
   _push(`</section>`);
 }
-const _sfc_setup$A = _sfc_main$A.setup;
-_sfc_main$A.setup = (props, ctx) => {
+const _sfc_setup$C = _sfc_main$C.setup;
+_sfc_main$C.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/CatalogSidebarNode.vue");
-  return _sfc_setup$A ? _sfc_setup$A(props, ctx) : void 0;
+  return _sfc_setup$C ? _sfc_setup$C(props, ctx) : void 0;
 };
-const CatalogSidebarNode = /* @__PURE__ */ _export_sfc(_sfc_main$A, [["ssrRender", _sfc_ssrRender$A], ["__scopeId", "data-v-15841d28"]]);
+const CatalogSidebarNode = /* @__PURE__ */ _export_sfc(_sfc_main$C, [["ssrRender", _sfc_ssrRender$C]]);
 const vueSliderComponent = "";
 const _default = "";
 const FilterPrices_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$z = {
+const _sfc_main$B = {
   components: {
     VueSlider
   },
@@ -25308,29 +25371,6 @@ const _sfc_main$z = {
     ...mapActions({
       mainFetchRequest: "mainFetchRequest"
     }),
-    getPrices() {
-      let params = {
-        orderby: "price",
-        order: "asc",
-        per_page: 1,
-        _fields: ["price"]
-      };
-      this.getPrice(params, "Min");
-      params.order = "desc";
-      this.getPrice(params, "Max");
-    },
-    async getPrice(params, type) {
-      const { request, response } = await this.mainFetchRequest({
-        config: { params },
-        route_base: this.productsRequest.route_base,
-        apiType: this.productsRequest.apiType
-      });
-      if (!response)
-        return;
-      let price = Number(response.data[0].price);
-      this[`set${type}Cost`](price);
-      this[`set${type}Price`](price);
-    },
     updatePrices(newValue) {
       this.setMinPrice(newValue[0]);
       this.setMaxPrice(newValue[1]);
@@ -25339,7 +25379,7 @@ const _sfc_main$z = {
   created() {
   }
 };
-function _sfc_ssrRender$z(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$B(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   const _component_InputNode = resolveComponent("InputNode");
   const _component_VueSlider = resolveComponent("VueSlider");
   _push(`<div${ssrRenderAttrs(mergeProps({ class: "filter-prices" }, _attrs))}><div class="filter-prices__inputes">`);
@@ -25405,42 +25445,41 @@ function _sfc_ssrRender$z(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
   }, null, _parent));
   _push(`</div>`);
 }
-const _sfc_setup$z = _sfc_main$z.setup;
-_sfc_main$z.setup = (props, ctx) => {
+const _sfc_setup$B = _sfc_main$B.setup;
+_sfc_main$B.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/filter/FilterPrices.vue");
-  return _sfc_setup$z ? _sfc_setup$z(props, ctx) : void 0;
+  return _sfc_setup$B ? _sfc_setup$B(props, ctx) : void 0;
 };
-const FilterPrices = /* @__PURE__ */ _export_sfc(_sfc_main$z, [["ssrRender", _sfc_ssrRender$z]]);
-const RevealingListNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$y = {
-  components: {},
+const FilterPrices = /* @__PURE__ */ _export_sfc(_sfc_main$B, [["ssrRender", _sfc_ssrRender$B]]);
+const CatalogRevealingNode_vue_vue_type_style_index_0_lang = "";
+const _sfc_main$A = {
   props: {
+    item: Object,
     bodyLoaded: {
       type: Boolean,
       default: false
-    },
-    applyValidate: {
-      default: true,
-      type: Boolean
     }
   },
   emmits: ["apply", "setDefault"],
-  mixins: [popupRevealingMixin],
-  data() {
-    return {
-      errorInvalidValue: false
-    };
+  setup(props) {
+    const item = { ...{ type: "catalogRevealing" }, ...props.item };
+    const { element } = useOpening(item);
+    return { element };
   },
   computed: {
     ...mapGetters({}),
     ...mapState({})
   },
   methods: {
-    ...mapMutations({}),
-    ...mapActions({}),
+    ...mapMutations({
+      setCatalogRevealing: "common/setCatalogRevealing"
+    }),
+    ...mapActions({
+      updateAllOpeningTypeItems: "common/updateAllOpeningTypeItems"
+    }),
     apply() {
-      this.closeRevs();
+      this.updateAllOpeningTypeItems({ type: "catalogRevealing" });
       return this.$emit("apply");
     },
     setDefault() {
@@ -25448,40 +25487,40 @@ const _sfc_main$y = {
     }
   }
 };
-function _sfc_ssrRender$y(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$A(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   const _component_ButtonNode = resolveComponent("ButtonNode");
   _push(`<div${ssrRenderAttrs(mergeProps({
-    class: ["revealing-list", _ctx.state.visible ? "revealing-list_active" : ""]
-  }, _attrs))}><div class="revealing-list__actions">`);
+    class: ["catalog-revealing", $setup.element.active ? "catalog-revealing_active" : ""]
+  }, _attrs))}><div class="catalog-revealing__actions">`);
   _push(ssrRenderComponent(_component_ButtonNode, {
-    class: ["revealing-list__button revealing-list__button_main", _ctx.state.default ? "revealing-list__button_main_default" : ""],
-    onClick: _ctx.bodyVisible
+    class: ["catalog-revealing__button catalog-revealing__button_main", $setup.element.default ? "catalog-revealing__button_main_default" : ""],
+    onClick: ($event) => _ctx.setCatalogRevealing({ name: $props.item.name })
   }, {
     default: withCtx((_, _push2, _parent2, _scopeId) => {
       if (_push2) {
-        _push2(`<span class="revealing-list__close icon-plus"${_scopeId}></span><span class="revealing-list__title"${_scopeId}>`);
+        _push2(`<span class="catalog-revealing__close icon-plus"${_scopeId}></span><span class="catalog-revealing__title"${_scopeId}>`);
         ssrRenderSlot(_ctx.$slots, "title", {}, null, _push2, _parent2, _scopeId);
-        _push2(`</span><span class="revealing-list__arrow icon-arrow"${_scopeId}></span>`);
+        _push2(`</span><span class="catalog-revealing__arrow icon-arrow"${_scopeId}></span>`);
       } else {
         return [
           createVNode("span", {
-            class: "revealing-list__close icon-plus",
+            class: "catalog-revealing__close icon-plus",
             onClick: $options.setDefault
           }, null, 8, ["onClick"]),
-          createVNode("span", { class: "revealing-list__title" }, [
+          createVNode("span", { class: "catalog-revealing__title" }, [
             renderSlot(_ctx.$slots, "title")
           ]),
-          createVNode("span", { class: "revealing-list__arrow icon-arrow" })
+          createVNode("span", { class: "catalog-revealing__arrow icon-arrow" })
         ];
       }
     }),
     _: 3
   }, _parent));
-  _push(`</div><div class="revealing-list__body" style="${ssrRenderStyle(_ctx.state.visible ? null : { display: "none" })}"><div class="revealing-list__main">`);
+  _push(`</div><div class="catalog-revealing__body" style="${ssrRenderStyle($setup.element.active ? null : { display: "none" })}"><div class="catalog-revealing__main">`);
   ssrRenderSlot(_ctx.$slots, "main", {}, null, _push, _parent);
-  _push(`</div><div class="revealing-list__nested-actions">`);
+  _push(`</div><div class="catalog-revealing__nested-actions">`);
   _push(ssrRenderComponent(_component_ButtonNode, {
-    class: "revealing-list__button",
+    class: "catalog-revealing__button",
     onClick: $options.setDefault
   }, {
     default: withCtx((_, _push2, _parent2, _scopeId) => {
@@ -25496,10 +25535,9 @@ function _sfc_ssrRender$y(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
     _: 1
   }, _parent));
   _push(ssrRenderComponent(_component_ButtonNode, {
-    class: "revealing-list__button",
+    class: "catalog-revealing__button",
     "button-style": "dark",
-    onClick: $options.apply,
-    disabled: $props.bodyLoaded ? false : true
+    onClick: $options.apply
   }, {
     default: withCtx((_, _push2, _parent2, _scopeId) => {
       if (_push2) {
@@ -25514,18 +25552,18 @@ function _sfc_ssrRender$y(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
   }, _parent));
   _push(`</div></div></div>`);
 }
-const _sfc_setup$y = _sfc_main$y.setup;
-_sfc_main$y.setup = (props, ctx) => {
+const _sfc_setup$A = _sfc_main$A.setup;
+_sfc_main$A.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/RevealingListNode.vue");
-  return _sfc_setup$y ? _sfc_setup$y(props, ctx) : void 0;
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/CatalogRevealingNode.vue");
+  return _sfc_setup$A ? _sfc_setup$A(props, ctx) : void 0;
 };
-const RevealingListNode = /* @__PURE__ */ _export_sfc(_sfc_main$y, [["ssrRender", _sfc_ssrRender$y]]);
-const FilterNode_vue_vue_type_style_index_0_scoped_a1af89d6_lang = "";
-const _sfc_main$x = {
+const CatalogRevealingNode = /* @__PURE__ */ _export_sfc(_sfc_main$A, [["ssrRender", _sfc_ssrRender$A]]);
+const FilterNode_vue_vue_type_style_index_0_lang = "";
+const _sfc_main$z = {
   components: {
     FilterPrices,
-    RevealingListNode
+    CatalogRevealingNode
   },
   emits: ["updateFilter"],
   data() {
@@ -25536,7 +25574,8 @@ const _sfc_main$x = {
       revealings: {
         sorting: {},
         prices: {}
-      }
+      },
+      filterBodyHeight: null
     };
   },
   watch: {
@@ -25547,6 +25586,7 @@ const _sfc_main$x = {
   computed: {
     ...mapGetters({
       itemsBased: "itemsBased",
+      itemsMatchedByCallback: "itemsMatchedByCallback",
       attributesSlugs: "productsAttributes/attributesSlugs"
     }),
     ...mapState({
@@ -25563,7 +25603,15 @@ const _sfc_main$x = {
       productsAttributesRequest: (state2) => state2.productsAttributes.basedRequest
     }),
     attributes() {
-      return this.itemsBased(this.productsAttributesRequest);
+      return this.itemsMatchedByCallback(
+        this.productsAttributesRequest,
+        { regExp: /^pa_yookassa_*./ },
+        function(element, keys, params) {
+          if (element.slug.match(params.regExp) === null) {
+            return true;
+          }
+        }
+      );
     }
   },
   methods: {
@@ -25576,16 +25624,15 @@ const _sfc_main$x = {
       setAttributeTerms: "filter/setAttributeTerms",
       setMaxPrice: "filter/setMaxPrice",
       setMinPrice: "filter/setMinPrice",
-      updateRev: "common/updateRev",
-      addRev: "common/addRev",
-      closeRevs: "common/closeRevs",
       unsetDefaultAttributeOptions: "filter/unsetDefaultAttributeOptions",
-      setDefaultPrices: "filter/setDefaultPrices"
+      setDefaultPrices: "filter/setDefaultPrices",
+      setCatalogRevealing: "common/setCatalogRevealing"
     }),
     ...mapActions({
       getItemsBased: "getItemsBased",
       getItems: "getItems",
-      setDefaultFilter: "filter/setDefaultFilter"
+      setDefaultFilter: "filter/setDefaultFilter",
+      updateAllOpeningTypeItems: "common/updateAllOpeningTypeItems"
     }),
     singleAttribute(attributeSlug) {
       switch (attributeSlug) {
@@ -25623,56 +25670,55 @@ const _sfc_main$x = {
       this.filterShow ? this.filterShow = false : this.filterShow = true;
     },
     filterCleanAndLoadDefault() {
-      const slugs = this.attributesSlugs;
-      slugs.forEach((slug) => {
-        this.updateRev({
-          name: slug,
-          value: true,
-          toggleValue: false,
-          prop: "default"
-        });
-      });
       this.setDefaultFilter();
-      this.closeRevs();
+      this.updateAllOpeningTypeItems({ type: "catalogRevealing" });
+      this.updateAllOpeningTypeItems({
+        type: "catalogRevealing",
+        value: true,
+        prop: "default"
+      });
       this.$emit("updateFilter");
     },
-    updateRevealing({ type, value }) {
+    updateCatalogRevealing({ type, value }) {
       this.setAttributeTerms({ type, value });
       let marker = isEmpty(this.filterParams[type].options);
-      this.updateRev({
+      this.setCatalogRevealing({
         name: type,
         value: marker,
-        toggleValue: false,
         prop: "default"
       });
     },
     setDefaultAttribute(slug) {
-      this.updateRev({
+      this.setCatalogRevealing({
         name: slug,
         value: true,
-        toggleValue: false,
         prop: "default"
       });
       this.unsetDefaultAttributeOptions(slug);
     }
   },
   created() {
-    this.addRev(
-      Object.assign(this.revealings, this.attributesSlugsRevs(this.attributes))
-    );
   },
   mounted() {
+    new Sticky(".filter__wrapper", {
+      marginTop: 40,
+      marginBottom: 100,
+      stickyFor: 1024,
+      stickyClass: "filter__wrapper_stuck",
+      stickyContainer: ".page-main"
+    });
+    this.filterBodyHeight = this.$refs.filterBody.offsetHeight;
   }
 };
-function _sfc_ssrRender$x(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$z(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   const _component_ContainerNode = resolveComponent("ContainerNode");
   const _component_ButtonNode = resolveComponent("ButtonNode");
-  const _component_RevealingListNode = resolveComponent("RevealingListNode");
+  const _component_CatalogRevealingNode = resolveComponent("CatalogRevealingNode");
   const _component_FilterPrices = resolveComponent("FilterPrices");
   const _component_InputCheckboxNode = resolveComponent("InputCheckboxNode");
   _push(`<section${ssrRenderAttrs(mergeProps({
     class: ["filter", $data.filterShow ? "filter_active" : ""]
-  }, _attrs))} data-v-a1af89d6>`);
+  }, _attrs))}>`);
   _push(ssrRenderComponent(_component_ContainerNode, null, {
     default: withCtx((_, _push2, _parent2, _scopeId) => {
       if (_push2) {
@@ -25691,12 +25737,11 @@ function _sfc_ssrRender$x(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
           }),
           _: 1
         }, _parent2, _scopeId));
-        _push2(`<div class="filter__body" data-v-a1af89d6${_scopeId}><ul class="filter__list" data-v-a1af89d6${_scopeId}><li class="filter__item" data-v-a1af89d6${_scopeId}>`);
-        _push2(ssrRenderComponent(_component_RevealingListNode, {
+        _push2(`<div class="filter__body" style="${ssrRenderStyle({ minHeight: $data.filterBodyHeight + "px" })}"${_scopeId}><div class="filter__wrapper container"${_scopeId}><ul class="filter__list"${_scopeId}><li class="filter__item"${_scopeId}>`);
+        _push2(ssrRenderComponent(_component_CatalogRevealingNode, {
+          item: { name: "catalogPrices" },
           onApply: ($event) => _ctx.$emit("updateFilter"),
-          onSetDefault: _ctx.setDefaultPrices,
-          applyValidate: $data.applyValidate,
-          name: "prices"
+          onSetDefault: _ctx.setDefaultPrices
         }, {
           title: withCtx((_2, _push3, _parent3, _scopeId2) => {
             if (_push3) {
@@ -25724,8 +25769,9 @@ function _sfc_ssrRender$x(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
         }, _parent2, _scopeId));
         _push2(`</li><!--[-->`);
         ssrRenderList($options.attributes, (attr, index) => {
-          _push2(`<li class="filter__item" data-v-a1af89d6${_scopeId}>`);
-          _push2(ssrRenderComponent(_component_RevealingListNode, {
+          _push2(`<li class="filter__item"${_scopeId}>`);
+          _push2(ssrRenderComponent(_component_CatalogRevealingNode, {
+            item: { name: attr.slug },
             onApply: ($event) => _ctx.$emit("updateFilter"),
             name: attr.slug,
             onSetDefault: ($event) => $options.setDefaultAttribute(attr.slug),
@@ -25742,13 +25788,13 @@ function _sfc_ssrRender$x(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
             }),
             main: withCtx((_2, _push3, _parent3, _scopeId2) => {
               if (_push3) {
-                _push3(`<ul class="filter__sub-list" data-v-a1af89d6${_scopeId2}><!--[-->`);
+                _push3(`<ul class="filter__sub-list"${_scopeId2}><!--[-->`);
                 ssrRenderList($options.singleAttribute(attr.slug), ({ id, name }) => {
-                  _push3(`<li class="filter__sub-item" data-v-a1af89d6${_scopeId2}>`);
+                  _push3(`<li class="filter__sub-item"${_scopeId2}>`);
                   _push3(ssrRenderComponent(_component_InputCheckboxNode, {
                     modelValue: $options.filterParamsChecked(attr.slug, id),
                     labelText: name,
-                    onInput: ($event) => $options.updateRevealing({
+                    onInput: ($event) => $options.updateCatalogRevealing({
                       type: attr.slug,
                       value: { id, name }
                     })
@@ -25767,7 +25813,7 @@ function _sfc_ssrRender$x(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
                         createVNode(_component_InputCheckboxNode, {
                           modelValue: $options.filterParamsChecked(attr.slug, id),
                           labelText: name,
-                          onInput: ($event) => $options.updateRevealing({
+                          onInput: ($event) => $options.updateCatalogRevealing({
                             type: attr.slug,
                             value: { id, name }
                           })
@@ -25782,7 +25828,7 @@ function _sfc_ssrRender$x(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
           }, _parent2, _scopeId));
           _push2(`</li>`);
         });
-        _push2(`<!--]--><li class="filter__item" data-v-a1af89d6${_scopeId}>`);
+        _push2(`<!--]--><li class="filter__item"${_scopeId}>`);
         _push2(ssrRenderComponent(_component_InputCheckboxNode, {
           modelValue: $data.onlineOnly,
           "onUpdate:modelValue": ($event) => $data.onlineOnly = $event,
@@ -25795,7 +25841,7 @@ function _sfc_ssrRender$x(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
         }, {
           default: withCtx((_2, _push3, _parent3, _scopeId2) => {
             if (_push3) {
-              _push3(`\u041E\u0447\u0438\u0441\u0442\u0438\u0442\u044C<span data-v-a1af89d6${_scopeId2}>\u0444\u0438\u043B\u044C\u0442\u0440\u044B</span>`);
+              _push3(`\u041E\u0447\u0438\u0441\u0442\u0438\u0442\u044C<span${_scopeId2}>\u0444\u0438\u043B\u044C\u0442\u0440\u044B</span>`);
             } else {
               return [
                 createTextVNode("\u041E\u0447\u0438\u0441\u0442\u0438\u0442\u044C"),
@@ -25805,7 +25851,7 @@ function _sfc_ssrRender$x(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
           }),
           _: 1
         }, _parent2, _scopeId));
-        _push2(`</div>`);
+        _push2(`</div></div>`);
       } else {
         return [
           createVNode(_component_ButtonNode, {
@@ -25817,80 +25863,86 @@ function _sfc_ssrRender$x(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
             ]),
             _: 1
           }, 8, ["onClick"]),
-          createVNode("div", { class: "filter__body" }, [
-            createVNode("ul", { class: "filter__list" }, [
-              createVNode("li", { class: "filter__item" }, [
-                createVNode(_component_RevealingListNode, {
-                  onApply: ($event) => _ctx.$emit("updateFilter"),
-                  onSetDefault: _ctx.setDefaultPrices,
-                  applyValidate: $data.applyValidate,
-                  name: "prices"
-                }, {
-                  title: withCtx(() => [
-                    createTextVNode("\u0426\u0435\u043D\u0430")
-                  ]),
-                  main: withCtx(() => [
-                    _ctx.browserReady ? (openBlock(), createBlock(_component_FilterPrices, { key: 0 })) : createCommentVNode("", true)
-                  ]),
-                  _: 1
-                }, 8, ["onApply", "onSetDefault", "applyValidate"])
-              ]),
-              (openBlock(true), createBlock(Fragment, null, renderList($options.attributes, (attr, index) => {
-                return openBlock(), createBlock("li", {
-                  class: "filter__item",
-                  key: index
-                }, [
-                  createVNode(_component_RevealingListNode, {
+          createVNode("div", {
+            class: "filter__body",
+            style: { minHeight: $data.filterBodyHeight + "px" },
+            ref: "filterBody"
+          }, [
+            createVNode("div", { class: "filter__wrapper container" }, [
+              createVNode("ul", { class: "filter__list" }, [
+                createVNode("li", { class: "filter__item" }, [
+                  createVNode(_component_CatalogRevealingNode, {
+                    item: { name: "catalogPrices" },
                     onApply: ($event) => _ctx.$emit("updateFilter"),
-                    name: attr.slug,
-                    onSetDefault: ($event) => $options.setDefaultAttribute(attr.slug),
-                    bodyLoaded: attr.slug ? true : false
+                    onSetDefault: _ctx.setDefaultPrices
                   }, {
                     title: withCtx(() => [
-                      createTextVNode(toDisplayString(attr.name), 1)
+                      createTextVNode("\u0426\u0435\u043D\u0430")
                     ]),
                     main: withCtx(() => [
-                      createVNode("ul", { class: "filter__sub-list" }, [
-                        (openBlock(true), createBlock(Fragment, null, renderList($options.singleAttribute(attr.slug), ({ id, name }) => {
-                          return openBlock(), createBlock("li", {
-                            class: "filter__sub-item",
-                            key: id
-                          }, [
-                            createVNode(_component_InputCheckboxNode, {
-                              modelValue: $options.filterParamsChecked(attr.slug, id),
-                              labelText: name,
-                              onInput: ($event) => $options.updateRevealing({
-                                type: attr.slug,
-                                value: { id, name }
-                              })
-                            }, null, 8, ["modelValue", "labelText", "onInput"])
-                          ]);
-                        }), 128))
-                      ])
+                      _ctx.browserReady ? (openBlock(), createBlock(_component_FilterPrices, { key: 0 })) : createCommentVNode("", true)
                     ]),
-                    _: 2
-                  }, 1032, ["onApply", "name", "onSetDefault", "bodyLoaded"])
-                ]);
-              }), 128)),
-              createVNode("li", { class: "filter__item" }, [
-                createVNode(_component_InputCheckboxNode, {
-                  modelValue: $data.onlineOnly,
-                  "onUpdate:modelValue": ($event) => $data.onlineOnly = $event,
-                  labelText: "\u0414\u043E\u0441\u0442\u0443\u043F\u043D\u043E \u043E\u043D\u043B\u0430\u0439\u043D"
-                }, null, 8, ["modelValue", "onUpdate:modelValue"])
-              ])
-            ]),
-            createVNode(_component_ButtonNode, {
-              onClick: $options.filterCleanAndLoadDefault,
-              class: "filter__button filter__button_clean"
-            }, {
-              default: withCtx(() => [
-                createTextVNode("\u041E\u0447\u0438\u0441\u0442\u0438\u0442\u044C"),
-                createVNode("span", null, "\u0444\u0438\u043B\u044C\u0442\u0440\u044B")
+                    _: 1
+                  }, 8, ["onApply", "onSetDefault"])
+                ]),
+                (openBlock(true), createBlock(Fragment, null, renderList($options.attributes, (attr, index) => {
+                  return openBlock(), createBlock("li", {
+                    class: "filter__item",
+                    key: index
+                  }, [
+                    createVNode(_component_CatalogRevealingNode, {
+                      item: { name: attr.slug },
+                      onApply: ($event) => _ctx.$emit("updateFilter"),
+                      name: attr.slug,
+                      onSetDefault: ($event) => $options.setDefaultAttribute(attr.slug),
+                      bodyLoaded: attr.slug ? true : false
+                    }, {
+                      title: withCtx(() => [
+                        createTextVNode(toDisplayString(attr.name), 1)
+                      ]),
+                      main: withCtx(() => [
+                        createVNode("ul", { class: "filter__sub-list" }, [
+                          (openBlock(true), createBlock(Fragment, null, renderList($options.singleAttribute(attr.slug), ({ id, name }) => {
+                            return openBlock(), createBlock("li", {
+                              class: "filter__sub-item",
+                              key: id
+                            }, [
+                              createVNode(_component_InputCheckboxNode, {
+                                modelValue: $options.filterParamsChecked(attr.slug, id),
+                                labelText: name,
+                                onInput: ($event) => $options.updateCatalogRevealing({
+                                  type: attr.slug,
+                                  value: { id, name }
+                                })
+                              }, null, 8, ["modelValue", "labelText", "onInput"])
+                            ]);
+                          }), 128))
+                        ])
+                      ]),
+                      _: 2
+                    }, 1032, ["item", "onApply", "name", "onSetDefault", "bodyLoaded"])
+                  ]);
+                }), 128)),
+                createVNode("li", { class: "filter__item" }, [
+                  createVNode(_component_InputCheckboxNode, {
+                    modelValue: $data.onlineOnly,
+                    "onUpdate:modelValue": ($event) => $data.onlineOnly = $event,
+                    labelText: "\u0414\u043E\u0441\u0442\u0443\u043F\u043D\u043E \u043E\u043D\u043B\u0430\u0439\u043D"
+                  }, null, 8, ["modelValue", "onUpdate:modelValue"])
+                ])
               ]),
-              _: 1
-            }, 8, ["onClick"])
-          ])
+              createVNode(_component_ButtonNode, {
+                onClick: withModifiers($options.filterCleanAndLoadDefault, ["stop"]),
+                class: "filter__button filter__button_clean"
+              }, {
+                default: withCtx(() => [
+                  createTextVNode("\u041E\u0447\u0438\u0441\u0442\u0438\u0442\u044C"),
+                  createVNode("span", null, "\u0444\u0438\u043B\u044C\u0442\u0440\u044B")
+                ]),
+                _: 1
+              }, 8, ["onClick"])
+            ])
+          ], 4)
         ];
       }
     }),
@@ -25898,19 +25950,18 @@ function _sfc_ssrRender$x(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
   }, _parent));
   _push(`</section>`);
 }
-const _sfc_setup$x = _sfc_main$x.setup;
-_sfc_main$x.setup = (props, ctx) => {
+const _sfc_setup$z = _sfc_main$z.setup;
+_sfc_main$z.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/FilterNode.vue");
-  return _sfc_setup$x ? _sfc_setup$x(props, ctx) : void 0;
+  return _sfc_setup$z ? _sfc_setup$z(props, ctx) : void 0;
 };
-const FilterNode = /* @__PURE__ */ _export_sfc(_sfc_main$x, [["ssrRender", _sfc_ssrRender$x], ["__scopeId", "data-v-a1af89d6"]]);
+const FilterNode = /* @__PURE__ */ _export_sfc(_sfc_main$z, [["ssrRender", _sfc_ssrRender$z]]);
 const CatalogProductsNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$w = {
+const _sfc_main$y = {
   components: {
     ProductNode
   },
-  mixins: [itemsLoadHandler],
   data() {
     return {};
   },
@@ -25931,7 +25982,7 @@ const _sfc_main$w = {
       itemsPaginated: (state2) => state2.products.itemsPaginated
     }),
     products() {
-      return this.itemsLoadHandler(this.filtredProducts, 8);
+      return this.filtredProducts({ quantity: this.productRequest.per_page });
     }
   },
   methods: {
@@ -25940,30 +25991,32 @@ const _sfc_main$w = {
     })
   }
 };
-function _sfc_ssrRender$w(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$y(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   const _component_PreloadWrapNode = resolveComponent("PreloadWrapNode");
-  const _component_product_node = resolveComponent("product-node");
-  _push(`<div${ssrRenderAttrs(mergeProps({
-    class: ["catalog-products", _ctx.itemsLoaded ? "" : "products-loading"]
-  }, _attrs))}><!--[-->`);
-  ssrRenderList($options.products, (product, index) => {
+  const _component_ProductNode = resolveComponent("ProductNode");
+  _push(`<div${ssrRenderAttrs(mergeProps({ class: "catalog-products" }, _attrs))}><!--[-->`);
+  ssrRenderList($options.products, (product2, index) => {
     _push(ssrRenderComponent(_component_PreloadWrapNode, {
       key: index,
-      targetPreloadElement: product ? false : true,
-      paddingBottom: product ? 0 : 180
+      targetPreloadElement: product2 ? false : true,
+      paddingBottom: product2 ? 0 : 180
     }, {
       default: withCtx((_, _push2, _parent2, _scopeId) => {
         if (_push2) {
-          if (product) {
-            _push2(ssrRenderComponent(_component_product_node, { product }, null, _parent2, _scopeId));
+          if (product2) {
+            _push2(ssrRenderComponent(_component_ProductNode, {
+              product: product2,
+              viewType: "catalog"
+            }, null, _parent2, _scopeId));
           } else {
             _push2(`<!---->`);
           }
         } else {
           return [
-            product ? (openBlock(), createBlock(_component_product_node, {
+            product2 ? (openBlock(), createBlock(_component_ProductNode, {
               key: 0,
-              product
+              product: product2,
+              viewType: "catalog"
             }, null, 8, ["product"])) : createCommentVNode("", true)
           ];
         }
@@ -25973,15 +26026,15 @@ function _sfc_ssrRender$w(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
   });
   _push(`<!--]--></div>`);
 }
-const _sfc_setup$w = _sfc_main$w.setup;
-_sfc_main$w.setup = (props, ctx) => {
+const _sfc_setup$y = _sfc_main$y.setup;
+_sfc_main$y.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/CatalogProductsNode.vue");
-  return _sfc_setup$w ? _sfc_setup$w(props, ctx) : void 0;
+  return _sfc_setup$y ? _sfc_setup$y(props, ctx) : void 0;
 };
-const CatalogProductsNode = /* @__PURE__ */ _export_sfc(_sfc_main$w, [["ssrRender", _sfc_ssrRender$w]]);
-const PaginationNode_vue_vue_type_style_index_0_scoped_d3b6a7ce_lang = "";
-const _sfc_main$v = {
+const CatalogProductsNode = /* @__PURE__ */ _export_sfc(_sfc_main$y, [["ssrRender", _sfc_ssrRender$y]]);
+const PaginationNode_vue_vue_type_style_index_0_scoped_c49c60b2_lang = "";
+const _sfc_main$x = {
   props: {
     type: {
       type: String,
@@ -26001,32 +26054,32 @@ const _sfc_main$v = {
     ...mapActions({
       changePage: "products/changePage"
     }),
-    async changePageProducts(page) {
+    async changePageLocal(page) {
       this.$router.push(await this.changePage(page));
     }
   }
 };
-function _sfc_ssrRender$v(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$x(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   const _component_loading_node = resolveComponent("loading-node");
-  _push(`<div${ssrRenderAttrs(mergeProps({ class: "pagination" }, _attrs))} data-v-d3b6a7ce>`);
+  _push(`<div${ssrRenderAttrs(mergeProps({ class: "pagination" }, _attrs))} data-v-c49c60b2>`);
   _push(ssrRenderComponent(_component_loading_node, { loading: _ctx.loading }, null, _parent));
   _push(`<!--[-->`);
   ssrRenderList(_ctx.totalPages, (page, index) => {
-    _push(`<button class="${ssrRenderClass(_ctx.currentPage == page ? "active" : "")}" data-v-d3b6a7ce>${ssrInterpolate(page)}</button>`);
+    _push(`<button class="${ssrRenderClass(_ctx.currentPage == page ? "active" : "")}" data-v-c49c60b2>${ssrInterpolate(page)}</button>`);
   });
   _push(`<!--]--></div>`);
 }
-const _sfc_setup$v = _sfc_main$v.setup;
-_sfc_main$v.setup = (props, ctx) => {
+const _sfc_setup$x = _sfc_main$x.setup;
+_sfc_main$x.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/PaginationNode.vue");
-  return _sfc_setup$v ? _sfc_setup$v(props, ctx) : void 0;
+  return _sfc_setup$x ? _sfc_setup$x(props, ctx) : void 0;
 };
-const PaginationNode = /* @__PURE__ */ _export_sfc(_sfc_main$v, [["ssrRender", _sfc_ssrRender$v], ["__scopeId", "data-v-d3b6a7ce"]]);
+const PaginationNode = /* @__PURE__ */ _export_sfc(_sfc_main$x, [["ssrRender", _sfc_ssrRender$x], ["__scopeId", "data-v-c49c60b2"]]);
 const SingleSubCategory_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$u = {
+const _sfc_main$w = {
   components: {
-    RevealingListNode,
+    CatalogRevealingNode,
     CatalogSidebarNode,
     FilterNode,
     CatalogProductsNode,
@@ -26060,10 +26113,11 @@ const _sfc_main$u = {
     ...mapGetters({
       itemBySlug: "itemBySlug",
       total: "total",
-      requestByItemParam: "requestByItemParam"
+      requestByItemParam: "requestByItemParam",
+      filtredProducts: "products/filtredProducts"
     }),
     ...mapState({
-      productsRequestsRequest: (state2) => state2.products.requests[0],
+      productsSSGDefaultRequest: (state2) => state2.products.requests[0],
       productsRequest: (state2) => state2.products.basedRequest,
       productsCategoriesRequest: (state2) => state2.productsCategories.basedRequest,
       totalProducts: (state2) => state2.products.total,
@@ -26097,6 +26151,9 @@ const _sfc_main$u = {
       if (isEmpty(this.mainCategory))
         return;
       return this.mainCategory.count;
+    },
+    products() {
+      return this.filtredProducts({ quantity: 8 });
     }
   },
   methods: {
@@ -26117,16 +26174,19 @@ const _sfc_main$u = {
       validateValues: "filter/validateValues",
       getSingleBySlug: "getSingleBySlug"
     }),
+    async initCatalog() {
+      this.setPage(this.query.page ? this.query.page : 1);
+      this.updateRequestParams();
+      {
+        this.filterAndPaginate();
+      }
+      this.initMarker = true;
+    },
     async updateFilter() {
       this.$router.push(await this.changePage(1));
       this.validateValues();
       this.updateRequestParams();
       this.filterAndPaginate();
-      let request;
-      {
-        request = this.productsRequestsRequest;
-        this.setTotalPages(Math.ceil(request.total / 8));
-      }
     },
     async loadMoreProducts() {
       const { request } = await this.getItems(this.productsRequest);
@@ -26134,18 +26194,6 @@ const _sfc_main$u = {
         pageNumber: request.params.page,
         value: request.data
       });
-    },
-    async initCatalog() {
-      if (this.query.page)
-        this.setPage(this.query.page);
-      await this.updateRequestParams();
-      let request;
-      {
-        this.filterAndPaginate();
-        request = this.productsRequestsRequest;
-        this.setTotalPages(Math.ceil(request.total / 8));
-      }
-      this.initMarker = true;
     },
     getTemplatePage() {
       this.getSingleBySlug({
@@ -26167,15 +26215,15 @@ const _sfc_main$u = {
     this.getTemplatePage();
   }
 };
-function _sfc_ssrRender$u(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$w(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   const _component_MainPageNode = resolveComponent("MainPageNode");
-  const _component_filter_node = resolveComponent("filter-node");
+  const _component_FilterNode = resolveComponent("FilterNode");
   const _component_ContainerNode = resolveComponent("ContainerNode");
-  const _component_catalog_sidebar_node = resolveComponent("catalog-sidebar-node");
-  const _component_RevealingListNode = resolveComponent("RevealingListNode");
+  const _component_CatalogSidebarNode = resolveComponent("CatalogSidebarNode");
+  const _component_CatalogRevealingNode = resolveComponent("CatalogRevealingNode");
   const _component_InputRadioNode = resolveComponent("InputRadioNode");
-  const _component_catalog_products_node = resolveComponent("catalog-products-node");
-  const _component_pagination_node = resolveComponent("pagination-node");
+  const _component_CatalogProductsNode = resolveComponent("CatalogProductsNode");
+  const _component_PaginationNode = resolveComponent("PaginationNode");
   const _component_PageContentNode = resolveComponent("PageContentNode");
   const _component_DistributionNode = resolveComponent("DistributionNode");
   _push(ssrRenderComponent(_component_MainPageNode, mergeProps({
@@ -26184,13 +26232,13 @@ function _sfc_ssrRender$u(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
   }, _attrs), {
     "page-main": withCtx((_, _push2, _parent2, _scopeId) => {
       if (_push2) {
-        _push2(ssrRenderComponent(_component_filter_node, { onUpdateFilter: $options.updateFilter }, null, _parent2, _scopeId));
+        _push2(ssrRenderComponent(_component_FilterNode, { onUpdateFilter: $options.updateFilter }, null, _parent2, _scopeId));
         _push2(ssrRenderComponent(_component_ContainerNode, null, {
           default: withCtx((_2, _push3, _parent3, _scopeId2) => {
             if (_push3) {
               _push3(`<div class="catalog__body"${_scopeId2}><div class="catalog__main"${_scopeId2}><div class="catalog__sidebar"${_scopeId2}>`);
               if ($options.mainCategory && $options.category) {
-                _push3(ssrRenderComponent(_component_catalog_sidebar_node, {
+                _push3(ssrRenderComponent(_component_CatalogSidebarNode, {
                   mainCategory: $options.mainCategory,
                   category: $options.category,
                   total: $options.total
@@ -26199,10 +26247,10 @@ function _sfc_ssrRender$u(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
                 _push3(`<!---->`);
               }
               _push3(`</div><div class="catalog__products"${_scopeId2}><div class="catalog__sorting"${_scopeId2}>`);
-              _push3(ssrRenderComponent(_component_RevealingListNode, {
+              _push3(ssrRenderComponent(_component_CatalogRevealingNode, {
                 bodyLoaded: _ctx.sortOptions ? true : false,
                 onApply: $options.updateFilter,
-                name: "sorting"
+                item: { name: "catalogSorting" }
               }, {
                 title: withCtx((_3, _push4, _parent4, _scopeId3) => {
                   if (_push4) {
@@ -26223,7 +26271,8 @@ function _sfc_ssrRender$u(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
                         onInput: ($event) => _ctx.setOrderAndOrderBy(option),
                         checked: option.id === 0,
                         name: "sort",
-                        key: option.id
+                        key: option.id,
+                        disabled: option.id == 3 || option.id == 4 || option.id == 5
                       }, null, _parent4, _scopeId3));
                     });
                     _push4(`<!--]-->`);
@@ -26236,8 +26285,9 @@ function _sfc_ssrRender$u(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
                           onInput: ($event) => _ctx.setOrderAndOrderBy(option),
                           checked: option.id === 0,
                           name: "sort",
-                          key: option.id
-                        }, null, 8, ["modelValue", "labelText", "onInput", "checked"]);
+                          key: option.id,
+                          disabled: option.id == 3 || option.id == 4 || option.id == 5
+                        }, null, 8, ["modelValue", "labelText", "onInput", "checked", "disabled"]);
                       }), 128))
                     ];
                   }
@@ -26245,8 +26295,8 @@ function _sfc_ssrRender$u(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
                 _: 1
               }, _parent3, _scopeId2));
               _push3(`</div>`);
-              _push3(ssrRenderComponent(_component_catalog_products_node, { categoryId: _ctx.categoryId }, null, _parent3, _scopeId2));
-              _push3(ssrRenderComponent(_component_pagination_node, {
+              _push3(ssrRenderComponent(_component_CatalogProductsNode, { categoryId: _ctx.categoryId }, null, _parent3, _scopeId2));
+              _push3(ssrRenderComponent(_component_PaginationNode, {
                 type: _ctx.productsRequest.type
               }, null, _parent3, _scopeId2));
               _push3(`</div></div></div>`);
@@ -26261,7 +26311,7 @@ function _sfc_ssrRender$u(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
                 createVNode("div", { class: "catalog__body" }, [
                   createVNode("div", { class: "catalog__main" }, [
                     createVNode("div", { class: "catalog__sidebar" }, [
-                      $options.mainCategory && $options.category ? (openBlock(), createBlock(_component_catalog_sidebar_node, {
+                      $options.mainCategory && $options.category ? (openBlock(), createBlock(_component_CatalogSidebarNode, {
                         key: 0,
                         mainCategory: $options.mainCategory,
                         category: $options.category,
@@ -26270,10 +26320,10 @@ function _sfc_ssrRender$u(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
                     ]),
                     createVNode("div", { class: "catalog__products" }, [
                       createVNode("div", { class: "catalog__sorting" }, [
-                        createVNode(_component_RevealingListNode, {
+                        createVNode(_component_CatalogRevealingNode, {
                           bodyLoaded: _ctx.sortOptions ? true : false,
                           onApply: $options.updateFilter,
-                          name: "sorting"
+                          item: { name: "catalogSorting" }
                         }, {
                           title: withCtx(() => [
                             createTextVNode("\u0421\u043E\u0440\u0442\u0438\u0440\u043E\u0432\u043A\u0430")
@@ -26286,15 +26336,16 @@ function _sfc_ssrRender$u(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
                                 onInput: ($event) => _ctx.setOrderAndOrderBy(option),
                                 checked: option.id === 0,
                                 name: "sort",
-                                key: option.id
-                              }, null, 8, ["modelValue", "labelText", "onInput", "checked"]);
+                                key: option.id,
+                                disabled: option.id == 3 || option.id == 4 || option.id == 5
+                              }, null, 8, ["modelValue", "labelText", "onInput", "checked", "disabled"]);
                             }), 128))
                           ]),
                           _: 1
                         }, 8, ["bodyLoaded", "onApply"])
                       ]),
-                      createVNode(_component_catalog_products_node, { categoryId: _ctx.categoryId }, null, 8, ["categoryId"]),
-                      createVNode(_component_pagination_node, {
+                      createVNode(_component_CatalogProductsNode, { categoryId: _ctx.categoryId }, null, 8, ["categoryId"]),
+                      createVNode(_component_PaginationNode, {
                         type: _ctx.productsRequest.type
                       }, null, 8, ["type"])
                     ])
@@ -26312,13 +26363,13 @@ function _sfc_ssrRender$u(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
         }, _parent2, _scopeId));
       } else {
         return [
-          createVNode(_component_filter_node, { onUpdateFilter: $options.updateFilter }, null, 8, ["onUpdateFilter"]),
+          createVNode(_component_FilterNode, { onUpdateFilter: $options.updateFilter }, null, 8, ["onUpdateFilter"]),
           createVNode(_component_ContainerNode, null, {
             default: withCtx(() => [
               createVNode("div", { class: "catalog__body" }, [
                 createVNode("div", { class: "catalog__main" }, [
                   createVNode("div", { class: "catalog__sidebar" }, [
-                    $options.mainCategory && $options.category ? (openBlock(), createBlock(_component_catalog_sidebar_node, {
+                    $options.mainCategory && $options.category ? (openBlock(), createBlock(_component_CatalogSidebarNode, {
                       key: 0,
                       mainCategory: $options.mainCategory,
                       category: $options.category,
@@ -26327,10 +26378,10 @@ function _sfc_ssrRender$u(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
                   ]),
                   createVNode("div", { class: "catalog__products" }, [
                     createVNode("div", { class: "catalog__sorting" }, [
-                      createVNode(_component_RevealingListNode, {
+                      createVNode(_component_CatalogRevealingNode, {
                         bodyLoaded: _ctx.sortOptions ? true : false,
                         onApply: $options.updateFilter,
-                        name: "sorting"
+                        item: { name: "catalogSorting" }
                       }, {
                         title: withCtx(() => [
                           createTextVNode("\u0421\u043E\u0440\u0442\u0438\u0440\u043E\u0432\u043A\u0430")
@@ -26343,15 +26394,16 @@ function _sfc_ssrRender$u(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
                               onInput: ($event) => _ctx.setOrderAndOrderBy(option),
                               checked: option.id === 0,
                               name: "sort",
-                              key: option.id
-                            }, null, 8, ["modelValue", "labelText", "onInput", "checked"]);
+                              key: option.id,
+                              disabled: option.id == 3 || option.id == 4 || option.id == 5
+                            }, null, 8, ["modelValue", "labelText", "onInput", "checked", "disabled"]);
                           }), 128))
                         ]),
                         _: 1
                       }, 8, ["bodyLoaded", "onApply"])
                     ]),
-                    createVNode(_component_catalog_products_node, { categoryId: _ctx.categoryId }, null, 8, ["categoryId"]),
-                    createVNode(_component_pagination_node, {
+                    createVNode(_component_CatalogProductsNode, { categoryId: _ctx.categoryId }, null, 8, ["categoryId"]),
+                    createVNode(_component_PaginationNode, {
                       type: _ctx.productsRequest.type
                     }, null, 8, ["type"])
                   ])
@@ -26371,14 +26423,14 @@ function _sfc_ssrRender$u(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
     _: 1
   }, _parent));
 }
-const _sfc_setup$u = _sfc_main$u.setup;
-_sfc_main$u.setup = (props, ctx) => {
+const _sfc_setup$w = _sfc_main$w.setup;
+_sfc_main$w.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/pages/common/SingleSubCategory.vue");
-  return _sfc_setup$u ? _sfc_setup$u(props, ctx) : void 0;
+  return _sfc_setup$w ? _sfc_setup$w(props, ctx) : void 0;
 };
-const SingleSubCategory = /* @__PURE__ */ _export_sfc(_sfc_main$u, [["ssrRender", _sfc_ssrRender$u]]);
-const _sfc_main$t = {
+const SingleSubCategory = /* @__PURE__ */ _export_sfc(_sfc_main$w, [["ssrRender", _sfc_ssrRender$w]]);
+const _sfc_main$v = {
   inheritAttrs: false,
   props: {
     quantityPreloadElements: Number,
@@ -26395,7 +26447,7 @@ const _sfc_main$t = {
     }
   }
 };
-function _sfc_ssrRender$t(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$v(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   const _component_PreloadWrapNode = resolveComponent("PreloadWrapNode");
   _push(`<div${ssrRenderAttrs(mergeProps({ class: "preload-container" }, _attrs))}>`);
   if ($options.iterableHandled) {
@@ -26416,19 +26468,18 @@ function _sfc_ssrRender$t(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
   });
   _push(`<!--]--></div></div>`);
 }
-const _sfc_setup$t = _sfc_main$t.setup;
-_sfc_main$t.setup = (props, ctx) => {
+const _sfc_setup$v = _sfc_main$v.setup;
+_sfc_main$v.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/structure/PreloadWrapContainerNode.vue");
-  return _sfc_setup$t ? _sfc_setup$t(props, ctx) : void 0;
+  return _sfc_setup$v ? _sfc_setup$v(props, ctx) : void 0;
 };
-const PreloadWrapContainerNode = /* @__PURE__ */ _export_sfc(_sfc_main$t, [["ssrRender", _sfc_ssrRender$t]]);
-const CategoryGrid_vue_vue_type_style_index_0_scoped_2c35cc6e_lang = "";
-const _sfc_main$s = {
+const PreloadWrapContainerNode = /* @__PURE__ */ _export_sfc(_sfc_main$v, [["ssrRender", _sfc_ssrRender$v]]);
+const CategoryGrid_vue_vue_type_style_index_0_lang = "";
+const _sfc_main$u = {
   components: {
     PreloadWrapContainerNode
   },
-  mixins: [routeToCategoryMixin, itemsLoadHandler],
   props: {
     productCategory: {
       reqired: true,
@@ -26450,12 +26501,12 @@ const _sfc_main$s = {
           {
             parent: this.productCategory.id
           },
-          function(product, keys, params, items2, approved) {
+          function(product2, keys, params, items2, approved) {
             keys.forEach((key) => {
               if (items2.length === 6) {
                 return void 0;
               }
-              if (product[key] == params[key]) {
+              if (product2[key] == params[key]) {
                 approved = true;
               }
             });
@@ -26464,15 +26515,20 @@ const _sfc_main$s = {
         );
       }
     }
+  },
+  methods: {
+    routeToCategoryLocal(productCategory, parentCategorySlug) {
+      routeToCategory(productCategory, parentCategorySlug);
+    }
   }
 };
-function _sfc_ssrRender$s(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$u(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   const _component_PreloadWrapNode = resolveComponent("PreloadWrapNode");
-  _push(`<section${ssrRenderAttrs(mergeProps({ class: "category-grid" }, _attrs))} data-v-2c35cc6e><div class="category-grid__body" data-v-2c35cc6e>`);
+  _push(`<section${ssrRenderAttrs(mergeProps({ class: "category-grid" }, _attrs))}><div class="category-grid__body">`);
   if ($options.productsCategories === void 0 || $options.productsCategories.length === 0) {
-    _push(`<div class="category-grid__items" data-v-2c35cc6e><!--[-->`);
+    _push(`<div class="category-grid__items"><!--[-->`);
     ssrRenderList([0, 1, 2, 3, 4, 5], (item, index) => {
-      _push(`<article class="category-grid__item" data-v-2c35cc6e>`);
+      _push(`<article class="category-grid__item">`);
       _push(ssrRenderComponent(_component_PreloadWrapNode, {
         targetPreloadElement: true,
         paddingBottom: "100"
@@ -26483,28 +26539,28 @@ function _sfc_ssrRender$s(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
   } else {
     _push(`<!---->`);
   }
-  _push(`<div class="category-grid__items" data-v-2c35cc6e><!--[-->`);
+  _push(`<div class="category-grid__items"><!--[-->`);
   ssrRenderList($options.productsCategories, (productSubCategory) => {
-    _push(`<article class="category-grid__item" data-v-2c35cc6e>`);
+    _push(`<article class="category-grid__item">`);
     _push(ssrRenderComponent(_component_PreloadWrapNode, null, {
       default: withCtx((_, _push2, _parent2, _scopeId) => {
         if (_push2) {
           if (productSubCategory) {
-            _push2(`<button data-v-2c35cc6e${_scopeId}><div class="category-grid__image" data-v-2c35cc6e${_scopeId}>`);
+            _push2(`<div${_scopeId}><div class="category-grid__image"${_scopeId}>`);
             if (productSubCategory.image) {
-              _push2(`<img${ssrRenderAttr("src", productSubCategory.image.src)} alt="" data-v-2c35cc6e${_scopeId}>`);
+              _push2(`<img${ssrRenderAttr("src", productSubCategory.image.src)} alt=""${_scopeId}>`);
             } else {
               _push2(`<!---->`);
             }
-            _push2(`</div><div class="category-grid__content" data-v-2c35cc6e${_scopeId}><div class="category-grid__title" data-v-2c35cc6e${_scopeId}>${ssrInterpolate(productSubCategory.name)}</div><div class="category-grid__subtitle" data-v-2c35cc6e${_scopeId}>${ssrInterpolate(productSubCategory.description)}</div></div></button>`);
+            _push2(`</div><div class="category-grid__content"${_scopeId}><div class="category-grid__title"${_scopeId}>${ssrInterpolate(productSubCategory.name)}</div><div class="category-grid__subtitle"${_scopeId}>${ssrInterpolate(productSubCategory.description)}</div></div></div>`);
           } else {
             _push2(`<!---->`);
           }
         } else {
           return [
-            productSubCategory ? (openBlock(), createBlock("button", {
+            productSubCategory ? (openBlock(), createBlock("div", {
               key: 0,
-              onClick: ($event) => _ctx.routeToCategory(productSubCategory, $props.productCategory.slug)
+              onClick: ($event) => $options.routeToCategoryLocal(productSubCategory, $props.productCategory.slug)
             }, [
               createVNode("div", { class: "category-grid__image" }, [
                 productSubCategory.image ? (openBlock(), createBlock("img", {
@@ -26527,15 +26583,15 @@ function _sfc_ssrRender$s(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
   });
   _push(`<!--]--></div></div></section>`);
 }
-const _sfc_setup$s = _sfc_main$s.setup;
-_sfc_main$s.setup = (props, ctx) => {
+const _sfc_setup$u = _sfc_main$u.setup;
+_sfc_main$u.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/CategoryGrid.vue");
-  return _sfc_setup$s ? _sfc_setup$s(props, ctx) : void 0;
+  return _sfc_setup$u ? _sfc_setup$u(props, ctx) : void 0;
 };
-const CategoryGrid = /* @__PURE__ */ _export_sfc(_sfc_main$s, [["ssrRender", _sfc_ssrRender$s], ["__scopeId", "data-v-2c35cc6e"]]);
+const CategoryGrid = /* @__PURE__ */ _export_sfc(_sfc_main$u, [["ssrRender", _sfc_ssrRender$u]]);
 const SingleCategory_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$r = {
+const _sfc_main$t = {
   components: {
     CatalogSidebarNode,
     CategoryGrid,
@@ -26606,12 +26662,12 @@ const _sfc_main$r = {
     this.getTemplatePage(this.params.mainCategorySlug);
   }
 };
-function _sfc_ssrRender$r(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$t(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   const _component_MainPageNode = resolveComponent("MainPageNode");
   const _component_ContainerNode = resolveComponent("ContainerNode");
-  const _component_catalog_sidebar_node = resolveComponent("catalog-sidebar-node");
+  const _component_CatalogSidebarNode = resolveComponent("CatalogSidebarNode");
   const _component_SliderBannersNode = resolveComponent("SliderBannersNode");
-  const _component_category_grid = resolveComponent("category-grid");
+  const _component_CategoryGrid = resolveComponent("CategoryGrid");
   const _component_SliderProductsNode = resolveComponent("SliderProductsNode");
   _push(ssrRenderComponent(_component_MainPageNode, mergeProps({
     templatePage: $options.templatePage,
@@ -26622,22 +26678,22 @@ function _sfc_ssrRender$r(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
         _push2(ssrRenderComponent(_component_ContainerNode, null, {
           default: withCtx((_2, _push3, _parent3, _scopeId2) => {
             if (_push3) {
-              _push3(`<section class="main-category"${_scopeId2}><div class="main-category__main"${_scopeId2}>`);
-              _push3(ssrRenderComponent(_component_catalog_sidebar_node, {
+              _push3(`<section class="single-category"${_scopeId2}><div class="single-category__main"${_scopeId2}>`);
+              _push3(ssrRenderComponent(_component_CatalogSidebarNode, {
                 mainCategory: $options.productCategory,
                 total: $options.total
               }, null, _parent3, _scopeId2));
-              _push3(`<div class="main-category__sections"${_scopeId2}>`);
+              _push3(`<div class="single-category__sections"${_scopeId2}>`);
               _push3(ssrRenderComponent(_component_SliderBannersNode, {
-                class: "slider-banners-main-category",
+                class: "slider-banners-single-category",
                 bannerCategoryId: 68,
                 containerStylesOff: true,
-                identificator: "slider-banners-main_main-category",
+                identificator: "slider-banners-main_single-category",
                 autoplay: { delay: 5e4, disableOnInteraction: false },
                 pagination: "",
                 "slides-per-view": 1
               }, null, _parent3, _scopeId2));
-              _push3(ssrRenderComponent(_component_category_grid, { productCategory: $options.productCategory }, null, _parent3, _scopeId2));
+              _push3(ssrRenderComponent(_component_CategoryGrid, { productCategory: $options.productCategory }, null, _parent3, _scopeId2));
               _push3(ssrRenderComponent(_component_SliderProductsNode, {
                 title: "\u0414\u043B\u044F \u0436\u0435\u043D\u0449\u0438\u043D",
                 productsCategoryId: "20",
@@ -26659,23 +26715,23 @@ function _sfc_ssrRender$r(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
               _push3(`</div></div></section>`);
             } else {
               return [
-                createVNode("section", { class: "main-category" }, [
-                  createVNode("div", { class: "main-category__main" }, [
-                    createVNode(_component_catalog_sidebar_node, {
+                createVNode("section", { class: "single-category" }, [
+                  createVNode("div", { class: "single-category__main" }, [
+                    createVNode(_component_CatalogSidebarNode, {
                       mainCategory: $options.productCategory,
                       total: $options.total
                     }, null, 8, ["mainCategory", "total"]),
-                    createVNode("div", { class: "main-category__sections" }, [
+                    createVNode("div", { class: "single-category__sections" }, [
                       createVNode(_component_SliderBannersNode, {
-                        class: "slider-banners-main-category",
+                        class: "slider-banners-single-category",
                         bannerCategoryId: 68,
                         containerStylesOff: true,
-                        identificator: "slider-banners-main_main-category",
+                        identificator: "slider-banners-main_single-category",
                         autoplay: { delay: 5e4, disableOnInteraction: false },
                         pagination: "",
                         "slides-per-view": 1
                       }),
-                      createVNode(_component_category_grid, { productCategory: $options.productCategory }, null, 8, ["productCategory"]),
+                      createVNode(_component_CategoryGrid, { productCategory: $options.productCategory }, null, 8, ["productCategory"]),
                       createVNode(_component_SliderProductsNode, {
                         title: "\u0414\u043B\u044F \u0436\u0435\u043D\u0449\u0438\u043D",
                         productsCategoryId: "20",
@@ -26706,23 +26762,23 @@ function _sfc_ssrRender$r(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
         return [
           createVNode(_component_ContainerNode, null, {
             default: withCtx(() => [
-              createVNode("section", { class: "main-category" }, [
-                createVNode("div", { class: "main-category__main" }, [
-                  createVNode(_component_catalog_sidebar_node, {
+              createVNode("section", { class: "single-category" }, [
+                createVNode("div", { class: "single-category__main" }, [
+                  createVNode(_component_CatalogSidebarNode, {
                     mainCategory: $options.productCategory,
                     total: $options.total
                   }, null, 8, ["mainCategory", "total"]),
-                  createVNode("div", { class: "main-category__sections" }, [
+                  createVNode("div", { class: "single-category__sections" }, [
                     createVNode(_component_SliderBannersNode, {
-                      class: "slider-banners-main-category",
+                      class: "slider-banners-single-category",
                       bannerCategoryId: 68,
                       containerStylesOff: true,
-                      identificator: "slider-banners-main_main-category",
+                      identificator: "slider-banners-main_single-category",
                       autoplay: { delay: 5e4, disableOnInteraction: false },
                       pagination: "",
                       "slides-per-view": 1
                     }),
-                    createVNode(_component_category_grid, { productCategory: $options.productCategory }, null, 8, ["productCategory"]),
+                    createVNode(_component_CategoryGrid, { productCategory: $options.productCategory }, null, 8, ["productCategory"]),
                     createVNode(_component_SliderProductsNode, {
                       title: "\u0414\u043B\u044F \u0436\u0435\u043D\u0449\u0438\u043D",
                       productsCategoryId: "20",
@@ -26753,15 +26809,15 @@ function _sfc_ssrRender$r(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
     _: 1
   }, _parent));
 }
-const _sfc_setup$r = _sfc_main$r.setup;
-_sfc_main$r.setup = (props, ctx) => {
+const _sfc_setup$t = _sfc_main$t.setup;
+_sfc_main$t.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/pages/common/SingleCategory.vue");
-  return _sfc_setup$r ? _sfc_setup$r(props, ctx) : void 0;
+  return _sfc_setup$t ? _sfc_setup$t(props, ctx) : void 0;
 };
-const SingleCategory = /* @__PURE__ */ _export_sfc(_sfc_main$r, [["ssrRender", _sfc_ssrRender$r]]);
+const SingleCategory = /* @__PURE__ */ _export_sfc(_sfc_main$t, [["ssrRender", _sfc_ssrRender$t]]);
 const CartBtnNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$q = {
+const _sfc_main$s = {
   props: {
     params: Object,
     route_base: String
@@ -26769,47 +26825,20 @@ const _sfc_main$q = {
   data() {
     return {
       buttonDisabled: false,
-      reqiredParams: false,
-      message: {
-        current: {
-          name: "",
-          type: ""
-        },
-        list: {
-          default: {
-            name: "",
-            type: ""
-          },
-          added: {
-            name: "added",
-            type: "success"
-          },
-          sizeWrong: {
-            name: "sizeWrong",
-            type: "error"
-          },
-          allError: {
-            name: "allError",
-            type: "error"
-          }
-        }
-      }
+      reqiredParams: false
     };
   },
   computed: {
     ...mapGetters({}),
-    ...mapState({}),
-    messageClasses() {
-      return {
-        "icon-check": this.message.current.type === "success",
-        "error": this.message.current.type === "error"
-      };
-    }
+    ...mapState({
+      messages: (state2) => state2.common.messages
+    })
   },
   methods: {
     ...mapMutations({}),
     ...mapActions({
-      updateCart: "cart/updateCart"
+      updateCart: "cart/updateCart",
+      updateMessage: "common/updateMessage"
     }),
     async updateCartAndHandleResponse() {
       switch (this.route_base) {
@@ -26818,7 +26847,7 @@ const _sfc_main$q = {
           params.variations = [];
           let valid = this.validationVariations();
           if (valid === false) {
-            this.message.current = this.message.list.sizeWrong;
+            this.updateMessage({ name: "notSelectProductSize" });
             return;
           }
           break;
@@ -26836,16 +26865,16 @@ const _sfc_main$q = {
           throw "\u041F\u043E\u043F\u044B\u0442\u043A\u0430 \u0432\u044B\u043F\u043E\u043B\u043D\u0438\u0442\u044C \u043D\u0435\u0441\u0443\u0449\u0435\u0441\u0442\u0432\u0443\u044E\u0449\u0438\u0439 \u0438\u043B\u0438 \u043D\u0435\u043E\u0436\u0438\u0434\u0430\u043D\u043D\u044B\u0439 (\u043D\u0435 \u043F\u0440\u0438\u043C\u0435\u043D\u044F\u0435\u043C\u044B\u0439) \u043C\u0430\u0440\u0448\u0440\u0443\u0442";
       }
       this.buttonDisabled = true;
-      const requested = await this.updateCart({
+      const response = await this.updateCart({
         route_base: this.route_base,
         config: { params: this.params }
       });
       this.buttonDisabled = false;
-      if (requested === void 0)
-        this.message.current = this.message.list.allError;
+      if (response === void 0)
+        this.updateMessage({ name: "allError" });
       switch (this.route_base) {
         case "cart/add-item":
-          this.message.current = this.message.list.added;
+          this.updateMessage({ name: "productAddedToCart" });
           break;
       }
     },
@@ -26864,43 +26893,55 @@ const _sfc_main$q = {
     }
   }
 };
-function _sfc_ssrRender$q(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
-  const _component_message_node = resolveComponent("MessageNode");
+function _sfc_ssrRender$s(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  const _component_MessageNode = resolveComponent("MessageNode");
   if ($props.params) {
     _push(`<button${ssrRenderAttrs(mergeProps({
       class: "cart-btn",
       disabled: $data.buttonDisabled || $props.params.id === null
     }, _attrs))}>`);
     ssrRenderSlot(_ctx.$slots, "default", {}, null, _push, _parent);
-    _push(ssrRenderComponent(_component_message_node, {
-      class: $options.messageClasses,
-      onShowMessage: ($event) => $data.message.current = $data.message.list.default,
-      show: $data.message.current.name
+    _push(ssrRenderComponent(_component_MessageNode, {
+      item: _ctx.messages.productAddedToCart
     }, {
       default: withCtx((_, _push2, _parent2, _scopeId) => {
         if (_push2) {
-          if ($data.message.current.name === "added") {
-            _push2(`<!--[--> \u0422\u043E\u0432\u0430\u0440 \u0434\u043E\u0431\u0430\u0432\u043B\u0435\u043D.<button class="message-link"${_scopeId}> \u041E\u0444\u043E\u0440\u043C\u0438\u0442\u044C \u0437\u0430\u043A\u0430\u0437?</button><!--]-->`);
-          } else if ($data.message.current.name === "allError") {
-            _push2(`<!--[--> \u041F\u0440\u043E\u0438\u0437\u043E\u0448\u043B\u0430 \u043E\u0448\u0438\u0431\u043A\u0430 \u043F\u0440\u0438 \u0432\u044B\u043F\u043E\u043B\u043D\u0435\u043D\u0438\u0438 \u043E\u043F\u0435\u0440\u0430\u0446\u0438\u0438... <!--]-->`);
-          } else if ($data.message.current.name === "sizeWrong") {
-            _push2(`<!--[--> \u041D\u0435\u043E\u0431\u0445\u043E\u0434\u0438\u043C\u043E \u0432\u044B\u0431\u0440\u0430\u0442\u044C \u0440\u0430\u0437\u043C\u0435\u0440. <!--]-->`);
-          } else {
-            _push2(`<!---->`);
-          }
+          _push2(` \u0422\u043E\u0432\u0430\u0440 \u0434\u043E\u0431\u0430\u0432\u043B\u0435\u043D.<button class="message-link"${_scopeId}> \u041E\u0444\u043E\u0440\u043C\u0438\u0442\u044C \u0437\u0430\u043A\u0430\u0437? </button>`);
         } else {
           return [
-            $data.message.current.name === "added" ? (openBlock(), createBlock(Fragment, { key: 0 }, [
-              createTextVNode(" \u0422\u043E\u0432\u0430\u0440 \u0434\u043E\u0431\u0430\u0432\u043B\u0435\u043D."),
-              createVNode("button", {
-                onClick: ($event) => _ctx.$router.push({ name: "Checkout" }),
-                class: "message-link"
-              }, " \u041E\u0444\u043E\u0440\u043C\u0438\u0442\u044C \u0437\u0430\u043A\u0430\u0437?", 8, ["onClick"])
-            ], 64)) : $data.message.current.name === "allError" ? (openBlock(), createBlock(Fragment, { key: 1 }, [
-              createTextVNode(" \u041F\u0440\u043E\u0438\u0437\u043E\u0448\u043B\u0430 \u043E\u0448\u0438\u0431\u043A\u0430 \u043F\u0440\u0438 \u0432\u044B\u043F\u043E\u043B\u043D\u0435\u043D\u0438\u0438 \u043E\u043F\u0435\u0440\u0430\u0446\u0438\u0438... ")
-            ], 64)) : $data.message.current.name === "sizeWrong" ? (openBlock(), createBlock(Fragment, { key: 2 }, [
-              createTextVNode(" \u041D\u0435\u043E\u0431\u0445\u043E\u0434\u0438\u043C\u043E \u0432\u044B\u0431\u0440\u0430\u0442\u044C \u0440\u0430\u0437\u043C\u0435\u0440. ")
-            ], 64)) : createCommentVNode("", true)
+            createTextVNode(" \u0422\u043E\u0432\u0430\u0440 \u0434\u043E\u0431\u0430\u0432\u043B\u0435\u043D."),
+            createVNode("button", {
+              onClick: ($event) => _ctx.$router.push({ name: "Checkout" }),
+              class: "message-link"
+            }, " \u041E\u0444\u043E\u0440\u043C\u0438\u0442\u044C \u0437\u0430\u043A\u0430\u0437? ", 8, ["onClick"])
+          ];
+        }
+      }),
+      _: 1
+    }, _parent));
+    _push(ssrRenderComponent(_component_MessageNode, {
+      item: _ctx.messages.allError
+    }, {
+      default: withCtx((_, _push2, _parent2, _scopeId) => {
+        if (_push2) {
+          _push2(`\u041F\u0440\u043E\u0438\u0437\u043E\u0448\u043B\u0430 \u043E\u0448\u0438\u0431\u043A\u0430 \u043F\u0440\u0438 \u0432\u044B\u043F\u043E\u043B\u043D\u0435\u043D\u0438\u0438 \u043E\u043F\u0435\u0440\u0430\u0446\u0438\u0438...`);
+        } else {
+          return [
+            createTextVNode("\u041F\u0440\u043E\u0438\u0437\u043E\u0448\u043B\u0430 \u043E\u0448\u0438\u0431\u043A\u0430 \u043F\u0440\u0438 \u0432\u044B\u043F\u043E\u043B\u043D\u0435\u043D\u0438\u0438 \u043E\u043F\u0435\u0440\u0430\u0446\u0438\u0438...")
+          ];
+        }
+      }),
+      _: 1
+    }, _parent));
+    _push(ssrRenderComponent(_component_MessageNode, {
+      item: _ctx.messages.notSelectProductSize
+    }, {
+      default: withCtx((_, _push2, _parent2, _scopeId) => {
+        if (_push2) {
+          _push2(`\u041D\u0435\u043E\u0431\u0445\u043E\u0434\u0438\u043C\u043E \u0432\u044B\u0431\u0440\u0430\u0442\u044C \u0440\u0430\u0437\u043C\u0435\u0440.`);
+        } else {
+          return [
+            createTextVNode("\u041D\u0435\u043E\u0431\u0445\u043E\u0434\u0438\u043C\u043E \u0432\u044B\u0431\u0440\u0430\u0442\u044C \u0440\u0430\u0437\u043C\u0435\u0440.")
           ];
         }
       }),
@@ -26911,15 +26952,15 @@ function _sfc_ssrRender$q(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
     _push(`<!---->`);
   }
 }
-const _sfc_setup$q = _sfc_main$q.setup;
-_sfc_main$q.setup = (props, ctx) => {
+const _sfc_setup$s = _sfc_main$s.setup;
+_sfc_main$s.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/cart-and-ordering/CartBtnNode.vue");
-  return _sfc_setup$q ? _sfc_setup$q(props, ctx) : void 0;
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/preparing/CartBtnNode.vue");
+  return _sfc_setup$s ? _sfc_setup$s(props, ctx) : void 0;
 };
-const CartBtnNode = /* @__PURE__ */ _export_sfc(_sfc_main$q, [["ssrRender", _sfc_ssrRender$q]]);
+const CartBtnNode = /* @__PURE__ */ _export_sfc(_sfc_main$s, [["ssrRender", _sfc_ssrRender$s]]);
 const SliderSingleNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$p = {
+const _sfc_main$r = {
   inheritAttrs: false,
   components: {
     Swiper,
@@ -26961,10 +27002,10 @@ const _sfc_main$p = {
     };
   }
 };
-function _sfc_ssrRender$p(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$r(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   const _component_ContainerNode = resolveComponent("ContainerNode");
   const _component_swiper = resolveComponent("swiper");
-  const _component_swiper_slide = resolveComponent("swiper-slide");
+  const _component_SwiperSlide = resolveComponent("SwiperSlide");
   const _component_PreloadWrapNode = resolveComponent("PreloadWrapNode");
   _push(`<section${ssrRenderAttrs(mergeProps({ class: "slider-single" }, _attrs))}>`);
   _push(ssrRenderComponent(_component_ContainerNode, null, {
@@ -26979,7 +27020,7 @@ function _sfc_ssrRender$p(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
           modules: $setup.modules,
           breakpoints: {
             "320": {
-              spaceBetween: "15",
+              spaceBetween: 15,
               direction: "horizontal"
             },
             "768": {
@@ -26990,7 +27031,8 @@ function _sfc_ssrRender$p(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
             "1024": {
               spaceBetween: 10,
               direction: "vertical",
-              slidesPerView: "auto"
+              slidesPerView: "auto",
+              autoHeight: true
             }
           }
         }, {
@@ -26998,7 +27040,7 @@ function _sfc_ssrRender$p(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
             if (_push3) {
               _push3(`<!--[-->`);
               ssrRenderList($props.images, (image, index) => {
-                _push3(ssrRenderComponent(_component_swiper_slide, { key: index }, {
+                _push3(ssrRenderComponent(_component_SwiperSlide, { key: index }, {
                   default: withCtx((_3, _push4, _parent4, _scopeId3) => {
                     if (_push4) {
                       _push4(`<div class="slider-single__image"${_scopeId3}><picture${_scopeId3}><source srcset="" type="image/webp"${_scopeId3}><source srcset="" type="image/jpeg"${_scopeId3}><img${ssrRenderAttr("src", image == null ? void 0 : image.src)} alt=""${_scopeId3}></picture></div>`);
@@ -27030,7 +27072,7 @@ function _sfc_ssrRender$p(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
             } else {
               return [
                 (openBlock(true), createBlock(Fragment, null, renderList($props.images, (image, index) => {
-                  return openBlock(), createBlock(_component_swiper_slide, { key: index }, {
+                  return openBlock(), createBlock(_component_SwiperSlide, { key: index }, {
                     default: withCtx(() => [
                       createVNode("div", { class: "slider-single__image" }, [
                         createVNode("picture", null, [
@@ -27074,7 +27116,7 @@ function _sfc_ssrRender$p(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
             if (_push3) {
               _push3(`<!--[-->`);
               ssrRenderList($props.images, (image, index) => {
-                _push3(ssrRenderComponent(_component_swiper_slide, { key: index }, {
+                _push3(ssrRenderComponent(_component_SwiperSlide, { key: index }, {
                   default: withCtx((_3, _push4, _parent4, _scopeId3) => {
                     if (_push4) {
                       _push4(ssrRenderComponent(_component_PreloadWrapNode, {
@@ -27143,7 +27185,7 @@ function _sfc_ssrRender$p(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
             } else {
               return [
                 (openBlock(true), createBlock(Fragment, null, renderList($props.images, (image, index) => {
-                  return openBlock(), createBlock(_component_swiper_slide, { key: index }, {
+                  return openBlock(), createBlock(_component_SwiperSlide, { key: index }, {
                     default: withCtx(() => [
                       createVNode(_component_PreloadWrapNode, {
                         paddingBottom: (image == null ? void 0 : image.src) ? "" : 50,
@@ -27189,7 +27231,7 @@ function _sfc_ssrRender$p(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
               modules: $setup.modules,
               breakpoints: {
                 "320": {
-                  spaceBetween: "15",
+                  spaceBetween: 15,
                   direction: "horizontal"
                 },
                 "768": {
@@ -27200,13 +27242,14 @@ function _sfc_ssrRender$p(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
                 "1024": {
                   spaceBetween: 10,
                   direction: "vertical",
-                  slidesPerView: "auto"
+                  slidesPerView: "auto",
+                  autoHeight: true
                 }
               }
             }, {
               default: withCtx(() => [
                 (openBlock(true), createBlock(Fragment, null, renderList($props.images, (image, index) => {
-                  return openBlock(), createBlock(_component_swiper_slide, { key: index }, {
+                  return openBlock(), createBlock(_component_SwiperSlide, { key: index }, {
                     default: withCtx(() => [
                       createVNode("div", { class: "slider-single__image" }, [
                         createVNode("picture", null, [
@@ -27248,7 +27291,7 @@ function _sfc_ssrRender$p(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
             }), {
               default: withCtx(() => [
                 (openBlock(true), createBlock(Fragment, null, renderList($props.images, (image, index) => {
-                  return openBlock(), createBlock(_component_swiper_slide, { key: index }, {
+                  return openBlock(), createBlock(_component_SwiperSlide, { key: index }, {
                     default: withCtx(() => [
                       createVNode(_component_PreloadWrapNode, {
                         paddingBottom: (image == null ? void 0 : image.src) ? "" : 50,
@@ -27289,16 +27332,16 @@ function _sfc_ssrRender$p(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
   }, _parent));
   _push(`</section>`);
 }
-const _sfc_setup$p = _sfc_main$p.setup;
-_sfc_main$p.setup = (props, ctx) => {
+const _sfc_setup$r = _sfc_main$r.setup;
+_sfc_main$r.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/sliders/SliderSingleNode.vue");
-  return _sfc_setup$p ? _sfc_setup$p(props, ctx) : void 0;
+  return _sfc_setup$r ? _sfc_setup$r(props, ctx) : void 0;
 };
-const SliderSingleNode = /* @__PURE__ */ _export_sfc(_sfc_main$p, [["ssrRender", _sfc_ssrRender$p]]);
+const SliderSingleNode = /* @__PURE__ */ _export_sfc(_sfc_main$r, [["ssrRender", _sfc_ssrRender$r]]);
 const SocialNetworksNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$o = {};
-function _sfc_ssrRender$o(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+const _sfc_main$q = {};
+function _sfc_ssrRender$q(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   const _component_ButtonNode = resolveComponent("ButtonNode");
   _push(`<div${ssrRenderAttrs(mergeProps({ class: "social-networks" }, _attrs))}>`);
   _push(ssrRenderComponent(_component_ButtonNode, { class: "social-networks__button icon icon-image_tg" }, null, _parent));
@@ -27306,15 +27349,15 @@ function _sfc_ssrRender$o(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
   _push(ssrRenderComponent(_component_ButtonNode, { class: "social-networks__button icon icon-image_ms" }, null, _parent));
   _push(`</div>`);
 }
-const _sfc_setup$o = _sfc_main$o.setup;
-_sfc_main$o.setup = (props, ctx) => {
+const _sfc_setup$q = _sfc_main$q.setup;
+_sfc_main$q.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/SocialNetworksNode.vue");
-  return _sfc_setup$o ? _sfc_setup$o(props, ctx) : void 0;
+  return _sfc_setup$q ? _sfc_setup$q(props, ctx) : void 0;
 };
-const SocialNetworksNode = /* @__PURE__ */ _export_sfc(_sfc_main$o, [["ssrRender", _sfc_ssrRender$o]]);
+const SocialNetworksNode = /* @__PURE__ */ _export_sfc(_sfc_main$q, [["ssrRender", _sfc_ssrRender$q]]);
 const SingleProduct_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$n = {
+const _sfc_main$p = {
   components: {
     CartBtnNode,
     SliderBannersFashionBlogNode,
@@ -27417,23 +27460,22 @@ const _sfc_main$n = {
       marginTop: 100,
       marginBottom: 100,
       stickyFor: 1024,
-      stickyClass: "stuck",
       stickyContainer: ".single__main"
     });
   }
 };
-function _sfc_ssrRender$n(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
-  const _component_main_page_node = resolveComponent("main-page-node");
+function _sfc_ssrRender$p(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  const _component_MainPageNode = resolveComponent("MainPageNode");
   const _component_ContainerNode = resolveComponent("ContainerNode");
-  const _component_slider_single_node = resolveComponent("slider-single-node");
-  const _component_button_node = resolveComponent("button-node");
+  const _component_SliderSingleNode = resolveComponent("SliderSingleNode");
+  const _component_ButtonNode = resolveComponent("ButtonNode");
   const _component_ProductPricesNode = resolveComponent("ProductPricesNode");
   const _component_CartBtnNode = resolveComponent("CartBtnNode");
-  const _component_social_networks_node = resolveComponent("social-networks-node");
+  const _component_SocialNetworksNode = resolveComponent("SocialNetworksNode");
   const _component_SliderProductsNode = resolveComponent("SliderProductsNode");
   const _component_SliderBannersFashionBlogNode = resolveComponent("SliderBannersFashionBlogNode");
   const _component_DistributionNode = resolveComponent("DistributionNode");
-  _push(ssrRenderComponent(_component_main_page_node, mergeProps({
+  _push(ssrRenderComponent(_component_MainPageNode, mergeProps({
     category: $options.product ? $options.product.categories[1] : void 0,
     additionalTitle: $options.product ? $options.product.name : void 0
   }, _attrs), {
@@ -27445,14 +27487,14 @@ function _sfc_ssrRender$n(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
             var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l;
             if (_push3) {
               _push3(`<div class="single__columns"${_scopeId2}><div class="single__content content-single sw-cont"${_scopeId2}>`);
-              _push3(ssrRenderComponent(_component_slider_single_node, {
+              _push3(ssrRenderComponent(_component_SliderSingleNode, {
                 images: (_a = $options.product) == null ? void 0 : _a.images
               }, null, _parent3, _scopeId2));
               _push3(`</div><div class="single__sidebar sidebar-single"${_scopeId2}><div class="sidebar-single__item sidebar-single__top"${_scopeId2}><h1 class="sidebar-single__title"${_scopeId2}>${ssrInterpolate((_b = $options.attribute(1)) == null ? void 0 : _b.options[0])} <span${_scopeId2}>${ssrInterpolate((_c = $options.product) == null ? void 0 : _c.name)}</span></h1><div class="sidebar-single__brand"${_scopeId2}><span${_scopeId2}>${ssrInterpolate((_d = $options.attribute(1)) == null ? void 0 : _d.options[0])}</span></div></div><div class="sidebar-single__item sidebar-single__sizes"${_scopeId2}><div class="sidebar-single__sizes-top"${_scopeId2}><button${_scopeId2}>\u041E\u043F\u0440\u0435\u0434\u0435\u043B\u0438\u0442\u044C \u0440\u0430\u0437\u043C\u0435\u0440</button></div><ul${_scopeId2}><!--[-->`);
               ssrRenderList((_e = $options.attribute(4)) == null ? void 0 : _e.options, (index, size) => {
                 var _a2;
                 _push3(`<li${_scopeId2}>`);
-                _push3(ssrRenderComponent(_component_button_node, {
+                _push3(ssrRenderComponent(_component_ButtonNode, {
                   class: $data.cartItemParams.variations[0].value && ((_a2 = $options.attribute(4)) == null ? void 0 : _a2.options[size]) === $data.cartItemParams.variations[0].value ? "checked" : "",
                   onClick: ($event) => {
                     var _a3;
@@ -27502,8 +27544,9 @@ function _sfc_ssrRender$n(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
                 }),
                 _: 1
               }, _parent3, _scopeId2));
-              _push3(`<button class="sidebar-single__favorite icon icon-favorite"${_scopeId2}></button></div>`);
-              _push3(ssrRenderComponent(_component_social_networks_node, { class: "sidebar-single__item" }, null, _parent3, _scopeId2));
+              _push3(ssrRenderComponent(_component_ButtonNode, { class: "sidebar-single__wishlist icon icon-wishlist" }, null, _parent3, _scopeId2));
+              _push3(`</div>`);
+              _push3(ssrRenderComponent(_component_SocialNetworksNode, { class: "sidebar-single__item" }, null, _parent3, _scopeId2));
               _push3(`</div></div><div class="single__rows"${_scopeId2}><div class="single__row single__data data-single"${_scopeId2}><div class="data-single__info"${_scopeId2}><div class="data-single__title"${_scopeId2}>\u0418\u043D\u0444\u043E\u0440\u043C\u0430\u0446\u0438\u044F \u043E \u0442\u043E\u0432\u0430\u0440\u0435</div><ul class="data-single__list"${_scopeId2}><!--[-->`);
               ssrRenderList((_f = $options.product) == null ? void 0 : _f.attributes, (attr, index) => {
                 _push3(`<li${_scopeId2}><span class="data-single__name"${_scopeId2}>${ssrInterpolate(attr.name)}</span><ul class="data-single__values"${_scopeId2}><!--[-->`);
@@ -27523,7 +27566,7 @@ function _sfc_ssrRender$n(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
               return [
                 createVNode("div", { class: "single__columns" }, [
                   createVNode("div", { class: "single__content content-single sw-cont" }, [
-                    createVNode(_component_slider_single_node, {
+                    createVNode(_component_SliderSingleNode, {
                       images: (_g = $options.product) == null ? void 0 : _g.images
                     }, null, 8, ["images"])
                   ]),
@@ -27545,7 +27588,7 @@ function _sfc_ssrRender$n(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
                         (openBlock(true), createBlock(Fragment, null, renderList((_k = $options.attribute(4)) == null ? void 0 : _k.options, (index, size) => {
                           var _a2;
                           return openBlock(), createBlock("li", { key: index }, [
-                            createVNode(_component_button_node, {
+                            createVNode(_component_ButtonNode, {
                               class: $data.cartItemParams.variations[0].value && ((_a2 = $options.attribute(4)) == null ? void 0 : _a2.options[size]) === $data.cartItemParams.variations[0].value ? "checked" : "",
                               onClick: ($event) => {
                                 var _a3;
@@ -27586,9 +27629,9 @@ function _sfc_ssrRender$n(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
                         ]),
                         _: 1
                       }, 8, ["params"]),
-                      createVNode("button", { class: "sidebar-single__favorite icon icon-favorite" })
+                      createVNode(_component_ButtonNode, { class: "sidebar-single__wishlist icon icon-wishlist" })
                     ]),
-                    createVNode(_component_social_networks_node, { class: "sidebar-single__item" })
+                    createVNode(_component_SocialNetworksNode, { class: "sidebar-single__item" })
                   ])
                 ]),
                 createVNode("div", { class: "single__rows" }, [
@@ -27644,7 +27687,7 @@ function _sfc_ssrRender$n(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
                     return [
                       createVNode("div", { class: "single__columns" }, [
                         createVNode("div", { class: "single__content content-single sw-cont" }, [
-                          createVNode(_component_slider_single_node, {
+                          createVNode(_component_SliderSingleNode, {
                             images: (_a = $options.product) == null ? void 0 : _a.images
                           }, null, 8, ["images"])
                         ]),
@@ -27666,7 +27709,7 @@ function _sfc_ssrRender$n(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
                               (openBlock(true), createBlock(Fragment, null, renderList((_e = $options.attribute(4)) == null ? void 0 : _e.options, (index, size) => {
                                 var _a2;
                                 return openBlock(), createBlock("li", { key: index }, [
-                                  createVNode(_component_button_node, {
+                                  createVNode(_component_ButtonNode, {
                                     class: $data.cartItemParams.variations[0].value && ((_a2 = $options.attribute(4)) == null ? void 0 : _a2.options[size]) === $data.cartItemParams.variations[0].value ? "checked" : "",
                                     onClick: ($event) => {
                                       var _a3;
@@ -27707,9 +27750,9 @@ function _sfc_ssrRender$n(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
                               ]),
                               _: 1
                             }, 8, ["params"]),
-                            createVNode("button", { class: "sidebar-single__favorite icon icon-favorite" })
+                            createVNode(_component_ButtonNode, { class: "sidebar-single__wishlist icon icon-wishlist" })
                           ]),
-                          createVNode(_component_social_networks_node, { class: "sidebar-single__item" })
+                          createVNode(_component_SocialNetworksNode, { class: "sidebar-single__item" })
                         ])
                       ]),
                       createVNode("div", { class: "single__rows" }, [
@@ -27762,26 +27805,26 @@ function _sfc_ssrRender$n(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
     _: 1
   }, _parent));
 }
-const _sfc_setup$n = _sfc_main$n.setup;
-_sfc_main$n.setup = (props, ctx) => {
+const _sfc_setup$p = _sfc_main$p.setup;
+_sfc_main$p.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/pages/common/SingleProduct.vue");
-  return _sfc_setup$n ? _sfc_setup$n(props, ctx) : void 0;
+  return _sfc_setup$p ? _sfc_setup$p(props, ctx) : void 0;
 };
-const SingleProduct = /* @__PURE__ */ _export_sfc(_sfc_main$n, [["ssrRender", _sfc_ssrRender$n]]);
-const _sfc_main$m = {};
-function _sfc_ssrRender$m(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+const SingleProduct = /* @__PURE__ */ _export_sfc(_sfc_main$p, [["ssrRender", _sfc_ssrRender$p]]);
+const _sfc_main$o = {};
+function _sfc_ssrRender$o(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   _push(`<div${ssrRenderAttrs(mergeProps({ class: "blog-page" }, _attrs))}>blog page</div>`);
 }
-const _sfc_setup$m = _sfc_main$m.setup;
-_sfc_main$m.setup = (props, ctx) => {
+const _sfc_setup$o = _sfc_main$o.setup;
+_sfc_main$o.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/pages/common/BlogPage.vue");
-  return _sfc_setup$m ? _sfc_setup$m(props, ctx) : void 0;
+  return _sfc_setup$o ? _sfc_setup$o(props, ctx) : void 0;
 };
-const BlogPage = /* @__PURE__ */ _export_sfc(_sfc_main$m, [["ssrRender", _sfc_ssrRender$m]]);
+const BlogPage = /* @__PURE__ */ _export_sfc(_sfc_main$o, [["ssrRender", _sfc_ssrRender$o]]);
 const CartItemNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$l = {
+const _sfc_main$n = {
   components: {
     CartBtnNode,
     ProductPricesNode
@@ -27834,7 +27877,7 @@ const _sfc_main$l = {
   mounted() {
   }
 };
-function _sfc_ssrRender$l(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$n(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   var _a, _b, _c, _d, _e, _f, _g;
   const _component_ProductPricesNode = resolveComponent("ProductPricesNode");
   const _component_CartBtnNode = resolveComponent("CartBtnNode");
@@ -27872,21 +27915,21 @@ function _sfc_ssrRender$l(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
     _push(`<!---->`);
   }
 }
-const _sfc_setup$l = _sfc_main$l.setup;
-_sfc_main$l.setup = (props, ctx) => {
+const _sfc_setup$n = _sfc_main$n.setup;
+_sfc_main$n.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/cart-and-ordering/CartItemNode.vue");
-  return _sfc_setup$l ? _sfc_setup$l(props, ctx) : void 0;
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/preparing/CartItemNode.vue");
+  return _sfc_setup$n ? _sfc_setup$n(props, ctx) : void 0;
 };
-const CartItemNode = /* @__PURE__ */ _export_sfc(_sfc_main$l, [["ssrRender", _sfc_ssrRender$l]]);
+const CartItemNode = /* @__PURE__ */ _export_sfc(_sfc_main$n, [["ssrRender", _sfc_ssrRender$n]]);
 const PageHeadTruncatedNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$k = {
+const _sfc_main$m = {
   props: {
     backLinkName: String,
     pageTitle: String
   }
 };
-function _sfc_ssrRender$k(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$m(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   const _component_ContainerNode = resolveComponent("ContainerNode");
   _push(`<div${ssrRenderAttrs(mergeProps({ class: "page-head_truncated" }, _attrs))}>`);
   _push(ssrRenderComponent(_component_ContainerNode, null, {
@@ -27913,16 +27956,16 @@ function _sfc_ssrRender$k(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
   }, _parent));
   _push(`</div>`);
 }
-const _sfc_setup$k = _sfc_main$k.setup;
-_sfc_main$k.setup = (props, ctx) => {
+const _sfc_setup$m = _sfc_main$m.setup;
+_sfc_main$m.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/structure/PageHeadTruncatedNode.vue");
-  return _sfc_setup$k ? _sfc_setup$k(props, ctx) : void 0;
+  return _sfc_setup$m ? _sfc_setup$m(props, ctx) : void 0;
 };
-const PageHeadTruncatedNode = /* @__PURE__ */ _export_sfc(_sfc_main$k, [["ssrRender", _sfc_ssrRender$k]]);
+const PageHeadTruncatedNode = /* @__PURE__ */ _export_sfc(_sfc_main$m, [["ssrRender", _sfc_ssrRender$m]]);
 const MiddleContentNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$j = {};
-function _sfc_ssrRender$j(_ctx, _push, _parent, _attrs) {
+const _sfc_main$l = {};
+function _sfc_ssrRender$l(_ctx, _push, _parent, _attrs) {
   const _component_PreloadWrapNode = resolveComponent("PreloadWrapNode");
   _push(`<div${ssrRenderAttrs(mergeProps({ class: "middle-content" }, _attrs))}><div class="middle-content__body"><ul class="middle-content__items">`);
   ssrRenderSlot(_ctx.$slots, "items", {}, null, _push, _parent);
@@ -27941,15 +27984,15 @@ function _sfc_ssrRender$j(_ctx, _push, _parent, _attrs) {
   }, _parent));
   _push(`</div></div></div>`);
 }
-const _sfc_setup$j = _sfc_main$j.setup;
-_sfc_main$j.setup = (props, ctx) => {
+const _sfc_setup$l = _sfc_main$l.setup;
+_sfc_main$l.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/cart-and-ordering/MiddleContentNode.vue");
-  return _sfc_setup$j ? _sfc_setup$j(props, ctx) : void 0;
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/preparing/MiddleContentNode.vue");
+  return _sfc_setup$l ? _sfc_setup$l(props, ctx) : void 0;
 };
-const MiddleContentNode = /* @__PURE__ */ _export_sfc(_sfc_main$j, [["ssrRender", _sfc_ssrRender$j]]);
+const MiddleContentNode = /* @__PURE__ */ _export_sfc(_sfc_main$l, [["ssrRender", _sfc_ssrRender$l]]);
 const Cart_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$i = {
+const _sfc_main$k = {
   components: {
     CartItemNode,
     MainPageNode,
@@ -27978,36 +28021,27 @@ const _sfc_main$i = {
       productsRequest: (state2) => state2.products.basedRequest,
       cartItems: (state2) => state2.cart.store.items,
       cartStore: (state2) => state2.cart.store,
-      userAuth: (state2) => state2.auth.userAuth,
-      cartStore: (state2) => state2.cart.store,
-      loginPopup(state2) {
-        return state2.common.revs.login;
-      }
+      cartStore: (state2) => state2.cart.store
     })
   },
   methods: {
     ...mapMutations({
       SET_VALUE: "SET_VALUE",
-      updateRev: "common/updateRev",
-      updateRev: "common/updateRev"
+      setPopup: "common/setPopup"
     }),
     ...mapActions({
-      getItems: "getItems",
-      mainFetchRequest: "mainFetchRequest"
+      getItems: "getItems"
     }),
     toCheckout() {
       if (this.userAuth === false) {
-        this.updateRev({
-          name: "login",
-          value: this.loginPopup.visible
-        });
+        this.setPopup({ name: "login" });
         return;
       }
       this.$router.push({ name: "Checkout" });
     }
   }
 };
-function _sfc_ssrRender$i(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$k(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   const _component_MainPageNode = resolveComponent("MainPageNode");
   const _component_PageHeadTruncatedNode = resolveComponent("PageHeadTruncatedNode");
   const _component_ContainerNode = resolveComponent("ContainerNode");
@@ -28186,7 +28220,7 @@ function _sfc_ssrRender$i(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
                             createVNode(_component_ButtonNode, {
                               class: "middle-content__button-submit",
                               buttonStyle: "green",
-                              onClick: $options.toCheckout,
+                              onClick: withModifiers($options.toCheckout, ["stop"]),
                               disabled: !((_h = _ctx.cartItems) == null ? void 0 : _h.length)
                             }, {
                               default: withCtx(() => [
@@ -28287,7 +28321,7 @@ function _sfc_ssrRender$i(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
                               createVNode(_component_ButtonNode, {
                                 class: "middle-content__button-submit",
                                 buttonStyle: "green",
-                                onClick: $options.toCheckout,
+                                onClick: withModifiers($options.toCheckout, ["stop"]),
                                 disabled: !((_d = _ctx.cartItems) == null ? void 0 : _d.length)
                               }, {
                                 default: withCtx(() => [
@@ -28394,7 +28428,7 @@ function _sfc_ssrRender$i(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
                               createVNode(_component_ButtonNode, {
                                 class: "middle-content__button-submit",
                                 buttonStyle: "green",
-                                onClick: $options.toCheckout,
+                                onClick: withModifiers($options.toCheckout, ["stop"]),
                                 disabled: !((_d = _ctx.cartItems) == null ? void 0 : _d.length)
                               }, {
                                 default: withCtx(() => [
@@ -28420,65 +28454,198 @@ function _sfc_ssrRender$i(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
     _: 1
   }, _parent));
 }
-const _sfc_setup$i = _sfc_main$i.setup;
-_sfc_main$i.setup = (props, ctx) => {
+const _sfc_setup$k = _sfc_main$k.setup;
+_sfc_main$k.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/pages/private/Cart.vue");
-  return _sfc_setup$i ? _sfc_setup$i(props, ctx) : void 0;
+  return _sfc_setup$k ? _sfc_setup$k(props, ctx) : void 0;
 };
-const Cart = /* @__PURE__ */ _export_sfc(_sfc_main$i, [["ssrRender", _sfc_ssrRender$i]]);
+const Cart = /* @__PURE__ */ _export_sfc(_sfc_main$k, [["ssrRender", _sfc_ssrRender$k]]);
+const _sfc_main$j = {
+  components: {
+    MainPageNode
+  },
+  setup() {
+    const store2 = useStore();
+    const message = store2.state.common.messages.currentPaymentURLNotSet;
+    const currentPaymentURL = store2.state.auth.currentURLPayment;
+    function openPaymentPage() {
+      if (currentPaymentURL) {
+        window.open(currentPaymentURL);
+      } else {
+        store2.dispatch("common/updateMessage", {
+          name: "currentPaymentURLNotSet"
+        });
+      }
+    }
+    return { message, openPaymentPage };
+  }
+};
+function _sfc_ssrRender$j(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  const _component_MainPageNode = resolveComponent("MainPageNode");
+  const _component_PageHeadTruncatedNode = resolveComponent("PageHeadTruncatedNode");
+  const _component_ContainerNode = resolveComponent("ContainerNode");
+  const _component_MessageNode = resolveComponent("MessageNode");
+  const _component_ButtonNode = resolveComponent("ButtonNode");
+  _push(ssrRenderComponent(_component_MainPageNode, _attrs, {
+    "page-head": withCtx((_, _push2, _parent2, _scopeId) => {
+      if (_push2) {
+        _push2(ssrRenderComponent(_component_PageHeadTruncatedNode, { pageTitle: "\u041E\u043F\u043B\u0430\u0442\u0430" }, null, _parent2, _scopeId));
+      } else {
+        return [
+          createVNode(_component_PageHeadTruncatedNode, { pageTitle: "\u041E\u043F\u043B\u0430\u0442\u0430" })
+        ];
+      }
+    }),
+    "page-main": withCtx((_, _push2, _parent2, _scopeId) => {
+      if (_push2) {
+        _push2(ssrRenderComponent(_component_ContainerNode, null, {
+          default: withCtx((_2, _push3, _parent3, _scopeId2) => {
+            if (_push3) {
+              _push3(`<div class="payment"${_scopeId2}>`);
+              _push3(ssrRenderComponent(_component_MessageNode, { item: $setup.message }, {
+                default: withCtx((_3, _push4, _parent4, _scopeId3) => {
+                  if (_push4) {
+                    _push4(`\u0421\u0441\u044B\u043B\u043A\u0430 \u043D\u0430 \u0441\u0442\u0440\u0430\u043D\u0438\u0446\u0443 \u043E\u043F\u043B\u0430\u0442\u044B \u043D\u0435 \u0431\u044B\u043B\u0430 \u043F\u043E\u043B\u0443\u0447\u0435\u043D\u0430. \u041F\u043E\u043F\u0440\u043E\u0431\u0443\u0439\u0442\u0435 \u043E\u043F\u043B\u0430\u0442\u0438\u0442\u044C \u0438\u0437 <button class="message-link"${_scopeId3}> \u041B\u0438\u0447\u043D\u043E\u0433\u043E \u043A\u0430\u0431\u0438\u043D\u0435\u0442\u0430 </button>`);
+                  } else {
+                    return [
+                      createTextVNode("\u0421\u0441\u044B\u043B\u043A\u0430 \u043D\u0430 \u0441\u0442\u0440\u0430\u043D\u0438\u0446\u0443 \u043E\u043F\u043B\u0430\u0442\u044B \u043D\u0435 \u0431\u044B\u043B\u0430 \u043F\u043E\u043B\u0443\u0447\u0435\u043D\u0430. \u041F\u043E\u043F\u0440\u043E\u0431\u0443\u0439\u0442\u0435 \u043E\u043F\u043B\u0430\u0442\u0438\u0442\u044C \u0438\u0437 "),
+                      createVNode("button", {
+                        onClick: ($event) => _ctx.$router.push({ name: "Orders" }),
+                        class: "message-link"
+                      }, " \u041B\u0438\u0447\u043D\u043E\u0433\u043E \u043A\u0430\u0431\u0438\u043D\u0435\u0442\u0430 ", 8, ["onClick"])
+                    ];
+                  }
+                }),
+                _: 1
+              }, _parent3, _scopeId2));
+              _push3(ssrRenderComponent(_component_ButtonNode, { onClick: $setup.openPaymentPage }, {
+                default: withCtx((_3, _push4, _parent4, _scopeId3) => {
+                  if (_push4) {
+                    _push4(`\u041E\u043F\u043B\u0430\u0442\u0438\u0442\u044C \u0441\u0435\u0439\u0447\u0430\u0441`);
+                  } else {
+                    return [
+                      createTextVNode("\u041E\u043F\u043B\u0430\u0442\u0438\u0442\u044C \u0441\u0435\u0439\u0447\u0430\u0441")
+                    ];
+                  }
+                }),
+                _: 1
+              }, _parent3, _scopeId2));
+              _push3(`</div>`);
+            } else {
+              return [
+                createVNode("div", { class: "payment" }, [
+                  createVNode(_component_MessageNode, { item: $setup.message }, {
+                    default: withCtx(() => [
+                      createTextVNode("\u0421\u0441\u044B\u043B\u043A\u0430 \u043D\u0430 \u0441\u0442\u0440\u0430\u043D\u0438\u0446\u0443 \u043E\u043F\u043B\u0430\u0442\u044B \u043D\u0435 \u0431\u044B\u043B\u0430 \u043F\u043E\u043B\u0443\u0447\u0435\u043D\u0430. \u041F\u043E\u043F\u0440\u043E\u0431\u0443\u0439\u0442\u0435 \u043E\u043F\u043B\u0430\u0442\u0438\u0442\u044C \u0438\u0437 "),
+                      createVNode("button", {
+                        onClick: ($event) => _ctx.$router.push({ name: "Orders" }),
+                        class: "message-link"
+                      }, " \u041B\u0438\u0447\u043D\u043E\u0433\u043E \u043A\u0430\u0431\u0438\u043D\u0435\u0442\u0430 ", 8, ["onClick"])
+                    ]),
+                    _: 1
+                  }, 8, ["item"]),
+                  createVNode(_component_ButtonNode, { onClick: $setup.openPaymentPage }, {
+                    default: withCtx(() => [
+                      createTextVNode("\u041E\u043F\u043B\u0430\u0442\u0438\u0442\u044C \u0441\u0435\u0439\u0447\u0430\u0441")
+                    ]),
+                    _: 1
+                  }, 8, ["onClick"])
+                ])
+              ];
+            }
+          }),
+          _: 1
+        }, _parent2, _scopeId));
+      } else {
+        return [
+          createVNode(_component_ContainerNode, null, {
+            default: withCtx(() => [
+              createVNode("div", { class: "payment" }, [
+                createVNode(_component_MessageNode, { item: $setup.message }, {
+                  default: withCtx(() => [
+                    createTextVNode("\u0421\u0441\u044B\u043B\u043A\u0430 \u043D\u0430 \u0441\u0442\u0440\u0430\u043D\u0438\u0446\u0443 \u043E\u043F\u043B\u0430\u0442\u044B \u043D\u0435 \u0431\u044B\u043B\u0430 \u043F\u043E\u043B\u0443\u0447\u0435\u043D\u0430. \u041F\u043E\u043F\u0440\u043E\u0431\u0443\u0439\u0442\u0435 \u043E\u043F\u043B\u0430\u0442\u0438\u0442\u044C \u0438\u0437 "),
+                    createVNode("button", {
+                      onClick: ($event) => _ctx.$router.push({ name: "Orders" }),
+                      class: "message-link"
+                    }, " \u041B\u0438\u0447\u043D\u043E\u0433\u043E \u043A\u0430\u0431\u0438\u043D\u0435\u0442\u0430 ", 8, ["onClick"])
+                  ]),
+                  _: 1
+                }, 8, ["item"]),
+                createVNode(_component_ButtonNode, { onClick: $setup.openPaymentPage }, {
+                  default: withCtx(() => [
+                    createTextVNode("\u041E\u043F\u043B\u0430\u0442\u0438\u0442\u044C \u0441\u0435\u0439\u0447\u0430\u0441")
+                  ]),
+                  _: 1
+                }, 8, ["onClick"])
+              ])
+            ]),
+            _: 1
+          })
+        ];
+      }
+    }),
+    _: 1
+  }, _parent));
+}
+const _sfc_setup$j = _sfc_main$j.setup;
+_sfc_main$j.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/pages/private/Payment.vue");
+  return _sfc_setup$j ? _sfc_setup$j(props, ctx) : void 0;
+};
+const Payment = /* @__PURE__ */ _export_sfc(_sfc_main$j, [["ssrRender", _sfc_ssrRender$j]]);
 const CheckoutBlockNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$h = {
+const _sfc_main$i = {
   props: {
     key: String,
     value: String,
     icon: String,
-    popupName: String,
-    visibleShow: {
-      type: Boolean,
-      default: true
-    }
+    popupName: String
   },
   computed: {
-    ...mapState({
-      popup(state2) {
-        return state2.common.revs[this.popupName];
-      }
-    })
+    ...mapState({})
   },
   methods: {
     ...mapMutations({
-      updateRev: "common/updateRev"
-    }),
-    popupShow() {
-      this.updateRev({
-        name: this.popupName,
-        value: this.popup.visible
-      });
-    }
+      setPopup: "common/setPopup"
+    })
   }
 };
-function _sfc_ssrRender$h(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$i(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   const _component_PopupNode = resolveComponent("PopupNode");
   _push(`<div${ssrRenderAttrs(mergeProps({ class: "checkout__block checkout-block" }, _attrs))}><div class="checkout-block__body"><div class="${ssrRenderClass(["icon-" + $props.icon, "checkout-block__icon"])}"></div><div class="checkout-block__content"><div class="checkout-block__key">${ssrInterpolate($props.key)}</div><div class="checkout-block__value">${ssrInterpolate($props.value)}</div></div><div class="checkout-block__edit-icon icon-edit"></div><div class="checkout-block__main">`);
-  ssrRenderSlot(_ctx.$slots, "default", {}, null, _push, _parent);
+  ssrRenderSlot(_ctx.$slots, "main", {}, null, _push, _parent);
   _push(`</div>`);
-  if ($props.visibleShow) {
-    _push(ssrRenderComponent(_component_PopupNode, { name: $props.popupName }, null, _parent));
+  if ($props.popupName) {
+    _push(ssrRenderComponent(_component_PopupNode, {
+      item: { name: $props.popupName }
+    }, {
+      default: withCtx((_, _push2, _parent2, _scopeId) => {
+        if (_push2) {
+          ssrRenderSlot(_ctx.$slots, "popup", {}, null, _push2, _parent2, _scopeId);
+        } else {
+          return [
+            renderSlot(_ctx.$slots, "popup")
+          ];
+        }
+      }),
+      _: 3
+    }, _parent));
   } else {
     _push(`<!---->`);
   }
   _push(`</div></div>`);
 }
-const _sfc_setup$h = _sfc_main$h.setup;
-_sfc_main$h.setup = (props, ctx) => {
+const _sfc_setup$i = _sfc_main$i.setup;
+_sfc_main$i.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/cart-and-ordering/CheckoutBlockNode.vue");
-  return _sfc_setup$h ? _sfc_setup$h(props, ctx) : void 0;
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/preparing/CheckoutBlockNode.vue");
+  return _sfc_setup$i ? _sfc_setup$i(props, ctx) : void 0;
 };
-const CheckoutBlockNode = /* @__PURE__ */ _export_sfc(_sfc_main$h, [["ssrRender", _sfc_ssrRender$h]]);
+const CheckoutBlockNode = /* @__PURE__ */ _export_sfc(_sfc_main$i, [["ssrRender", _sfc_ssrRender$i]]);
 const Checkout_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$g = {
+const _sfc_main$h = {
   components: {
     MainPageNode,
     PreloadWrapContainerNode,
@@ -28489,8 +28656,7 @@ const _sfc_main$g = {
   data() {
     return {
       draftOrderLoaded: false,
-      draftOrder: {},
-      payment_method: ""
+      draftOrder: {}
     };
   },
   watch: {
@@ -28509,16 +28675,22 @@ const _sfc_main$g = {
       userAuth: (state2) => state2.auth.userAuth,
       cartItems: (state2) => state2.cart.store.items,
       cartStore: (state2) => state2.cart.store,
-      checkoutRequest: (state2) => state2.checkout.basedRequest
+      checkoutRequest: (state2) => state2.checkout.basedRequest,
+      paymentGatewaysItems: (state2) => state2.paymentGateways.items,
+      messages: (state2) => state2.common.messages
     })
   },
   methods: {
     ...mapMutations({
       SET_VALUE: "SET_VALUE",
-      updateRev: "common/updateRev"
+      updateRev: "common/updateRev",
+      updateMessage: "common/updateMessage",
+      setCurrentURLPayment: "auth/setCurrentURLPayment"
     }),
     ...mapActions({
-      mainFetchRequest: "mainFetchRequest"
+      mainFetchRequest: "mainFetchRequest",
+      updateMessage: "common/updateMessage",
+      getCart: "cart/getCart"
     }),
     getCheckout() {
       this.mainFetchRequest({
@@ -28526,41 +28698,57 @@ const _sfc_main$g = {
         route_base: this.checkoutRequest.route_base,
         method: "get",
         data: {},
-        config: { headers: getNonceToken() },
-        maintainJWT: true,
-        reqiredJWT: true
+        config: { headers: getNonceToken() }
       }).then(
         (result) => {
           var _a;
           if ((_a = result == null ? void 0 : result.response) == null ? void 0 : _a.data) {
             this.draftOrderLoaded = true;
-            this.draftOrder = result.response.data;
+            this.draftOrder = result.data;
           }
         },
         (error) => console.log(error)
       );
     },
     postCheckout() {
+      if (!this.draftOrder.payment_method) {
+        this.updateMessage({ name: "notSelectPaymentMethod" });
+        return;
+      }
       this.mainFetchRequest({
         apiType: this.checkoutRequest.apiType,
         route_base: this.checkoutRequest.route_base,
         method: "post",
         data: this.draftOrder,
-        config: { headers: getNonceToken() },
-        maintainJWT: true,
-        reqiredJWT: true
-      });
+        config: { headers: getNonceToken() }
+      }).then(
+        (result) => {
+          console.log(result);
+          this.setCurrentURLPayment(result.response.data.payment_result.redirect_url);
+          this.$router.push({ name: "Payment" });
+          this.getCart();
+        },
+        (error) => {
+          console.log(error);
+          this.updateMessage({ name: "orderingError" });
+        }
+      );
+    },
+    changePaymentMethod(id) {
+      this.draftOrder.payment_method = id;
     }
   }
 };
-function _sfc_ssrRender$g(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$h(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   const _component_MainPageNode = resolveComponent("MainPageNode");
   const _component_PageHeadTruncatedNode = resolveComponent("PageHeadTruncatedNode");
   const _component_ContainerNode = resolveComponent("ContainerNode");
+  const _component_MessageNode = resolveComponent("MessageNode");
   const _component_MiddleContentNode = resolveComponent("MiddleContentNode");
   const _component_PreloadWrapNode = resolveComponent("PreloadWrapNode");
   const _component_CheckoutBlockNode = resolveComponent("CheckoutBlockNode");
   const _component_PreloadWrapContainerNode = resolveComponent("PreloadWrapContainerNode");
+  const _component_InputRadioNode = resolveComponent("InputRadioNode");
   const _component_ButtonNode = resolveComponent("ButtonNode");
   _push(ssrRenderComponent(_component_MainPageNode, _attrs, {
     "page-head": withCtx((_, _push2, _parent2, _scopeId) => {
@@ -28583,7 +28771,36 @@ function _sfc_ssrRender$g(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
         _push2(ssrRenderComponent(_component_ContainerNode, null, {
           default: withCtx((_2, _push3, _parent3, _scopeId2) => {
             if (_push3) {
-              _push3(`<div class="checkout"${_scopeId2}><div class="checkout__body"${_scopeId2}>`);
+              _push3(`<div class="checkout"${_scopeId2}>`);
+              _push3(ssrRenderComponent(_component_MessageNode, {
+                item: _ctx.messages.notSelectPaymentMethod
+              }, {
+                default: withCtx((_3, _push4, _parent4, _scopeId3) => {
+                  if (_push4) {
+                    _push4(`\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u043C\u0435\u0442\u043E\u0434 \u043E\u043F\u043B\u0430\u0442\u044B`);
+                  } else {
+                    return [
+                      createTextVNode("\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u043C\u0435\u0442\u043E\u0434 \u043E\u043F\u043B\u0430\u0442\u044B")
+                    ];
+                  }
+                }),
+                _: 1
+              }, _parent3, _scopeId2));
+              _push3(ssrRenderComponent(_component_MessageNode, {
+                item: _ctx.messages.orderingError
+              }, {
+                default: withCtx((_3, _push4, _parent4, _scopeId3) => {
+                  if (_push4) {
+                    _push4(`\u041F\u0440\u043E\u0438\u0437\u043E\u0448\u043B\u0430 \u043E\u0448\u0438\u0431\u043A\u0430 \u043F\u0440\u0438 \u043E\u0444\u043E\u0440\u043C\u043B\u0435\u043D\u0438\u0438 \u0437\u0430\u043A\u0430\u0437\u0430. \u041F\u043E\u043F\u0440\u043E\u0431\u0443\u0439\u0442\u0435 \u0441\u043D\u043E\u0432\u0430`);
+                  } else {
+                    return [
+                      createTextVNode("\u041F\u0440\u043E\u0438\u0437\u043E\u0448\u043B\u0430 \u043E\u0448\u0438\u0431\u043A\u0430 \u043F\u0440\u0438 \u043E\u0444\u043E\u0440\u043C\u043B\u0435\u043D\u0438\u0438 \u0437\u0430\u043A\u0430\u0437\u0430. \u041F\u043E\u043F\u0440\u043E\u0431\u0443\u0439\u0442\u0435 \u0441\u043D\u043E\u0432\u0430")
+                    ];
+                  }
+                }),
+                _: 1
+              }, _parent3, _scopeId2));
+              _push3(`<div class="checkout__body"${_scopeId2}>`);
               _push3(ssrRenderComponent(_component_MiddleContentNode, null, {
                 items: withCtx((_3, _push4, _parent4, _scopeId3) => {
                   if (_push4) {
@@ -28595,10 +28812,9 @@ function _sfc_ssrRender$g(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
                           _push5(ssrRenderComponent(_component_CheckoutBlockNode, {
                             key: "\u041A\u043E\u0440\u0437\u0438\u043D\u0430",
                             value: "",
-                            icon: "cart",
-                            popupVisible: false
+                            icon: "cart"
                           }, {
-                            default: withCtx((_5, _push6, _parent6, _scopeId5) => {
+                            main: withCtx((_5, _push6, _parent6, _scopeId5) => {
                               if (_push6) {
                                 _push6(`<ul class="checkout-block__products"${_scopeId5}>`);
                                 _push6(ssrRenderComponent(_component_PreloadWrapContainerNode, {
@@ -28676,10 +28892,9 @@ function _sfc_ssrRender$g(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
                             createVNode(_component_CheckoutBlockNode, {
                               key: "\u041A\u043E\u0440\u0437\u0438\u043D\u0430",
                               value: "",
-                              icon: "cart",
-                              popupVisible: false
+                              icon: "cart"
                             }, {
-                              default: withCtx(() => [
+                              main: withCtx(() => [
                                 createVNode("ul", { class: "checkout-block__products" }, [
                                   createVNode(_component_PreloadWrapContainerNode, {
                                     class: "cart__item",
@@ -28727,7 +28942,16 @@ function _sfc_ssrRender$g(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
                             value: "",
                             icon: "profile",
                             popupName: "checkoutContacts"
-                          }, null, _parent5, _scopeId4));
+                          }, {
+                            popup: withCtx((_5, _push6, _parent6, _scopeId5) => {
+                              if (_push6)
+                                ;
+                              else {
+                                return [];
+                              }
+                            }),
+                            _: 1
+                          }, _parent5, _scopeId4));
                         } else {
                           return [
                             createVNode(_component_CheckoutBlockNode, {
@@ -28735,6 +28959,9 @@ function _sfc_ssrRender$g(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
                               value: "",
                               icon: "profile",
                               popupName: "checkoutContacts"
+                            }, {
+                              popup: withCtx(() => []),
+                              _: 1
                             })
                           ];
                         }
@@ -28751,7 +28978,16 @@ function _sfc_ssrRender$g(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
                             value: "\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u0443\u0434\u043E\u0431\u043D\u044B\u0439 \u0432\u0430\u0440\u0438\u0430\u043D\u0442 \u0434\u043E\u0441\u0442\u0430\u0432\u043A\u0438",
                             icon: "delivery",
                             popupName: "checkoutDelivery"
-                          }, null, _parent5, _scopeId4));
+                          }, {
+                            popup: withCtx((_5, _push6, _parent6, _scopeId5) => {
+                              if (_push6)
+                                ;
+                              else {
+                                return [];
+                              }
+                            }),
+                            _: 1
+                          }, _parent5, _scopeId4));
                         } else {
                           return [
                             createVNode(_component_CheckoutBlockNode, {
@@ -28759,6 +28995,9 @@ function _sfc_ssrRender$g(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
                               value: "\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u0443\u0434\u043E\u0431\u043D\u044B\u0439 \u0432\u0430\u0440\u0438\u0430\u043D\u0442 \u0434\u043E\u0441\u0442\u0430\u0432\u043A\u0438",
                               icon: "delivery",
                               popupName: "checkoutDelivery"
+                            }, {
+                              popup: withCtx(() => []),
+                              _: 1
                             })
                           ];
                         }
@@ -28775,7 +29014,38 @@ function _sfc_ssrRender$g(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
                             value: "\u041E\u043D\u043B\u0430\u0439\u043D \u043E\u043F\u043B\u0430\u0442\u0430 \u043A\u0430\u0440\u0442\u043E\u0439 (\u0441\u043A\u0438\u0434\u043A\u0430 5%)",
                             icon: "cash",
                             popupName: "checkoutPayment"
-                          }, null, _parent5, _scopeId4));
+                          }, {
+                            popup: withCtx((_5, _push6, _parent6, _scopeId5) => {
+                              if (_push6) {
+                                _push6(`<!--[-->`);
+                                ssrRenderList(_ctx.paymentGatewaysItems, (item, index) => {
+                                  _push6(ssrRenderComponent(_component_InputRadioNode, {
+                                    key: index,
+                                    modelValue: $data.draftOrder.payment_method === item.id,
+                                    labelText: item.method_title,
+                                    onInput: ($event) => $options.changePaymentMethod(item.id),
+                                    name: "paymentGateway",
+                                    disabled: !item.enabled
+                                  }, null, _parent6, _scopeId5));
+                                });
+                                _push6(`<!--]-->`);
+                              } else {
+                                return [
+                                  (openBlock(true), createBlock(Fragment, null, renderList(_ctx.paymentGatewaysItems, (item, index) => {
+                                    return openBlock(), createBlock(_component_InputRadioNode, {
+                                      key: index,
+                                      modelValue: $data.draftOrder.payment_method === item.id,
+                                      labelText: item.method_title,
+                                      onInput: ($event) => $options.changePaymentMethod(item.id),
+                                      name: "paymentGateway",
+                                      disabled: !item.enabled
+                                    }, null, 8, ["modelValue", "labelText", "onInput", "disabled"]);
+                                  }), 128))
+                                ];
+                              }
+                            }),
+                            _: 1
+                          }, _parent5, _scopeId4));
                         } else {
                           return [
                             createVNode(_component_CheckoutBlockNode, {
@@ -28783,6 +29053,20 @@ function _sfc_ssrRender$g(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
                               value: "\u041E\u043D\u043B\u0430\u0439\u043D \u043E\u043F\u043B\u0430\u0442\u0430 \u043A\u0430\u0440\u0442\u043E\u0439 (\u0441\u043A\u0438\u0434\u043A\u0430 5%)",
                               icon: "cash",
                               popupName: "checkoutPayment"
+                            }, {
+                              popup: withCtx(() => [
+                                (openBlock(true), createBlock(Fragment, null, renderList(_ctx.paymentGatewaysItems, (item, index) => {
+                                  return openBlock(), createBlock(_component_InputRadioNode, {
+                                    key: index,
+                                    modelValue: $data.draftOrder.payment_method === item.id,
+                                    labelText: item.method_title,
+                                    onInput: ($event) => $options.changePaymentMethod(item.id),
+                                    name: "paymentGateway",
+                                    disabled: !item.enabled
+                                  }, null, 8, ["modelValue", "labelText", "onInput", "disabled"]);
+                                }), 128))
+                              ]),
+                              _: 1
                             })
                           ];
                         }
@@ -28798,10 +29082,9 @@ function _sfc_ssrRender$g(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
                           createVNode(_component_CheckoutBlockNode, {
                             key: "\u041A\u043E\u0440\u0437\u0438\u043D\u0430",
                             value: "",
-                            icon: "cart",
-                            popupVisible: false
+                            icon: "cart"
                           }, {
-                            default: withCtx(() => [
+                            main: withCtx(() => [
                               createVNode("ul", { class: "checkout-block__products" }, [
                                 createVNode(_component_PreloadWrapContainerNode, {
                                   class: "cart__item",
@@ -28846,6 +29129,9 @@ function _sfc_ssrRender$g(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
                             value: "",
                             icon: "profile",
                             popupName: "checkoutContacts"
+                          }, {
+                            popup: withCtx(() => []),
+                            _: 1
                           })
                         ]),
                         _: 1
@@ -28859,6 +29145,9 @@ function _sfc_ssrRender$g(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
                             value: "\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u0443\u0434\u043E\u0431\u043D\u044B\u0439 \u0432\u0430\u0440\u0438\u0430\u043D\u0442 \u0434\u043E\u0441\u0442\u0430\u0432\u043A\u0438",
                             icon: "delivery",
                             popupName: "checkoutDelivery"
+                          }, {
+                            popup: withCtx(() => []),
+                            _: 1
                           })
                         ]),
                         _: 1
@@ -28872,6 +29161,20 @@ function _sfc_ssrRender$g(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
                             value: "\u041E\u043D\u043B\u0430\u0439\u043D \u043E\u043F\u043B\u0430\u0442\u0430 \u043A\u0430\u0440\u0442\u043E\u0439 (\u0441\u043A\u0438\u0434\u043A\u0430 5%)",
                             icon: "cash",
                             popupName: "checkoutPayment"
+                          }, {
+                            popup: withCtx(() => [
+                              (openBlock(true), createBlock(Fragment, null, renderList(_ctx.paymentGatewaysItems, (item, index) => {
+                                return openBlock(), createBlock(_component_InputRadioNode, {
+                                  key: index,
+                                  modelValue: $data.draftOrder.payment_method === item.id,
+                                  labelText: item.method_title,
+                                  onInput: ($event) => $options.changePaymentMethod(item.id),
+                                  name: "paymentGateway",
+                                  disabled: !item.enabled
+                                }, null, 8, ["modelValue", "labelText", "onInput", "disabled"]);
+                              }), 128))
+                            ]),
+                            _: 1
                           })
                         ]),
                         _: 1
@@ -28953,6 +29256,22 @@ function _sfc_ssrRender$g(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
             } else {
               return [
                 createVNode("div", { class: "checkout" }, [
+                  createVNode(_component_MessageNode, {
+                    item: _ctx.messages.notSelectPaymentMethod
+                  }, {
+                    default: withCtx(() => [
+                      createTextVNode("\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u043C\u0435\u0442\u043E\u0434 \u043E\u043F\u043B\u0430\u0442\u044B")
+                    ]),
+                    _: 1
+                  }, 8, ["item"]),
+                  createVNode(_component_MessageNode, {
+                    item: _ctx.messages.orderingError
+                  }, {
+                    default: withCtx(() => [
+                      createTextVNode("\u041F\u0440\u043E\u0438\u0437\u043E\u0448\u043B\u0430 \u043E\u0448\u0438\u0431\u043A\u0430 \u043F\u0440\u0438 \u043E\u0444\u043E\u0440\u043C\u043B\u0435\u043D\u0438\u0438 \u0437\u0430\u043A\u0430\u0437\u0430. \u041F\u043E\u043F\u0440\u043E\u0431\u0443\u0439\u0442\u0435 \u0441\u043D\u043E\u0432\u0430")
+                    ]),
+                    _: 1
+                  }, 8, ["item"]),
                   createVNode("div", { class: "checkout__body" }, [
                     createVNode(_component_MiddleContentNode, null, {
                       items: withCtx(() => [
@@ -28963,10 +29282,9 @@ function _sfc_ssrRender$g(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
                             createVNode(_component_CheckoutBlockNode, {
                               key: "\u041A\u043E\u0440\u0437\u0438\u043D\u0430",
                               value: "",
-                              icon: "cart",
-                              popupVisible: false
+                              icon: "cart"
                             }, {
-                              default: withCtx(() => [
+                              main: withCtx(() => [
                                 createVNode("ul", { class: "checkout-block__products" }, [
                                   createVNode(_component_PreloadWrapContainerNode, {
                                     class: "cart__item",
@@ -29011,6 +29329,9 @@ function _sfc_ssrRender$g(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
                               value: "",
                               icon: "profile",
                               popupName: "checkoutContacts"
+                            }, {
+                              popup: withCtx(() => []),
+                              _: 1
                             })
                           ]),
                           _: 1
@@ -29024,6 +29345,9 @@ function _sfc_ssrRender$g(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
                               value: "\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u0443\u0434\u043E\u0431\u043D\u044B\u0439 \u0432\u0430\u0440\u0438\u0430\u043D\u0442 \u0434\u043E\u0441\u0442\u0430\u0432\u043A\u0438",
                               icon: "delivery",
                               popupName: "checkoutDelivery"
+                            }, {
+                              popup: withCtx(() => []),
+                              _: 1
                             })
                           ]),
                           _: 1
@@ -29037,6 +29361,20 @@ function _sfc_ssrRender$g(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
                               value: "\u041E\u043D\u043B\u0430\u0439\u043D \u043E\u043F\u043B\u0430\u0442\u0430 \u043A\u0430\u0440\u0442\u043E\u0439 (\u0441\u043A\u0438\u0434\u043A\u0430 5%)",
                               icon: "cash",
                               popupName: "checkoutPayment"
+                            }, {
+                              popup: withCtx(() => [
+                                (openBlock(true), createBlock(Fragment, null, renderList(_ctx.paymentGatewaysItems, (item, index) => {
+                                  return openBlock(), createBlock(_component_InputRadioNode, {
+                                    key: index,
+                                    modelValue: $data.draftOrder.payment_method === item.id,
+                                    labelText: item.method_title,
+                                    onInput: ($event) => $options.changePaymentMethod(item.id),
+                                    name: "paymentGateway",
+                                    disabled: !item.enabled
+                                  }, null, 8, ["modelValue", "labelText", "onInput", "disabled"]);
+                                }), 128))
+                              ]),
+                              _: 1
                             })
                           ]),
                           _: 1
@@ -29103,6 +29441,22 @@ function _sfc_ssrRender$g(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
           createVNode(_component_ContainerNode, null, {
             default: withCtx(() => [
               createVNode("div", { class: "checkout" }, [
+                createVNode(_component_MessageNode, {
+                  item: _ctx.messages.notSelectPaymentMethod
+                }, {
+                  default: withCtx(() => [
+                    createTextVNode("\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u043C\u0435\u0442\u043E\u0434 \u043E\u043F\u043B\u0430\u0442\u044B")
+                  ]),
+                  _: 1
+                }, 8, ["item"]),
+                createVNode(_component_MessageNode, {
+                  item: _ctx.messages.orderingError
+                }, {
+                  default: withCtx(() => [
+                    createTextVNode("\u041F\u0440\u043E\u0438\u0437\u043E\u0448\u043B\u0430 \u043E\u0448\u0438\u0431\u043A\u0430 \u043F\u0440\u0438 \u043E\u0444\u043E\u0440\u043C\u043B\u0435\u043D\u0438\u0438 \u0437\u0430\u043A\u0430\u0437\u0430. \u041F\u043E\u043F\u0440\u043E\u0431\u0443\u0439\u0442\u0435 \u0441\u043D\u043E\u0432\u0430")
+                  ]),
+                  _: 1
+                }, 8, ["item"]),
                 createVNode("div", { class: "checkout__body" }, [
                   createVNode(_component_MiddleContentNode, null, {
                     items: withCtx(() => [
@@ -29113,10 +29467,9 @@ function _sfc_ssrRender$g(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
                           createVNode(_component_CheckoutBlockNode, {
                             key: "\u041A\u043E\u0440\u0437\u0438\u043D\u0430",
                             value: "",
-                            icon: "cart",
-                            popupVisible: false
+                            icon: "cart"
                           }, {
-                            default: withCtx(() => [
+                            main: withCtx(() => [
                               createVNode("ul", { class: "checkout-block__products" }, [
                                 createVNode(_component_PreloadWrapContainerNode, {
                                   class: "cart__item",
@@ -29161,6 +29514,9 @@ function _sfc_ssrRender$g(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
                             value: "",
                             icon: "profile",
                             popupName: "checkoutContacts"
+                          }, {
+                            popup: withCtx(() => []),
+                            _: 1
                           })
                         ]),
                         _: 1
@@ -29174,6 +29530,9 @@ function _sfc_ssrRender$g(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
                             value: "\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u0443\u0434\u043E\u0431\u043D\u044B\u0439 \u0432\u0430\u0440\u0438\u0430\u043D\u0442 \u0434\u043E\u0441\u0442\u0430\u0432\u043A\u0438",
                             icon: "delivery",
                             popupName: "checkoutDelivery"
+                          }, {
+                            popup: withCtx(() => []),
+                            _: 1
                           })
                         ]),
                         _: 1
@@ -29187,6 +29546,20 @@ function _sfc_ssrRender$g(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
                             value: "\u041E\u043D\u043B\u0430\u0439\u043D \u043E\u043F\u043B\u0430\u0442\u0430 \u043A\u0430\u0440\u0442\u043E\u0439 (\u0441\u043A\u0438\u0434\u043A\u0430 5%)",
                             icon: "cash",
                             popupName: "checkoutPayment"
+                          }, {
+                            popup: withCtx(() => [
+                              (openBlock(true), createBlock(Fragment, null, renderList(_ctx.paymentGatewaysItems, (item, index) => {
+                                return openBlock(), createBlock(_component_InputRadioNode, {
+                                  key: index,
+                                  modelValue: $data.draftOrder.payment_method === item.id,
+                                  labelText: item.method_title,
+                                  onInput: ($event) => $options.changePaymentMethod(item.id),
+                                  name: "paymentGateway",
+                                  disabled: !item.enabled
+                                }, null, 8, ["modelValue", "labelText", "onInput", "disabled"]);
+                              }), 128))
+                            ]),
+                            _: 1
                           })
                         ]),
                         _: 1
@@ -29252,51 +29625,493 @@ function _sfc_ssrRender$g(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
     _: 1
   }, _parent));
 }
+const _sfc_setup$h = _sfc_main$h.setup;
+_sfc_main$h.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/pages/private/Checkout.vue");
+  return _sfc_setup$h ? _sfc_setup$h(props, ctx) : void 0;
+};
+const Checkout = /* @__PURE__ */ _export_sfc(_sfc_main$h, [["ssrRender", _sfc_ssrRender$h]]);
+const ProfileMiddleContentNode_vue_vue_type_style_index_0_lang = "";
+const _sfc_main$g = {};
+function _sfc_ssrRender$g(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  const _component_ContainerNode = resolveComponent("ContainerNode");
+  _push(`<section${ssrRenderAttrs(mergeProps({ class: "profile-middle-content" }, _attrs))}>`);
+  _push(ssrRenderComponent(_component_ContainerNode, null, {
+    default: withCtx((_, _push2, _parent2, _scopeId) => {
+      if (_push2) {
+        _push2(`<div class="profile-middle-content__body"${_scopeId}><div class="profile-middle-content__sidebar"${_scopeId}></div><div class="profile-middle-content__content"${_scopeId}>`);
+        ssrRenderSlot(_ctx.$slots, "content", {}, null, _push2, _parent2, _scopeId);
+        _push2(`</div></div>`);
+      } else {
+        return [
+          createVNode("div", { class: "profile-middle-content__body" }, [
+            createVNode("div", { class: "profile-middle-content__sidebar" }),
+            createVNode("div", { class: "profile-middle-content__content" }, [
+              renderSlot(_ctx.$slots, "content")
+            ])
+          ])
+        ];
+      }
+    }),
+    _: 3
+  }, _parent));
+  _push(`</section>`);
+}
 const _sfc_setup$g = _sfc_main$g.setup;
 _sfc_main$g.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/pages/private/Checkout.vue");
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/profile/ProfileMiddleContentNode.vue");
   return _sfc_setup$g ? _sfc_setup$g(props, ctx) : void 0;
 };
-const Checkout = /* @__PURE__ */ _export_sfc(_sfc_main$g, [["ssrRender", _sfc_ssrRender$g]]);
+const ProfileMiddleContentNode = /* @__PURE__ */ _export_sfc(_sfc_main$g, [["ssrRender", _sfc_ssrRender$g]]);
 const _sfc_main$f = {
-  components: {},
-  computed: {
-    ...mapGetters({}),
-    ...mapState({})
-  },
-  methods: {
-    ...mapMutations({}),
-    ...mapActions({
-      getItems: "getItems"
-    })
-  },
-  created() {
+  components: { MainPageNode, ProfileMiddleContentNode, ProductNode },
+  setup() {
+    const store2 = useStore();
+    const wishlistProducts = store2.state.wishlist.items;
+    return { wishlistProducts };
   }
 };
 function _sfc_ssrRender$f(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
-  _push(`<div${ssrRenderAttrs(mergeProps({ class: "favorite" }, _attrs))}>\u0412 \u0440\u0430\u0437\u0440\u0430\u0431\u043E\u0442\u043A\u0435...</div>`);
+  const _component_MainPageNode = resolveComponent("MainPageNode");
+  const _component_ContainerNode = resolveComponent("ContainerNode");
+  const _component_ProfileMiddleContentNode = resolveComponent("ProfileMiddleContentNode");
+  const _component_PreloadWrapNode = resolveComponent("PreloadWrapNode");
+  const _component_ProductNode = resolveComponent("ProductNode");
+  _push(ssrRenderComponent(_component_MainPageNode, _attrs, {
+    "page-main": withCtx((_, _push2, _parent2, _scopeId) => {
+      if (_push2) {
+        _push2(ssrRenderComponent(_component_ContainerNode, null, {
+          default: withCtx((_2, _push3, _parent3, _scopeId2) => {
+            if (_push3) {
+              _push3(`<div class="wishlist"${_scopeId2}><div class="wishlist__body"${_scopeId2}>`);
+              ssrRenderSuspense(_push3, {
+                default: () => {
+                  _push3(ssrRenderComponent(_component_ProfileMiddleContentNode, null, {
+                    content: withCtx((_3, _push4, _parent4, _scopeId3) => {
+                      if (_push4) {
+                        _push4(`<div class="wishlist__items"${_scopeId3}><!--[-->`);
+                        ssrRenderList($setup.wishlistProducts, (product2) => {
+                          _push4(ssrRenderComponent(_component_PreloadWrapNode, {
+                            key: product2.id,
+                            targetPreloadElement: product2 ? false : true,
+                            paddingBottom: product2 ? 0 : 146
+                          }, {
+                            default: withCtx((_4, _push5, _parent5, _scopeId4) => {
+                              if (_push5) {
+                                if (product2) {
+                                  _push5(ssrRenderComponent(_component_ProductNode, { product: product2 }, null, _parent5, _scopeId4));
+                                } else {
+                                  _push5(`<!---->`);
+                                }
+                              } else {
+                                return [
+                                  product2 ? (openBlock(), createBlock(_component_ProductNode, {
+                                    key: 0,
+                                    product: product2
+                                  }, null, 8, ["product"])) : createCommentVNode("", true)
+                                ];
+                              }
+                            }),
+                            _: 2
+                          }, _parent4, _scopeId3));
+                        });
+                        _push4(`<!--]--></div>`);
+                      } else {
+                        return [
+                          createVNode("div", { class: "wishlist__items" }, [
+                            (openBlock(true), createBlock(Fragment, null, renderList($setup.wishlistProducts, (product2) => {
+                              return openBlock(), createBlock(_component_PreloadWrapNode, {
+                                key: product2.id,
+                                targetPreloadElement: product2 ? false : true,
+                                paddingBottom: product2 ? 0 : 146
+                              }, {
+                                default: withCtx(() => [
+                                  product2 ? (openBlock(), createBlock(_component_ProductNode, {
+                                    key: 0,
+                                    product: product2
+                                  }, null, 8, ["product"])) : createCommentVNode("", true)
+                                ]),
+                                _: 2
+                              }, 1032, ["targetPreloadElement", "paddingBottom"]);
+                            }), 128))
+                          ])
+                        ];
+                      }
+                    }),
+                    _: 1
+                  }, _parent3, _scopeId2));
+                },
+                fallback: () => {
+                  _push3(`<div${_scopeId2}>Loading...</div>`);
+                },
+                _: 1
+              });
+              _push3(`</div></div>`);
+            } else {
+              return [
+                createVNode("div", { class: "wishlist" }, [
+                  createVNode("div", { class: "wishlist__body" }, [
+                    (openBlock(), createBlock(Suspense, null, {
+                      default: withCtx(() => [
+                        createVNode(_component_ProfileMiddleContentNode, null, {
+                          content: withCtx(() => [
+                            createVNode("div", { class: "wishlist__items" }, [
+                              (openBlock(true), createBlock(Fragment, null, renderList($setup.wishlistProducts, (product2) => {
+                                return openBlock(), createBlock(_component_PreloadWrapNode, {
+                                  key: product2.id,
+                                  targetPreloadElement: product2 ? false : true,
+                                  paddingBottom: product2 ? 0 : 146
+                                }, {
+                                  default: withCtx(() => [
+                                    product2 ? (openBlock(), createBlock(_component_ProductNode, {
+                                      key: 0,
+                                      product: product2
+                                    }, null, 8, ["product"])) : createCommentVNode("", true)
+                                  ]),
+                                  _: 2
+                                }, 1032, ["targetPreloadElement", "paddingBottom"]);
+                              }), 128))
+                            ])
+                          ]),
+                          _: 1
+                        })
+                      ]),
+                      fallback: withCtx(() => [
+                        createVNode("div", null, "Loading...")
+                      ]),
+                      _: 1
+                    }))
+                  ])
+                ])
+              ];
+            }
+          }),
+          _: 1
+        }, _parent2, _scopeId));
+      } else {
+        return [
+          createVNode(_component_ContainerNode, null, {
+            default: withCtx(() => [
+              createVNode("div", { class: "wishlist" }, [
+                createVNode("div", { class: "wishlist__body" }, [
+                  (openBlock(), createBlock(Suspense, null, {
+                    default: withCtx(() => [
+                      createVNode(_component_ProfileMiddleContentNode, null, {
+                        content: withCtx(() => [
+                          createVNode("div", { class: "wishlist__items" }, [
+                            (openBlock(true), createBlock(Fragment, null, renderList($setup.wishlistProducts, (product2) => {
+                              return openBlock(), createBlock(_component_PreloadWrapNode, {
+                                key: product2.id,
+                                targetPreloadElement: product2 ? false : true,
+                                paddingBottom: product2 ? 0 : 146
+                              }, {
+                                default: withCtx(() => [
+                                  product2 ? (openBlock(), createBlock(_component_ProductNode, {
+                                    key: 0,
+                                    product: product2
+                                  }, null, 8, ["product"])) : createCommentVNode("", true)
+                                ]),
+                                _: 2
+                              }, 1032, ["targetPreloadElement", "paddingBottom"]);
+                            }), 128))
+                          ])
+                        ]),
+                        _: 1
+                      })
+                    ]),
+                    fallback: withCtx(() => [
+                      createVNode("div", null, "Loading...")
+                    ]),
+                    _: 1
+                  }))
+                ])
+              ])
+            ]),
+            _: 1
+          })
+        ];
+      }
+    }),
+    _: 1
+  }, _parent));
 }
 const _sfc_setup$f = _sfc_main$f.setup;
 _sfc_main$f.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/pages/private/Favorite.vue");
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/pages/private/Wishlist.vue");
   return _sfc_setup$f ? _sfc_setup$f(props, ctx) : void 0;
 };
-const Favorite = /* @__PURE__ */ _export_sfc(_sfc_main$f, [["ssrRender", _sfc_ssrRender$f]]);
-const _sfc_main$e = {};
-function _sfc_ssrRender$e(_ctx, _push, _parent, _attrs) {
-  _push(`<div${ssrRenderAttrs(mergeProps({ class: "personal" }, _attrs))}>personal</div>`);
+const Wishlist = /* @__PURE__ */ _export_sfc(_sfc_main$f, [["ssrRender", _sfc_ssrRender$f]]);
+function handleMonth(n) {
+  const months = [
+    "\u042F\u043D\u0432\u0430\u0440\u044F",
+    "\u0424\u0435\u0432\u0440\u0430\u043B\u044F",
+    "\u041C\u0430\u0440\u0442\u0430",
+    "\u0410\u043F\u0440\u0435\u043B\u044F",
+    "\u041C\u0430\u044F",
+    "\u0418\u044E\u043D\u044F",
+    "\u0418\u044E\u043B\u044F",
+    "\u0410\u0432\u0433\u0443\u0441\u0442\u0430",
+    "\u0421\u0435\u043D\u0442\u044F\u0431\u0440\u044F",
+    "\u041E\u043A\u0442\u044F\u0431\u0440\u044F",
+    "\u041D\u043E\u044F\u0431\u0440\u044F",
+    "\u0414\u0435\u043A\u0430\u0431\u0440\u044F"
+  ];
+  return months[n];
+}
+const OrdersListNode_vue_vue_type_style_index_0_lang = "";
+const _sfc_main$e = {
+  async setup() {
+    const store2 = useStore();
+    const ordersRequest = store2.state.orders.basedRequest;
+    const response = await store2.dispatch("getItems", ordersRequest, {
+      root: true
+    });
+    const orders = response.data.map((el) => {
+      el.date_created = handleWPDate(el.date_created);
+      el.line_items.map((el2) => {
+        const product2 = store2.state.products.items[el2.product_id];
+        el2.image = product2.images[0];
+        el2.slug = product2.slug;
+      });
+      return el;
+    });
+    function openPaymentPage(url2) {
+      window.open(url2);
+      console.log(url2);
+    }
+    return {
+      openPaymentPage,
+      orders,
+      handleMonth
+    };
+  }
+};
+function _sfc_ssrRender$e(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  const _component_RouterLink = resolveComponent("RouterLink");
+  const _component_ButtonNode = resolveComponent("ButtonNode");
+  _push(`<ul${ssrRenderAttrs(mergeProps({ class: "orders-list" }, _attrs))}><!--[-->`);
+  ssrRenderList($setup.orders, (order) => {
+    _push(`<article class="order"><div class="order__block"><h2 class="order__title"> \u0417\u0430\u043A\u0430\u0437 \u2116${ssrInterpolate(order.id)} \u043E\u0442 ${ssrInterpolate(order.date_created.getDate())} ${ssrInterpolate($setup.handleMonth(order.date_created.getMonth()))} ${ssrInterpolate(order.date_created.getFullYear())} \u0433. </h2><div class="order__status">${ssrInterpolate(order.status)}</div></div><div class="order__block"><div class="">\u0422\u043E\u0432\u0430\u0440\u043E\u0432: ${ssrInterpolate(order.line_items.length)}</div><ul class="order__list-products"><li><!--[-->`);
+    ssrRenderList(order.line_items, (product2) => {
+      _push(ssrRenderComponent(_component_RouterLink, {
+        to: `${"/product/" + product2.slug}`,
+        key: product2.id
+      }, {
+        default: withCtx((_, _push2, _parent2, _scopeId) => {
+          if (_push2) {
+            _push2(`<article class="order__product product-order"${_scopeId}><div class="product-order__image"${_scopeId}><img${ssrRenderAttr("src", product2.image.src)} alt=""${_scopeId}></div><div class="product-order__props"${_scopeId}><div class="product-order__prop product-order__brand"${_scopeId}> BRAND </div><div class="product-order__prop"${_scopeId}>${ssrInterpolate(product2.name)}</div><div class="product-order__prop"${_scopeId}>\u0420\u0430\u0437\u043C\u0435\u0440: 37</div><div class="product-order__prop product-order__price"${_scopeId}>${ssrInterpolate(product2.total)} \u0440\u0443\u0431 </div></div></article>`);
+          } else {
+            return [
+              createVNode("article", { class: "order__product product-order" }, [
+                createVNode("div", { class: "product-order__image" }, [
+                  createVNode("img", {
+                    src: product2.image.src,
+                    alt: ""
+                  }, null, 8, ["src"])
+                ]),
+                createVNode("div", { class: "product-order__props" }, [
+                  createVNode("div", { class: "product-order__prop product-order__brand" }, " BRAND "),
+                  createVNode("div", { class: "product-order__prop" }, toDisplayString(product2.name), 1),
+                  createVNode("div", { class: "product-order__prop" }, "\u0420\u0430\u0437\u043C\u0435\u0440: 37"),
+                  createVNode("div", { class: "product-order__prop product-order__price" }, toDisplayString(product2.total) + " \u0440\u0443\u0431 ", 1)
+                ])
+              ])
+            ];
+          }
+        }),
+        _: 2
+      }, _parent));
+    });
+    _push(`<!--]--></li></ul></div><div class="order__block"><ul class="order__list-props"><li class="order__prop"><span class="order__prop-key">\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C \u0437\u0430\u043A\u0430\u0437\u0430</span><div class="order__prop-value">${ssrInterpolate(order.total)}</div></li></ul></div>`);
+    _push(ssrRenderComponent(_component_ButtonNode, {
+      onClick: ($event) => $setup.openPaymentPage(order.payment_url)
+    }, {
+      default: withCtx((_, _push2, _parent2, _scopeId) => {
+        if (_push2) {
+          _push2(`\u041E\u043F\u043B\u0430\u0442\u0438\u0442\u044C`);
+        } else {
+          return [
+            createTextVNode("\u041E\u043F\u043B\u0430\u0442\u0438\u0442\u044C")
+          ];
+        }
+      }),
+      _: 2
+    }, _parent));
+    _push(`</article>`);
+  });
+  _push(`<!--]--></ul>`);
 }
 const _sfc_setup$e = _sfc_main$e.setup;
 _sfc_main$e.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/pages/private/Personal.vue");
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/profile/OrdersListNode.vue");
   return _sfc_setup$e ? _sfc_setup$e(props, ctx) : void 0;
 };
-const Personal = /* @__PURE__ */ _export_sfc(_sfc_main$e, [["ssrRender", _sfc_ssrRender$e]]);
-const NotFound_vue_vue_type_style_index_0_lang = "";
+const OrdersListNode = /* @__PURE__ */ _export_sfc(_sfc_main$e, [["ssrRender", _sfc_ssrRender$e]]);
 const _sfc_main$d = {
+  components: {
+    MainPageNode,
+    OrdersListNode,
+    ProfileMiddleContentNode
+  }
+};
+function _sfc_ssrRender$d(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  const _component_MainPageNode = resolveComponent("MainPageNode");
+  const _component_ContainerNode = resolveComponent("ContainerNode");
+  const _component_ProfileMiddleContentNode = resolveComponent("ProfileMiddleContentNode");
+  const _component_OrdersListNode = resolveComponent("OrdersListNode");
+  _push(ssrRenderComponent(_component_MainPageNode, _attrs, {
+    "page-main": withCtx((_, _push2, _parent2, _scopeId) => {
+      if (_push2) {
+        _push2(ssrRenderComponent(_component_ContainerNode, null, {
+          default: withCtx((_2, _push3, _parent3, _scopeId2) => {
+            if (_push3) {
+              _push3(`<div class="orders"${_scopeId2}><div class="orders__body"${_scopeId2}>`);
+              ssrRenderSuspense(_push3, {
+                default: () => {
+                  _push3(ssrRenderComponent(_component_ProfileMiddleContentNode, null, {
+                    content: withCtx((_3, _push4, _parent4, _scopeId3) => {
+                      if (_push4) {
+                        _push4(ssrRenderComponent(_component_OrdersListNode, null, null, _parent4, _scopeId3));
+                      } else {
+                        return [
+                          createVNode(_component_OrdersListNode)
+                        ];
+                      }
+                    }),
+                    _: 1
+                  }, _parent3, _scopeId2));
+                },
+                fallback: () => {
+                  _push3(`<div${_scopeId2}>Loading...</div>`);
+                },
+                _: 1
+              });
+              _push3(`</div></div>`);
+            } else {
+              return [
+                createVNode("div", { class: "orders" }, [
+                  createVNode("div", { class: "orders__body" }, [
+                    (openBlock(), createBlock(Suspense, null, {
+                      default: withCtx(() => [
+                        createVNode(_component_ProfileMiddleContentNode, null, {
+                          content: withCtx(() => [
+                            createVNode(_component_OrdersListNode)
+                          ]),
+                          _: 1
+                        })
+                      ]),
+                      fallback: withCtx(() => [
+                        createVNode("div", null, "Loading...")
+                      ]),
+                      _: 1
+                    }))
+                  ])
+                ])
+              ];
+            }
+          }),
+          _: 1
+        }, _parent2, _scopeId));
+      } else {
+        return [
+          createVNode(_component_ContainerNode, null, {
+            default: withCtx(() => [
+              createVNode("div", { class: "orders" }, [
+                createVNode("div", { class: "orders__body" }, [
+                  (openBlock(), createBlock(Suspense, null, {
+                    default: withCtx(() => [
+                      createVNode(_component_ProfileMiddleContentNode, null, {
+                        content: withCtx(() => [
+                          createVNode(_component_OrdersListNode)
+                        ]),
+                        _: 1
+                      })
+                    ]),
+                    fallback: withCtx(() => [
+                      createVNode("div", null, "Loading...")
+                    ]),
+                    _: 1
+                  }))
+                ])
+              ])
+            ]),
+            _: 1
+          })
+        ];
+      }
+    }),
+    _: 1
+  }, _parent));
+}
+const _sfc_setup$d = _sfc_main$d.setup;
+_sfc_main$d.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/pages/private/Orders.vue");
+  return _sfc_setup$d ? _sfc_setup$d(props, ctx) : void 0;
+};
+const Orders = /* @__PURE__ */ _export_sfc(_sfc_main$d, [["ssrRender", _sfc_ssrRender$d]]);
+const _sfc_main$c = {
+  components: {
+    MainPageNode
+  },
+  setup() {
+    const store2 = useStore();
+    return { store: store2 };
+  }
+};
+function _sfc_ssrRender$c(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  const _component_MainPageNode = resolveComponent("MainPageNode");
+  const _component_ContainerNode = resolveComponent("ContainerNode");
+  _push(ssrRenderComponent(_component_MainPageNode, _attrs, {
+    "page-main": withCtx((_, _push2, _parent2, _scopeId) => {
+      if (_push2) {
+        _push2(ssrRenderComponent(_component_ContainerNode, null, {
+          default: withCtx((_2, _push3, _parent3, _scopeId2) => {
+            if (_push3) {
+              _push3(`<div class="wishlist"${_scopeId2}><button${_scopeId2}> \u0412\u044B\u0439\u0442\u0438 </button></div>`);
+            } else {
+              return [
+                createVNode("div", { class: "wishlist" }, [
+                  createVNode("button", {
+                    onClick: ($event) => $setup.store.dispatch("auth/logout", { route: _ctx.$route })
+                  }, " \u0412\u044B\u0439\u0442\u0438 ", 8, ["onClick"])
+                ])
+              ];
+            }
+          }),
+          _: 1
+        }, _parent2, _scopeId));
+      } else {
+        return [
+          createVNode(_component_ContainerNode, null, {
+            default: withCtx(() => [
+              createVNode("div", { class: "wishlist" }, [
+                createVNode("button", {
+                  onClick: ($event) => $setup.store.dispatch("auth/logout", { route: _ctx.$route })
+                }, " \u0412\u044B\u0439\u0442\u0438 ", 8, ["onClick"])
+              ])
+            ]),
+            _: 1
+          })
+        ];
+      }
+    }),
+    _: 1
+  }, _parent));
+}
+const _sfc_setup$c = _sfc_main$c.setup;
+_sfc_main$c.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/pages/private/Profile.vue");
+  return _sfc_setup$c ? _sfc_setup$c(props, ctx) : void 0;
+};
+const Profile = /* @__PURE__ */ _export_sfc(_sfc_main$c, [["ssrRender", _sfc_ssrRender$c]]);
+const NotFound_vue_vue_type_style_index_0_lang = "";
+const _sfc_main$b = {
   components: {
     MainPageNode
   },
@@ -29321,10 +30136,10 @@ const _sfc_main$d = {
     })
   }
 };
-function _sfc_ssrRender$d(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$b(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   const _component_MainPageNode = resolveComponent("MainPageNode");
   const _component_ContainerNode = resolveComponent("ContainerNode");
-  const _component_button_node = resolveComponent("button-node");
+  const _component_ButtonNode = resolveComponent("ButtonNode");
   _push(ssrRenderComponent(_component_MainPageNode, mergeProps({ pageHeadNodeShow: false }, _attrs), {
     "page-main": withCtx((_, _push2, _parent2, _scopeId) => {
       if (_push2) {
@@ -29332,7 +30147,7 @@ function _sfc_ssrRender$d(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
           default: withCtx((_2, _push3, _parent3, _scopeId2) => {
             if (_push3) {
               _push3(`<div class="not-found"${_scopeId2}><div class="not-found__text"${_scopeId2}>\u0414\u043B\u044F \u0441\u043B\u0435\u0434\u044E\u0449\u0435\u0433\u043E \u043F\u0443\u0442\u0438</div><div class="not-found__path"${_scopeId2}>${ssrInterpolate($data.location)}</div><div class="not-found__text"${_scopeId2}>\u043D\u0435 \u0441\u0443\u0449\u0435\u0441\u0442\u0432\u0443\u0435\u0442 \u043C\u0430\u0440\u0448\u0440\u0443\u0442\u0430!</div>`);
-              _push3(ssrRenderComponent(_component_button_node, {
+              _push3(ssrRenderComponent(_component_ButtonNode, {
                 buttonStyle: "dark",
                 onClick: ($event) => _ctx.$router.push("/")
               }, {
@@ -29354,7 +30169,7 @@ function _sfc_ssrRender$d(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
                   createVNode("div", { class: "not-found__text" }, "\u0414\u043B\u044F \u0441\u043B\u0435\u0434\u044E\u0449\u0435\u0433\u043E \u043F\u0443\u0442\u0438"),
                   createVNode("div", { class: "not-found__path" }, toDisplayString($data.location), 1),
                   createVNode("div", { class: "not-found__text" }, "\u043D\u0435 \u0441\u0443\u0449\u0435\u0441\u0442\u0432\u0443\u0435\u0442 \u043C\u0430\u0440\u0448\u0440\u0443\u0442\u0430!"),
-                  createVNode(_component_button_node, {
+                  createVNode(_component_ButtonNode, {
                     buttonStyle: "dark",
                     onClick: ($event) => _ctx.$router.push("/")
                   }, {
@@ -29377,7 +30192,7 @@ function _sfc_ssrRender$d(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
                 createVNode("div", { class: "not-found__text" }, "\u0414\u043B\u044F \u0441\u043B\u0435\u0434\u044E\u0449\u0435\u0433\u043E \u043F\u0443\u0442\u0438"),
                 createVNode("div", { class: "not-found__path" }, toDisplayString($data.location), 1),
                 createVNode("div", { class: "not-found__text" }, "\u043D\u0435 \u0441\u0443\u0449\u0435\u0441\u0442\u0432\u0443\u0435\u0442 \u043C\u0430\u0440\u0448\u0440\u0443\u0442\u0430!"),
-                createVNode(_component_button_node, {
+                createVNode(_component_ButtonNode, {
                   buttonStyle: "dark",
                   onClick: ($event) => _ctx.$router.push("/")
                 }, {
@@ -29396,25 +30211,13 @@ function _sfc_ssrRender$d(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
     _: 1
   }, _parent));
 }
-const _sfc_setup$d = _sfc_main$d.setup;
-_sfc_main$d.setup = (props, ctx) => {
+const _sfc_setup$b = _sfc_main$b.setup;
+_sfc_main$b.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/pages/private/NotFound.vue");
-  return _sfc_setup$d ? _sfc_setup$d(props, ctx) : void 0;
+  return _sfc_setup$b ? _sfc_setup$b(props, ctx) : void 0;
 };
-const NotFound = /* @__PURE__ */ _export_sfc(_sfc_main$d, [["ssrRender", _sfc_ssrRender$d]]);
-const { show_on_front, page_for_posts, page_on_front } = VUE_WP_INSTANCE().routing.returned;
-const rootRoute = show_on_front === "page" && page_on_front ? {
-  path: "/",
-  component: Home,
-  name: "Home",
-  props: () => ({ slug: page_on_front })
-} : {
-  path: paths.postsPage(),
-  component: Home,
-  name: "Home",
-  props: (route) => ({ page: pageFromPath(route.path) })
-};
+const NotFound = /* @__PURE__ */ _export_sfc(_sfc_main$b, [["ssrRender", _sfc_ssrRender$b]]);
 const truncatedComponents = [
   {
     path: "/cart",
@@ -29425,10 +30228,20 @@ const truncatedComponents = [
     path: "/checkout",
     component: Checkout,
     name: "Checkout"
+  },
+  {
+    path: "/payment",
+    component: Payment,
+    name: "Payment"
   }
 ];
 const commonComponents = [
-  rootRoute,
+  {
+    path: "/",
+    component: Home,
+    name: "Home",
+    props: () => ({ slug: "home" })
+  },
   {
     path: "/product-category/:mainCategorySlug",
     component: SingleCategory,
@@ -29448,14 +30261,19 @@ const commonComponents = [
     props: (route) => ({ params: route.params, query: route.query })
   },
   {
-    path: "/favorite",
-    component: Favorite,
-    name: "Favorite"
+    path: "/personal/wishlist",
+    component: Wishlist,
+    name: "Wishlist"
   },
   {
-    path: "/personal",
-    component: Personal,
-    name: "Personal"
+    path: "/personal/orders",
+    component: Orders,
+    name: "Orders"
+  },
+  {
+    path: "/personal/profile",
+    component: Profile,
+    name: "Profile"
   },
   {
     path: "/blog-page",
@@ -29469,30 +30287,1408 @@ const commonComponents = [
   }
 ];
 const routes = truncatedComponents.concat(commonComponents).filter((route) => route);
-const { url, state } = VUE_WP_INSTANCE().routing.returned;
 const router = createRouter({
   routes,
-  history: createMemoryHistory()
+  history: createMemoryHistory(),
+  scrollBehavior(to, from, savedPosition) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve({ left: 0, top: 0 });
+      }, 500);
+    });
+  }
 });
-let userAuth = state == null ? void 0 : state.auth.userAuth;
 router.beforeEach((to, from) => {
+  var _a;
+  store.dispatch("auth/updateUserAuth");
+  let userAuth = (_a = store.state) == null ? void 0 : _a.auth.userAuth;
   if (userAuth === false && to.name === "Checkout") {
     return { name: "Cart" };
   }
+  if (userAuth === false && to.name === "Orders") {
+    console.log(userAuth);
+    return { name: "Home" };
+  }
 });
-const HeaderLightNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$c = {
-  components: {},
-  computed: {
-    ...mapGetters({}),
-    ...mapState({})
+function getNonceToken(obj = {}) {
+  let nonceToken = Cookies.get("nonce-token");
+  if (!nonceToken) {
+    throw "Nonce token undefined";
+  }
+  obj["Nonce"] = nonceToken;
+  return obj;
+}
+function findAllPositions(str, separator) {
+  let stop = false;
+  let pos = 0;
+  let foundPositions = [];
+  while (true) {
+    let foundPos = str.indexOf(separator, pos);
+    if (foundPos == -1 && !stop) {
+      foundPositions.push(str.length);
+      stop = true;
+    } else {
+      foundPositions.push(foundPos);
+      pos = foundPos + 1;
+    }
+    if (stop)
+      break;
+  }
+  return foundPositions;
+}
+function separateStringByArrayPositions(str, foundPositions) {
+  let subStrs = [];
+  let start = 0;
+  for (let index = 0; index < foundPositions.length; index++) {
+    let end = foundPositions[index];
+    let substr = str.slice(start, end);
+    subStrs.push(substr);
+    start += substr.length + 1;
+  }
+  return subStrs;
+}
+function handleWPDate(value) {
+  let separator = value.indexOf("T");
+  let yearMonthDate = value.slice(0, separator);
+  let hoursMinutesSeconds = value.slice(separator + 1);
+  yearMonthDate = separateStringByArrayPositions(
+    yearMonthDate,
+    findAllPositions(yearMonthDate, "-")
+  );
+  yearMonthDate[1] = yearMonthDate[1] - 1;
+  hoursMinutesSeconds = separateStringByArrayPositions(
+    hoursMinutesSeconds,
+    findAllPositions(hoursMinutesSeconds, ":")
+  );
+  return new Date(...yearMonthDate, ...hoursMinutesSeconds);
+}
+function VUE_WP_INSTANCE() {
+  return __VUE_WORDPRESS__;
+}
+function togglerOpening(name, prop, value, state2, type) {
+  const element = state2.openings[type][name];
+  if (value === null) {
+    element[prop] = !element[prop];
+  } else {
+    state2.openings[type][element.name][prop] = value;
+  }
+}
+function loginFromMail(email) {
+  let str = email;
+  return str.slice(0, str.indexOf("@"));
+}
+function actionJWTResolver({ JWTReqired, JWTMaintain, config = {} }) {
+  let JWTToken;
+  if (JWTReqired && JWTMaintain === false) {
+    throw '\u0418\u0441\u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u043D\u0438\u0435 \u0444\u043B\u0430\u0433\u0430 "JWTReqired" \u043F\u043E\u0434\u0440\u0430\u0437\u0443\u043C\u0435\u0432\u0430\u0435\u0442 \u0443\u0441\u0442\u0430\u043D\u043E\u0432\u043A\u0443 JWTMaintain = true';
+  }
+  if (JWTMaintain) {
+    JWTToken = Cookies.get("jwt-token");
+    if (JWTToken) {
+      if (!config.hasOwnProperty("headers")) {
+        config["headers"] = {};
+      }
+      config.headers["Authorization"] = "Bearer " + JWTToken;
+    } else {
+      if (JWTReqired) {
+        throw "\u0414\u043B\u044F \u0432\u044B\u043F\u043E\u043B\u043D\u0435\u043D\u0438\u044F \u0437\u0430\u043F\u0440\u043E\u0441\u0430 \u043D\u0435\u043E\u0431\u0445\u043E\u0434\u0438\u043C \u0442\u043E\u043A\u0435\u043D";
+      }
+    }
+  }
+  return config;
+}
+function routeToCategory(category, parentCategorySlug = null) {
+  if (isEmpty(category))
+    throw "\u041D\u0435 \u043F\u0435\u0440\u0435\u0434\u0430\u043D\u0430 \u043A\u0430\u0442\u0435\u0433\u043E\u0440\u0438\u044F";
+  let routerObject = {};
+  if (category.parent == 0 || category.slug === parentCategorySlug) {
+    routerObject = router.push({
+      name: "SingleCategory",
+      params: { mainCategorySlug: category.slug }
+    });
+  } else {
+    routerObject = router.push({
+      name: "SingleSubCategory",
+      params: {
+        mainCategorySlug: parentCategorySlug,
+        categorySlug: category.slug
+      }
+    });
+  }
+  store.commit("common/setPopup", { name: "headerMenu", active: false });
+  store.commit("common/setScrollFlag", { value: true });
+  return routerObject;
+}
+function itemsLoadHandler(callback, quantity = 4) {
+  let items2 = [];
+  items2 = callback;
+  if (isEmpty(items2)) {
+    items2.length = quantity;
+  }
+  return items2;
+}
+function mutateObjectForReplaceProperty(mutableObject, replacementProps) {
+  const replacementKeys = Object.keys(replacementProps);
+  replacementKeys.forEach((key) => {
+    if (mutableObject.hasOwnProperty(key)) {
+      mutableObject[key] = replacementProps[key];
+    }
+  });
+  return mutableObject;
+}
+const commonModule = {
+  namespaced: true,
+  state: () => ({
+    scrollY: null,
+    scrollFlag: true,
+    browserReady: false,
+    windowWidth: null,
+    breakpoint: "",
+    revs: {},
+    progressLoad: {
+      visible: false,
+      percent: 0
+    },
+    progress: [],
+    messages: {
+      orderingError: {
+        name: "orderingError",
+        type: "error",
+        visible: false
+      },
+      currentPaymentURLNotSet: {
+        name: "currentPaymentURLNotSet",
+        type: "error",
+        visible: false
+      },
+      notSelectPaymentMethod: {
+        name: "notSelectPaymentMethod",
+        type: "error",
+        visible: false
+      },
+      productAddedToCart: {
+        name: "productAddedToCart",
+        type: "success",
+        visible: false
+      },
+      productAddedToWishlist: {
+        name: "productAddedToWishlist",
+        type: "success",
+        visible: false
+      },
+      notSelectProductSize: {
+        name: "notSelectProductSize",
+        type: "error",
+        visible: false
+      },
+      allError: {
+        name: "allError",
+        type: "error",
+        visible: false
+      }
+    },
+    openings: {
+      revealing: {},
+      popup: {},
+      catalogRevealing: {},
+      spoiler: {}
+    }
+  }),
+  getters: {},
+  mutations: {
+    addOpening(state2, item) {
+      const element = {
+        name: item.name,
+        active: item.active !== void 0 ? item.active : false,
+        default: item.default !== void 0 ? item.default : true
+      };
+      state2.openings[item.type][element.name] = element;
+    },
+    setRevealing(state2, { name, value = null, prop = "active" }) {
+      const type = "revealing";
+      togglerOpening(name, prop, value, state2, type);
+    },
+    setPopup(state2, { name, value = null, prop = "active" }) {
+      const type = "popup";
+      togglerOpening(name, prop, value, state2, type);
+    },
+    setCatalogRevealing(state2, { name, value = null, prop = "active" }) {
+      const type = "catalogRevealing";
+      togglerOpening(name, prop, value, state2, type);
+    },
+    setSpoiler(state2, { name, value = null, prop = "active" }) {
+      const type = "spoiler";
+      togglerOpening(name, prop, value, state2, type);
+    },
+    setRev(state2, { name, value = null, prop = "active" }) {
+      const type = "rev";
+      togglerOpening(name, prop, value, state2, type);
+    },
+    setAllOpeningTypeItems(state2, { type = null, value = false, prop = "active" }) {
+      const items2 = type !== null ? state2.openings[type] : state2.openings;
+      for (const key in items2) {
+        if (Object.hasOwnProperty.call(items2, key)) {
+          const item = items2[key];
+          if (type !== null) {
+            item[prop] = value;
+          } else {
+            for (const nestedKey in item) {
+              if (Object.hasOwnProperty.call(item, nestedKey)) {
+                const element = item[nestedKey];
+                element[prop] = value;
+              }
+            }
+          }
+        }
+      }
+    },
+    setMessage(state2, { name, value = true }) {
+      state2.messages[name].visible = value;
+    },
+    setScrollFlag(state2, { value, toggle = false }) {
+      if (toggle) {
+        value ? value = false : value = true;
+      }
+      state2.scrollFlag = value;
+    },
+    setWindowWidth(state2, value) {
+      state2.windowWidth = value;
+    },
+    setBreakpoint(state2, value) {
+      state2.breakpoint = value;
+    },
+    setScrollY(state2, value) {
+      state2.scrollY = value;
+    },
+    setProgressLoad(state2, value) {
+      state2.progressLoad = value;
+    },
+    setProgress(state2, value) {
+      state2.progress.push(value);
+    },
+    setBrowserReady(state2, value) {
+      state2.browserReady = value;
+    }
   },
-  methods: {
-    ...mapMutations({}),
-    ...mapActions({})
+  actions: {
+    updateMessage({ state: state2, dispatch, commit, getters: getters2, rootGetters }, { name, value = true }) {
+      commit("setMessage", { name, value });
+      setTimeout(() => {
+        commit("setMessage", { name, value: false });
+      }, 3e3);
+    },
+    updateAllOpeningTypeItems({ state: state2, dispatch, commit, getters: getters2, rootGetters }, { type = null, value = false, prop = "active" }) {
+      const options = { type, value, prop };
+      commit("setAllOpeningTypeItems", options);
+      if (options.value === false && options.prop === "active")
+        commit("setScrollFlag", { value: true });
+    }
   }
 };
-function _sfc_ssrRender$c(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+const items$1 = VUE_WP_INSTANCE().state.menus.returned;
+const menusModule = {
+  namespaced: true,
+  state: () => items$1,
+  getters: {
+    menu: (state2) => ({ name }) => {
+      return state2.menus[name];
+    }
+  }
+};
+const items = VUE_WP_INSTANCE().state.site.returned;
+const siteModule = {
+  namespaced: true,
+  state: () => items,
+  getters: {
+    loading: (state2) => () => {
+      return state2.site.loading;
+    }
+  }
+};
+const instance$h = VUE_WP_INSTANCE().state.pages;
+const pagesModule = {
+  namespaced: true,
+  state: () => ({
+    basedRequest: {
+      apiType: instance$h.apiType,
+      type: instance$h.type,
+      route_base: instance$h.route_base,
+      params: instance$h.params,
+      single_params: instance$h.single_params
+    },
+    requests: instance$h.requests,
+    items: instance$h.items
+  }),
+  getters: {
+    menu: (state2) => ({ name }) => {
+      return state2.menus[name];
+    }
+  }
+};
+const instance$g = VUE_WP_INSTANCE().state.banners;
+const bannersModule = {
+  namespaced: true,
+  state: () => ({
+    basedRequest: {
+      apiType: instance$g.apiType,
+      type: instance$g.type,
+      route_base: instance$g.route_base,
+      params: Object.assign({}, instance$g.params),
+      slug: null
+    },
+    requests: instance$g.requests,
+    items: instance$g.items
+  }),
+  getters: {},
+  mutations: {
+    setBannerCategoriesIds(state2, value) {
+      state2.params.banner_categories = value;
+    }
+  }
+};
+const instance$f = VUE_WP_INSTANCE().state.media;
+const mediaModule = {
+  namespaced: true,
+  state: () => ({
+    basedRequest: {
+      apiType: instance$f.apiType,
+      type: instance$f.type,
+      route_base: instance$f.route_base,
+      params: Object.assign({}, instance$f.params)
+    },
+    requests: instance$f.requests,
+    items: instance$f.items
+  })
+};
+const instance$e = VUE_WP_INSTANCE().state.customers;
+const customersModule = {
+  namespaced: true,
+  state: () => ({
+    basedRequest: {
+      apiType: instance$e.apiType,
+      type: instance$e.type,
+      route_base: instance$e.route_base,
+      slug: null
+    },
+    requests: instance$e.requests,
+    items: instance$e.items
+  })
+};
+const instance$d = VUE_WP_INSTANCE().state.orders;
+const ordersModule = {
+  namespaced: true,
+  state: () => ({
+    basedRequest: {
+      apiType: instance$d.apiType,
+      type: instance$d.type,
+      route_base: instance$d.route_base,
+      slug: null
+    },
+    requests: instance$d.requests,
+    items: instance$d.items
+  }),
+  getters: {},
+  mutations: {}
+};
+const instance$c = VUE_WP_INSTANCE().state.productsCategories;
+const productsCategoriesModule = {
+  namespaced: true,
+  state: () => ({
+    basedRequest: {
+      apiType: instance$c.apiType,
+      type: instance$c.type,
+      route_base: instance$c.route_base,
+      params: Object.assign({}, instance$c.params)
+    },
+    requests: instance$c.requests,
+    items: instance$c.items
+  }),
+  getters: {},
+  mutations: {}
+};
+const instance$b = VUE_WP_INSTANCE().state.products;
+const productsModule = {
+  namespaced: true,
+  state: () => ({
+    basedRequest: {
+      apiType: instance$b.apiType,
+      type: instance$b.type,
+      route_base: instance$b.route_base,
+      params: mutateObjectForReplaceProperty(instance$b.params, { per_page: 8 }),
+      preparedParams: {}
+    },
+    requests: instance$b.requests,
+    items: instance$b.items,
+    itemsPaginated: {},
+    totalPages: null,
+    total: null
+  }),
+  getters: {
+    filtredProducts: (state2, getters2, rootState, rootGetters) => ({ quantity }) => {
+      let items2 = [];
+      if (!isEmpty(state2.itemsPaginated) && state2.itemsPaginated.hasOwnProperty(state2.basedRequest.params.page)) {
+        const ids = state2.itemsPaginated[state2.basedRequest.params.page];
+        for (let i = 0; i < ids.length; i++) {
+          if (i === quantity)
+            break;
+          const el = ids[i];
+          items2.push(state2.items[el]);
+        }
+      }
+      return items2;
+    },
+    filtredProductAttributes: (state2, getters2, rootState, rootGetters) => ({ requestAttributes, item }) => {
+      let confirmed = true;
+      let filter = {};
+      requestAttributes:
+        for (const reqAttrKey in requestAttributes) {
+          if (Object.hasOwnProperty.call(requestAttributes, reqAttrKey)) {
+            const reqAttrObject = requestAttributes[reqAttrKey];
+            for (let i = 0; i < item.attributes.length; i++) {
+              const itemAtrrObject = item.attributes[i];
+              if (itemAtrrObject.id == reqAttrObject.id) {
+                for (let index = 0; index < itemAtrrObject.options.length; index++) {
+                  const itemOption = itemAtrrObject.options[index];
+                  for (let index2 = 0; index2 < reqAttrObject.options.length; index2++) {
+                    const inputOption = reqAttrObject.options[index2];
+                    if (inputOption.name == itemOption) {
+                      filter[reqAttrKey] = true;
+                      continue requestAttributes;
+                    } else {
+                      filter[reqAttrKey] = false;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      for (const opt in filter) {
+        if (Object.hasOwnProperty.call(filter, opt)) {
+          const bool = filter[opt];
+          if (!bool) {
+            confirmed = false;
+            break;
+          }
+        }
+      }
+      return confirmed;
+    },
+    procentPriceSale: (state2) => (product2) => {
+      return Math.round(
+        100 - product2.sale_price / product2.regular_price * 100
+      );
+    },
+    singleProductAttribute: (state2) => ({ productId, attrId }) => {
+      var _a, _b;
+      return (_b = (_a = state2.items) == null ? void 0 : _a[productId]) == null ? void 0 : _b.attributes.find((i) => i.id == attrId);
+    },
+    sortingProducts: (state2, getters2, rootState, rootGetters) => (items2, type) => {
+      if (type == 0)
+        return items2.sort(rootGetters["filter/sortDefault"]);
+      if (type == 1)
+        return items2.sort(rootGetters["filter/sortPriceMinToMax"]);
+      if (type == 2)
+        return items2.sort(rootGetters["filter/sortPriceMaxToMin"]);
+    }
+  },
+  mutations: {
+    setProductsParams(state2, filterParams) {
+      const params = state2.basedRequest.params;
+      for (const key in filterParams) {
+        const neastedValue = filterParams[key];
+        if (typeof neastedValue === "object" && !neastedValue.hasOwnProperty("options")) {
+          for (const neastedValueKey in neastedValue) {
+            if (Object.hasOwnProperty.call(neastedValue, neastedValueKey)) {
+              const element = neastedValue[neastedValueKey];
+              if (params.hasOwnProperty(neastedValueKey)) {
+                params[neastedValueKey] = element;
+              }
+            }
+          }
+        }
+        if (params.hasOwnProperty(key)) {
+          if (typeof neastedValue === "number" || typeof neastedValue === "string" || typeof neastedValue === "array") {
+            params[key] = neastedValue;
+          } else if (typeof neastedValue === "object") {
+            if (neastedValue.hasOwnProperty("options")) {
+              params[key] = neastedValue.options.map((object) => object.id);
+            }
+          }
+        }
+      }
+      for (const key in filterParams) {
+        const filterParam = filterParams[key];
+        if (typeof filterParam === "number" || typeof filterParam === "string") {
+          state2.basedRequest.preparedParams[key] = filterParam;
+        } else {
+          state2.basedRequest.preparedParams[key] = cloneDeep(filterParam);
+        }
+      }
+    },
+    setTotalPages(state2, value) {
+      state2.totalPages = value;
+    },
+    setTotal(state2, value) {
+      state2.total = value;
+    },
+    setProductsCategoryId(state2, value) {
+      state2.basedRequest.params.category = value;
+    },
+    setItemsPaginated(state2, { pageNumber, value }) {
+      state2.itemsPaginated[pageNumber] = value;
+    },
+    unsetItemsPaginated(state2) {
+      state2.itemsPaginated = {};
+    }
+  },
+  actions: {
+    filterAndPaginate: ({ state: state2, dispatch, commit, getters: getters2, rootGetters }) => {
+      const preparedParams = state2.basedRequest.preparedParams;
+      let requestAttributes = {};
+      let items2 = [];
+      for (const key in preparedParams) {
+        if (Object.hasOwnProperty.call(preparedParams, key)) {
+          const param = preparedParams[key];
+          if (key.match(/^pa_[a-z]+/) && param.options.length) {
+            requestAttributes[key] = param;
+          }
+        }
+      }
+      const ids = Object.keys(state2.items);
+      mark:
+        for (let index = 0; index < ids.length; index++) {
+          var confirmed = false;
+          const id = ids[index];
+          let item = state2.items[id];
+          for (let index2 = 0; index2 < item.categories.length; index2++) {
+            const category = item.categories[index2];
+            if (category.id == preparedParams.category) {
+              confirmed = true;
+              break;
+            } else {
+              confirmed = false;
+            }
+          }
+          if (confirmed === false)
+            continue mark;
+          if (item.price < preparedParams.min_price || item.price > preparedParams.max_price) {
+            continue mark;
+          }
+          if (!isEmpty(requestAttributes) && !isEmpty(item.attributes)) {
+            confirmed = getters2.filtredProductAttributes({
+              requestAttributes,
+              item
+            });
+          }
+          if (confirmed)
+            items2.push(item);
+        }
+      items2 = getters2.sortingProducts(
+        items2,
+        state2.basedRequest.preparedParams.orderAndOrderBy.id
+      );
+      let per_page = state2.basedRequest.params.per_page;
+      commit("setTotalPages", Math.ceil(items2.length / per_page));
+      commit("unsetItemsPaginated");
+      let pageCount = Math.ceil(items2.length / per_page);
+      var itemMarker = 0;
+      for (let pageNumber = 1; pageNumber <= pageCount; pageNumber++) {
+        commit("setItemsPaginated", {
+          pageNumber,
+          value: items2.slice(itemMarker, itemMarker + per_page).map((i) => i.id)
+        });
+        itemMarker = itemMarker + per_page;
+      }
+    },
+    changePage({ state: state2, dispatch, commit, getters: getters2, rootGetters }, page) {
+      let value = Number(page);
+      const pushObj = { name: "" };
+      if (value != 1)
+        pushObj.query = { page: value };
+      let type = state2.basedRequest.type;
+      commit("SET_PAGE", { type, value }, { root: true });
+      return pushObj;
+    },
+    updateRequestParams({ state: state2, dispatch, commit, getters: getters2, rootGetters }) {
+      commit("setProductsParams", rootGetters["filter/params"]);
+    }
+  }
+};
+const instance$a = VUE_WP_INSTANCE().state.productsAttributes;
+const productsAttributesModule = {
+  namespaced: true,
+  state: () => ({
+    basedRequest: {
+      apiType: instance$a.apiType,
+      type: instance$a.type,
+      route_base: instance$a.route_base,
+      params: Object.assign({}, instance$a.params)
+    },
+    requests: instance$a.requests,
+    items: instance$a.items
+  }),
+  getters: {
+    attributesSlugs(state2) {
+      const slugs = [];
+      for (let key in state2.items) {
+        if (Object.hasOwnProperty.call(state2.items, key)) {
+          const element = state2.items[key];
+          slugs.push(element.slug);
+        }
+      }
+      return slugs;
+    }
+  }
+};
+const instance$9 = VUE_WP_INSTANCE().state.productsTermsBrands;
+const productsTermsBrandsModule = {
+  namespaced: true,
+  state: () => ({
+    basedRequest: {
+      apiType: instance$9.apiType,
+      type: instance$9.type,
+      route_base: instance$9.route_base,
+      params: Object.assign({}, instance$9.params)
+    },
+    requests: instance$9.requests,
+    items: instance$9.items || {}
+  })
+};
+const instance$8 = VUE_WP_INSTANCE().state.productsTermsMaterials;
+const productsTermsMaterialsModule = {
+  namespaced: true,
+  state: () => ({
+    basedRequest: {
+      apiType: instance$8.apiType,
+      type: instance$8.type,
+      route_base: instance$8.route_base,
+      params: Object.assign({}, instance$8.params)
+    },
+    requests: instance$8.requests,
+    items: instance$8.items
+  })
+};
+const instance$7 = VUE_WP_INSTANCE().state.productsTermsColors;
+const productsTermsColorsModule = {
+  namespaced: true,
+  state: () => ({
+    basedRequest: {
+      apiType: instance$7.apiType,
+      type: instance$7.type,
+      route_base: instance$7.route_base,
+      params: Object.assign({}, instance$7.params)
+    },
+    requests: instance$7.requests,
+    items: instance$7.items || {}
+  })
+};
+const instance$6 = VUE_WP_INSTANCE().state.productsTermsSizes;
+const productsTermsSizesModule = {
+  namespaced: true,
+  state: () => ({
+    basedRequest: {
+      apiType: instance$6.apiType,
+      type: instance$6.type,
+      route_base: instance$6.route_base,
+      params: Object.assign({}, instance$6.params)
+    },
+    requests: instance$6.requests,
+    items: instance$6.items
+  })
+};
+const instance$5 = VUE_WP_INSTANCE().state.paymentGateways;
+const paymentGatewaysModule = {
+  namespaced: true,
+  state: () => ({
+    basedRequest: {
+      apiType: instance$5.apiType,
+      type: instance$5.type,
+      route_base: instance$5.route_base
+    },
+    requests: instance$5.requests,
+    items: instance$5.items
+  })
+};
+const instance$4 = VUE_WP_INSTANCE().state.wishlist;
+const wishlistModule = {
+  namespaced: true,
+  state: () => ({
+    basedRequest: {
+      apiType: instance$4.apiType,
+      type: instance$4.type,
+      route_base: instance$4.route_base
+    },
+    requests: instance$4.requests,
+    items: instance$4.items
+  }),
+  getters: {
+    productContanedInWishlist: (state2, getters2, rootState, rootGetters) => (id) => {
+      for (const key in state2.items) {
+        if (Object.hasOwnProperty.call(state2.items, key)) {
+          const element = state2.items[key];
+          if (element.id === id) {
+            return true;
+          }
+        }
+      }
+    }
+  },
+  actions: {
+    async getWishlistByUser({ state: state2, dispatch, commit, getters: getters2, rootState }) {
+      var _a, _b;
+      if (Cookies.get("share_key"))
+        return;
+      const userData = rootState.auth.userData;
+      const payload = { ...{ JWTReqired: false }, ...state2.basedRequest };
+      payload.route_base = payload.route_base + "/get_by_user/" + userData.id;
+      const response = await dispatch("mainFetchRequest", payload, {
+        root: true
+      });
+      console.log(response);
+      const share_key = (_b = (_a = response == null ? void 0 : response.data) == null ? void 0 : _a[0]) == null ? void 0 : _b.share_key;
+      Cookies.set("share_key", Boolean(share_key) ? share_key : "");
+    },
+    getWishlistProductsByShareKey({ state: state2, dispatch, commit, getters: getters2, rootGetters }) {
+      const wishlistRequest = { ...{}, ...state2.basedRequest };
+      wishlistRequest.route_base = `${wishlistRequest.route_base}/${Cookies.get(
+        "share_key"
+      )}/get_products`;
+      dispatch("getItems", wishlistRequest, { root: true });
+    },
+    async updateWishlist({ state: state2, dispatch, commit, getters: getters2, rootGetters }, { basedRequest, contained, productData }) {
+      const payload = {
+        config: {},
+        route_base: "",
+        method: "get",
+        apiType: basedRequest.apiType,
+        JWTReqired: false
+      };
+      if (contained) {
+        payload.route_base = `${basedRequest.route_base}/remove_product/${productData.id}`;
+      } else {
+        payload.route_base = `${basedRequest.route_base}/${Cookies.get(
+          "share_key"
+        )}/add_product`;
+        payload.config = { params: productData };
+        payload.method = "post";
+      }
+      return await dispatch("mainFetchRequest", payload, { root: true });
+    }
+  },
+  mutations: {}
+};
+const instance$3 = VUE_WP_INSTANCE().state.filter.returned;
+const filterModule = {
+  namespaced: true,
+  state: () => instance$3,
+  getters: {
+    params(state2, getters2, rootState) {
+      return state2.params;
+    },
+    sortDefault: () => (one, two) => {
+      let dateOne = handleWPDate(one.date_created).getTime();
+      let dateTwo = handleWPDate(two.date_created).getTime();
+      if (dateOne > dateTwo)
+        return -1;
+      if (dateOne < dateTwo)
+        return 1;
+      return 0;
+    },
+    sortPriceMinToMax: (state2, getters2, rootState) => (one, two) => {
+      if (one.price < two.price)
+        return -1;
+      if (one.price > two.price)
+        return 1;
+      return 0;
+    },
+    sortPriceMaxToMin: () => (one, two) => {
+      if (one.price < two.price)
+        return 1;
+      if (one.price > two.price)
+        return -1;
+      return 0;
+    }
+  },
+  mutations: {
+    setCategoryId(state2, value) {
+      state2.params.category = value;
+    },
+    setMinPrice(state2, value) {
+      state2.params.min_price = value;
+    },
+    setMaxPrice(state2, value) {
+      state2.params.max_price = value;
+    },
+    setMinCost(state2, value) {
+      state2.minCost = value;
+    },
+    setMaxCost(state2, value) {
+      state2.maxCost = value;
+    },
+    setAttributeTerms(state2, { type, value }) {
+      const foundItem = state2.params[type].options.find((el, index, array) => {
+        let condition = el.id === value.id;
+        if (condition)
+          array.splice(index, 1);
+        return condition;
+      });
+      if (foundItem)
+        return;
+      else
+        state2.params[type].options.push(value);
+    },
+    setOrderAndOrderBy(state2, value) {
+      state2.params.orderAndOrderBy = value;
+    },
+    setPage(state2, value) {
+      state2.params.page = Number(value);
+    },
+    unsetDefaultAttributeOptions(state2, atrrSlug) {
+      state2.params[atrrSlug].options = [];
+    },
+    setDefaultPrices(state2) {
+      state2.params.min_price = state2.minCost;
+      state2.params.max_price = state2.maxCost;
+    }
+  },
+  actions: {
+    setDefaultFilter({ state: state2, commit, getters: getters2, rootGetters }) {
+      commit("setDefaultPrices");
+      const attrs = rootGetters["productsAttributes/attributesSlugs"];
+      attrs.forEach((element) => {
+        commit("unsetDefaultAttributeOptions", element);
+      });
+    },
+    validateValues({ state: state2, commit, getters: getters2, rootGetters }) {
+      if (state2.params.min_price < state2.minCost) {
+        commit("setMinPrice", state2.minCost);
+      }
+      if (state2.params.max_price > state2.maxCost) {
+        commit("setMaxPrice", state2.maxCost);
+      }
+    }
+  }
+};
+const instance$2 = VUE_WP_INSTANCE().state.cart;
+const cartModule = {
+  namespaced: true,
+  state: () => ({
+    basedRequest: {
+      apiType: instance$2.apiType,
+      type: instance$2.type,
+      route_base: instance$2.route_base
+    },
+    store: {},
+    aditionalStore: {}
+  }),
+  getters: {},
+  actions: {
+    async getCart({ state: state2, getters: getters2, commit, dispatch }) {
+      try {
+        const response = await dispatch(
+          "mainFetchRequest",
+          {
+            route_base: state2.basedRequest.route_base,
+            apiType: state2.basedRequest.apiType,
+            JWTMaintain: true,
+            JWTReqired: false
+          },
+          { root: true }
+        );
+        const headers = response.headers;
+        Cookies.set("nonce-token", headers.nonce);
+        commit("setAditionalStoreProperty", {
+          key: "customer_id",
+          value: Number(headers["user-id"])
+        });
+        commit("setCart", response.data);
+        return response;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async updateCart({ state: state2, getters: getters2, commit, dispatch }, { route_base, config }) {
+      config.headers = getNonceToken();
+      const response = await dispatch(
+        "mainFetchRequest",
+        {
+          apiType: state2.basedRequest.apiType,
+          route_base,
+          config,
+          method: "post",
+          JWTMaintain: true,
+          JWTReqired: false
+        },
+        { root: true }
+      );
+      commit("setCart", response.response.data);
+      return response;
+    }
+  },
+  mutations: {
+    setCart(state2, value) {
+      state2.store = value;
+    },
+    setAditionalStoreProperty(state2, { key, value }) {
+      state2.aditionalStore[key] = value;
+    }
+  }
+};
+const instance$1 = VUE_WP_INSTANCE().state.checkout;
+const checkoutModule = {
+  namespaced: true,
+  state: () => ({
+    basedRequest: {
+      apiType: instance$1.apiType,
+      type: instance$1.type,
+      route_base: instance$1.route_base
+    }
+  }),
+  getters: {},
+  actions: {},
+  mutations: {}
+};
+const instance = VUE_WP_INSTANCE().state.auth;
+const authModule = {
+  namespaced: true,
+  state: () => ({
+    userAuth: false,
+    currentURLPayment: "",
+    userData: {},
+    basedRequest: {
+      apiType: instance.apiType,
+      type: instance.type,
+      route_base: instance.route_base,
+      params: Object.assign({}, instance.params)
+    }
+  }),
+  getters: {},
+  actions: {
+    updateUserAuth({ state: state2, dispatch, commit, getters: getters2 }) {
+      commit("setUserAuth", Boolean(Cookies.get("jwt-token")));
+    },
+    async login({ state: state2, dispatch, commit, getters: getters2, rootState }, authData) {
+      const responseLogin = await dispatch(
+        "mainFetchRequest",
+        {
+          route_base: "token",
+          apiType: state2.basedRequest.apiType,
+          method: "post",
+          data: {
+            username: loginFromMail(authData.email),
+            password: authData.password
+          },
+          JWTMaintain: false,
+          JWTReqired: false
+        },
+        { root: true }
+      );
+      Cookies.set("jwt-token", responseLogin.data.token);
+      commit("setUserAuth", true);
+      dispatch("cart/getCart", null, { root: true });
+      dispatch("getUser");
+    },
+    async register({ state: state2, dispatch, commit, getters: getters2, rootState }, userData) {
+      userData.username = loginFromMail(userData.email);
+      dispatch(
+        "mainFetchRequest",
+        {
+          ...rootState.customers.basedRequest,
+          ...{
+            method: "post",
+            data: userData,
+            JWTMaintain: false,
+            JWTReqired: false
+          }
+        },
+        { root: true }
+      );
+    },
+    logout({ dispatch, commit, getters: getters2 }, { route }) {
+      if (route.path.match(/^\/personal/)) {
+        router.push("/");
+      }
+      Cookies.remove("jwt-token");
+      commit("setUserData");
+      commit("setUserAuth", false);
+      Cookies.remove("share_key");
+      dispatch("cart/getCart", null, { root: true });
+    },
+    async getUser({ dispatch, commit, rootState }) {
+      const response = await dispatch(
+        "mainFetchRequest",
+        rootState.customers.basedRequest,
+        {
+          root: true
+        }
+      );
+      commit("setUserData", response == null ? void 0 : response.data);
+    }
+  },
+  mutations: {
+    setUserAuth(state2, value) {
+      state2.userAuth = value;
+    },
+    setCurrentURLPayment(state2, value) {
+      state2.currentURLPayment = value;
+    },
+    setUserData(state2, value = 0) {
+      if (value === 0) {
+        state2.userData = { id: 0 };
+      } else {
+        state2.userData = value;
+      }
+    }
+  }
+};
+const getters = {
+  total: (state2, getters2) => ({ type, params }, property) => {
+    let request = getters2.request({ type, params });
+    return request ? request[property] : 0;
+  },
+  settings: (state2, getters2) => (type) => {
+    return state2[type]["settings"];
+  },
+  request: (state2) => ({ type, params }) => {
+    return state2[type].requests.find((req) => {
+      return isEqual(req.params, params);
+    });
+  },
+  requestByParam: (state2) => ({ type, params }, { param, value }) => {
+    return state2[type].requests.find((req) => {
+      return req.params[param] == value;
+    });
+  },
+  itemBySlug: (state2) => ({ type, slug }) => {
+    let item;
+    for (let id in state2[type]["items"]) {
+      if (state2[type]["items"][id].slug === slug) {
+        item = state2[type]["items"][id];
+      }
+    }
+    return item;
+  },
+  itemById: (state2, getters2) => ({ type, id }) => {
+    let item;
+    item = state2[type]["items"][id];
+    return item;
+  },
+  resultItems: (state2, getters2) => ({ type, params }) => {
+    let request = getters2.request({ type, params });
+    return request ? request.data.map((id) => state2[type]["items"][id]) : {};
+  },
+  itemsBased: (state2, getters2) => ({ type }) => {
+    return state2[type]["items"] || [];
+  },
+  itemsMatchedOneProperty: (state2, getters2) => ({ type }, params) => {
+    let items2 = [];
+    let keys = Object.keys(params);
+    for (const key in state2[type]["items"]) {
+      if (Object.hasOwnProperty.call(state2[type]["items"], key)) {
+        const element = state2[type]["items"][key];
+        keys.forEach((key2) => {
+          if (element[key2] == params[key2]) {
+            items2.push(element);
+          }
+        });
+      }
+    }
+    return items2;
+  },
+  itemsMatchedByCallback: (state2, getters2) => ({ type }, params, callback) => {
+    let items2 = [];
+    let approved = false;
+    let keys = Object.keys(params);
+    for (const key in state2[type]["items"]) {
+      if (Object.hasOwnProperty.call(state2[type]["items"], key)) {
+        const element = state2[type]["items"][key];
+        let callbackResult2 = callback(element, keys, params, items2, approved);
+        if (callbackResult2 === true)
+          items2.push(element);
+      } else if (callbackResult === void 0) {
+        break;
+      }
+    }
+    return items2;
+  },
+  itemsInclude: (state2, getters2) => ({ type, params }, includeArray = []) => {
+    let items2 = {};
+    for (const key in state2[type]["items"]) {
+      if (Object.hasOwnProperty.call(state2[type]["items"], key)) {
+        const element = state2[type]["items"][key];
+        includeArray.forEach((include_id) => {
+          if (element.id == include_id) {
+            items2[element.id] = element;
+          }
+        });
+      }
+    }
+    return items2 || {};
+  },
+  mapItemsByKey: (state2, getters2) => ({ type, params }, inputKey) => {
+    let ids = [];
+    for (const key in state2[type]["items"]) {
+      if (Object.hasOwnProperty.call(state2[type]["items"], key)) {
+        const element = state2[type]["items"][key];
+        ids.push(element[inputKey]);
+      }
+    }
+    return ids || [];
+  },
+  requestByItemParam: (state2, getters2) => ({ type, param, value }) => {
+    return state2[type].requests.find((req) => req.params[param] == value);
+  },
+  itemsKeys: (state2) => (type) => {
+    return Object.keys(state2[type].items);
+  }
+};
+const mutations = {
+  ADD_SETTINGS(state2, { type, settings }) {
+    state2[type].settings = settings;
+  },
+  SET_LOADING(state2, loading) {
+    state2.site.loading = loading;
+  },
+  SET_DOC_TITLE(state2, title) {
+    state2.site.docTitle = title;
+  },
+  ADD_ITEM(state2, { type, item }) {
+    console.log(item);
+    let id;
+    const keys = ["id", "item_id"];
+    keys.forEach((key) => {
+      if (key in item) {
+        id = key;
+      }
+    });
+    if (item && type && !state2[type]["items"].hasOwnProperty(item[id])) {
+      state2[type]["items"][item[id]] = item;
+    }
+  },
+  ADD_ITEMS_IDS(state2, { type, ids }) {
+    state2[type].request.optionalParams.exclude = [
+      ...state2[type].request.optionalParams.exclude,
+      ...ids
+    ];
+  },
+  ADD_REQUEST(state2, { type, request }) {
+    state2[type].requests.push(request);
+  },
+  SET_PAGE(state2, { type, value }) {
+    state2[type].basedRequest.params.page = value;
+  },
+  SET_INCLUDE(state2, { type, value }) {
+    state2[type].basedRequest.params.include = value;
+  },
+  SET_PARAM(state2, { type, paramKey, slug }) {
+    state2[type].basedRequest.params[paramKey] = slug;
+  },
+  SET_SINGLE_PARAM(state2, { type, paramKey, slug }) {
+    state2[type].basedRequest.single_params[paramKey] = slug;
+  },
+  SET_VALUE(state2, { type, key, value }) {
+    if (type) {
+      state2[type][key] = value;
+    } else {
+      state2[key] = value;
+    }
+  }
+};
+let { url } = VUE_WP_INSTANCE().routing.returned;
+url = new URL(url);
+url = url.protocol + "//" + url.hostname;
+const defaultAjax = (apiType = "/wp/v2/") => axios.create({
+  baseURL: `${url}/wp-json${apiType}`,
+  headers: {
+    Accept: "application/json",
+    "Content-Type": "application/json"
+  },
+  timeout: 2e5
+});
+async function mainFetch({
+  id = null,
+  route_base = "",
+  apiType = "/wp/v2/",
+  method = "get",
+  config = {},
+  data = {}
+}) {
+  let showProgress = config.hasOwnProperty("onDownloadProgress") && config.onDownloadProgress;
+  try {
+    if (showProgress) {
+      config.onDownloadProgress = (progressEvent) => {
+        let percentCompleted = Math.floor(
+          progressEvent.loaded / progressEvent.total * 100
+        );
+        store.commit("common/setProgress", percentCompleted);
+        store.commit("common/setProgressLoad", {
+          visible: true,
+          percent: percentCompleted === Infinity ? 100 : percentCompleted
+        });
+      };
+    }
+    const response = await defaultAjax(apiType)[method](
+      `/${route_base}/${id !== null ? id : ""}`,
+      method === "get" ? config : data,
+      method === "get" ? void 0 : config
+    );
+    return response;
+  } catch (error) {
+    console.log("Error in method 'mainFetch'", error);
+  } finally {
+    if (showProgress) {
+      setTimeout(() => {
+        store.commit("common/setProgressLoad", {
+          visible: false,
+          percent: 0
+        });
+      }, 500);
+    }
+  }
+}
+const actions = {
+  updateDocTitle({ state: state2, commit }, { parts = [], sep = " \u2013 " }) {
+    commit("SET_DOC_TITLE", parts.join(sep));
+    document.title = state2.site.docTitle;
+  },
+  async getSingleById({ getters: getters2, commit }, { basedRequest: { route_base, type, apiType }, params }) {
+    if (getters2.itemById({ type, id: params.id }))
+      return;
+    let request;
+    let response;
+    try {
+      response = await mainFetch({
+        id: params.id,
+        route_base,
+        config: { params },
+        apiType
+      });
+      commit("ADD_ITEM", { type, item: response.data });
+    } catch (error) {
+      console.log(error, type);
+    }
+    return { request, response };
+  },
+  async getSingleBySlug({ state: state2, getters: getters2, commit }, { basedRequest: { route_base, type, apiType }, params }) {
+    if (getters2.itemBySlug({ type, slug: params.slug }))
+      return;
+    let request;
+    let response;
+    try {
+      response = await mainFetch({ route_base, config: { params }, apiType });
+      commit("ADD_ITEM", { type, item: response.data[0] });
+    } catch (error) {
+      console.log(error, type);
+    }
+    return { request, response };
+  },
+  async getItemsBased({ getters: getters2, commit }, { route_base, type, params, apiType }) {
+    try {
+      const response = await mainFetch({ route_base, params, apiType });
+      response.data.forEach((item) => commit("ADD_ITEM", { type, item }));
+    } catch (error) {
+      console.log(error, type);
+    }
+  },
+  async getItems({ state: state2, getters: getters2, commit }, {
+    route_base,
+    type,
+    apiType,
+    params,
+    onDownloadProgress = null,
+    JWTMaintain = true,
+    JWTReqired = true
+  }) {
+    let response;
+    let request = getters2.request({ type, params });
+    params = pickBy(params, identity);
+    let config = {
+      onDownloadProgress,
+      params
+    };
+    if (!request) {
+      try {
+        config = actionJWTResolver({ JWTMaintain, JWTReqired, config });
+        response = await mainFetch({ route_base, config, apiType });
+        if (!response) {
+          throw "Response Undefined";
+        }
+        response.data.forEach((item) => commit("ADD_ITEM", { type, item }));
+        if (state2[type].hasOwnProperty("requests")) {
+          params = cloneDeep(params);
+          let ids = response.data.map((i) => i.id);
+          request = {
+            params,
+            total: Number(response.headers["x-wp-total"]),
+            totalPages: Number(response.headers["x-wp-totalpages"]),
+            data: ids
+          };
+          commit("ADD_REQUEST", {
+            type,
+            request
+          });
+        }
+      } catch (error) {
+        console.log(error, type);
+      }
+    } else {
+      console.log("\u041F\u043E\u043F\u044B\u0442\u043A\u0430 \u0432\u044B\u0437\u043E\u0432\u0430 \u0437\u0430\u043F\u0440\u043E\u0441\u0430 \u0441 \u0442\u0430\u043A\u0438\u043C\u0438 \u0436\u0435 \u043F\u0430\u0440\u0430\u043C\u0435\u0442\u0440\u0430\u043C\u0438");
+    }
+    return response;
+  },
+  async mainFetchRequest({ getters: getters2, commit, rootState }, {
+    route_base,
+    apiType,
+    method,
+    data,
+    config = {},
+    JWTMaintain = true,
+    JWTReqired = true
+  }) {
+    let response;
+    try {
+      config = actionJWTResolver({ JWTMaintain, JWTReqired, config });
+      response = await mainFetch({ route_base, config, apiType, method, data });
+    } catch (error) {
+      console.log(error, { route_base, config, apiType, method, data });
+    }
+    return response;
+  }
+};
+const state = {};
+const store = createStore({
+  modules: {
+    common: commonModule,
+    menus: menusModule,
+    site: siteModule,
+    pages: pagesModule,
+    banners: bannersModule,
+    media: mediaModule,
+    customers: customersModule,
+    orders: ordersModule,
+    productsCategories: productsCategoriesModule,
+    productsAttributes: productsAttributesModule,
+    products: productsModule,
+    productsTermsBrands: productsTermsBrandsModule,
+    productsTermsMaterials: productsTermsMaterialsModule,
+    productsTermsColors: productsTermsColorsModule,
+    productsTermsSizes: productsTermsSizesModule,
+    paymentGateways: paymentGatewaysModule,
+    wishlist: wishlistModule,
+    filter: filterModule,
+    auth: authModule,
+    cart: cartModule,
+    checkout: checkoutModule
+  },
+  state,
+  getters,
+  mutations,
+  actions
+});
+const HeaderLightNode_vue_vue_type_style_index_0_lang = "";
+const _sfc_main$a = {};
+function _sfc_ssrRender$a(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   const _component_ContainerNode = resolveComponent("ContainerNode");
   const _component_RouterLink = resolveComponent("RouterLink");
   _push(`<header${ssrRenderAttrs(mergeProps({ class: "header header_light" }, _attrs))}>`);
@@ -29539,15 +31735,15 @@ function _sfc_ssrRender$c(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
   }, _parent));
   _push(`</header>`);
 }
-const _sfc_setup$c = _sfc_main$c.setup;
-_sfc_main$c.setup = (props, ctx) => {
+const _sfc_setup$a = _sfc_main$a.setup;
+_sfc_main$a.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/structure/HeaderLightNode.vue");
-  return _sfc_setup$c ? _sfc_setup$c(props, ctx) : void 0;
+  return _sfc_setup$a ? _sfc_setup$a(props, ctx) : void 0;
 };
-const HeaderLightNode = /* @__PURE__ */ _export_sfc(_sfc_main$c, [["ssrRender", _sfc_ssrRender$c]]);
+const HeaderLightNode = /* @__PURE__ */ _export_sfc(_sfc_main$a, [["ssrRender", _sfc_ssrRender$a]]);
 const NavNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$b = {
+const _sfc_main$9 = {
   props: {
     menuName: {
       type: String
@@ -29558,30 +31754,40 @@ const _sfc_main$b = {
   },
   computed: {
     ...mapState({
-      items: (state2) => state2.menus.top_header
+      userAuth: (state2) => state2.auth.userAuth,
+      items: (state2) => state2.menus.top_header.items
+    })
+  },
+  methods: {
+    ...mapMutations({
+      setPopup: "common/setPopup",
+      setRevealing: "common/setRevealing"
+    }),
+    ...mapActions({
+      logout: "auth/logout"
     })
   }
 };
-function _sfc_ssrRender$b(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$9(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   _push(`<nav${ssrRenderAttrs(mergeProps({ class: "header-nav" }, _attrs))}><ul class="header-nav__list">`);
-  ssrRenderSlot(_ctx.$slots, "choise-location", {}, null, _push, _parent);
-  _push(`<!--[-->`);
+  ssrRenderSlot(_ctx.$slots, "in", {}, null, _push, _parent);
+  _push(`<li class="header-nav__item"><button class="header-nav__btn"> \u0433.\u041C\u043E\u0441\u043A\u0432\u0430 </button></li><!--[-->`);
   ssrRenderList(_ctx.items, (item) => {
     _push(`<li class="header-nav__item"><button class="header-nav__btn">${ssrInterpolate(item.content)}</button></li>`);
   });
   _push(`<!--]--></ul>`);
-  ssrRenderSlot(_ctx.$slots, "my-account", {}, null, _push, _parent);
+  ssrRenderSlot(_ctx.$slots, "out", {}, null, _push, _parent);
   _push(`</nav>`);
 }
-const _sfc_setup$b = _sfc_main$b.setup;
-_sfc_main$b.setup = (props, ctx) => {
+const _sfc_setup$9 = _sfc_main$9.setup;
+_sfc_main$9.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/header/NavNode.vue");
-  return _sfc_setup$b ? _sfc_setup$b(props, ctx) : void 0;
+  return _sfc_setup$9 ? _sfc_setup$9(props, ctx) : void 0;
 };
-const NavNode = /* @__PURE__ */ _export_sfc(_sfc_main$b, [["ssrRender", _sfc_ssrRender$b]]);
+const NavNode = /* @__PURE__ */ _export_sfc(_sfc_main$9, [["ssrRender", _sfc_ssrRender$9]]);
 const SearchNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$a = {
+const _sfc_main$8 = {
   data() {
     return {
       searchInputValue: ""
@@ -29590,43 +31796,34 @@ const _sfc_main$a = {
   computed: {
     ...mapGetters({}),
     ...mapState({
-      scrollY: (state2) => state2.common.scrollY,
-      popup: (state2) => state2.common.revs.search
+      scrollY: (state2) => state2.common.scrollY
     })
   },
   methods: {
     ...mapMutations({
-      updateRev: "common/updateRev"
+      setPopup: "common/setPopup"
     }),
-    ...mapActions({}),
-    popupVisability() {
-      this.updateRev({
-        name: "search",
-        value: this.popup.visible
-      });
-    },
     popupInputButton() {
       if (this.searchInputValue) {
         this.searchInputValue = "";
       } else {
-        this.popupVisible();
+        this.setPopup({ name: "search" });
       }
     }
   }
 };
-function _sfc_ssrRender$a(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$8(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   const _component_PopupNode = resolveComponent("PopupNode");
-  const _component_close_btn_node = resolveComponent("close-btn-node");
+  const _component_CloseBtnNode = resolveComponent("CloseBtnNode");
   _push(`<div${ssrRenderAttrs(mergeProps({ class: "search" }, _attrs))}><button style="${ssrRenderStyle(_ctx.scrollY < 99 ? null : { display: "none" })}" class="search__header-button"><button class="search__header-btn icon-search"></button><span>\u041F\u043E\u0438\u0441\u043A</span></button>`);
-  _push(ssrRenderComponent(_component_PopupNode, { name: "search" }, {
+  _push(ssrRenderComponent(_component_PopupNode, { item: { name: "search" } }, {
     default: withCtx((_, _push2, _parent2, _scopeId) => {
       if (_push2) {
-        _push2(`<div class=""${_scopeId}>\u0411\u043B\u043E\u043A \u043D\u0430\u0445\u043E\u0434\u0438\u0442\u0441\u044F \u0432 \u0440\u0430\u0437\u0440\u0430\u0431\u043E\u0442\u043A\u0435...</div><form action=""${_scopeId}><div class="icon-search"${_scopeId}></div><input${ssrRenderAttr("value", $data.searchInputValue)} placeholder="\u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u0437\u0430\u043F\u0440\u043E\u0441..." type="text"${_scopeId}>`);
-        _push2(ssrRenderComponent(_component_close_btn_node, { onClick: $options.popupInputButton }, null, _parent2, _scopeId));
+        _push2(`<form action=""${_scopeId}><div class="icon-search"${_scopeId}></div><input${ssrRenderAttr("value", $data.searchInputValue)} placeholder="\u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u0437\u0430\u043F\u0440\u043E\u0441..." type="text"${_scopeId}>`);
+        _push2(ssrRenderComponent(_component_CloseBtnNode, { onClick: $options.popupInputButton }, null, _parent2, _scopeId));
         _push2(`</form>`);
       } else {
         return [
-          createVNode("div", { class: "" }, "\u0411\u043B\u043E\u043A \u043D\u0430\u0445\u043E\u0434\u0438\u0442\u0441\u044F \u0432 \u0440\u0430\u0437\u0440\u0430\u0431\u043E\u0442\u043A\u0435..."),
           createVNode("form", { action: "" }, [
             createVNode("div", { class: "icon-search" }),
             withDirectives(createVNode("input", {
@@ -29636,7 +31833,7 @@ function _sfc_ssrRender$a(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
             }, null, 8, ["onUpdate:modelValue"]), [
               [vModelText, $data.searchInputValue]
             ]),
-            createVNode(_component_close_btn_node, {
+            createVNode(_component_CloseBtnNode, {
               onClick: withModifiers($options.popupInputButton, ["prevent"])
             }, null, 8, ["onClick"])
           ])
@@ -29647,64 +31844,20 @@ function _sfc_ssrRender$a(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
   }, _parent));
   _push(`</div>`);
 }
-const _sfc_setup$a = _sfc_main$a.setup;
-_sfc_main$a.setup = (props, ctx) => {
+const _sfc_setup$8 = _sfc_main$8.setup;
+_sfc_main$8.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/header/SearchNode.vue");
-  return _sfc_setup$a ? _sfc_setup$a(props, ctx) : void 0;
+  return _sfc_setup$8 ? _sfc_setup$8(props, ctx) : void 0;
 };
-const SearchNode = /* @__PURE__ */ _export_sfc(_sfc_main$a, [["ssrRender", _sfc_ssrRender$a]]);
-const HeaderButtonNode_vue_vue_type_style_index_0_scoped_3b601ba7_lang = "";
-const _sfc_main$9 = {
-  props: {
-    link: String,
-    itemsCounter: Number
-  },
-  components: {},
-  computed: {
-    ...mapGetters({}),
-    ...mapState({})
-  },
-  methods: {
-    ...mapMutations({}),
-    ...mapActions({})
-  }
-};
-function _sfc_ssrRender$9(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
-  const _component_RouterLink = resolveComponent("RouterLink");
-  _push(ssrRenderComponent(_component_RouterLink, mergeProps({
-    class: "header-button",
-    to: $props.link
-  }, _attrs), {
-    default: withCtx((_, _push2, _parent2, _scopeId) => {
-      if (_push2) {
-        _push2(`<span class="header-button__counter" data-v-3b601ba7${_scopeId}>${ssrInterpolate($props.itemsCounter)}</span><div class="header-button__icon" data-v-3b601ba7${_scopeId}>`);
-        ssrRenderSlot(_ctx.$slots, "default", {}, null, _push2, _parent2, _scopeId);
-        _push2(`</div>`);
-      } else {
-        return [
-          createVNode("span", { class: "header-button__counter" }, toDisplayString($props.itemsCounter), 1),
-          createVNode("div", { class: "header-button__icon" }, [
-            renderSlot(_ctx.$slots, "default", {}, void 0, true)
-          ])
-        ];
-      }
-    }),
-    _: 3
-  }, _parent));
-}
-const _sfc_setup$9 = _sfc_main$9.setup;
-_sfc_main$9.setup = (props, ctx) => {
-  const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/header/HeaderButtonNode.vue");
-  return _sfc_setup$9 ? _sfc_setup$9(props, ctx) : void 0;
-};
-const HeaderButtonNode = /* @__PURE__ */ _export_sfc(_sfc_main$9, [["ssrRender", _sfc_ssrRender$9], ["__scopeId", "data-v-3b601ba7"]]);
+const SearchNode = /* @__PURE__ */ _export_sfc(_sfc_main$8, [["ssrRender", _sfc_ssrRender$8]]);
 const CategoriesNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$8 = {
-  mixins: [routeToCategoryMixin],
+const _sfc_main$7 = {
+  components: {
+    SpoilerNode
+  },
   props: {
-    parent: {
+    parentID: {
       type: Number,
       reqired: true
     },
@@ -29712,22 +31865,15 @@ const _sfc_main$8 = {
       type: String
     },
     neastedLevel: Number,
-    mobile: {
+    spoilerType: {
       type: Boolean,
       default: false
     }
   },
-  data() {
-    return {
-      nestedActive: false
-    };
-  },
   computed: {
     ...mapState({
       request: (state2) => state2.productsCategories.basedRequest,
-      list(state2) {
-        return state2.common.revs[this.slug];
-      }
+      spoilers: (state2) => state2.common.openings.spoiler
     }),
     ...mapGetters({
       itemsMatchedOneProperty: "itemsMatchedOneProperty",
@@ -29736,11 +31882,11 @@ const _sfc_main$8 = {
     }),
     productsCategories() {
       let categories = this.itemsMatchedOneProperty(this.request, {
-        parent: this.parent
+        parent: this.parentID
       });
-      if (!categories === [] && this.parent != 0) {
+      if (this.parentID != 0) {
         categories.unshift(
-          this.itemById({ type: this.request.type, id: this.parent })
+          this.itemById({ type: this.request.type, id: this.parentID })
         );
       }
       return categories;
@@ -29748,73 +31894,74 @@ const _sfc_main$8 = {
     neastedStr() {
       let neastedStr = "";
       for (let index = 0; index < this.neastedLevel; index++) {
-        neastedStr += "-sub";
+        neastedStr += "sub-";
       }
       return neastedStr;
     }
   },
   methods: {
     ...mapMutations({
-      setScrollFlag: "common/setScrollFlag",
-      addRev: "common/addRev",
-      updateRev: "common/updateRev",
-      closeRevs: "common/closeRevs"
+      setScrollFlag: "common/setScrollFlag"
     }),
     ...mapActions({}),
-    buttonClick(productCategory, parentCategorySlug) {
-      if (this.mobile) {
-        this.closeRevs(["headerMenu", "rootCategories"]);
-        if (productCategory.parent == 0 && this.slug === "rootCategories") {
-          this.updateRev({
-            name: [productCategory.slug],
-            value: this.$store.state.common.revs[productCategory.slug].visible
-          });
-        } else {
-          this.setScrollFlag({ value: true, toogle: false });
-          this.updateRev({
-            name: "headerMenu",
-            value: false,
-            toggleValue: false
-          });
-          this.closeRevs();
-          this.routeToCategory(productCategory, parentCategorySlug);
-        }
-      } else {
-        this.routeToCategory(productCategory, parentCategorySlug);
-      }
+    routeToCategoryLocal(productCategory, parentCategorySlug) {
+      routeToCategory(productCategory, parentCategorySlug);
     }
-  },
-  created() {
-    !this.parentCategorySlug ? this.slug = "rootCategories" : this.slug = this.parentCategorySlug;
-    this.addRev({ [this.slug]: {} });
-    this.updateRev({
-      name: "rootCategories",
-      value: true,
-      toggleValue: false
-    });
-    this.updateRev({
-      name: "rootCategories",
-      value: true,
-      toggleValue: false,
-      prop: "off"
-    });
   }
 };
-function _sfc_ssrRender$8(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
-  _push(`<div${ssrRenderAttrs(mergeProps({
-    class: ["categories", $props.mobile ? "categories_mobile" : ""]
-  }, _attrs))}>`);
+function _sfc_ssrRender$7(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  var _a, _b;
+  const _component_SpoilerNode = resolveComponent("SpoilerNode");
+  _push(`<div${ssrRenderAttrs(mergeProps({ class: "categories" }, _attrs))}>`);
   if ($options.productsCategories && $options.productsCategories.length) {
     _push(`<ul class="${ssrRenderClass(
-      _ctx.list.visible && $props.mobile && _ctx.slug !== "rootCategories" ? `categories${$options.neastedStr}-list categories${$options.neastedStr}-list_active` : `categories${$options.neastedStr}-list`
-    )}" style="${ssrRenderStyle(($props.mobile && _ctx.list ? _ctx.list.visible : true) ? null : { display: "none" })}"><!--[-->`);
+      ((_b = (_a = _ctx.spoilers) == null ? void 0 : _a.slug) == null ? void 0 : _b.active) && $props.spoilerType ? `categories__${$options.neastedStr}list categories__${$options.neastedStr}list_active` : `categories__${$options.neastedStr}list`
+    )}"><!--[-->`);
     ssrRenderList($options.productsCategories, (productCategory) => {
-      _push(`<li class="${ssrRenderClass(`categories${$options.neastedStr}-list__item  icon-arrow`)}"><button class="${ssrRenderClass(`categories${$options.neastedStr}-list__button`)}">${ssrInterpolate(productCategory.id == $props.parent ? "\u0412\u0421\u0415 \u0422\u041E\u0412\u0410\u0420\u042B" : productCategory.name)}</button>`);
-      ssrRenderSlot(_ctx.$slots, "default", {
-        onNestedActiveUpd: (bool) => $data.nestedActive = bool,
-        parent: productCategory.id,
-        parentCategorySlug: productCategory.slug
-      }, null, _push, _parent);
+      _push(`<li class="${ssrRenderClass(`categories__${$options.neastedStr}item`)}">`);
+      if ($props.spoilerType) {
+        _push(ssrRenderComponent(_component_SpoilerNode, {
+          item: {
+            name: productCategory.slug,
+            default: $props.spoilerType
+          }
+        }, {
+          button: withCtx((_, _push2, _parent2, _scopeId) => {
+            if (_push2) {
+              _push2(`<button class="${ssrRenderClass(`categories__${$options.neastedStr}button`)}"${_scopeId}>${ssrInterpolate(productCategory.id == $props.parentID ? "\u0412\u0421\u0415 \u0422\u041E\u0412\u0410\u0420\u042B" : productCategory.name)}</button>`);
+            } else {
+              return [
+                createVNode("button", {
+                  class: `categories__${$options.neastedStr}button`
+                }, toDisplayString(productCategory.id == $props.parentID ? "\u0412\u0421\u0415 \u0422\u041E\u0412\u0410\u0420\u042B" : productCategory.name), 3)
+              ];
+            }
+          }),
+          list: withCtx((_, _push2, _parent2, _scopeId) => {
+            if (_push2) {
+              ssrRenderSlot(_ctx.$slots, "default", {
+                parentID: productCategory.id,
+                parentCategorySlug: productCategory.slug
+              }, null, _push2, _parent2, _scopeId);
+            } else {
+              return [
+                renderSlot(_ctx.$slots, "default", {
+                  parentID: productCategory.id,
+                  parentCategorySlug: productCategory.slug
+                })
+              ];
+            }
+          }),
+          _: 2
+        }, _parent));
+      } else {
+        _push(`<!--[--><button class="${ssrRenderClass(`categories__${$options.neastedStr}button`)}">${ssrInterpolate(productCategory.id == $props.parentID ? "\u0412\u0421\u0415 \u0422\u041E\u0412\u0410\u0420\u042B" : productCategory.name)}</button>`);
+        ssrRenderSlot(_ctx.$slots, "default", {
+          parentID: productCategory.id,
+          parentCategorySlug: productCategory.slug
+        }, null, _push, _parent);
+        _push(`<!--]-->`);
+      }
       _push(`</li>`);
     });
     _push(`<!--]--></ul>`);
@@ -29823,102 +31970,76 @@ function _sfc_ssrRender$8(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
   }
   _push(`</div>`);
 }
-const _sfc_setup$8 = _sfc_main$8.setup;
-_sfc_main$8.setup = (props, ctx) => {
+const _sfc_setup$7 = _sfc_main$7.setup;
+_sfc_main$7.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/header/CategoriesNode.vue");
-  return _sfc_setup$8 ? _sfc_setup$8(props, ctx) : void 0;
+  return _sfc_setup$7 ? _sfc_setup$7(props, ctx) : void 0;
 };
-const CategoriesNode = /* @__PURE__ */ _export_sfc(_sfc_main$8, [["ssrRender", _sfc_ssrRender$8]]);
+const CategoriesNode = /* @__PURE__ */ _export_sfc(_sfc_main$7, [["ssrRender", _sfc_ssrRender$7]]);
 const HeaderMenuNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$7 = {
+const _sfc_main$6 = {
   components: {
     NavNode,
     CategoriesNode
   },
-  data() {
-    return {};
-  },
   computed: {
     ...mapGetters({}),
     ...mapState({
-      popup(state2) {
-        return state2.common.revs.headerMenu;
-      },
-      loginPopup(state2) {
-        return state2.common.revs.login;
-      }
+      userAuth: (state2) => state2.auth.userAuth
     })
   },
   methods: {
     ...mapMutations({
-      updateRev: "common/updateRev",
-      setScrollFlag: "common/setScrollFlag"
-    }),
-    ...mapActions({}),
-    menuVisable() {
-      this.updateRev({ name: "headerMenu", value: this.popup.visible });
-      this.setScrollFlag({ value: this.popup.visible });
-    },
-    loginPopupVisible() {
-      this.updateRev({
-        name: "login",
-        value: this.loginPopup.visible
-      });
-    }
+      setPopup: "common/setPopup"
+    })
   }
 };
-function _sfc_ssrRender$7(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$6(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   const _component_PopupNode = resolveComponent("PopupNode");
   const _component_CategoriesNode = resolveComponent("CategoriesNode");
   const _component_NavNode = resolveComponent("NavNode");
   _push(`<div${ssrRenderAttrs(mergeProps({ class: "header-menu" }, _attrs))}><button class="header-burger-icon"><i></i><i></i><i></i></button>`);
-  _push(ssrRenderComponent(_component_PopupNode, { name: "headerMenu" }, {
+  _push(ssrRenderComponent(_component_PopupNode, { item: { name: "headerMenu" } }, {
     default: withCtx((_, _push2, _parent2, _scopeId) => {
       if (_push2) {
         _push2(ssrRenderComponent(_component_CategoriesNode, {
-          parent: 0,
+          parentID: 0,
           neastedLevel: 0,
-          mobile: true
+          spoilerType: true
         }, {
           default: withCtx((slotProps, _push3, _parent3, _scopeId2) => {
             if (_push3) {
               _push3(ssrRenderComponent(_component_CategoriesNode, {
                 neastedLevel: 1,
-                parent: slotProps.parent,
-                parentCategorySlug: slotProps.parentCategorySlug,
-                mobile: true
+                parentID: slotProps.parentID,
+                parentCategorySlug: slotProps.parentCategorySlug
               }, null, _parent3, _scopeId2));
             } else {
               return [
                 createVNode(_component_CategoriesNode, {
                   neastedLevel: 1,
-                  parent: slotProps.parent,
-                  parentCategorySlug: slotProps.parentCategorySlug,
-                  mobile: true
-                }, null, 8, ["parent", "parentCategorySlug"])
+                  parentID: slotProps.parentID,
+                  parentCategorySlug: slotProps.parentCategorySlug
+                }, null, 8, ["parentID", "parentCategorySlug"])
               ];
             }
           }),
           _: 1
         }, _parent2, _scopeId));
         _push2(ssrRenderComponent(_component_NavNode, { name: "top_header" }, {
-          "choise-location": withCtx((_2, _push3, _parent3, _scopeId2) => {
+          in: withCtx((_2, _push3, _parent3, _scopeId2) => {
             if (_push3) {
-              _push3(`<li class="header-nav__item icon-favorite"${_scopeId2}><button class="header-nav__btn"${_scopeId2}>\u0418\u0437\u0431\u0440\u0430\u043D\u043D\u043E\u0435</button></li><li class="header-nav__item icon-profile"${_scopeId2}><button class="header-nav__btn"${_scopeId2}>\u041F\u0440\u043E\u0444\u0438\u043B\u044C</button></li>`);
+              _push3(`<li class="header-nav__item"${_scopeId2}><button class="header-nav__btn icon-profile"${_scopeId2}>${ssrInterpolate(_ctx.userAuth ? "\u041B\u0438\u0447\u043D\u044B\u0439 \u043A\u0430\u0431\u0438\u043D\u0435\u0442" : "\u0412\u0445\u043E\u0434/\u0420\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u044F")}</button></li>`);
             } else {
               return [
-                createVNode("li", { class: "header-nav__item icon-favorite" }, [
+                createVNode("li", { class: "header-nav__item" }, [
                   createVNode("button", {
-                    class: "header-nav__btn",
-                    onClick: ($event) => _ctx.$router.push("/favorite")
-                  }, "\u0418\u0437\u0431\u0440\u0430\u043D\u043D\u043E\u0435", 8, ["onClick"])
-                ]),
-                createVNode("li", { class: "header-nav__item icon-profile" }, [
-                  createVNode("button", {
-                    class: "header-nav__btn",
-                    onClick: $options.loginPopupVisible
-                  }, "\u041F\u0440\u043E\u0444\u0438\u043B\u044C", 8, ["onClick"])
+                    class: "header-nav__btn icon-profile",
+                    onClick: withModifiers(($event) => _ctx.userAuth ? _ctx.$router.push("/personal/profile") : _ctx.setPopup({
+                      name: "login"
+                    }), ["stop"])
+                  }, toDisplayString(_ctx.userAuth ? "\u041B\u0438\u0447\u043D\u044B\u0439 \u043A\u0430\u0431\u0438\u043D\u0435\u0442" : "\u0412\u0445\u043E\u0434/\u0420\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u044F"), 9, ["onClick"])
                 ])
               ];
             }
@@ -29928,33 +32049,28 @@ function _sfc_ssrRender$7(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
       } else {
         return [
           createVNode(_component_CategoriesNode, {
-            parent: 0,
+            parentID: 0,
             neastedLevel: 0,
-            mobile: true
+            spoilerType: true
           }, {
             default: withCtx((slotProps) => [
               createVNode(_component_CategoriesNode, {
                 neastedLevel: 1,
-                parent: slotProps.parent,
-                parentCategorySlug: slotProps.parentCategorySlug,
-                mobile: true
-              }, null, 8, ["parent", "parentCategorySlug"])
+                parentID: slotProps.parentID,
+                parentCategorySlug: slotProps.parentCategorySlug
+              }, null, 8, ["parentID", "parentCategorySlug"])
             ]),
             _: 1
           }),
           createVNode(_component_NavNode, { name: "top_header" }, {
-            "choise-location": withCtx(() => [
-              createVNode("li", { class: "header-nav__item icon-favorite" }, [
+            in: withCtx(() => [
+              createVNode("li", { class: "header-nav__item" }, [
                 createVNode("button", {
-                  class: "header-nav__btn",
-                  onClick: ($event) => _ctx.$router.push("/favorite")
-                }, "\u0418\u0437\u0431\u0440\u0430\u043D\u043D\u043E\u0435", 8, ["onClick"])
-              ]),
-              createVNode("li", { class: "header-nav__item icon-profile" }, [
-                createVNode("button", {
-                  class: "header-nav__btn",
-                  onClick: $options.loginPopupVisible
-                }, "\u041F\u0440\u043E\u0444\u0438\u043B\u044C", 8, ["onClick"])
+                  class: "header-nav__btn icon-profile",
+                  onClick: withModifiers(($event) => _ctx.userAuth ? _ctx.$router.push("/personal/profile") : _ctx.setPopup({
+                    name: "login"
+                  }), ["stop"])
+                }, toDisplayString(_ctx.userAuth ? "\u041B\u0438\u0447\u043D\u044B\u0439 \u043A\u0430\u0431\u0438\u043D\u0435\u0442" : "\u0412\u0445\u043E\u0434/\u0420\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u044F"), 9, ["onClick"])
               ])
             ]),
             _: 1
@@ -29966,19 +32082,18 @@ function _sfc_ssrRender$7(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
   }, _parent));
   _push(`</div>`);
 }
-const _sfc_setup$7 = _sfc_main$7.setup;
-_sfc_main$7.setup = (props, ctx) => {
+const _sfc_setup$6 = _sfc_main$6.setup;
+_sfc_main$6.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/header/HeaderMenuNode.vue");
-  return _sfc_setup$7 ? _sfc_setup$7(props, ctx) : void 0;
+  return _sfc_setup$6 ? _sfc_setup$6(props, ctx) : void 0;
 };
-const HeaderMenuNode = /* @__PURE__ */ _export_sfc(_sfc_main$7, [["ssrRender", _sfc_ssrRender$7]]);
+const HeaderMenuNode = /* @__PURE__ */ _export_sfc(_sfc_main$6, [["ssrRender", _sfc_ssrRender$6]]);
 const HeaderNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$6 = {
+const _sfc_main$5 = {
   components: {
     NavNode,
     SearchNode,
-    HeaderButtonNode,
     CategoriesNode,
     HeaderMenuNode
   },
@@ -30021,63 +32136,189 @@ const _sfc_main$6 = {
   },
   methods: {
     ...mapMutations({
-      addRev: "common/addRev",
-      updateRev: "common/updateRev"
+      setPopup: "common/setPopup",
+      setRevealing: "common/setRevealing"
     }),
-    ...mapActions({}),
-    loginPopupVisible() {
-      this.updateRev({
-        name: "login",
-        value: this.loginPopup.visible
-      });
-    }
+    ...mapActions({
+      logout: "auth/logout"
+    })
   }
 };
-function _sfc_ssrRender$6(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$5(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   const _component_ContainerNode = resolveComponent("ContainerNode");
   const _component_NavNode = resolveComponent("NavNode");
-  const _component_HeaderMenuNode = resolveComponent("HeaderMenuNode");
+  const _component_RevealingNode = resolveComponent("RevealingNode");
   const _component_RouterLink = resolveComponent("RouterLink");
+  const _component_HeaderMenuNode = resolveComponent("HeaderMenuNode");
   const _component_CategoriesNode = resolveComponent("CategoriesNode");
   const _component_SearchNode = resolveComponent("SearchNode");
-  const _component_HeaderButtonNode = resolveComponent("HeaderButtonNode");
   _push(`<header${ssrRenderAttrs(mergeProps({ class: "header" }, _attrs))}><div class="${ssrRenderClass([$data.headerWrapper.default ? "" : "header__wrapper_scrolled", "header__wrapper"])}"><div class="header__body"><div class="header-top">`);
   _push(ssrRenderComponent(_component_ContainerNode, null, {
     default: withCtx((_, _push2, _parent2, _scopeId) => {
       if (_push2) {
         _push2(ssrRenderComponent(_component_NavNode, { name: "top_header" }, {
-          "choise-location": withCtx((_2, _push3, _parent3, _scopeId2) => {
+          out: withCtx((_2, _push3, _parent3, _scopeId2) => {
             if (_push3) {
-              _push3(`<li class="header-nav__item"${_scopeId2}><button class="header-nav__btn"${_scopeId2}> \u0433.\u041C\u043E\u0441\u043A\u0432\u0430 </button></li>`);
+              _push3(`<li class="header-nav__item"${_scopeId2}>`);
+              _push3(ssrRenderComponent(_component_RevealingNode, { item: { name: "profileLoginned" } }, {
+                default: withCtx((_3, _push4, _parent4, _scopeId3) => {
+                  if (_push4) {
+                    _push4(`<ul class="header-top__profile-list"${_scopeId3}><li${_scopeId3}>`);
+                    _push4(ssrRenderComponent(_component_RouterLink, { to: "/personal/wishlist" }, {
+                      default: withCtx((_4, _push5, _parent5, _scopeId4) => {
+                        if (_push5) {
+                          _push5(`\u0418\u0437\u0431\u0440\u0430\u043D\u043D\u043E\u0435`);
+                        } else {
+                          return [
+                            createTextVNode("\u0418\u0437\u0431\u0440\u0430\u043D\u043D\u043E\u0435")
+                          ];
+                        }
+                      }),
+                      _: 1
+                    }, _parent4, _scopeId3));
+                    _push4(`</li><li${_scopeId3}>`);
+                    _push4(ssrRenderComponent(_component_RouterLink, { to: "/personal/orders" }, {
+                      default: withCtx((_4, _push5, _parent5, _scopeId4) => {
+                        if (_push5) {
+                          _push5(`\u041C\u043E\u0438 \u0437\u0430\u043A\u0430\u0437\u044B`);
+                        } else {
+                          return [
+                            createTextVNode("\u041C\u043E\u0438 \u0437\u0430\u043A\u0430\u0437\u044B")
+                          ];
+                        }
+                      }),
+                      _: 1
+                    }, _parent4, _scopeId3));
+                    _push4(`</li><li${_scopeId3}>`);
+                    _push4(ssrRenderComponent(_component_RouterLink, { to: "/personal/profile" }, {
+                      default: withCtx((_4, _push5, _parent5, _scopeId4) => {
+                        if (_push5) {
+                          _push5(`\u041F\u0440\u043E\u0444\u0438\u043B\u044C`);
+                        } else {
+                          return [
+                            createTextVNode("\u041F\u0440\u043E\u0444\u0438\u043B\u044C")
+                          ];
+                        }
+                      }),
+                      _: 1
+                    }, _parent4, _scopeId3));
+                    _push4(`</li><li${_scopeId3}>`);
+                    _push4(ssrRenderComponent(_component_RouterLink, { to: "/" }, {
+                      default: withCtx((_4, _push5, _parent5, _scopeId4) => {
+                        if (_push5) {
+                          _push5(`\u041A\u0430\u0440\u0442\u0430 \u043B\u043E\u044F\u043B\u044C\u043D\u043E\u0441\u0442\u0438`);
+                        } else {
+                          return [
+                            createTextVNode("\u041A\u0430\u0440\u0442\u0430 \u043B\u043E\u044F\u043B\u044C\u043D\u043E\u0441\u0442\u0438")
+                          ];
+                        }
+                      }),
+                      _: 1
+                    }, _parent4, _scopeId3));
+                    _push4(`</li><li${_scopeId3}><button${_scopeId3}> \u0412\u044B\u0439\u0442\u0438 </button></li></ul>`);
+                  } else {
+                    return [
+                      createVNode("ul", { class: "header-top__profile-list" }, [
+                        createVNode("li", null, [
+                          createVNode(_component_RouterLink, { to: "/personal/wishlist" }, {
+                            default: withCtx(() => [
+                              createTextVNode("\u0418\u0437\u0431\u0440\u0430\u043D\u043D\u043E\u0435")
+                            ]),
+                            _: 1
+                          })
+                        ]),
+                        createVNode("li", null, [
+                          createVNode(_component_RouterLink, { to: "/personal/orders" }, {
+                            default: withCtx(() => [
+                              createTextVNode("\u041C\u043E\u0438 \u0437\u0430\u043A\u0430\u0437\u044B")
+                            ]),
+                            _: 1
+                          })
+                        ]),
+                        createVNode("li", null, [
+                          createVNode(_component_RouterLink, { to: "/personal/profile" }, {
+                            default: withCtx(() => [
+                              createTextVNode("\u041F\u0440\u043E\u0444\u0438\u043B\u044C")
+                            ]),
+                            _: 1
+                          })
+                        ]),
+                        createVNode("li", null, [
+                          createVNode(_component_RouterLink, { to: "/" }, {
+                            default: withCtx(() => [
+                              createTextVNode("\u041A\u0430\u0440\u0442\u0430 \u043B\u043E\u044F\u043B\u044C\u043D\u043E\u0441\u0442\u0438")
+                            ]),
+                            _: 1
+                          })
+                        ]),
+                        createVNode("li", null, [
+                          createVNode("button", {
+                            onClick: ($event) => _ctx.logout({ route: _ctx.$route })
+                          }, " \u0412\u044B\u0439\u0442\u0438 ", 8, ["onClick"])
+                        ])
+                      ])
+                    ];
+                  }
+                }),
+                _: 1
+              }, _parent3, _scopeId2));
+              _push3(`<button class="header-nav__btn icon-profile"${_scopeId2}>${ssrInterpolate(_ctx.userAuth ? "\u041B\u0438\u0447\u043D\u044B\u0439 \u043A\u0430\u0431\u0438\u043D\u0435\u0442" : "\u0412\u0445\u043E\u0434/\u0420\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u044F")}</button></li>`);
             } else {
               return [
                 createVNode("li", { class: "header-nav__item" }, [
+                  createVNode(_component_RevealingNode, { item: { name: "profileLoginned" } }, {
+                    default: withCtx(() => [
+                      createVNode("ul", { class: "header-top__profile-list" }, [
+                        createVNode("li", null, [
+                          createVNode(_component_RouterLink, { to: "/personal/wishlist" }, {
+                            default: withCtx(() => [
+                              createTextVNode("\u0418\u0437\u0431\u0440\u0430\u043D\u043D\u043E\u0435")
+                            ]),
+                            _: 1
+                          })
+                        ]),
+                        createVNode("li", null, [
+                          createVNode(_component_RouterLink, { to: "/personal/orders" }, {
+                            default: withCtx(() => [
+                              createTextVNode("\u041C\u043E\u0438 \u0437\u0430\u043A\u0430\u0437\u044B")
+                            ]),
+                            _: 1
+                          })
+                        ]),
+                        createVNode("li", null, [
+                          createVNode(_component_RouterLink, { to: "/personal/profile" }, {
+                            default: withCtx(() => [
+                              createTextVNode("\u041F\u0440\u043E\u0444\u0438\u043B\u044C")
+                            ]),
+                            _: 1
+                          })
+                        ]),
+                        createVNode("li", null, [
+                          createVNode(_component_RouterLink, { to: "/" }, {
+                            default: withCtx(() => [
+                              createTextVNode("\u041A\u0430\u0440\u0442\u0430 \u043B\u043E\u044F\u043B\u044C\u043D\u043E\u0441\u0442\u0438")
+                            ]),
+                            _: 1
+                          })
+                        ]),
+                        createVNode("li", null, [
+                          createVNode("button", {
+                            onClick: ($event) => _ctx.logout({ route: _ctx.$route })
+                          }, " \u0412\u044B\u0439\u0442\u0438 ", 8, ["onClick"])
+                        ])
+                      ])
+                    ]),
+                    _: 1
+                  }),
                   createVNode("button", {
-                    class: "header-nav__btn",
-                    onClick: ($event) => _ctx.$router.push("/")
-                  }, " \u0433.\u041C\u043E\u0441\u043A\u0432\u0430 ", 8, ["onClick"])
+                    class: "header-nav__btn icon-profile",
+                    onClick: withModifiers(($event) => _ctx.userAuth ? _ctx.setRevealing({
+                      name: "profileLoginned"
+                    }) : _ctx.setPopup({
+                      name: "login"
+                    }), ["stop"])
+                  }, toDisplayString(_ctx.userAuth ? "\u041B\u0438\u0447\u043D\u044B\u0439 \u043A\u0430\u0431\u0438\u043D\u0435\u0442" : "\u0412\u0445\u043E\u0434/\u0420\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u044F"), 9, ["onClick"])
                 ])
-              ];
-            }
-          }),
-          "number-one": withCtx((_2, _push3, _parent3, _scopeId2) => {
-            if (_push3) {
-              _push3(`<a href="tel:88009999999"${_scopeId2}>88009999999</a>`);
-            } else {
-              return [
-                createVNode("a", { href: "tel:88009999999" }, "88009999999")
-              ];
-            }
-          }),
-          "my-account": withCtx((_2, _push3, _parent3, _scopeId2) => {
-            if (_push3) {
-              _push3(`<button class="header-nav__btn icon-profile"${_scopeId2}>${ssrInterpolate(_ctx.userAuth ? "\u041B\u0438\u0447\u043D\u044B\u0439 \u043A\u0430\u0431\u0438\u043D\u0435\u0442" : "\u0412\u0445\u043E\u0434/\u0420\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u044F")}</button>`);
-            } else {
-              return [
-                createVNode("button", {
-                  class: "header-nav__btn icon-profile",
-                  onClick: withModifiers($options.loginPopupVisible, ["stop"])
-                }, toDisplayString(_ctx.userAuth ? "\u041B\u0438\u0447\u043D\u044B\u0439 \u043A\u0430\u0431\u0438\u043D\u0435\u0442" : "\u0412\u0445\u043E\u0434/\u0420\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u044F"), 9, ["onClick"])
               ];
             }
           }),
@@ -30086,22 +32327,61 @@ function _sfc_ssrRender$6(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
       } else {
         return [
           createVNode(_component_NavNode, { name: "top_header" }, {
-            "choise-location": withCtx(() => [
+            out: withCtx(() => [
               createVNode("li", { class: "header-nav__item" }, [
+                createVNode(_component_RevealingNode, { item: { name: "profileLoginned" } }, {
+                  default: withCtx(() => [
+                    createVNode("ul", { class: "header-top__profile-list" }, [
+                      createVNode("li", null, [
+                        createVNode(_component_RouterLink, { to: "/personal/wishlist" }, {
+                          default: withCtx(() => [
+                            createTextVNode("\u0418\u0437\u0431\u0440\u0430\u043D\u043D\u043E\u0435")
+                          ]),
+                          _: 1
+                        })
+                      ]),
+                      createVNode("li", null, [
+                        createVNode(_component_RouterLink, { to: "/personal/orders" }, {
+                          default: withCtx(() => [
+                            createTextVNode("\u041C\u043E\u0438 \u0437\u0430\u043A\u0430\u0437\u044B")
+                          ]),
+                          _: 1
+                        })
+                      ]),
+                      createVNode("li", null, [
+                        createVNode(_component_RouterLink, { to: "/personal/profile" }, {
+                          default: withCtx(() => [
+                            createTextVNode("\u041F\u0440\u043E\u0444\u0438\u043B\u044C")
+                          ]),
+                          _: 1
+                        })
+                      ]),
+                      createVNode("li", null, [
+                        createVNode(_component_RouterLink, { to: "/" }, {
+                          default: withCtx(() => [
+                            createTextVNode("\u041A\u0430\u0440\u0442\u0430 \u043B\u043E\u044F\u043B\u044C\u043D\u043E\u0441\u0442\u0438")
+                          ]),
+                          _: 1
+                        })
+                      ]),
+                      createVNode("li", null, [
+                        createVNode("button", {
+                          onClick: ($event) => _ctx.logout({ route: _ctx.$route })
+                        }, " \u0412\u044B\u0439\u0442\u0438 ", 8, ["onClick"])
+                      ])
+                    ])
+                  ]),
+                  _: 1
+                }),
                 createVNode("button", {
-                  class: "header-nav__btn",
-                  onClick: ($event) => _ctx.$router.push("/")
-                }, " \u0433.\u041C\u043E\u0441\u043A\u0432\u0430 ", 8, ["onClick"])
+                  class: "header-nav__btn icon-profile",
+                  onClick: withModifiers(($event) => _ctx.userAuth ? _ctx.setRevealing({
+                    name: "profileLoginned"
+                  }) : _ctx.setPopup({
+                    name: "login"
+                  }), ["stop"])
+                }, toDisplayString(_ctx.userAuth ? "\u041B\u0438\u0447\u043D\u044B\u0439 \u043A\u0430\u0431\u0438\u043D\u0435\u0442" : "\u0412\u0445\u043E\u0434/\u0420\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u044F"), 9, ["onClick"])
               ])
-            ]),
-            "number-one": withCtx(() => [
-              createVNode("a", { href: "tel:88009999999" }, "88009999999")
-            ]),
-            "my-account": withCtx(() => [
-              createVNode("button", {
-                class: "header-nav__btn icon-profile",
-                onClick: withModifiers($options.loginPopupVisible, ["stop"])
-              }, toDisplayString(_ctx.userAuth ? "\u041B\u0438\u0447\u043D\u044B\u0439 \u043A\u0430\u0431\u0438\u043D\u0435\u0442" : "\u0412\u0445\u043E\u0434/\u0420\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u044F"), 9, ["onClick"])
             ]),
             _: 1
           })
@@ -30132,23 +32412,23 @@ function _sfc_ssrRender$6(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
         }, _parent2, _scopeId));
         _push2(`</div><div class="header-bot header-bot_scroller" style="${ssrRenderStyle(_ctx.scrollY > 99 ? null : { display: "none" })}"${_scopeId}>`);
         _push2(ssrRenderComponent(_component_CategoriesNode, {
-          parent: 0,
+          parentID: 0,
           neastedLevel: 0
         }, {
           default: withCtx((slotProps, _push3, _parent3, _scopeId2) => {
             if (_push3) {
               _push3(ssrRenderComponent(_component_CategoriesNode, {
                 neastedLevel: 1,
-                parent: slotProps.parent,
+                parentID: slotProps.parentID,
                 parentCategorySlug: slotProps.parentCategorySlug
               }, null, _parent3, _scopeId2));
             } else {
               return [
                 createVNode(_component_CategoriesNode, {
                   neastedLevel: 1,
-                  parent: slotProps.parent,
+                  parentID: slotProps.parentID,
                   parentCategorySlug: slotProps.parentCategorySlug
-                }, null, 8, ["parent", "parentCategorySlug"])
+                }, null, 8, ["parentID", "parentCategorySlug"])
               ];
             }
           }),
@@ -30156,28 +32436,7 @@ function _sfc_ssrRender$6(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
         }, _parent2, _scopeId));
         _push2(`</div>`);
         _push2(ssrRenderComponent(_component_SearchNode, null, null, _parent2, _scopeId));
-        _push2(`<div class="header-main__actions"${_scopeId}>`);
-        _push2(ssrRenderComponent(_component_HeaderButtonNode, {
-          link: "/favorite",
-          class: "icon-favorite"
-        }, {
-          default: withCtx((_2, _push3, _parent3, _scopeId2) => {
-            if (_push3) {
-              _push3(`<span${_scopeId2}></span>`);
-            } else {
-              return [
-                createVNode("span")
-              ];
-            }
-          }),
-          _: 1
-        }, _parent2, _scopeId));
-        _push2(ssrRenderComponent(_component_HeaderButtonNode, {
-          itemsCounter: _ctx.cartItemsQuantity,
-          link: "/cart",
-          class: "icon-cart"
-        }, null, _parent2, _scopeId));
-        _push2(`</div></div>`);
+        _push2(`<div class="header-main__actions"${_scopeId}><button class="header-main__action icon-wishlist"${_scopeId}><span${_scopeId}></span></button><button class="header-main__action icon-cart"${_scopeId}><span${_scopeId}>${ssrInterpolate(_ctx.cartItemsQuantity)}</span></button></div></div>`);
       } else {
         return [
           createVNode("div", { class: "header-main__body" }, [
@@ -30193,15 +32452,15 @@ function _sfc_ssrRender$6(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
             ]),
             withDirectives(createVNode("div", { class: "header-bot header-bot_scroller" }, [
               createVNode(_component_CategoriesNode, {
-                parent: 0,
+                parentID: 0,
                 neastedLevel: 0
               }, {
                 default: withCtx((slotProps) => [
                   createVNode(_component_CategoriesNode, {
                     neastedLevel: 1,
-                    parent: slotProps.parent,
+                    parentID: slotProps.parentID,
                     parentCategorySlug: slotProps.parentCategorySlug
-                  }, null, 8, ["parent", "parentCategorySlug"])
+                  }, null, 8, ["parentID", "parentCategorySlug"])
                 ]),
                 _: 1
               })
@@ -30210,20 +32469,18 @@ function _sfc_ssrRender$6(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
             ]),
             createVNode(_component_SearchNode),
             createVNode("div", { class: "header-main__actions" }, [
-              createVNode(_component_HeaderButtonNode, {
-                link: "/favorite",
-                class: "icon-favorite"
-              }, {
-                default: withCtx(() => [
-                  createVNode("span")
-                ]),
-                _: 1
-              }),
-              createVNode(_component_HeaderButtonNode, {
-                itemsCounter: _ctx.cartItemsQuantity,
-                link: "/cart",
-                class: "icon-cart"
-              }, null, 8, ["itemsCounter"])
+              createVNode("button", {
+                onClick: ($event) => _ctx.$router.push({ name: "Wishlist" }),
+                class: "header-main__action icon-wishlist"
+              }, [
+                createVNode("span")
+              ], 8, ["onClick"]),
+              createVNode("button", {
+                onClick: ($event) => _ctx.$router.push({ name: "Cart" }),
+                class: "header-main__action icon-cart"
+              }, [
+                createVNode("span", null, toDisplayString(_ctx.cartItemsQuantity), 1)
+              ], 8, ["onClick"])
             ])
           ])
         ];
@@ -30236,23 +32493,23 @@ function _sfc_ssrRender$6(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
     default: withCtx((_, _push2, _parent2, _scopeId) => {
       if (_push2) {
         _push2(ssrRenderComponent(_component_CategoriesNode, {
-          parent: 0,
+          parentID: 0,
           neastedLevel: 0
         }, {
           default: withCtx((slotProps, _push3, _parent3, _scopeId2) => {
             if (_push3) {
               _push3(ssrRenderComponent(_component_CategoriesNode, {
                 neastedLevel: 1,
-                parent: slotProps.parent,
+                parentID: slotProps.parentID,
                 parentCategorySlug: slotProps.parentCategorySlug
               }, null, _parent3, _scopeId2));
             } else {
               return [
                 createVNode(_component_CategoriesNode, {
                   neastedLevel: 1,
-                  parent: slotProps.parent,
+                  parentID: slotProps.parentID,
                   parentCategorySlug: slotProps.parentCategorySlug
-                }, null, 8, ["parent", "parentCategorySlug"])
+                }, null, 8, ["parentID", "parentCategorySlug"])
               ];
             }
           }),
@@ -30261,15 +32518,15 @@ function _sfc_ssrRender$6(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
       } else {
         return [
           createVNode(_component_CategoriesNode, {
-            parent: 0,
+            parentID: 0,
             neastedLevel: 0
           }, {
             default: withCtx((slotProps) => [
               createVNode(_component_CategoriesNode, {
                 neastedLevel: 1,
-                parent: slotProps.parent,
+                parentID: slotProps.parentID,
                 parentCategorySlug: slotProps.parentCategorySlug
-              }, null, 8, ["parent", "parentCategorySlug"])
+              }, null, 8, ["parentID", "parentCategorySlug"])
             ]),
             _: 1
           })
@@ -30280,83 +32537,40 @@ function _sfc_ssrRender$6(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
   }, _parent));
   _push(`</div></div></div></header>`);
 }
-const _sfc_setup$6 = _sfc_main$6.setup;
-_sfc_main$6.setup = (props, ctx) => {
-  const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/structure/HeaderNode.vue");
-  return _sfc_setup$6 ? _sfc_setup$6(props, ctx) : void 0;
-};
-const HeaderNode = /* @__PURE__ */ _export_sfc(_sfc_main$6, [["ssrRender", _sfc_ssrRender$6]]);
-const _sfc_main$5 = {
-  components: {},
-  props: {
-    spoilerBlockName: {
-      reqired: true,
-      type: String
-    },
-    spoilersAmount: {
-      reqired: true,
-      type: Number
-    }
-  },
-  data() {
-    return {
-      spoilers: {}
-    };
-  },
-  computed: {
-    ...mapGetters({}),
-    ...mapState({}),
-    setSpoilers() {
-      for (let i = 0; i < this.spoilersAmount; i++) {
-        let spoilerName = this.spoilerBlockName + "Spoiler" + (i + 1);
-        this.spoilers[spoilerName] = {
-          default: true,
-          visible: false,
-          off: false
-        };
-      }
-    }
-  },
-  methods: {
-    ...mapMutations({
-      addRev: "common/addRev",
-      updateRev: "common/updateRev",
-      closeRevs: "common/closeRevs"
-    }),
-    ...mapActions({})
-  },
-  created() {
-    this.addRev(this.spoilers);
-  }
-};
-function _sfc_ssrRender$5(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
-  _push(`<div${ssrRenderAttrs(mergeProps({ class: "spoiler" }, _attrs))}>`);
-  ssrRenderSlot(_ctx.$slots, "default", { spoilers: $data.spoilers }, null, _push, _parent);
-  _push(`</div>`);
-}
 const _sfc_setup$5 = _sfc_main$5.setup;
 _sfc_main$5.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/SpoilersBlockNode.vue");
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/structure/HeaderNode.vue");
   return _sfc_setup$5 ? _sfc_setup$5(props, ctx) : void 0;
 };
-const SpoilersBlockNode = /* @__PURE__ */ _export_sfc(_sfc_main$5, [["ssrRender", _sfc_ssrRender$5]]);
+const HeaderNode = /* @__PURE__ */ _export_sfc(_sfc_main$5, [["ssrRender", _sfc_ssrRender$5]]);
 const FooterNode_vue_vue_type_style_index_0_lang = "";
 const _sfc_main$4 = {
   components: {
     SocialNetworksNode,
-    SpoilersBlockNode
+    SpoilerNode
   },
-  data() {
-    return {};
+  computed: {
+    ...mapState({
+      windowWidth: (state2) => state2.common.windowWidth,
+      footerShopingOnline: (state2) => state2.menus.footerShopingOnline,
+      footerForCustomers: (state2) => state2.menus.footerForCustomers,
+      footerCompany: (state2) => state2.menus.footerCompany
+    }),
+    menus() {
+      return {
+        footerShopingOnline: this.footerShopingOnline,
+        footerForCustomers: this.footerForCustomers,
+        footerCompany: this.footerCompany
+      };
+    }
   }
 };
 function _sfc_ssrRender$4(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   const _component_ContainerNode = resolveComponent("ContainerNode");
   const _component_RouterLink = resolveComponent("RouterLink");
-  const _component_spoilers_block_node = resolveComponent("spoilers-block-node");
-  const _component_social_networks_node = resolveComponent("social-networks-node");
+  const _component_SocialNetworksNode = resolveComponent("SocialNetworksNode");
+  const _component_SpoilerNode = resolveComponent("SpoilerNode");
   _push(`<footer${ssrRenderAttrs(mergeProps({ class: "footer" }, _attrs))}><section class="footer__main">`);
   _push(ssrRenderComponent(_component_ContainerNode, null, {
     default: withCtx((_, _push2, _parent2, _scopeId) => {
@@ -30375,78 +32589,71 @@ function _sfc_ssrRender$4(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
           }),
           _: 1
         }, _parent2, _scopeId));
-        _push2(`</div>`);
-        _push2(ssrRenderComponent(_component_spoilers_block_node, {
-          class: "footer__columns",
-          spoilerBlockName: "footer",
-          spoilersAmount: 3
-        }, {
-          default: withCtx((slotProps, _push3, _parent3, _scopeId2) => {
-            if (_push3) {
-              _push3(`<div class="footer__column"${_scopeId2}>${ssrInterpolate(slotProps.spoilers[Object.keys(slotProps.spoilers)[0]])} <div class="footer__block"${_scopeId2}><div class="footer__text"${_scopeId2}>\u041F\u0440\u0438\u0441\u043E\u0435\u0434\u0438\u043D\u044F\u0439\u0442\u0435\u0441\u044C \u0432 \u0441\u043E\u0446. \u0441\u0435\u0442\u044F\u0445</div>`);
-              _push3(ssrRenderComponent(_component_social_networks_node, null, null, _parent3, _scopeId2));
-              _push3(`</div><div class="footer__block"${_scopeId2}><div class="footer__text"${_scopeId2}>\u0411\u0435\u0441\u043F\u043B\u0430\u0442\u043D\u043E \u043F\u043E \u0420\u043E\u0441\u0441\u0438\u0438:</div><div class="footer__text_big"${_scopeId2}><a href="tel:88009999999"${_scopeId2}>88009999999</a></div></div><div class="footer__block"${_scopeId2}><div class="footer__text"${_scopeId2}>\u0410\u0434\u0440\u0435\u0441 \u043C\u0430\u0433\u0430\u0437\u0438\u043D\u0430:</div><div class="footer__text_medium"${_scopeId2}> \u0433. \u041C\u043E\u0441\u043A\u0432\u0430, \u0421\u043C\u043E\u043B\u0435\u043D\u0441\u043A\u0430\u044F \u043F\u043B\u043E\u0449\u0430\u0434\u044C, 0 </div><div class="footer__text_semi-transp"${_scopeId2}>\u0414\u0440\u0443\u0433\u0438\u0435 \u043C\u0430\u0433\u0430\u0437\u0438\u043D\u044B</div></div></div><div class="footer__column"${_scopeId2}><div class="footer__title"${_scopeId2}>\u041F\u043E\u043A\u0443\u043F\u043A\u0438 \u043E\u043D\u043B\u0430\u0439\u043D</div><ul class="footer__list"${_scopeId2}><li${_scopeId2}>\u0414\u043E\u0441\u0442\u0430\u0432\u043A\u0430 \u043F\u043E \u0432\u0441\u0435\u0439 \u0420\u043E\u0441\u0441\u0438\u0438</li><li${_scopeId2}>\u041E\u043F\u043B\u0430\u0442\u0430</li><li${_scopeId2}>\u0412\u044B\u0431\u043E\u0440 \u0440\u0430\u0437\u043C\u0435\u0440\u0430</li><li${_scopeId2}>\u0412\u043E\u0437\u0432\u0440\u0430\u0442</li><li${_scopeId2}>\u041E\u0442\u0441\u043B\u0435\u0436\u0438\u0432\u0430\u043D\u0438\u0435 \u0437\u0430\u043A\u0430\u0437\u0430</li></ul></div><div class="footer__column"${_scopeId2}><div class="footer__title"${_scopeId2}>\u041F\u043E\u043A\u0443\u043F\u0430\u0442\u0435\u043B\u044F\u043C</div><ul class="footer__list"${_scopeId2}><li${_scopeId2}>\u041C\u0430\u0433\u0430\u0437\u0438\u043D\u044B</li><li${_scopeId2}>\u041F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0430 \u043B\u043E\u044F\u043B\u044C\u043D\u043E\u0441\u0442\u0438</li><li${_scopeId2}>\u041F\u043E\u0434\u0430\u0440\u043E\u0447\u043D\u044B\u0435 \u0431\u043E\u043D\u0443\u0441\u044B</li><li${_scopeId2}>\u0423\u0441\u043B\u043E\u0432\u0438\u044F \u0432\u043E\u0437\u0432\u0440\u0430\u0442\u0430</li><li${_scopeId2}>\u041F\u043E\u0434\u0430\u0440\u043E\u0447\u043D\u044B\u0435 \u043A\u0430\u0440\u0442\u044B</li><li${_scopeId2}>\u041F\u043E\u0434\u0430\u0440\u043E\u0447\u043D\u044B\u0435 \u043A\u0430\u0440\u0442\u044B</li><li${_scopeId2}>\u041E\u0431\u0440\u0430\u0442\u043D\u0430\u044F \u0441\u0432\u044F\u0437\u044C</li><li${_scopeId2}>\u041F\u0440\u0430\u0432\u0438\u043B\u0430 \u043F\u0440\u043E\u0434\u0430\u0436\u0438</li></ul></div><div class="footer__column"${_scopeId2}><div class="footer__title"${_scopeId2}>\u041A\u043E\u043C\u043F\u0430\u043D\u0438\u044F</div><ul class="footer__list"${_scopeId2}><li${_scopeId2}>\u0412\u0430\u043A\u0430\u043D\u0441\u0438\u0438</li><li${_scopeId2}>Fashion-\u0431\u043B\u043E\u0433</li><li${_scopeId2}>\u041E \u043A\u043E\u043C\u043F\u0430\u043D\u0438\u0438</li><li${_scopeId2}>\u041F\u0440\u0435\u0441\u0441-\u043E\u0444\u0438\u0441</li><li${_scopeId2}>\u041F\u0440\u0435\u0441\u0441-\u0440\u0435\u043B\u0438\u0437\u044B</li><li${_scopeId2}>\u041F\u0430\u0440\u0442\u043D\u0435\u0440\u0430\u043C</li><li${_scopeId2}>\u041A\u043E\u043D\u0442\u0430\u043A\u0442\u044B</li></ul></div>`);
-            } else {
-              return [
-                createVNode("div", { class: "footer__column" }, [
-                  createTextVNode(toDisplayString(slotProps.spoilers[Object.keys(slotProps.spoilers)[0]]) + " ", 1),
-                  createVNode("div", { class: "footer__block" }, [
-                    createVNode("div", { class: "footer__text" }, "\u041F\u0440\u0438\u0441\u043E\u0435\u0434\u0438\u043D\u044F\u0439\u0442\u0435\u0441\u044C \u0432 \u0441\u043E\u0446. \u0441\u0435\u0442\u044F\u0445"),
-                    createVNode(_component_social_networks_node)
-                  ]),
-                  createVNode("div", { class: "footer__block" }, [
-                    createVNode("div", { class: "footer__text" }, "\u0411\u0435\u0441\u043F\u043B\u0430\u0442\u043D\u043E \u043F\u043E \u0420\u043E\u0441\u0441\u0438\u0438:"),
-                    createVNode("div", { class: "footer__text_big" }, [
-                      createVNode("a", { href: "tel:88009999999" }, "88009999999")
-                    ])
-                  ]),
-                  createVNode("div", { class: "footer__block" }, [
-                    createVNode("div", { class: "footer__text" }, "\u0410\u0434\u0440\u0435\u0441 \u043C\u0430\u0433\u0430\u0437\u0438\u043D\u0430:"),
-                    createVNode("div", { class: "footer__text_medium" }, " \u0433. \u041C\u043E\u0441\u043A\u0432\u0430, \u0421\u043C\u043E\u043B\u0435\u043D\u0441\u043A\u0430\u044F \u043F\u043B\u043E\u0449\u0430\u0434\u044C, 0 "),
-                    createVNode("div", { class: "footer__text_semi-transp" }, "\u0414\u0440\u0443\u0433\u0438\u0435 \u043C\u0430\u0433\u0430\u0437\u0438\u043D\u044B")
-                  ])
-                ]),
-                createVNode("div", { class: "footer__column" }, [
-                  createVNode("div", { class: "footer__title" }, "\u041F\u043E\u043A\u0443\u043F\u043A\u0438 \u043E\u043D\u043B\u0430\u0439\u043D"),
-                  createVNode("ul", { class: "footer__list" }, [
-                    createVNode("li", null, "\u0414\u043E\u0441\u0442\u0430\u0432\u043A\u0430 \u043F\u043E \u0432\u0441\u0435\u0439 \u0420\u043E\u0441\u0441\u0438\u0438"),
-                    createVNode("li", null, "\u041E\u043F\u043B\u0430\u0442\u0430"),
-                    createVNode("li", null, "\u0412\u044B\u0431\u043E\u0440 \u0440\u0430\u0437\u043C\u0435\u0440\u0430"),
-                    createVNode("li", null, "\u0412\u043E\u0437\u0432\u0440\u0430\u0442"),
-                    createVNode("li", null, "\u041E\u0442\u0441\u043B\u0435\u0436\u0438\u0432\u0430\u043D\u0438\u0435 \u0437\u0430\u043A\u0430\u0437\u0430")
-                  ])
-                ]),
-                createVNode("div", { class: "footer__column" }, [
-                  createVNode("div", { class: "footer__title" }, "\u041F\u043E\u043A\u0443\u043F\u0430\u0442\u0435\u043B\u044F\u043C"),
-                  createVNode("ul", { class: "footer__list" }, [
-                    createVNode("li", null, "\u041C\u0430\u0433\u0430\u0437\u0438\u043D\u044B"),
-                    createVNode("li", null, "\u041F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0430 \u043B\u043E\u044F\u043B\u044C\u043D\u043E\u0441\u0442\u0438"),
-                    createVNode("li", null, "\u041F\u043E\u0434\u0430\u0440\u043E\u0447\u043D\u044B\u0435 \u0431\u043E\u043D\u0443\u0441\u044B"),
-                    createVNode("li", null, "\u0423\u0441\u043B\u043E\u0432\u0438\u044F \u0432\u043E\u0437\u0432\u0440\u0430\u0442\u0430"),
-                    createVNode("li", null, "\u041F\u043E\u0434\u0430\u0440\u043E\u0447\u043D\u044B\u0435 \u043A\u0430\u0440\u0442\u044B"),
-                    createVNode("li", null, "\u041F\u043E\u0434\u0430\u0440\u043E\u0447\u043D\u044B\u0435 \u043A\u0430\u0440\u0442\u044B"),
-                    createVNode("li", null, "\u041E\u0431\u0440\u0430\u0442\u043D\u0430\u044F \u0441\u0432\u044F\u0437\u044C"),
-                    createVNode("li", null, "\u041F\u0440\u0430\u0432\u0438\u043B\u0430 \u043F\u0440\u043E\u0434\u0430\u0436\u0438")
-                  ])
-                ]),
-                createVNode("div", { class: "footer__column" }, [
-                  createVNode("div", { class: "footer__title" }, "\u041A\u043E\u043C\u043F\u0430\u043D\u0438\u044F"),
-                  createVNode("ul", { class: "footer__list" }, [
-                    createVNode("li", null, "\u0412\u0430\u043A\u0430\u043D\u0441\u0438\u0438"),
-                    createVNode("li", null, "Fashion-\u0431\u043B\u043E\u0433"),
-                    createVNode("li", null, "\u041E \u043A\u043E\u043C\u043F\u0430\u043D\u0438\u0438"),
-                    createVNode("li", null, "\u041F\u0440\u0435\u0441\u0441-\u043E\u0444\u0438\u0441"),
-                    createVNode("li", null, "\u041F\u0440\u0435\u0441\u0441-\u0440\u0435\u043B\u0438\u0437\u044B"),
-                    createVNode("li", null, "\u041F\u0430\u0440\u0442\u043D\u0435\u0440\u0430\u043C"),
-                    createVNode("li", null, "\u041A\u043E\u043D\u0442\u0430\u043A\u0442\u044B")
-                  ])
-                ])
-              ];
+        _push2(`</div><div class="footer__spoilers"${_scopeId}><div class="footer__column"${_scopeId}><div class="footer__block"${_scopeId}><div class="footer__text"${_scopeId}>\u041F\u0440\u0438\u0441\u043E\u0435\u0434\u0438\u043D\u044F\u0439\u0442\u0435\u0441\u044C \u0432 \u0441\u043E\u0446. \u0441\u0435\u0442\u044F\u0445</div>`);
+        _push2(ssrRenderComponent(_component_SocialNetworksNode, null, null, _parent2, _scopeId));
+        _push2(`</div><div class="footer__block"${_scopeId}><div class="footer__text"${_scopeId}>\u0411\u0435\u0441\u043F\u043B\u0430\u0442\u043D\u043E \u043F\u043E \u0420\u043E\u0441\u0441\u0438\u0438:</div><div class="footer__text_big"${_scopeId}><a href="tel:88009999999"${_scopeId}>88009999999</a></div></div><div class="footer__block"${_scopeId}><div class="footer__text"${_scopeId}>\u0410\u0434\u0440\u0435\u0441 \u043C\u0430\u0433\u0430\u0437\u0438\u043D\u0430:</div><div class="footer__text_medium"${_scopeId}> \u0433. \u041C\u043E\u0441\u043A\u0432\u0430, \u0421\u043C\u043E\u043B\u0435\u043D\u0441\u043A\u0430\u044F \u043F\u043B\u043E\u0449\u0430\u0434\u044C, 0 </div><div class="footer__text_semi-transp"${_scopeId}>\u0414\u0440\u0443\u0433\u0438\u0435 \u043C\u0430\u0433\u0430\u0437\u0438\u043D\u044B</div></div></div><!--[-->`);
+        ssrRenderList($options.menus, (menu, key, index) => {
+          _push2(`<div class="footer__column"${_scopeId}>`);
+          _push2(ssrRenderComponent(_component_SpoilerNode, {
+            item: {
+              name: key,
+              default: _ctx.windowWidth < 767
             }
-          }),
-          _: 1
-        }, _parent2, _scopeId));
-        _push2(`</div>`);
+          }, {
+            button: withCtx((_2, _push3, _parent3, _scopeId2) => {
+              if (_push3) {
+                _push3(`<div class="footer__title"${_scopeId2}>${ssrInterpolate(menu.name)}</div>`);
+              } else {
+                return [
+                  createVNode("div", { class: "footer__title" }, toDisplayString(menu.name), 1)
+                ];
+              }
+            }),
+            list: withCtx((_2, _push3, _parent3, _scopeId2) => {
+              if (_push3) {
+                _push3(`<ul class="footer__list"${_scopeId2}><!--[-->`);
+                ssrRenderList(menu.items, (item, index2) => {
+                  _push3(`<li class="spoiler__item"${_scopeId2}>`);
+                  _push3(ssrRenderComponent(_component_RouterLink, { to: "/" }, {
+                    default: withCtx((_3, _push4, _parent4, _scopeId3) => {
+                      if (_push4) {
+                        _push4(`${ssrInterpolate(item.content)}`);
+                      } else {
+                        return [
+                          createTextVNode(toDisplayString(item.content), 1)
+                        ];
+                      }
+                    }),
+                    _: 2
+                  }, _parent3, _scopeId2));
+                  _push3(`</li>`);
+                });
+                _push3(`<!--]--></ul>`);
+              } else {
+                return [
+                  createVNode("ul", { class: "footer__list" }, [
+                    (openBlock(true), createBlock(Fragment, null, renderList(menu.items, (item, index2) => {
+                      return openBlock(), createBlock("li", {
+                        class: "spoiler__item",
+                        key: index2
+                      }, [
+                        createVNode(_component_RouterLink, { to: "/" }, {
+                          default: withCtx(() => [
+                            createTextVNode(toDisplayString(item.content), 1)
+                          ]),
+                          _: 2
+                        }, 1024)
+                      ]);
+                    }), 128))
+                  ])
+                ];
+              }
+            }),
+            _: 2
+          }, _parent2, _scopeId));
+          _push2(`</div>`);
+        });
+        _push2(`<!--]--></div></div>`);
       } else {
         return [
           createVNode("div", { class: "footer__main-body" }, [
@@ -30459,68 +32666,60 @@ function _sfc_ssrRender$4(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
                 _: 1
               })
             ]),
-            createVNode(_component_spoilers_block_node, {
-              class: "footer__columns",
-              spoilerBlockName: "footer",
-              spoilersAmount: 3
-            }, {
-              default: withCtx((slotProps) => [
-                createVNode("div", { class: "footer__column" }, [
-                  createTextVNode(toDisplayString(slotProps.spoilers[Object.keys(slotProps.spoilers)[0]]) + " ", 1),
-                  createVNode("div", { class: "footer__block" }, [
-                    createVNode("div", { class: "footer__text" }, "\u041F\u0440\u0438\u0441\u043E\u0435\u0434\u0438\u043D\u044F\u0439\u0442\u0435\u0441\u044C \u0432 \u0441\u043E\u0446. \u0441\u0435\u0442\u044F\u0445"),
-                    createVNode(_component_social_networks_node)
-                  ]),
-                  createVNode("div", { class: "footer__block" }, [
-                    createVNode("div", { class: "footer__text" }, "\u0411\u0435\u0441\u043F\u043B\u0430\u0442\u043D\u043E \u043F\u043E \u0420\u043E\u0441\u0441\u0438\u0438:"),
-                    createVNode("div", { class: "footer__text_big" }, [
-                      createVNode("a", { href: "tel:88009999999" }, "88009999999")
-                    ])
-                  ]),
-                  createVNode("div", { class: "footer__block" }, [
-                    createVNode("div", { class: "footer__text" }, "\u0410\u0434\u0440\u0435\u0441 \u043C\u0430\u0433\u0430\u0437\u0438\u043D\u0430:"),
-                    createVNode("div", { class: "footer__text_medium" }, " \u0433. \u041C\u043E\u0441\u043A\u0432\u0430, \u0421\u043C\u043E\u043B\u0435\u043D\u0441\u043A\u0430\u044F \u043F\u043B\u043E\u0449\u0430\u0434\u044C, 0 "),
-                    createVNode("div", { class: "footer__text_semi-transp" }, "\u0414\u0440\u0443\u0433\u0438\u0435 \u043C\u0430\u0433\u0430\u0437\u0438\u043D\u044B")
+            createVNode("div", { class: "footer__spoilers" }, [
+              createVNode("div", { class: "footer__column" }, [
+                createVNode("div", { class: "footer__block" }, [
+                  createVNode("div", { class: "footer__text" }, "\u041F\u0440\u0438\u0441\u043E\u0435\u0434\u0438\u043D\u044F\u0439\u0442\u0435\u0441\u044C \u0432 \u0441\u043E\u0446. \u0441\u0435\u0442\u044F\u0445"),
+                  createVNode(_component_SocialNetworksNode)
+                ]),
+                createVNode("div", { class: "footer__block" }, [
+                  createVNode("div", { class: "footer__text" }, "\u0411\u0435\u0441\u043F\u043B\u0430\u0442\u043D\u043E \u043F\u043E \u0420\u043E\u0441\u0441\u0438\u0438:"),
+                  createVNode("div", { class: "footer__text_big" }, [
+                    createVNode("a", { href: "tel:88009999999" }, "88009999999")
                   ])
                 ]),
-                createVNode("div", { class: "footer__column" }, [
-                  createVNode("div", { class: "footer__title" }, "\u041F\u043E\u043A\u0443\u043F\u043A\u0438 \u043E\u043D\u043B\u0430\u0439\u043D"),
-                  createVNode("ul", { class: "footer__list" }, [
-                    createVNode("li", null, "\u0414\u043E\u0441\u0442\u0430\u0432\u043A\u0430 \u043F\u043E \u0432\u0441\u0435\u0439 \u0420\u043E\u0441\u0441\u0438\u0438"),
-                    createVNode("li", null, "\u041E\u043F\u043B\u0430\u0442\u0430"),
-                    createVNode("li", null, "\u0412\u044B\u0431\u043E\u0440 \u0440\u0430\u0437\u043C\u0435\u0440\u0430"),
-                    createVNode("li", null, "\u0412\u043E\u0437\u0432\u0440\u0430\u0442"),
-                    createVNode("li", null, "\u041E\u0442\u0441\u043B\u0435\u0436\u0438\u0432\u0430\u043D\u0438\u0435 \u0437\u0430\u043A\u0430\u0437\u0430")
-                  ])
-                ]),
-                createVNode("div", { class: "footer__column" }, [
-                  createVNode("div", { class: "footer__title" }, "\u041F\u043E\u043A\u0443\u043F\u0430\u0442\u0435\u043B\u044F\u043C"),
-                  createVNode("ul", { class: "footer__list" }, [
-                    createVNode("li", null, "\u041C\u0430\u0433\u0430\u0437\u0438\u043D\u044B"),
-                    createVNode("li", null, "\u041F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0430 \u043B\u043E\u044F\u043B\u044C\u043D\u043E\u0441\u0442\u0438"),
-                    createVNode("li", null, "\u041F\u043E\u0434\u0430\u0440\u043E\u0447\u043D\u044B\u0435 \u0431\u043E\u043D\u0443\u0441\u044B"),
-                    createVNode("li", null, "\u0423\u0441\u043B\u043E\u0432\u0438\u044F \u0432\u043E\u0437\u0432\u0440\u0430\u0442\u0430"),
-                    createVNode("li", null, "\u041F\u043E\u0434\u0430\u0440\u043E\u0447\u043D\u044B\u0435 \u043A\u0430\u0440\u0442\u044B"),
-                    createVNode("li", null, "\u041F\u043E\u0434\u0430\u0440\u043E\u0447\u043D\u044B\u0435 \u043A\u0430\u0440\u0442\u044B"),
-                    createVNode("li", null, "\u041E\u0431\u0440\u0430\u0442\u043D\u0430\u044F \u0441\u0432\u044F\u0437\u044C"),
-                    createVNode("li", null, "\u041F\u0440\u0430\u0432\u0438\u043B\u0430 \u043F\u0440\u043E\u0434\u0430\u0436\u0438")
-                  ])
-                ]),
-                createVNode("div", { class: "footer__column" }, [
-                  createVNode("div", { class: "footer__title" }, "\u041A\u043E\u043C\u043F\u0430\u043D\u0438\u044F"),
-                  createVNode("ul", { class: "footer__list" }, [
-                    createVNode("li", null, "\u0412\u0430\u043A\u0430\u043D\u0441\u0438\u0438"),
-                    createVNode("li", null, "Fashion-\u0431\u043B\u043E\u0433"),
-                    createVNode("li", null, "\u041E \u043A\u043E\u043C\u043F\u0430\u043D\u0438\u0438"),
-                    createVNode("li", null, "\u041F\u0440\u0435\u0441\u0441-\u043E\u0444\u0438\u0441"),
-                    createVNode("li", null, "\u041F\u0440\u0435\u0441\u0441-\u0440\u0435\u043B\u0438\u0437\u044B"),
-                    createVNode("li", null, "\u041F\u0430\u0440\u0442\u043D\u0435\u0440\u0430\u043C"),
-                    createVNode("li", null, "\u041A\u043E\u043D\u0442\u0430\u043A\u0442\u044B")
-                  ])
+                createVNode("div", { class: "footer__block" }, [
+                  createVNode("div", { class: "footer__text" }, "\u0410\u0434\u0440\u0435\u0441 \u043C\u0430\u0433\u0430\u0437\u0438\u043D\u0430:"),
+                  createVNode("div", { class: "footer__text_medium" }, " \u0433. \u041C\u043E\u0441\u043A\u0432\u0430, \u0421\u043C\u043E\u043B\u0435\u043D\u0441\u043A\u0430\u044F \u043F\u043B\u043E\u0449\u0430\u0434\u044C, 0 "),
+                  createVNode("div", { class: "footer__text_semi-transp" }, "\u0414\u0440\u0443\u0433\u0438\u0435 \u043C\u0430\u0433\u0430\u0437\u0438\u043D\u044B")
                 ])
               ]),
-              _: 1
-            })
+              (openBlock(true), createBlock(Fragment, null, renderList($options.menus, (menu, key, index) => {
+                return openBlock(), createBlock("div", {
+                  class: "footer__column",
+                  key: index
+                }, [
+                  createVNode(_component_SpoilerNode, {
+                    item: {
+                      name: key,
+                      default: _ctx.windowWidth < 767
+                    }
+                  }, {
+                    button: withCtx(() => [
+                      createVNode("div", { class: "footer__title" }, toDisplayString(menu.name), 1)
+                    ]),
+                    list: withCtx(() => [
+                      createVNode("ul", { class: "footer__list" }, [
+                        (openBlock(true), createBlock(Fragment, null, renderList(menu.items, (item, index2) => {
+                          return openBlock(), createBlock("li", {
+                            class: "spoiler__item",
+                            key: index2
+                          }, [
+                            createVNode(_component_RouterLink, { to: "/" }, {
+                              default: withCtx(() => [
+                                createTextVNode(toDisplayString(item.content), 1)
+                              ]),
+                              _: 2
+                            }, 1024)
+                          ]);
+                        }), 128))
+                      ])
+                    ]),
+                    _: 2
+                  }, 1032, ["item"])
+                ]);
+              }), 128))
+            ])
           ])
         ];
       }
@@ -30558,7 +32757,7 @@ const _sfc_main$3 = {
   data() {
     return {
       currentTab: 1,
-      userData: {
+      authData: {
         first_name: "",
         last_name: "",
         username: "",
@@ -30580,44 +32779,11 @@ const _sfc_main$3 = {
       SET_VALUE: "SET_VALUE"
     }),
     ...mapActions({
-      mainFetchRequest: "mainFetchRequest",
       getCart: "cart/getCart",
+      register: "auth/register",
       login: "auth/login",
       logout: "auth/logout"
-    }),
-    loginFromMail() {
-      let str = this.userData.email;
-      return str.slice(0, str.indexOf("@"));
-    },
-    async registerCustomer() {
-      this.userData.username = this.loginFromMail();
-      await this.mainFetchRequest(
-        Object.assign(cloneDeep(this.customersRequest), {
-          method: "post",
-          data: this.userData
-        })
-      );
-    },
-    async loginCustomer() {
-      const requested = await this.mainFetchRequest({
-        route_base: "token",
-        apiType: this.authRequest.apiType,
-        method: "post",
-        data: {
-          username: this.loginFromMail(),
-          password: this.userData.password
-        },
-        maintainJWT: false
-      });
-      this.login(requested.response.data.token);
-      this.getCart();
-    },
-    async logoutCustomer() {
-      this.logout();
-      this.getCart();
-    }
-  },
-  created() {
+    })
   }
 };
 function _sfc_ssrRender$3(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
@@ -30629,7 +32795,7 @@ function _sfc_ssrRender$3(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
     _push(`<div class="login__logined"><div class="login__greeting">\u0412\u044B \u0432\u043E\u0448\u043B\u0438 \u0432 \u0441\u0438\u0441\u0442\u0435\u043C\u0443</div>`);
     _push(ssrRenderComponent(_component_ButtonNode, {
       buttonStyle: "dark",
-      onClick: ($event) => $options.logoutCustomer()
+      onClick: ($event) => _ctx.logout({ route: _ctx.$route })
     }, {
       default: withCtx((_, _push2, _parent2, _scopeId) => {
         if (_push2) {
@@ -30644,7 +32810,7 @@ function _sfc_ssrRender$3(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
     }, _parent));
     _push(`</div>`);
   } else {
-    _push(`<div class=""><div class="login__buttons"><button class="${ssrRenderClass([$data.currentTab === 1 ? "active" : "", "login__title"])}">\u0412\u0445\u043E\u0434</button><button class="${ssrRenderClass([$data.currentTab === 2 ? "active" : "", "login__title"])}">\u0420\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u044F</button></div><div class="login__columns"><div style="${ssrRenderStyle($data.currentTab == 1 ? null : { display: "none" })}" class="login__column tab-login"><div class="login-tab__body"><div class="login-tab__form"><form><div class="login-tab__radio-inputes">`);
+    _push(`<div class=""><div class="login__buttons"><button class="${ssrRenderClass([$data.currentTab === 1 ? "active" : "", "login__title"])}"> \u0412\u0445\u043E\u0434 </button><button class="${ssrRenderClass([$data.currentTab === 2 ? "active" : "", "login__title"])}"> \u0420\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u044F </button></div><div class="login__columns"><div style="${ssrRenderStyle($data.currentTab == 1 ? null : { display: "none" })}" class="login__column tab-login"><div class="login-tab__body"><div class="login-tab__form"><form><div class="login-tab__radio-inputes">`);
     _push(ssrRenderComponent(_component_InputRadioNode, {
       name: "typeLogin",
       labelText: "\u0427\u0435\u0440\u0435\u0437 \u043B\u043E\u0433\u0438\u043D",
@@ -30660,8 +32826,8 @@ function _sfc_ssrRender$3(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
     _push(ssrRenderComponent(_component_InputNode, {
       class: "main",
       type: "text",
-      modelValue: $data.userData.email,
-      "onUpdate:modelValue": ($event) => $data.userData.email = $event
+      modelValue: $data.authData.email,
+      "onUpdate:modelValue": ($event) => $data.authData.email = $event
     }, {
       before: withCtx((_, _push2, _parent2, _scopeId) => {
         if (_push2) {
@@ -30677,8 +32843,8 @@ function _sfc_ssrRender$3(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
     _push(ssrRenderComponent(_component_InputNode, {
       class: "main",
       type: "password",
-      modelValue: $data.userData.password,
-      "onUpdate:modelValue": ($event) => $data.userData.password = $event
+      modelValue: $data.authData.password,
+      "onUpdate:modelValue": ($event) => $data.authData.password = $event
     }, {
       before: withCtx((_, _push2, _parent2, _scopeId) => {
         if (_push2) {
@@ -30693,7 +32859,7 @@ function _sfc_ssrRender$3(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
     }, _parent));
     _push(ssrRenderComponent(_component_ButtonNode, {
       buttonStyle: "dark",
-      onClick: ($event) => $options.loginCustomer()
+      onClick: ($event) => _ctx.login($data.authData)
     }, {
       default: withCtx((_, _push2, _parent2, _scopeId) => {
         if (_push2) {
@@ -30710,8 +32876,8 @@ function _sfc_ssrRender$3(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
     _push(ssrRenderComponent(_component_InputNode, {
       class: "main",
       type: "text",
-      modelValue: $data.userData.first_name,
-      "onUpdate:modelValue": ($event) => $data.userData.first_name = $event
+      modelValue: $data.authData.first_name,
+      "onUpdate:modelValue": ($event) => $data.authData.first_name = $event
     }, {
       before: withCtx((_, _push2, _parent2, _scopeId) => {
         if (_push2) {
@@ -30727,8 +32893,8 @@ function _sfc_ssrRender$3(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
     _push(ssrRenderComponent(_component_InputNode, {
       class: "main",
       type: "text",
-      modelValue: $data.userData.last_name,
-      "onUpdate:modelValue": ($event) => $data.userData.last_name = $event
+      modelValue: $data.authData.last_name,
+      "onUpdate:modelValue": ($event) => $data.authData.last_name = $event
     }, {
       before: withCtx((_, _push2, _parent2, _scopeId) => {
         if (_push2) {
@@ -30744,8 +32910,8 @@ function _sfc_ssrRender$3(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
     _push(ssrRenderComponent(_component_InputNode, {
       class: "main",
       type: "text",
-      modelValue: $data.userData.email,
-      "onUpdate:modelValue": ($event) => $data.userData.email = $event
+      modelValue: $data.authData.email,
+      "onUpdate:modelValue": ($event) => $data.authData.email = $event
     }, {
       before: withCtx((_, _push2, _parent2, _scopeId) => {
         if (_push2) {
@@ -30761,8 +32927,8 @@ function _sfc_ssrRender$3(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
     _push(ssrRenderComponent(_component_InputNode, {
       class: "main",
       type: "password",
-      modelValue: $data.userData.password,
-      "onUpdate:modelValue": ($event) => $data.userData.password = $event
+      modelValue: $data.authData.password,
+      "onUpdate:modelValue": ($event) => $data.authData.password = $event
     }, {
       before: withCtx((_, _push2, _parent2, _scopeId) => {
         if (_push2) {
@@ -30777,7 +32943,7 @@ function _sfc_ssrRender$3(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
     }, _parent));
     _push(ssrRenderComponent(_component_ButtonNode, {
       buttonStyle: "dark",
-      onClick: $options.registerCustomer
+      onClick: ($event) => _ctx.register($data.authData)
     }, {
       default: withCtx((_, _push2, _parent2, _scopeId) => {
         if (_push2) {
@@ -30832,7 +32998,7 @@ _sfc_main$2.setup = (props, ctx) => {
   return _sfc_setup$2 ? _sfc_setup$2(props, ctx) : void 0;
 };
 const LoadingLineNode = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["ssrRender", _sfc_ssrRender$2]]);
-const AllWidgetsNode_vue_vue_type_style_index_0_lang = "";
+const WidgetsNode_vue_vue_type_style_index_0_lang = "";
 const _sfc_main$1 = {
   components: {
     LoadingLineNode,
@@ -30848,21 +33014,21 @@ const _sfc_main$1 = {
   }
 };
 function _sfc_ssrRender$1(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
-  const _component_loading_line_node = resolveComponent("loading-line-node");
+  const _component_LoadingLineNode = resolveComponent("LoadingLineNode");
   const _component_PopupNode = resolveComponent("PopupNode");
-  const _component_login_node = resolveComponent("login-node");
+  const _component_LoginNode = resolveComponent("LoginNode");
   _push(`<div${ssrRenderAttrs(mergeProps({ class: "widgets" }, _attrs))}>`);
-  _push(ssrRenderComponent(_component_loading_line_node, null, null, _parent));
+  _push(ssrRenderComponent(_component_LoadingLineNode, null, null, _parent));
   _push(ssrRenderComponent(_component_PopupNode, {
     class: "login",
-    name: "login"
+    item: { name: "login" }
   }, {
     default: withCtx((_, _push2, _parent2, _scopeId) => {
       if (_push2) {
-        _push2(ssrRenderComponent(_component_login_node, null, null, _parent2, _scopeId));
+        _push2(ssrRenderComponent(_component_LoginNode, null, null, _parent2, _scopeId));
       } else {
         return [
-          createVNode(_component_login_node)
+          createVNode(_component_LoginNode)
         ];
       }
     }),
@@ -30873,17 +33039,17 @@ function _sfc_ssrRender$1(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
 const _sfc_setup$1 = _sfc_main$1.setup;
 _sfc_main$1.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/structure/AllWidgetsNode.vue");
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/structure/WidgetsNode.vue");
   return _sfc_setup$1 ? _sfc_setup$1(props, ctx) : void 0;
 };
-const AllWidgetsNode = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["ssrRender", _sfc_ssrRender$1]]);
+const WidgetsNode = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["ssrRender", _sfc_ssrRender$1]]);
 const App_vue_vue_type_style_index_0_lang = "";
 const _sfc_main = {
   components: {
     HeaderLightNode,
     HeaderNode,
     FooterNode,
-    AllWidgetsNode
+    WidgetsNode
   },
   data() {
     return {
@@ -30893,11 +33059,27 @@ const _sfc_main = {
   watch: {
     scrollFlag() {
       this.scrollDocument();
+    },
+    userAuth: {
+      async handler(userAuth) {
+        if (userAuth === true && isEmpty(this.userData)) {
+          await this.getUser();
+          await this.getWishlistByUser();
+          this.getWishlistProductsByShareKey();
+        }
+        if (userAuth === false) {
+          this.setUserData();
+          await this.getWishlistByUser();
+        }
+      },
+      immediate: true
     }
   },
   computed: {
     ...mapGetters({}),
     ...mapState({
+      userAuth: (state2) => state2.auth.userAuth,
+      userData: (state2) => state2.auth.userData,
       scrollFlag: (state2) => state2.common.scrollFlag,
       productsCategories: (state2) => state2.productsCategories,
       windowWidth: (state2) => state2.common.windowWidth
@@ -30910,37 +33092,45 @@ const _sfc_main = {
       setScrollY: "common/setScrollY",
       setBreakpoint: "common/setBreakpoint",
       closeRevs: "common/closeRevs",
-      setBrowserReady: "common/setBrowserReady"
+      setBrowserReady: "common/setBrowserReady",
+      setUserData: "auth/setUserData"
     }),
     ...mapActions({
       getItems: "getItems",
       getCart: "cart/getCart",
-      updateUserAuth: "auth/updateUserAuth"
+      getUser: "auth/getUser",
+      updateUserAuth: "auth/updateUserAuth",
+      updateAllOpeningTypeItems: "common/updateAllOpeningTypeItems",
+      getWishlistByUser: "wishlist/getWishlistByUser",
+      getWishlistProductsByShareKey: "wishlist/getWishlistProductsByShareKey"
     }),
     onResize(value) {
       this.setWindowWidth(value);
     },
     scrollDocument() {
       if (this.scrollFlag) {
-        document.documentElement.style.overflow = "auto";
+        document.body.style.overflow = "auto";
+        document.body.style.paddingRight = "0px";
         return;
       }
-      document.documentElement.style.overflow = "hidden";
+      document.body.style.overflow = "hidden";
+      document.body.style.paddingRight = "20px";
     },
     truncatedComponent(value) {
       return truncatedComponents.find((el) => el.name === value) ? true : false;
     }
   },
   created() {
-    this.updateUserAuth();
     this.getCart();
   },
   mounted() {
     window.addEventListener("DOMContentLoaded", (event) => {
       this.showAppContent = true;
-      this.setBrowserReady(typeof window !== "undefined" && typeof document !== "undefined" ? true : false);
+      this.setBrowserReady(
+        typeof window !== "undefined" && typeof document !== "undefined" ? true : false
+      );
     });
-    this.onResize(window.innerWidth);
+    this.setWindowWidth(window.innerWidth);
     window.addEventListener(
       "resize",
       (e) => this.onResize(e.target.innerWidth)
@@ -30952,39 +33142,33 @@ const _sfc_main = {
 };
 function _sfc_ssrRender(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   const _component_router_view = resolveComponent("router-view");
-  const _component_all_widgets_node = resolveComponent("all-widgets-node");
-  const _component_header_light_node = resolveComponent("header-light-node");
-  const _component_header_node = resolveComponent("header-node");
-  const _component_footer_node = resolveComponent("footer-node");
+  const _component_WidgetsNode = resolveComponent("WidgetsNode");
+  const _component_HeaderLightNode = resolveComponent("HeaderLightNode");
+  const _component_HeaderNode = resolveComponent("HeaderNode");
+  const _component_FooterNode = resolveComponent("FooterNode");
   _push(`<div${ssrRenderAttrs(mergeProps({ class: "app" }, _attrs))}>`);
   if ($data.showAppContent) {
     _push(ssrRenderComponent(_component_router_view, null, {
       default: withCtx(({ Component, route }, _push2, _parent2, _scopeId) => {
         if (_push2) {
-          _push2(ssrRenderComponent(_component_all_widgets_node, null, null, _parent2, _scopeId));
+          _push2(ssrRenderComponent(_component_WidgetsNode, null, null, _parent2, _scopeId));
           if ($options.truncatedComponent(route.name)) {
-            _push2(ssrRenderComponent(_component_header_light_node, null, null, _parent2, _scopeId));
+            _push2(ssrRenderComponent(_component_HeaderLightNode, null, null, _parent2, _scopeId));
           } else {
-            _push2(`<!---->`);
-          }
-          if (!$options.truncatedComponent(route.name)) {
-            _push2(ssrRenderComponent(_component_header_node, null, null, _parent2, _scopeId));
-          } else {
-            _push2(`<!---->`);
+            _push2(ssrRenderComponent(_component_HeaderNode, null, null, _parent2, _scopeId));
           }
           ssrRenderVNode(_push2, createVNode(resolveDynamicComponent(Component), null, null), _parent2, _scopeId);
           if (!$options.truncatedComponent(route.name)) {
-            _push2(ssrRenderComponent(_component_footer_node, null, null, _parent2, _scopeId));
+            _push2(ssrRenderComponent(_component_FooterNode, null, null, _parent2, _scopeId));
           } else {
             _push2(`<!---->`);
           }
         } else {
           return [
-            createVNode(_component_all_widgets_node),
-            $options.truncatedComponent(route.name) ? (openBlock(), createBlock(_component_header_light_node, { key: 0 })) : createCommentVNode("", true),
-            !$options.truncatedComponent(route.name) ? (openBlock(), createBlock(_component_header_node, { key: 1 })) : createCommentVNode("", true),
+            createVNode(_component_WidgetsNode),
+            $options.truncatedComponent(route.name) ? (openBlock(), createBlock(_component_HeaderLightNode, { key: 0 })) : (openBlock(), createBlock(_component_HeaderNode, { key: 1 })),
             (openBlock(), createBlock(resolveDynamicComponent(Component))),
-            !$options.truncatedComponent(route.name) ? (openBlock(), createBlock(_component_footer_node, { key: 2 })) : createCommentVNode("", true)
+            !$options.truncatedComponent(route.name) ? (openBlock(), createBlock(_component_FooterNode, { key: 2 })) : createCommentVNode("", true)
           ];
         }
       }),
@@ -31004,7 +33188,7 @@ _sfc_main.setup = (props, ctx) => {
 const App = /* @__PURE__ */ _export_sfc(_sfc_main, [["ssrRender", _sfc_ssrRender]]);
 function createApp() {
   const app = createSSRApp(App);
-  UI.forEach((component) => {
+  common.forEach((component) => {
     app.component(component.name, component);
   });
   app.use(router).use(store);

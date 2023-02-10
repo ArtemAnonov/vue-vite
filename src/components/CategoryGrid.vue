@@ -22,9 +22,9 @@
           :key="productSubCategory.id"
         >
           <PreloadWrapNode>
-            <button
+           <div
               v-if="productSubCategory"
-              @click="routeToCategory(productSubCategory, productCategory.slug)"
+              @click="routeToCategoryLocal(productSubCategory, productCategory.slug)"
             >
               <div class="category-grid__image">
                 <img
@@ -41,7 +41,7 @@
                   {{ productSubCategory.description }}
                 </div>
               </div>
-            </button>
+            </div>
           </PreloadWrapNode>
         </article>
       </div>
@@ -52,6 +52,7 @@
 <script>
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 import PreloadWrapContainerNode from "@/components/structure/PreloadWrapContainerNode.vue";
+import { routeToCategory } from "@/api/helpers";
 
 export default {
   components: {
@@ -93,10 +94,15 @@ export default {
       }
     },
   },
+  methods: {
+        routeToCategoryLocal(productCategory, parentCategorySlug) {
+      routeToCategory(productCategory, parentCategorySlug);
+    },
+  }
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 .category-grid {
   margin-bottom: 3rem;
   &__body {

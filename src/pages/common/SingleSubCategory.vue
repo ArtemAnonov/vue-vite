@@ -1,18 +1,18 @@
 <template>
   <!--         v-if="category && mainCategory && templatePage"  -->
-  <MainPageNode :templatePage="templatePage" :category="category">
+  <MainPageNode :templatePage="templatePage" :navRaw="category">
     <template #page-main>
-      <filter-node @updateFilter="updateFilter"></filter-node>
+      <FilterNode @updateFilter="updateFilter"></FilterNode>
       <ContainerNode>
         <div class="catalog__body">
           <div class="catalog__main">
             <div class="catalog__sidebar">
-              <catalog-sidebar-node
+              <CatalogSidebarNode
                 v-if="mainCategory && category"
                 :mainCategory="mainCategory"
                 :category="category"
                 :total="total"
-              ></catalog-sidebar-node>
+              ></CatalogSidebarNode>
             </div>
             <div class="catalog__products">
               <div class="catalog__sorting">
@@ -31,6 +31,9 @@
                       :checked="option.id === 0"
                       name="sort"
                       :key="option.id"
+                      :disabled="
+                        option.id == 3 || option.id == 4 || option.id == 5
+                      "
                     >
                     </InputRadioNode>
                   </template>
@@ -127,6 +130,7 @@ export default {
   },
   computed: {
     ...mapGetters({
+      pageBySlug: "pages/pageBySlug",
       itemBySlug: "itemBySlug",
       total: "total",
       requestByItemParam: "requestByItemParam",
@@ -157,20 +161,9 @@ export default {
       });
     },
 
-    mainCategory() {
-      return this.itemBySlug({
-        type: this.productsCategoriesRequest.type,
-        slug: this.params.mainCategorySlug,
-      });
-    },
-
     templatePage() {
-      return this.itemBySlug({
-        type: this.pagesRequest.type,
-        slug: this.params.categorySlug,
-      });
+      return this.pageBySlug(this.params.mainCategorySlug);
     },
-
     total() {
       if (isEmpty(this.mainCategory)) return;
       return this.mainCategory.count;
@@ -209,7 +202,8 @@ export default {
       this.updateRequestParams();
       let request;
       if (import.meta.env.VITE_LIKE_A_SPA) {
-        request = await this.getItems(this.productsRequest).request;
+        request = await this.getItems({ basedRequest: this.productsRequest })
+          .request;
         this.setTotalPages(request.totalPages);
         this.setItemsPaginated({
           pageNumber: request.params.page,
@@ -217,8 +211,6 @@ export default {
         });
       } else {
         this.filterAndPaginate();
-        request = this.productsSSGDefaultRequest;
-        this.setTotalPages(Math.ceil(request.total / this.productsRequest.params.per_page));
       }
       this.initMarker = true;
     },
@@ -231,29 +223,35 @@ export default {
       this.validateValues();
       this.updateRequestParams();
       this.filterAndPaginate();
-      if (import.meta.env.VITE_LIKE_A_SPA) {
-        const { request } = await this.getItems(
-          Object.assign({ onDownloadProgress: Function }, this.productsRequest)
-        );
-        this.setTotalPages(request.totalPages);
-        this.setItemsPaginated({
-          pageNumber: request.params.page,
-          value: request.data,
-        });
-      }
+      // надо тут написать другой способ получения request
+      // if (import.meta.env.VITE_LIKE_A_SPA) {
+      //   // const { request } = await this.getItems({basedRequest: })
+      //   //   Object.assign({ onDownloadProgress: Function }, this.productsRequest)
+      //   // );
+      //   // this.setTotalPages(request.totalPages);
+      //   // this.setItemsPaginated({
+      //   //   pageNumber: request.params.page,
+      //   //   value: request.data,
+      //   // });
+      // }
     },
 
     /**
      * ONLY (VITE_LIKE_A_SPA)
      */
     async loadMoreProducts() {
-      const { request } = await this.getItems(this.productsRequest);
+      const { request } = await this.getItems({
+        basedRequest: this.productsRequest,
+      });
       this.setItemsPaginated({
         pageNumber: request.params.page,
         value: request.data,
       });
     },
 
+    /**
+     * ONLY (VITE_LIKE_A_SPA)
+     */
     getTemplatePage() {
       this.getSingleBySlug({
         basedRequest: this.pagesRequest,
@@ -272,7 +270,9 @@ export default {
   },
   created() {
     this.setCategoryId(this.category.id);
-    this.getTemplatePage();
+    if (import.meta.env.VITE_LIKE_A_SPA) {
+      this.getTemplatePage();
+    }
   },
 
   /**
@@ -281,7 +281,9 @@ export default {
   beforeUpdate() {
     this.initMarker = false;
     this.setCategoryId(this.category.id);
-    this.getTemplatePage();
+    if (import.meta.env.VITE_LIKE_A_SPA) {
+      this.getTemplatePage();
+    }
   },
 };
 </script>
@@ -293,11 +295,6 @@ export default {
 
   &__top {
     position: relative;
-
-    @media (max-width: ($md2+px)) {
-    }
-
-    // margin-bottom: 1000px;
   }
 
   &__sorting {
@@ -307,7 +304,7 @@ export default {
   }
 
   &__main {
-    margin: 2rem 0;
+    margin: 1rem 0;
     display: grid;
     gap: 20px;
     grid-template-columns: 1fr 3fr;
@@ -315,9 +312,6 @@ export default {
     @media (max-width: ($md2+px)) {
       grid-template-columns: 1fr;
     }
-  }
-
-  &__products {
   }
 
   &__sorting {

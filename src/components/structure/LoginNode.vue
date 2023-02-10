@@ -45,19 +45,19 @@
                   >
                   </InputRadioNode>
                 </div>
-                <InputNode class="main" type="text" v-model="userData.email">
+                <InputNode class="main" type="text" v-model="authData.email">
                   <template #before><label>Почта</label></template>
                 </InputNode>
                 <InputNode
                   class="main"
                   type="password"
-                  v-model="userData.password"
+                  v-model="authData.password"
                 >
                   <template #before><label>Пароль</label></template>
                 </InputNode>
                 <ButtonNode
                   buttonStyle="dark"
-                  @click.prevent="login(userData)"
+                  @click.prevent="login(authData)"
                   >{{ "Войти" }}</ButtonNode
                 >
               </form>
@@ -67,23 +67,23 @@
         <div v-show="currentTab === 2" class="login__column tab-register">
           <div class="register-tab__body">
             <form>
-              <InputNode class="main" type="text" v-model="userData.first_name">
+              <InputNode class="main" type="text" v-model="authData.first_name">
                 <template #before><label>Имя</label></template>
               </InputNode>
-              <InputNode class="main" type="text" v-model="userData.last_name">
+              <InputNode class="main" type="text" v-model="authData.last_name">
                 <template #before><label>Фамилия</label></template>
               </InputNode>
-              <InputNode class="main" type="text" v-model="userData.email">
+              <InputNode class="main" type="text" v-model="authData.email">
                 <template #before><label>Почта</label></template>
               </InputNode>
               <InputNode
                 class="main"
                 type="password"
-                v-model="userData.password"
+                v-model="authData.password"
               >
                 <template #before><label>Пароль</label></template>
               </InputNode>
-              <ButtonNode buttonStyle="dark" @click.prevent="register(userData)"
+              <ButtonNode buttonStyle="dark" @click.prevent="register(authData)"
                 >Зарегистрироваться</ButtonNode
               >
             </form>
@@ -105,7 +105,7 @@ export default {
   data() {
     return {
       currentTab: 1,
-      userData: {
+      authData: {
         first_name: "",
         last_name: "",
         username: "",

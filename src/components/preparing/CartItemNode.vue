@@ -39,7 +39,7 @@
 
 <script>
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
-import CartBtnNode from '@/components/cart-and-ordering/CartBtnNode.vue'
+import CartBtnNode from '@/components/preparing/CartBtnNode.vue'
 import ProductPricesNode from "@/components/product/ProductPricesNode.vue";
 
 export default {

@@ -134,6 +134,15 @@ export const productsModule = {
       ({ productId, attrId }) => {
         return state.items?.[productId]?.attributes.find((i) => i.id == attrId);
       },
+
+    sortingProducts:
+      (state, getters, rootState, rootGetters) => (items, type) => {
+        if (type == 0) return items.sort(rootGetters["filter/sortDefault"]); //
+        if (type == 1)
+          return items.sort(rootGetters["filter/sortPriceMinToMax"]); // цена, по убыванию
+        if (type == 2)
+          return items.sort(rootGetters["filter/sortPriceMaxToMin"]); // цены по возрастанию
+      },
   },
   mutations: {
     /**
@@ -244,48 +253,43 @@ export const productsModule = {
       }
       /**
        * Перебираем items, поэтапно проверяя свойства. Для добавления item'а необходимо,
-       * чтобы confirmed был TRUE
+       * чтобы confirmed был TRUE. На выходе все айтемы, которые прошли фильтрацию, готовы к сортировке
        */
-      // let indexAddedObjects = 0;
-
-      for (const key in state.items) {
+      const ids = Object.keys(state.items);
+      mark: for (let index = 0; index < ids.length; index++) {
         var confirmed = false;
-        if (Object.hasOwnProperty.call(state.items, key)) {
-          let item = state.items[key];
-          // console.log(item.categories, preparedParams.category);
-          item.categories.forEach((category) => {
-            if (category.id == preparedParams.category) {
-              confirmed = true;
-            } else {
-              confirmed = false;
-            }
-          });
-          if (
-            item.price > preparedParams.min_price &&
-            item.price < preparedParams.max_price &&
-            confirmed
-          ) {
+        const id = ids[index];
+        let item = state.items[id];
+        for (let index = 0; index < item.categories.length; index++) {
+          const category = item.categories[index];
+          if (category.id == preparedParams.category) {
             confirmed = true;
+            break;
           } else {
             confirmed = false;
           }
-          if (
-            !isEmpty(requestAttributes) &&
-            !isEmpty(item.attributes) &&
-            confirmed
-          ) {
-            confirmed = getters.filtredProductAttributes({
-              requestAttributes,
-              item,
-            });
-          }
-
-          if (confirmed) {
-            items.push(item);
-            // indexAddedObjects++;
-          }
         }
+        if (confirmed === false) continue mark;
+        if (
+          item.price < preparedParams.min_price ||
+          item.price > preparedParams.max_price
+        ) {
+          continue mark;
+        }
+        if (!isEmpty(requestAttributes) && !isEmpty(item.attributes)) {
+          confirmed = getters.filtredProductAttributes({
+            requestAttributes,
+            item,
+          });
+        }
+        if (confirmed) items.push(item);
       }
+
+      items = getters.sortingProducts(
+        items,
+        state.basedRequest.preparedParams.orderAndOrderBy.id
+      );
+
       let per_page = state.basedRequest.params.per_page;
 
       commit("setTotalPages", Math.ceil(items.length / per_page));

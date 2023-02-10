@@ -6,67 +6,73 @@
         class="filter__button filter__button_filter-show"
         >Фильтр товаров</ButtonNode
       >
-      <div class="filter__body">
-        <ul class="filter__list">
-          <li class="filter__item">
-            <CatalogRevealingNode
-              :item="{ name: 'catalogPrices' }"
-              @apply="$emit('updateFilter')"
-              @setDefault="setDefaultPrices"
+      <div
+        class="filter__body"
+        :style="{ minHeight: filterBodyHeight + 'px' }"
+        ref="filterBody"
+      >
+        <div class="filter__wrapper container">
+          <ul class="filter__list">
+            <li class="filter__item">
+              <CatalogRevealingNode
+                :item="{ name: 'catalogPrices' }"
+                @apply="$emit('updateFilter')"
+                @setDefault="setDefaultPrices"
+              >
+                <template #title>Цена</template>
+                <template #main>
+                  <FilterPrices v-if="browserReady" />
+                </template>
+              </CatalogRevealingNode>
+            </li>
+            <li
+              class="filter__item"
+              v-for="(attr, index) in attributes"
+              :key="index"
             >
-              <template #title>Цена</template>
-              <template #main>
-                <FilterPrices v-if="browserReady" />
-              </template>
-            </CatalogRevealingNode>
-          </li>
-          <li
-            class="filter__item"
-            v-for="(attr, index) in attributes"
-            :key="index"
+              <CatalogRevealingNode
+                :item="{ name: attr.slug }"
+                @apply="$emit('updateFilter')"
+                :name="attr.slug"
+                @setDefault="setDefaultAttribute(attr.slug)"
+                :bodyLoaded="attr.slug ? true : false"
+              >
+                <template #title>{{ attr.name }}</template>
+                <template #main>
+                  <ul class="filter__sub-list">
+                    <li
+                      class="filter__sub-item"
+                      v-for="{ id, name } in singleAttribute(attr.slug)"
+                      :key="id"
+                    >
+                      <InputCheckboxNode
+                        :modelValue="filterParamsChecked(attr.slug, id)"
+                        :labelText="name"
+                        @input="
+                          updateCatalogRevealing({
+                            type: attr.slug,
+                            value: { id, name },
+                          })
+                        "
+                      ></InputCheckboxNode>
+                    </li>
+                  </ul>
+                </template>
+              </CatalogRevealingNode>
+            </li>
+            <li class="filter__item">
+              <InputCheckboxNode
+                v-model="onlineOnly"
+                labelText="Доступно онлайн"
+              ></InputCheckboxNode>
+            </li>
+          </ul>
+          <ButtonNode
+            @click.stop="filterCleanAndLoadDefault"
+            class="filter__button filter__button_clean"
+            >Очистить<span>фильтры</span></ButtonNode
           >
-            <CatalogRevealingNode
-              :item="{ name: attr.slug }"
-              @apply="$emit('updateFilter')"
-              :name="attr.slug"
-              @setDefault="setDefaultAttribute(attr.slug)"
-              :bodyLoaded="attr.slug ? true : false"
-            >
-              <template #title>{{ attr.name }}</template>
-              <template #main>
-                <ul class="filter__sub-list">
-                  <li
-                    class="filter__sub-item"
-                    v-for="{ id, name } in singleAttribute(attr.slug)"
-                    :key="id"
-                  >
-                    <InputCheckboxNode
-                      :modelValue="filterParamsChecked(attr.slug, id)"
-                      :labelText="name"
-                      @input="
-                        updateCatalogRevealing({
-                          type: attr.slug,
-                          value: { id, name },
-                        })
-                      "
-                    ></InputCheckboxNode>
-                  </li>
-                </ul>
-              </template>
-            </CatalogRevealingNode>
-          </li>
-          <li class="filter__item">
-            <InputCheckboxNode
-              v-model="onlineOnly"
-              labelText="Доступно онлайн"
-            ></InputCheckboxNode>
-          </li>
-        </ul>
-        <ButtonNode
-          @click.stop="filterCleanAndLoadDefault"
-          class="filter__button filter__button_clean"
-          >Очистить<span>фильтры</span></ButtonNode
-        >
+        </div>
       </div>
     </ContainerNode>
   </section>
@@ -80,6 +86,8 @@
  */
 
 // setAttributeTerms({ type: attr.slug, value: { id, name } })
+import Sticky from "sticky-js";
+
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 import { isEmpty } from "lodash-es";
 import FilterPrices from "@/components/filter/FilterPrices.vue";
@@ -100,6 +108,7 @@ export default {
         sorting: {},
         prices: {},
       },
+      filterBodyHeight: null,
     };
   },
   watch: {
@@ -163,7 +172,6 @@ export default {
     }),
 
     ...mapActions({
-      getItemsBased: "getItemsBased",
       getItems: "getItems",
       setDefaultFilter: "filter/setDefaultFilter",
       updateAllOpeningTypeItems: "common/updateAllOpeningTypeItems",
@@ -216,17 +224,13 @@ export default {
      * (Возможно более изящное решение проблемы...)
      */
     filterCleanAndLoadDefault() {
-      // const slugs = this.attributesSlugs;
-      // slugs.forEach((slug) => {
-      //   this.setCatalogRevealing({
-      //     name: slug,
-      //     value: true,
-      //     prop: "default",
-      //   });
-      // });
       this.setDefaultFilter();
       this.updateAllOpeningTypeItems({ type: "catalogRevealing" });
-      this.updateAllOpeningTypeItems({ type: "catalogRevealing", value: true, prop: "default" });
+      this.updateAllOpeningTypeItems({
+        type: "catalogRevealing",
+        value: true,
+        prop: "default",
+      });
       this.$emit("updateFilter");
     },
 
@@ -258,34 +262,36 @@ export default {
   },
   created() {
     if (import.meta.env.VITE_LIKE_A_SPA) {
-      this.getItems(this.productsBrandsRequest);
-      this.getItems(this.productsMaterialsRequest);
-      this.getItems(this.productsColorsRequest);
-      this.getItems(this.productsSizesRequest);
-      this.getItems(this.productsAttributesRequest);
+      this.getItems({ basedRequest: this.productsBrandsRequest });
+      this.getItems({ basedRequest: this.productsMaterialsRequest });
+      this.getItems({ basedRequest: this.productsColorsRequest });
+      this.getItems({ basedRequest: this.productsSizesRequest });
+      this.getItems({ basedRequest: this.productsAttributesRequest });
     }
   },
   mounted() {
-    // (async () => {
-    //     const FilterPrices = await import(
-    //       "@/components/filter/FilterPrices.vue"
-    //     );
-    // })();
+    var sticky = new Sticky(".filter__wrapper", {
+      // wrap: true,
+      marginTop: 40,
+      marginBottom: 100,
+      stickyFor: 1024,
+      stickyClass: "filter__wrapper_stuck",
+      stickyContainer: ".page-main",
+    });
+    this.filterBodyHeight = this.$refs.filterBody.offsetHeight;
   },
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 .filter {
   position: relative;
   z-index: 1;
   background: #f7f7f7;
-  // border-top: 0 solid #d8d8d8;
   border-bottom: 0 solid #d8d8d8;
   &_active {
-    // border-top: .0666666667rem solid #d8d8d8;
     border-bottom: 0.0666666667rem solid #d8d8d8;
-    .filter__body {
+    .filter__wrapper {
       display: flex;
       padding: 1.3333333333rem 0;
       height: auto;
@@ -299,20 +305,45 @@ export default {
       }
     }
   }
+
   &__body {
-    // display: none;
-    transition: 0.5s;
+  }
+
+  &__wrapper {
+    position: relative;
     padding: 0;
     height: 0;
     opacity: 0;
     visibility: hidden;
-
     display: flex;
-    &_active {
+
+    //
+    z-index: 1;
+    &::before {
+      opacity: 0;
+      background: #fff;
+      content: "";
+      position: absolute;
+      height: 100%;
+      width: 300%;
+      top: 0;
+      left: 0;
+      transform: translate(-50%, 0);
+      box-shadow: 0 0 0.3333333333rem 0 rgba(0, 0, 0, 0.25);
+    }
+    &_stuck {
+      &::before {
+        opacity: 1;
+      }
+      padding: 0 !important;
+      .filter__button_clean {
+        display: none;
+      }
     }
   }
 
   &__list {
+    position: relative;
     display: flex;
     flex: 1 1 auto;
     flex-wrap: wrap;
@@ -327,23 +358,19 @@ export default {
     padding: 0.5rem 0 0.5rem 0;
     display: flex;
     align-items: center;
-  }
-
-  &__sub-list {
+    .input {
+      margin-left: 1rem;
+    }
   }
 
   &__sub-item {
     margin-bottom: 0.8rem;
   }
 
-  &__input {
-    // элемент .revealing__main
-  }
-
   &__button {
     &_filter-show {
       position: absolute;
-      transform: translate(0, -150%);
+      top: -55px;
       right: 0;
       &::after {
         opacity: 0;
@@ -371,6 +398,9 @@ export default {
         }
       }
     }
+  }
+  .container {
+    position: relative;
   }
 }
 </style>

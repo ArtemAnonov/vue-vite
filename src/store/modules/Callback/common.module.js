@@ -1,5 +1,6 @@
 import { split } from "lodash-es";
 import { togglerOpening } from "@/api/helpers.js";
+import { messages } from "@/api/utils.js";
 /**
  * (!) erv.off нужно переделать. Необходимо разделить блоки на общие и неподконтрольные
  * общему механизму скрытия/раскрытия
@@ -24,44 +25,12 @@ export const commonModule = {
      * прим. Правильнее включить название айтема в объект с его свойствами
      *
      */
-    revs: {},
     progressLoad: {
       visible: false,
       percent: 0,
     },
     progress: [],
-    messages: {
-      orderingError: {
-        name: "orderingError",
-        type: "error",
-        visible: false,
-      },
-      currentPaymentURLNotSet: {
-        name: "currentPaymentURLNotSet",
-        type: "error",
-        visible: false,
-      },
-      notSelectPaymentMethod: {
-        name: "notSelectPaymentMethod",
-        type: "error",
-        visible: false,
-      },
-      productAddedToCart: {
-        name: "productAddedToCart",
-        type: "success",
-        visible: false,
-      },
-      notSelectProductSize: {
-        name: "notSelectProductSize",
-        type: "error",
-        visible: false,
-      },
-      allError: {
-        name: "allError",
-        type: "error",
-        visible: false,
-      },
-    },
+    message: null,
 
     openings: {
       revealing: {},
@@ -76,14 +45,14 @@ export const commonModule = {
 
   mutations: {
     addOpening(state, item) {
+      /**
+       * element.default - обычный. Для спойлеров - это то, что, например, он не скрыт из-за определенного
+       * разрешения экрана. Ддя сatalogRevealing's - это стандартное отображения
+       */
       const element = {
         name: item.name,
-        active: item.active ? item.active : false,
-        /**
-         * Дефолтный - обычный. Для спойлеров - это то, что, например, он не скрыт из-за определенного 
-         * разрешения экрана. Ддя сatalogRevealing's - это стандартное отображения
-         */
-        default: item.default ? item.default : true,
+        active: item.active !== undefined ? item.active : false,
+        default: item.default !== undefined ? item.default : true,
       };
       state.openings[item.type][element.name] = element;
     },
@@ -140,8 +109,8 @@ export const commonModule = {
       }
     },
 
-    setMessage(state, { name, value = true }) {
-      state.messages[name].visible = value;
+    setMessage(state, value) {
+      state.message = value;
     },
     setScrollFlag(state, { value, toggle = false }) {
       if (toggle) {
@@ -185,11 +154,14 @@ export const commonModule = {
   actions: {
     updateMessage(
       { state, dispatch, commit, getters, rootGetters },
-      { name, value = true }
+      name
     ) {
-      commit("setMessage", { name, value });
+      // if ((state.message === null)) {
+      //   return
+      // }
+      commit("setMessage", messages[name]);
       setTimeout(() => {
-        commit("setMessage", { name, value: false });
+        commit("setMessage", null);
       }, 3000);
     },
 

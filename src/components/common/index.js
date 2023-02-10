@@ -9,7 +9,6 @@ import ContainerNode from "@/components/common/ContainerNode.vue";
 import InputStoreNode from "@/components/common/InputStoreNode.vue";
 import InputCheckboxNode from "@/components/common/InputCheckboxNode.vue";
 import InputRadioNode from "@/components/common/InputRadioNode.vue";
-import MessageNode from "@/components/common/MessageNode.vue";
 import PreloadWrapNode from "@/components/common/PreloadWrapNode.vue";
 
 import RevealingNode from "@/components/common/RevealingNode.vue";
@@ -29,7 +28,6 @@ export default [
   InputCheckboxNode,
   PreloadWrapNode,
   // PageHeadNode,
-  MessageNode,
   InputRadioNode,
   RevealingNode,
 ];

@@ -1,53 +1,48 @@
 <template>
-  <MainPageNode :templatePage="templatePage" :category="productCategory">
+  <MainPageNode
+    class="single-category"
+    :templatePage="templatePage"
+    :navRaw="productCategory"
+  >
     <template #page-main>
       <ContainerNode>
-        <section class="main-category">
-          <div class="main-category__main">
-            <catalog-sidebar-node
-              :mainCategory="productCategory"
-              :total="total"
-            ></catalog-sidebar-node>
-            <div class="main-category__sections">
-              <SliderBannersNode
-                class="slider-banners-main-category"
-                :bannerCategoryId="68"
-                :containerStylesOff="true"
-                identificator="slider-banners-main_main-category"
-                :autoplay="{ delay: 50000, disableOnInteraction: false }"
-                pagination
-                :slides-per-view="1"
-              >
-                <!-- <template #banner-title="bannerTitleProps">
-                  <div class="slider-banners-main__title">
-                    {{ bannerTitleProps.banner.title.rendered }}
-                  </div>
-                </template> -->
-              </SliderBannersNode>
-
-              <category-grid :productCategory="productCategory"></category-grid>
-
-              <SliderProductsNode
-                title="Для женщин"
-                productsCategoryId="20"
-                :breakpoints="{
-                  '320': {
-                    slidesPerView: 2,
-                    spaceBetween: 20,
-                  },
-                  '768': {
-                    slidesPerView: 3,
-                    spaceBetween: 20,
-                  },
-                  '1200': {
-                    slidesPerView: 4,
-                    spaceBetween: 30,
-                  },
-                }"
-              ></SliderProductsNode>
-            </div>
+        <div class="single-category__body">
+          <CatalogSidebarNode
+            :mainCategory="productCategory"
+            :total="total"
+          ></CatalogSidebarNode>
+          <div class="single-category__sections">
+            <SliderBannersNode
+              class="slider-banners-single-category"
+              :bannerCategoryId="68"
+              :containerStylesOff="true"
+              identificator="slider-banners-main_single-category"
+              :autoplay="{ delay: 50000, disableOnInteraction: false }"
+              pagination
+              :slides-per-view="1"
+            >
+            </SliderBannersNode>
+            <CategoryGrid :productCategory="productCategory"></CategoryGrid>
+            <SliderProductsNode
+              title="Для женщин"
+              productsCategoryId="20"
+              :breakpoints="{
+                '320': {
+                  slidesPerView: 2,
+                  spaceBetween: 20,
+                },
+                '768': {
+                  slidesPerView: 3,
+                  spaceBetween: 20,
+                },
+                '1200': {
+                  slidesPerView: 4,
+                  spaceBetween: 30,
+                },
+              }"
+            ></SliderProductsNode>
           </div>
-        </section>
+        </div>
       </ContainerNode>
     </template>
   </MainPageNode>
@@ -56,13 +51,13 @@
 <script>
 //                       :prevCategory="params.category"                         :parent="productCategory.id"
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
-import { isEmpty } from 'lodash-es'
+import { isEmpty } from "lodash-es";
 
 import CatalogSidebarNode from "@/components/CatalogSidebarNode.vue";
 import CategoryGrid from "@/components/CategoryGrid.vue";
 import SliderProductsNode from "@/components/sliders/SliderProductsNode.vue";
 import SliderBannersNode from "@/components/sliders/SliderBannersNode.vue";
-import MainPageNode from '@/components/structure/MainPageNode.vue'
+import MainPageNode from "@/components/structure/MainPageNode.vue";
 
 export default {
   components: {
@@ -70,8 +65,7 @@ export default {
     CategoryGrid,
     SliderProductsNode,
     SliderBannersNode,
-    MainPageNode
-
+    MainPageNode,
   },
   props: {
     params: {
@@ -152,14 +146,14 @@ export default {
 </script>
 
 <style lang="scss">
-.main-category {
+.single-category {
   position: relative;
-  &__main {
-    margin: 2rem 0;
+  &__body {
+    margin: 1rem 0;
     display: grid;
     gap: 20px;
     grid-template-columns: 1fr 3fr;
-    @media (max-width: ($md3+px)) {
+    @media (max-width: ($md2+px)) {
       grid-template-columns: 1fr;
     }
   }
@@ -171,7 +165,7 @@ export default {
   }
 }
 
-.slider-banners-main-category {
+.slider-banners-single-category {
   // margin-top: -2.6666666667rem;
 }
 </style>

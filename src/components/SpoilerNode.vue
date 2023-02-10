@@ -41,14 +41,7 @@ export default {
   },
   setup(props) {
     const store = useStore();
-    // const spoiler = store.state.common.openings.spoiler[props.item.name]
-    //   console.log(spoiler);
-
     const item = { ...{ type: "spoiler" }, ...props.item };
-    //     watch(spoiler, (spoiler) => {
-    //   console.log(spoiler);
-
-    // });
     watch(props, (props) => {
       store.commit("common/setSpoiler", {
         name: props.item.name,
@@ -80,7 +73,7 @@ export default {
   &_active {
     & > .spoiler__button {
       &::before {
-        transform: translate(0, -50%) rotate(0);
+        transform: translate(0, -50%) rotate(-90deg);
       }
     }
     .spoiler__list {
@@ -92,12 +85,12 @@ export default {
   &__button {
     position: relative;
     &::before {
-      transition: 0.3s;
+      transition: 0.1s;
       position: absolute;
       top: 50%;
       right: 0;
-      transform: translate(0, -50%) rotate(-90deg);
-      font-size: 0.6rem;
+      transform: translate(0, -50%) rotate(90deg);
+      font-size: 12px;
     }
   }
 }

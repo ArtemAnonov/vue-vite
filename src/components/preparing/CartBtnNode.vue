@@ -6,20 +6,6 @@
     @click="updateCartAndHandleResponse"
   >
     <slot></slot>
-    <MessageNode :item="messages.productAddedToCart">
-      Товар добавлен.<button
-        @click="$router.push({ name: 'Checkout' })"
-        class="message-link"
-      >
-        Оформить заказ?
-      </button></MessageNode
-    >
-    <MessageNode :item="messages.allError"
-      >Произошла ошибка при выполнении операции...</MessageNode
-    >
-    <MessageNode :item="messages.notSelectProductSize"
-      >Необходимо выбрать размер.</MessageNode
-    >
   </button>
 </template>
 
@@ -40,9 +26,7 @@ export default {
   },
   computed: {
     ...mapGetters({}),
-    ...mapState({
-      messages: (state) => state.common.messages,
-    }),
+    ...mapState({}),
   },
   methods: {
     ...mapMutations({}),
@@ -62,17 +46,15 @@ export default {
           //
           let valid = this.validationVariations();
           if (valid === false) {
-            this.updateMessage({ name: "notSelectProductSize" });
+            this.updateMessage("notSelectProductSize");
             return;
           }
           break;
-
         case "cart/remove-item":
           if (!this.params.hasOwnProperty("key")) {
             throw "Need cart-item key for delete";
           }
           break;
-
         case "cart/update-item":
           if (
             !this.params.hasOwnProperty("key") &&
@@ -81,25 +63,23 @@ export default {
             throw "Need cart-item params.key and/or params.quantity for update";
           }
           break;
-
         default:
           throw "Попытка выполнить несуществующий или неожиданный (не применяемый) маршрут";
       }
 
       this.buttonDisabled = true;
-      const requested = await this.updateCart({
+      const response = await this.updateCart({
         route_base: this.route_base,
         config: { params: this.params },
       });
       this.buttonDisabled = false;
-      if (requested === undefined) this.updateMessage({ name: "allError" });
+
+      if (response === undefined) this.updateMessage("allError");
 
       switch (this.route_base) {
         case "cart/add-item":
-          this.updateMessage({ name: "productAddedToCart" });
-
+          this.updateMessage("productAddedToCart");
           break;
-
         default:
           break;
       }

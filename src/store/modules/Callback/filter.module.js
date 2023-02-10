@@ -31,12 +31,12 @@ export const filterModule = {
       if (one.price > two.price) return 1; //one больше two по некоторому критерию сортировки
       return 0; // равны
     },
-    /**
-     * Смена знаков не приводила к правильной сортировке. Смена -1 и 1
-     * даёт нужный резудьтат
-     *
-     * @returns
-     */
+    // /**
+    //  * Смена знаков не приводила к правильной сортировке. Смена -1 и 1
+    //  * даёт нужный резудьтат
+    //  *
+    //  * @returns
+    //  */
     sortPriceMaxToMin: () => (one, two) => {
       if (one.price < two.price) return 1;
       if (one.price > two.price) return -1;

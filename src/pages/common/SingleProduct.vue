@@ -1,25 +1,18 @@
 <template>
-  <main-page-node
-    :category="product ? product.categories[1] : undefined"
+  <MainPageNode
+    :navRaw="product ? product.categories[1] : undefined"
     :additionalTitle="product ? product.name : undefined"
   >
     <template #page-main>
       <div class="single">
-        <!-- <div class="single__actions">
-          <MessageNode
-          class="error"
-            @errorValidation="errorValidation"
-            :show="errorValidationShow"
-          >Необходимо выбрать размер</MessageNode>
-        </div> -->
         <div class="single__body">
           <div class="single__main">
             <ContainerNode>
               <div class="single__columns">
                 <div class="single__content content-single sw-cont">
-                  <slider-single-node
+                  <SliderSingleNode
                     :images="product?.images"
-                  ></slider-single-node>
+                  ></SliderSingleNode>
                 </div>
                 <div class="single__sidebar sidebar-single">
                   <div class="sidebar-single__item sidebar-single__top">
@@ -40,7 +33,7 @@
                         v-for="(index, size) in attribute(4)?.options"
                         :key="index"
                       >
-                        <button-node
+                        <ButtonNode
                           :class="
                             cartItemParams.variations[0].value &&
                             attribute(4)?.options[size] ===
@@ -54,7 +47,7 @@
                               attribute(4)?.options[size]
                             )
                           "
-                          >{{ attribute(4)?.options[size] }}</button-node
+                          >{{ attribute(4)?.options[size] }}</ButtonNode
                         >
                       </li>
                     </ul>
@@ -81,9 +74,9 @@
                       >Купить</CartBtnNode
                     >
                     <!--  @errorValidation="errorValidation" -->
-                    <button
-                      class="sidebar-single__favorite icon icon-favorite"
-                    ></button>
+                    <ButtonNode
+                      class="sidebar-single__wishlist icon icon-wishlist"
+                    ></ButtonNode>
                   </div>
                   <SocialNetworksNode
                     class="sidebar-single__item"
@@ -135,7 +128,7 @@
         </div>
       </div>
     </template>
-  </main-page-node>
+  </MainPageNode>
 </template>
 
 <script>
@@ -143,7 +136,7 @@ import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 import { isEmpty } from "lodash-es";
 
 import Sticky from "sticky-js";
-import CartBtnNode from "@/components/cart-and-ordering/CartBtnNode.vue";
+import CartBtnNode from "@/components/preparing/CartBtnNode.vue";
 import SliderBannersFashionBlogNode from "@/components/sliders/SliderBannersFashionBlogNode.vue";
 import SliderProductsNode from "@/components/sliders/SliderProductsNode.vue";
 import SliderSingleNode from "@/components/sliders/SliderSingleNode.vue";
@@ -228,7 +221,6 @@ export default {
       setCategoryId: "filter/setCategoryId",
     }),
     ...mapActions({
-      getItems: "getItems",
       getSingleBySlug: "getSingleBySlug",
     }),
     attribute(attrId) {
@@ -267,12 +259,11 @@ export default {
     this.getProduct();
   },
   mounted() {
-    var sticky = new Sticky(".sidebar-single", {
+    new Sticky(".sidebar-single", {
       wrap: false,
       marginTop: 100,
       marginBottom: 100,
       stickyFor: 1024,
-      stickyClass: "stuck",
       stickyContainer: ".single__main",
     });
   },
@@ -291,15 +282,13 @@ export default {
     position: relative;
     display: grid;
     grid-template-columns: 1.15fr 0.85fr;
-
+    min-height: 400px;
     @media (max-width: ($md1+px)) {
       grid-template-columns: 1fr 1fr;
     }
-
     @media (max-width: ($md2+px)) {
       grid-template-columns: 0.8fr 1.2fr;
     }
-
     @media (max-width: ($md3+px)) {
       grid-template-columns: 1fr;
     }
@@ -307,26 +296,12 @@ export default {
 
   &__rows {
     width: 57%;
-
     @media (max-width: ($md1+px)) {
       width: 49.5%;
     }
-
     @media (max-width: ($md2+px)) {
       width: 100%;
     }
-  }
-
-  &__row {
-  }
-
-  &__content {
-  }
-
-  &__sidebar {
-  }
-
-  &__data {
   }
 }
 
@@ -338,25 +313,19 @@ export default {
       display: inline-flex;
       align-items: baseline;
     }
-
     &__sale-price {
       font-size: 2rem;
       font-weight: 700;
       white-space: nowrap;
     }
-
     &__regular-price {
       margin-left: 10px;
       font-weight: 700;
       white-space: nowrap;
-
       &_only {
         margin: 0;
         font-size: 2rem;
       }
-    }
-
-    &__procent-sale {
     }
   }
 
@@ -389,7 +358,6 @@ export default {
     height: 100%;
     display: flex;
     align-items: center;
-
     span {
       color: #868686;
       font-weight: 600;
@@ -408,12 +376,10 @@ export default {
       color: #5073a2;
       display: block;
     }
-
     ul {
       display: inline-grid;
       grid-auto-flow: column;
       gap: 0.5rem;
-
       li {
         button {
           color: #231f20;
@@ -450,10 +416,13 @@ export default {
     font-size: 1.4rem;
   }
 
-  &__favorite {
+  &__wishlist {
     font-size: 1.2rem;
     width: 4rem;
     margin-left: 1rem;
+    &::before {
+      color: #000 !important;
+    }
   }
 }
 

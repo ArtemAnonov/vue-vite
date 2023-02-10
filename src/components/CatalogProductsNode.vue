@@ -1,5 +1,4 @@
 <template>
-<!-- :class="itemsLoaded ? '' : 'products-loading'" -->
   <div class="catalog-products" >
     <PreloadWrapNode
       v-for="(product, index) in products"
@@ -7,7 +6,7 @@
       :targetPreloadElement="product ? false : true"
       :paddingBottom="product ? 0 : 180"
     >
-      <ProductNode v-if="product" :product="product"></ProductNode>
+      <ProductNode v-if="product" :product="product" viewType="catalog"></ProductNode>
     </PreloadWrapNode>
   </div>
 </template>

@@ -1,6 +1,6 @@
 <template>
-  <div class="revealing">
-    <div v-show="element.active" class="revealing__body">
+  <div v-show="element.active" class="revealing">
+    <div class="revealing__body">
       <slot></slot>
     </div>
   </div>
@@ -28,12 +28,12 @@ export default {
   position: relative;
   // .revealing__body
   &__body {
-    z-index: 4;
-    position: absolute;
-    top: 0;
-    right: 0;
-    padding: 0.5rem;
-    transform: translate(-50%, 0);
+    // z-index: 4;
+    // position: absolute;
+    // top: 0;
+    // right: 0;
+    // padding: 0.5rem;
+    // transform: translate(-50%, 0);
   }
 }
 </style>

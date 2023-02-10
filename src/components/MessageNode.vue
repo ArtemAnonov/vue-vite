@@ -1,7 +1,6 @@
 <template>
-  <div class="message" :class="classes">
-    <span>
-      <slot></slot>
+  <div v-if="item" class="message" :class="classes">
+    <span v-html="item.html">
     </span>
   </div>
 </template>
@@ -9,17 +8,17 @@
 <script>
 export default {
   name: "MessageNode",
-  emits: ["showMessage"],
   props: {
     item: {
-      type: Object,
+      type: [Object, null],
     },
   },
 
   computed: {
     classes() {
+      if(this.item === null) return
       return {
-        active: this.item.visible,
+        active: true,
         "icon-check": this.item.type === "success",
         error: this.item.type === "error",
       };

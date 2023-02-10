@@ -61,14 +61,13 @@ import { handleMonth } from "@/api/utils";
 export default {
   async setup() {
     const store = useStore();
-    const message = store.state.common.messages.currentPaymentURLNotSet;
 
-    const ordersRequest = store.state.orders.basedRequest;
-    const requested = await store.dispatch("getItems", ordersRequest, {
+    const basedRequest = store.state.orders.basedRequest;
+    const response = await store.dispatch("getItems", {basedRequest}, {
       root: true,
     });
 
-    const orders = requested.response.data.map((el) => {
+    const orders = response.data.map((el) => {
       el.date_created = handleWPDate(el.date_created);
       el.line_items.map((el) => {
         const product = store.state.products.items[el.product_id];
@@ -78,13 +77,7 @@ export default {
       });
       return el;
     });
-    // let orders = {}
-    // for (const key in store.state.orders.items) {
-    //   if (Object.hasOwnProperty.call(store.state.orders.items, key)) {
-    //     let element = store.state.orders.items[key];
-    //     orders[element.id] = element.date_created = handleWPDate(element.date_created);
-    //   }
-    // }
+
     function openPaymentPage(url) {
       window.open(url);
       console.log(url);

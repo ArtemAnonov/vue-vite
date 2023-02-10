@@ -1,6 +1,6 @@
 import { VUE_WP_INSTANCE } from '@/api/helpers.js'
-const instance = VUE_WP_INSTANCE().state.productsTermsSizes;
-export const productsTermsSizesModule = {
+const instance = VUE_WP_INSTANCE().state.productsTermsMaterials;
+export const productsTermsMaterialsModule = {
     namespaced: true,
     state: () => ({
         basedRequest: {
@@ -10,7 +10,7 @@ export const productsTermsSizesModule = {
             params: Object.assign({}, instance.params),
           },
         requests: instance.requests,
-        settings: instance.settings,
+         
         items: instance.items
     }),
 }

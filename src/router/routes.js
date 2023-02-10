@@ -9,7 +9,7 @@ import Cart from "@/pages/private/Cart.vue";
 import Payment from "@/pages/private/Payment.vue";
 import Checkout from "@/pages/private/Checkout.vue";
 
-import Favorite from "@/pages/private/Favorite.vue";
+import Wishlist from "@/pages/private/Wishlist.vue";
 import Orders from "@/pages/private/Orders.vue";
 import Profile from "@/pages/private/Profile.vue";
 import NotFound from "@/pages/private/NotFound.vue";
@@ -63,22 +63,23 @@ export const commonComponents = [
     name: "SingleProduct",
     props: (route) => ({ params: route.params, query: route.query }),
   },
-
+  //
   {
-    path: "/personal/favorite",
-    component: Favorite,
-    name: "Favorite",
+    path: "/wishlist",
+    component: Wishlist,
+    name: "Wishlist",
   },
   {
-    path: "/personal/orders",
+    path: "/orders",
     component: Orders,
     name: "Orders",
   },
   {
-    path: "/personal/profile",
+    path: "/profile",
     component: Profile,
     name: "Profile",
   },
+  //
   {
     path: "/blog-page",
     component: BlogPage,

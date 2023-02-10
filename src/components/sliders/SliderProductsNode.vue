@@ -3,16 +3,13 @@
     <ContainerNode>
       <div class="slider-products__body">
         <div class="slider-products__title">
-          <button @click="routeToCategory(productsCategory)">
+          <button @click="routeToCategoryLocal(productsCategory, null)">
             {{ title }}
           </button>
         </div>
         <div class="slider-products__slider">
-          <arrows-slider-node
-            v-show="itemsLoaded"
-            :identificator="identificator"
-          ></arrows-slider-node>
-          <swiper
+          <ArrowsSliderNode :identificator="identificator"></ArrowsSliderNode>
+          <Swiper
             v-bind="$attrs"
             :loop="true"
             :slides-per-view="2"
@@ -26,19 +23,15 @@
             :modules="modules"
             :breakpoints="swiperBreakpoints"
           >
-            <swiper-slide v-for="(product, index) in products" :key="index">
+            <SwiperSlide v-for="(product, index) in products" :key="index">
               <PreloadWrapNode
                 :targetPreloadElement="product ? false : true"
                 :paddingBottom="product ? 0 : 146"
               >
-                <ProductNode
-                  v-if="product"
-                  :product="product"
-                  :catalogType="false"
-                ></ProductNode>
+                <ProductNode v-if="product" :product="product"></ProductNode>
               </PreloadWrapNode>
-            </swiper-slide>
-          </swiper>
+            </SwiperSlide>
+          </Swiper>
         </div>
       </div>
     </ContainerNode>
@@ -55,7 +48,7 @@ import { Swiper, SwiperSlide } from "swiper/vue";
 import ArrowsSliderNode from "@/components/sliders/ArrowsSliderNode.vue";
 
 import "swiper/css";
-import {itemsLoadHandler} from "@/api/helpers";
+import { itemsLoadHandler, routeToCategory } from "@/api/helpers";
 
 export default {
   inheritAttrs: false,
@@ -96,6 +89,9 @@ export default {
         state.productsCategories.basedRequest,
     }),
     products() {
+      /**
+       * Не уверен в нужности этой функции, но оставил
+       */
       return itemsLoadHandler(
         this.itemsMatchedByCallback(
           this.productsRequest,
@@ -134,12 +130,17 @@ export default {
     ...mapActions({
       getItems: "getItems",
     }),
+    routeToCategoryLocal(category, parentCategorySlug) {
+      routeToCategory(category, parentCategorySlug);
+    },
   },
   created() {
     if (import.meta.env.VITE_LIKE_A_SPA) {
       this.getItems({
-        ...{ category: this.productsCategoryId },
-        ...this.productsRequest,
+        basedRequest: {
+          ...{ category: this.productsCategoryId },
+          ...this.productsRequest,
+        },
       });
     }
   },
@@ -166,11 +167,11 @@ export default {
         top: 50%;
         // transform: translate(0, -50%);
         &_prev {
-          left: 0;
+          left: 1rem;
         }
 
         &_next {
-          right: 0;
+          right: 1rem;
         }
       }
     }

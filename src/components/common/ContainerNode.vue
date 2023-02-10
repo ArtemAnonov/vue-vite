@@ -16,7 +16,7 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 .container {
   max-width: ($md1+px);
   margin: 0 auto;

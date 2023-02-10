@@ -6,16 +6,6 @@
     <template #page-main>
       <ContainerNode>
         <div class="payment">
-          <MessageNode :item="message"
-            >Ссылка на страницу оплаты не была получена. Попробуйте оплатить из
-
-            <button
-              @click="$router.push({ name: 'Orders' })"
-              class="message-link"
-            >
-              Личного кабинета
-            </button></MessageNode
-          >
           <ButtonNode @click="openPaymentPage">Оплатить сейчас</ButtonNode>
         </div>
       </ContainerNode>
@@ -39,9 +29,7 @@ export default {
       if (currentPaymentURL) {
         window.open(currentPaymentURL);
       } else {
-        store.dispatch("common/updateMessage", {
-          name: "currentPaymentURLNotSet",
-        });
+        store.dispatch("common/updateMessage", "currentPaymentURLNotSet");
       }
     }
     return { message, openPaymentPage };

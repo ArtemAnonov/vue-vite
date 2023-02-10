@@ -1,6 +1,7 @@
 import Cookies from "js-cookie";
 import __VUE_WORDPRESS__ from "@/json/vuewp.json";
 import router from "@/router";
+import store from "@/store";
 import { isEmpty } from "lodash-es";
 
 export function fullName(value) {
@@ -111,12 +112,19 @@ export function loginFromMail(email) {
   return str.slice(0, str.indexOf("@"));
 }
 
-export function actionJWTResolver({ reqiredJWT, maintainJWT, config = {} }) {
-  let JWTToken;
-  if (reqiredJWT && maintainJWT === false) {
-    throw 'Использование флага "reqiredJWT" подразумевает установку maintainJWT = true';
+export function actionJWTResolver({ JWTRequestConfig, type, config = {} }) {
+  // var relevantJWTRC
+  if (store.state[type].hasOwnProperty('JWTRequestConfig')) {
+    JWTRequestConfig = store.state[type].JWTRequestConfig
+    // JWTRequestConfig = relevantJWTRC
   }
-  if (maintainJWT) {
+  // JWTRequestConfig = relevantJWTRC ? relevantJWTRC : JWTRequestConfig
+  const { JWTReqired, JWTMaintain } = JWTRequestConfig
+  let JWTToken;
+  if (JWTReqired && JWTMaintain === false) {
+    throw 'Использование флага "JWTReqired" подразумевает установку JWTMaintain = true';
+  }
+  if (JWTMaintain) {
     JWTToken = Cookies.get("jwt-token");
     if (JWTToken) {
       if (!config.hasOwnProperty("headers")) {
@@ -124,7 +132,7 @@ export function actionJWTResolver({ reqiredJWT, maintainJWT, config = {} }) {
       }
       config.headers["Authorization"] = "Bearer " + JWTToken;
     } else {
-      if (reqiredJWT) {
+      if (JWTReqired) {
         throw "Для выполнения запроса необходим токен";
       }
     }
@@ -139,13 +147,10 @@ export function actionJWTResolver({ reqiredJWT, maintainJWT, config = {} }) {
  * @returns
  */
 export function routeToCategory(category, parentCategorySlug = null) {
-  if (isEmpty(category)) throw 'Не передана категория';
+  if (isEmpty(category)) throw "Не передана категория";
 
   let routerObject = {};
-  if (
-    category.parent == 0 ||
-      category.slug === parentCategorySlug
-  ) {
+  if (category.parent == 0 || category.slug === parentCategorySlug) {
     //
     routerObject = router.push({
       name: "SingleCategory",
@@ -160,9 +165,13 @@ export function routeToCategory(category, parentCategorySlug = null) {
       },
     });
   }
+  store.commit("common/setPopup", { name: "headerMenu", active: false });
+  store.commit("common/setScrollFlag", { value: true });
   return routerObject;
 }
-
+/**
+ * Не уверен в нужности этой функции, но оставил
+ */
 export function itemsLoadHandler(callback, quantity = 4) {
   let items = [];
   items = callback;
@@ -179,17 +188,28 @@ export function itemsLoadHandler(callback, quantity = 4) {
  * Функция переопределяет те свойства, ключи которых имеются в объекте с заменяющими значниями
  * (Написана была для переопределения per_page в productsModule - для SSG, так как реквест,
  * возвращаемый запросом из бэка per_page определял как 100)
- * 
- * @param {Object} mutableObject 
- * @param {Object} replacementProps 
- * @returns 
+ *
+ * @param {Object} mutableObject
+ * @param {Object} replacementProps
+ * @returns
  */
-export function mutateObjectForReplaceProperty(mutableObject, replacementProps) {
-  const replacementKeys = Object.keys(replacementProps)
-  replacementKeys.forEach(key => {
+export function mutateObjectForReplaceProperty(
+  mutableObject,
+  replacementProps
+) {
+  const replacementKeys = Object.keys(replacementProps);
+  replacementKeys.forEach((key) => {
     if (mutableObject.hasOwnProperty(key)) {
-      mutableObject[key] = replacementProps[key]
+      mutableObject[key] = replacementProps[key];
     }
   });
-  return mutableObject
+  return mutableObject;
+}
+
+export function getWishListKeyFromCookieKey() {
+  if (store.state.auth.userAuth) {
+    return Cookies.get("tinv_wlk_log");
+  } else {
+    return Cookies.get("tinv_wishlistkey");
+  }
 }

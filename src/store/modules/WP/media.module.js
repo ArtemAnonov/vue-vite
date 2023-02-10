@@ -1,16 +1,19 @@
 import { VUE_WP_INSTANCE } from '@/api/helpers.js'
-const instance = VUE_WP_INSTANCE().state.productsTermsBrands;
-export const productsTermsBrandsModule = {
+const instance = VUE_WP_INSTANCE().state.media;
+
+export const mediaModule = {
     namespaced: true,
     state: () => ({
         basedRequest: {
             apiType:  instance.apiType,
             type:  instance.type,
             route_base:  instance.route_base,
-            params: Object.assign({}, instance.params),
-          },
+            params: Object.assign({
+
+            }, instance.params),
+        },
         requests: instance.requests,
-        settings: instance.settings,
-        items: instance.items || {},
+         
+        items: instance.items
     }),
 }

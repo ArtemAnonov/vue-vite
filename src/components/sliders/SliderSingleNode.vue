@@ -2,7 +2,7 @@
   <section class="slider-single">
     <ContainerNode>
       <div class="slider-single__sliders sw-cont">
-        <swiper
+        <Swiper
           class="slider-single__thumb-slider sw-cont"
           v-show="windowWidth > 767"
           @swiper="setThumbsSwiper"
@@ -10,7 +10,7 @@
           :modules="modules"
           :breakpoints="{
             '320': {
-              spaceBetween: '15',
+              spaceBetween: 15,
               direction: 'horizontal',
             },
             '768': {
@@ -22,10 +22,11 @@
               spaceBetween: 10,
               direction: 'vertical',
               slidesPerView: 'auto',
+              autoHeight: true
             },
           }"
         >
-          <swiper-slide v-for="(image, index) in images" :key="index">
+          <SwiperSlide v-for="(image, index) in images" :key="index">
             <div class="slider-single__image">
               <picture>
                 <source srcset="" type="image/webp" />
@@ -33,9 +34,9 @@
                 <img :src="image?.src" alt="" />
               </picture>
             </div>
-          </swiper-slide>
+          </SwiperSlide>
         </swiper>
-        <swiper
+        <Swiper
           class="slider-single__main-slider sw-cont"
           v-bind="$attrs"
           :thumbs="{ swiper: thumbsSwiper }"
@@ -50,7 +51,7 @@
             },
           }"
         >
-          <swiper-slide v-for="(image, index) in images" :key="index">
+          <SwiperSlide v-for="(image, index) in images" :key="index">
             <PreloadWrapNode :paddingBottom="image?.src ? '' : 50" :targetPreloadElement="image?.src ? false : true">
                 <div class="slider-single__image">
                   <picture>
@@ -61,7 +62,7 @@
                 </div>
             </PreloadWrapNode>
             <!-- <span>s</span> -->
-          </swiper-slide>
+          </SwiperSlide>
         </swiper>
       </div>
     </ContainerNode>
@@ -123,6 +124,14 @@ export default {
 .slider-single {
   position: relative;
   margin-bottom: 3rem;
+padding-bottom: 1rem;
+  // багает слайдер - миниатюры не работают правильнгл (показывается одна)
+  height: 100%;
+  .container {
+  height: 100%;
+
+  }
+  //
   &__sliders {
     column-gap: 1rem;
     display: grid;
@@ -171,11 +180,11 @@ export default {
     @media (max-width: ($md2+px)) {
       margin-top: 1rem;
       grid-row: 2 / 3;
-      .swiper-slide {
+      .SwiperSlide {
         height: 100%;
       }
     }
-    .swiper-slide {
+    .SwiperSlide {
       height: auto !important;
     }
     .slider-single__image {

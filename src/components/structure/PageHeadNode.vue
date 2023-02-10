@@ -8,19 +8,25 @@
             class="page-head__back icon-arrow"
             @click="$router.back()"
           >
-            <!-- <div class=""></div> -->
             Назад
           </button>
           <ul class="page-head__breadcrumbs">
             <li><RouterLink to="/">Главная&nbsp;&nbsp;&nbsp;/</RouterLink></li>
-            <li v-for="(crumb, index) in crumbs?.reverse()" :key="index">
-              <RouterLink :to="`/product-category/${crumb.slugs.join('/')}`">
-                {{ crumb.name }}&nbsp;&nbsp;&nbsp;<span
-                  v-if="crumbs.length - 1 !== index || additionalTitle"
-                  >/</span
-                >
-              </RouterLink>
-            </li>
+            <template v-if="Array.isArray(crumbs)">
+              <li v-for="(crumb, index) in crumbs?.reverse()" :key="index">
+                <RouterLink :to="`/product-category/${crumb.slugs.join('/')}`">
+                  {{ crumb.name }}&nbsp;&nbsp;&nbsp;<span
+                    v-if="crumbs.length - 1 !== index || additionalTitle"
+                    >/</span
+                  >
+                </RouterLink>
+              </li>
+            </template>
+            <template v-else
+              ><li>
+                <button><span>{{ navRaw }}</span></button>
+              </li></template
+            >
             <li>
               <span v-if="additionalTitle">{{ additionalTitle }}</span>
             </li>
@@ -44,7 +50,10 @@ export default {
      */
     additionalTitle: String,
     title: String,
-    category: Object,
+    /**
+     * Может быть моделью-категорией или Route ((([хотя хк])))
+     */
+    navRaw: [Object, String, Array],
   },
   data() {
     return {};
@@ -65,14 +74,18 @@ export default {
      * Прим. Не всегда работает корректно. Ошибка замечена при попытке выдать категории
      */
     crumbs() {
-      if (!this.category) return;
+      if (!this.navRaw) return;
+
+      let type = typeof this.navRaw;
+      if (type === "string" || type === "array") return this.navRaw;
+
       let category;
-      if (this.category.hasOwnProperty("parent")) {
-        category = this.category;
+      if (this.navRaw.hasOwnProperty("parent")) {
+        category = this.navRaw;
       } else
         category = this.itemById({
           type: this.productsCategoriesRequest.type,
-          id: this.category.id,
+          id: this.navRaw.id,
         });
 
       let parent = 0;
@@ -111,13 +124,13 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .page-head {
-  padding: 2.6666666667rem 0 1.6666666667rem 0;
+  padding: 2.6666666667rem 0 0 0;
   // margin-bottom: 1rem;
   // border-bottom: 0.0666666667rem solid #d8d8d8;
   &_product {
-    padding: 4rem 0 1rem 0;
+    padding: 2rem 0 1rem 0;
     margin-bottom: 1rem;
     @media (max-width: ($md3+px)) {
       padding: 1rem 0 1rem 0;
@@ -129,12 +142,16 @@ export default {
   &__breadcrumbs {
     font-size: 0.9333333333rem;
     line-height: 1.0666666667rem;
-    color: #868686;
     display: inline-flex;
     flex-wrap: wrap;
+
     li {
       display: inline-flex;
       margin-right: 0.3rem;
+          a, button {
+    color: #868686 !important;
+
+    }
     }
   }
 
@@ -155,9 +172,9 @@ export default {
   }
 
   &__title {
-    padding: 0.6666666667rem 0 1rem;
+    padding: 0.6666666667rem 0 0 0;
     @media (max-width: ($md4+px)) {
-      padding: 0.6666666667rem 0 3rem;
+      padding: 0.6666666667rem 0 0 0;
     }
   }
 }

@@ -6,7 +6,6 @@
           <RouterLink to="/">LO<span>GOTYPE</span></RouterLink>
         </div>
         <div class="header_light__call">
-          <!-- <HeaderButtonNode :itemsCounter="cartItemsCount" link="/cart" class="icon-trash"></HeaderButtonNode> -->
           <button class="header_light__call-icon icon-call"></button>
           <div class="header_light__text">Бесплатно по России</div>
           <div class="header_light__tel">8 800 999 09 99</div>
@@ -17,19 +16,8 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
-
 export default {
-  components: {
-  },
-  computed: {
-    ...mapGetters({}),
-    ...mapState({}),
-  },
-  methods: {
-    ...mapMutations({}),
-    ...mapActions({}),
-  },
+
 };
 </script>
 

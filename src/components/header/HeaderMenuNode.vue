@@ -17,25 +17,26 @@
           :neastedLevel="1"
           :parentID="slotProps.parentID"
           :parentCategorySlug="slotProps.parentCategorySlug"
-
         >
         </CategoriesNode>
       </CategoriesNode>
       <NavNode name="top_header">
-        <li class="header-nav__item">
-          <button
-            class="header-nav__btn icon-profile"
-            @click.stop="
-              userAuth
-                ? $router.push('/personal/profile')
-                : setPopup({
-                    name: 'login',
-                  })
-            "
-          >
-            {{ userAuth ? "Личный кабинет" : "Вход/Регистрация" }}
-          </button>
-        </li></NavNode
+        <template #in>
+          <li class="header-nav__item">
+            <button
+              class="header-nav__btn icon-profile"
+              @click.stop="
+                userAuth
+                  ? $router.push('/personal/profile')
+                  : setPopup({
+                      name: 'login',
+                    })
+              "
+            >
+              {{ userAuth ? "Личный кабинет" : "Вход/Регистрация" }}
+            </button>
+          </li></template
+        ></NavNode
       >
     </PopupNode>
   </div>
@@ -144,9 +145,8 @@ export default {
     }
   }
 
-    .categories__item {
-
-    }
+  .categories__item {
+  }
 
   .header-nav {
     &__list {

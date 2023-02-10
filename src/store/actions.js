@@ -1,5 +1,3 @@
-// import _ from 'lodash-es';
-import Cookies from "js-cookie";
 import { cloneDeep, pickBy, identity } from "lodash-es";
 import { mainFetch } from "@/api";
 import { actionJWTResolver } from "@/api/helpers.js";
@@ -37,7 +35,7 @@ export default {
       });
       commit("ADD_ITEM", { type, item: response.data });
     } catch (error) {
-      console.log(error, type);
+      console.log(error, { type });
     }
     return { request, response };
   },
@@ -53,32 +51,21 @@ export default {
       response = await mainFetch({ route_base, config: { params }, apiType });
       commit("ADD_ITEM", { type, item: response.data[0] });
     } catch (error) {
-      console.log(error, type);
+      console.log(error, { type });
     }
     return { request, response };
   },
 
   /**
-   * Для получения базовых вещей типа атрибутов, категорий, меток
-   * @param {*} param0
-   * @param {*} param1
-   */
-  async getItemsBased(
-    { getters, commit },
-    { route_base, type, params, apiType }
-  ) {
-    try {
-      const response = await mainFetch({ route_base, params, apiType });
-      response.data.forEach((item) => commit("ADD_ITEM", { type, item }));
-    } catch (error) {
-      console.log(error, type);
-    }
-  },
-  /**
    * (*) - копирование объекта параметров (params), а не присвоение позволяет
    * поддерживать уникальность объекта параметров (params) в компоненте,
    * таким образом при новых передоваемых параметрах (page) в компонент,
    * удается изменять request компонета, как следствие выполнять новый запрос
+   *
+   * (!) - копирование basedRequest иногда происходит, тем не менее в теле функции
+   * происходит глубокое клонирование параметров. Неплохо бы было подвести это к
+   * одной операции... (мб передавать коллбэк для тех запросов, которые должны как-то
+   * обрабатываться (а передавать в функцию можно только type))
    *
    * @param {*} state
    * @param {*} request from component
@@ -87,21 +74,25 @@ export default {
   async getItems(
     { state, getters, commit },
     {
-      route_base,
-      type,
-      apiType,
-      params,
+      basedRequest,
       onDownloadProgress = null,
-      maintainJWT = true,
-      reqiredJWT = true,
+      JWTRequestConfig = {
+        JWTMaintain: true,
+        JWTReqired: true,
+      },
     }
   ) {
     let response;
-    let request = getters.request({ type, params });
+    let payload;
+    let request = getters.request({
+      type: basedRequest.type,
+      params: basedRequest.params,
+    });
     /**
      * Валидация параметров, выкидывает null, "" и т.п.
      */
-    params = pickBy(params, identity);
+    const { type, params } = basedRequest;
+    let prepParams = pickBy(params, identity);
 
     let config = {
       onDownloadProgress,
@@ -110,38 +101,36 @@ export default {
 
     if (!request) {
       try {
-        config = actionJWTResolver({maintainJWT, reqiredJWT, config})
-        response = await mainFetch({ route_base, config, apiType }); //: Object.assign({}, optionalParams, params)
+        config = actionJWTResolver({ JWTRequestConfig, type, config });
+        payload = { basedRequest, config };
+        response = await mainFetch(payload);
         if (!response) {
           throw "Response Undefined";
         }
         response.data.forEach((item) => commit("ADD_ITEM", { type, item }));
 
         if (state[type].hasOwnProperty("requests")) {
-          params = cloneDeep(params); // (*)
+          prepParams = cloneDeep(prepParams); // (*)
           let ids = response.data.map((i) => i.id);
-          /**
-           * Переопределение реквеста
-           */
           request = {
-            params,
+            prepParams,
             total: Number(response.headers["x-wp-total"]),
             totalPages: Number(response.headers["x-wp-totalpages"]),
             data: ids,
           };
           commit("ADD_REQUEST", {
-            type,
+            type: type,
             request: request,
           });
         }
       } catch (error) {
-        console.log(error, type);
+        console.log(error, payload);
       }
     } else {
       console.log("Попытка вызова запроса с такими же параметрами");
     }
 
-    return { request, response };
+    return response;
   },
 
   /**
@@ -163,38 +152,42 @@ export default {
   //  * некоторые блоки, например, добавление header.Authorization может выдавать ошибку
    *   
    * Определяющим значением выполнения или невыполнения блока должен служить соответсвующий
-   * флаг. Так как установка maintainJWT = true флага для любого запроса по дефолту
+   * флаг. Так как установка JWTMaintain = true флага для любого запроса по дефолту
    * заставляет работать ту логику, которая не нуждается в этом.
    * Например, было решено, что WCProducts будут доступны без авторизации, следовательно 
    * добавление лишнего header-а неприемлемо 
    *
    * @param {*} param0
    * @param {Object} Payload
-   * @param {Boolean} Payload.maintainJWT поддержка JWT
-   * @param {Boolean} Payload.reqiredJWT обязателен ли JWT
+   * @param {Boolean} Payload.JWTRequestConfig.JWTMaintain допустим ли JWT
+   * @param {Boolean} Payload.JWTRequestConfig.JWTReqired обязателен ли JWT
    * @returns
    */
   async mainFetchRequest(
     { getters, commit, rootState },
     {
-      route_base,
-      apiType,
+      basedRequest,
       method,
       data,
       config = {},
-      maintainJWT = true,
-      reqiredJWT = true,
+      JWTRequestConfig = {
+        JWTMaintain: true,
+        JWTReqired: true,
+      },
     }
   ) {
     let response;
-    let request;
-
+    let payload = { basedRequest, config, method, data };
     try {
-      config = actionJWTResolver({maintainJWT, reqiredJWT, config})
-      response = await mainFetch({ route_base, config, apiType, method, data });
+      config = actionJWTResolver({
+        JWTRequestConfig,
+        type: basedRequest.type,
+        config,
+      });
+      response = await mainFetch(payload);
     } catch (error) {
-      console.log(error, { route_base, config, apiType, method, data });
+      console.log(error, payload);
     }
-    return { request, response };
+    return response;
   },
 };

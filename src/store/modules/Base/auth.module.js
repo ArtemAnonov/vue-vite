@@ -11,16 +11,18 @@ export const authModule = {
      * (!) - userAuth можно изменить из фронта и попасть на маршрут (правильно ли это?)
      */
     userAuth: false,
-    currentURLPayment: '',
-    userData: {
-      
-    },
+    currentURLPayment: "",
+    userData: {},
 
     basedRequest: {
       apiType: instance.apiType,
       type: instance.type,
       route_base: instance.route_base,
       params: Object.assign({}, instance.params),
+    },
+    JWTRequestConfig: {
+      JWTMaintain: false,
+      JWTReqired: false,
     },
   }),
   getters: {},
@@ -30,25 +32,25 @@ export const authModule = {
       commit("setUserAuth", Boolean(Cookies.get("jwt-token")));
     },
 
-    async login({ state, dispatch, commit, getters }, userData) {
-      const requestedLogin = await dispatch(
+    async login({ state, dispatch, commit, getters, rootState }, authData) {
+      const basedRequest = { ...{}, ...state.basedRequest };
+      basedRequest.route_base = "token";
+      const responseLogin = await dispatch(
         "mainFetchRequest",
         {
-          route_base: "token",
-          apiType: state.basedRequest.apiType,
+          basedRequest,
           method: "post",
           data: {
-            username: loginFromMail(userData.email),
-            password: userData.password,
+            username: loginFromMail(authData.email),
+            password: authData.password,
           },
-          maintainJWT: false,
-          reqiredJWT: false,
         },
         { root: true }
       );
-      dispatch("cart/getCart", null, { root: true });
-      Cookies.set("jwt-token", requestedLogin.response.data.token);
+      Cookies.set("jwt-token", responseLogin.data.token);
       commit("setUserAuth", true);
+      dispatch("cart/getCart", null, { root: true });
+      dispatch("getUser");
     },
 
     async register({ state, dispatch, commit, getters, rootState }, userData) {
@@ -56,13 +58,9 @@ export const authModule = {
       dispatch(
         "mainFetchRequest",
         {
-          ...rootState.customers.basedRequest,
-          ...{
-            method: "post",
-            data: userData,
-            maintainJWT: false,
-            reqiredJWT: false,
-          },
+          basedRequest: rootState.customers.basedRequest,
+          method: "post",
+          data: userData,
         },
         { root: true }
       );
@@ -74,8 +72,24 @@ export const authModule = {
       }
 
       Cookies.remove("jwt-token");
+      commit("setUserData");
       commit("setUserAuth", false);
+      Cookies.remove("tinv_wlk_log");
       dispatch("cart/getCart", null, { root: true });
+    },
+
+    async getUser({ dispatch, commit, rootState }) {
+      const response = await dispatch(
+        "mainFetchRequest",
+        { basedRequest: rootState.customers.basedRequest },
+        {
+          root: true,
+        }
+      );
+      //.then((r) => console.log('r',r), (e) => console.log(e))
+      commit("setUserData", response?.data);
+      // console.log(response);
+      // return response
     },
   },
 
@@ -84,7 +98,14 @@ export const authModule = {
       state.userAuth = value;
     },
     setCurrentURLPayment(state, value) {
-      state.currentURLPayment = value
-    }
+      state.currentURLPayment = value;
+    },
+    setUserData(state, value = 0) {
+      if (value === 0) {
+        state.userData = { id: 0 };
+      } else {
+        state.userData = value;
+      }
+    },
   },
 };

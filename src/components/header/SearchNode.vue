@@ -1,18 +1,19 @@
 <template>
   <div class="search">
+    <!--       v-show="scrollY < 99" -->
     <button
-      v-show="scrollY < 99"
       @click.stop="setPopup({ name: 'search' })"
-      class="search__header-button"
+      class="search__button"
+      :class="{ search__button_scrolled: scrollY > 99 }"
     >
-      <button class="search__header-btn icon-search"></button>
-      <span>Поиск</span>
+      <span class="search__icon icon-search"></span>
+      <span class="search__input">Поиск</span>
     </button>
     <PopupNode :item="{ name: 'search' }">
-      <div class="">Блок находится в разработке...</div>
-      <form action="">
-        <div class="icon-search"></div>
+      <form class="search__form" action="">
+        <span class="search__icon icon-search"></span>
         <input
+          class="search__input"
           v-model="searchInputValue"
           placeholder="Введите запрос..."
           type="text"
@@ -66,95 +67,109 @@ export default {
   }
 }
 .search {
-  &__header-button {
-    display: grid;
+  .search__button,
+  .search__form {
+    &:hover {
+      .search__icon::before {
+        color: $mainColor;
+      }
+    }
+  }
+  &__button {
+    display: flex;
     align-items: end;
-    @media (min-width: ($md2+px)) {
-      min-width: 480px;
-      display: flex;
-      align-items: center;
-      max-width: 480px;
-      height: 50px;
-      padding: 0 18px;
-      cursor: pointer;
-      transition: box-shadow 0.1s, border-color 0.1s;
-      text-decoration: none;
-      color: #868686;
-      border: 2px solid #f1f1f1;
-      @media (any-hover: hover) {
-        &:hover {
-          border-color: #d8d8d8;
-          box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.15);
+    min-width: 480px;
+    align-items: center;
+    max-width: 480px;
+    height: 50px;
+    cursor: pointer;
+    transition: box-shadow 0.1s, border-color 0.1s;
+    text-decoration: none;
+    color: #868686;
+    border: 2px solid #f1f1f1;
+    &:hover {
+      border-color: #d8d8d8;
+      box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.15);
+    }
+    @media (max-width: ($md2+px)) {
+      margin-left: 0 !important;
+      display: block;
+      min-width: auto;
+      max-width: auto;
+      height: auto;
+      border: none;
+      box-shadow: none;
+      &:hover {
+        border-color: transparent;
+        box-shadow: none;
+      }
+      .search__icon {
+        padding: 0;
+        &::before {
+          color: $mainColor !important;
         }
       }
-      span {
-        display: inline-block !important;
-        padding-top: 1px;
-        transition: color 0.1s;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        color: #868686;
-        font-size: 1.13333rem;
-        line-height: 21px;
+      .search__input {
+        display: none;
       }
     }
-
-    button {
-      display: grid;
-      align-items: end;
-    }
-    span {
-      display: none;
+    &_scrolled {
+      margin-left: 1rem;
+      display: block;
+      min-width: auto;
+      max-width: auto;
+      height: auto;
+      border: none;
+      box-shadow: none;
+      &:hover {
+        border-color: transparent;
+        box-shadow: none;
+      }
+      .search__icon {
+        padding: 0;
+        &::before {
+          color: $mainColor !important;
+        }
+      }
+      .search__input {
+        display: none;
+      }
     }
   }
 
-  &__header-btn {
-    padding-right: 10px;
-    @media (max-width: ($md2+px)) {
-      padding: 0;
-    }
-    &::before {
-      font-size: 21px;
-    }
-  }
-
-  form {
+  &__form {
     position: relative;
+    height: 50px;
+    padding: 2px 20px 0 0;
+    border: 2px solid #f1f1f1;
+    transition: border-color 0.1s, box-shadow 0.1s;
+    display: flex;
+    align-items: center;
     &:hover {
-      .icon-search {
-        color: inherit;
+      box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.15);
+      input::placeholder {
+        transition: 0.5s;
       }
-    }
-    .icon-search {
-      transition: 0.5s;
-      color: #868686;
-      font-size: 21px;
-      position: absolute;
-      top: 50%;
-      transform: translate(50%, -50%);
     }
     input {
-      box-sizing: border-box;
-      display: inline-block;
-      height: 50px;
-      padding: 2px 20px 0 40px;
-      border: 2px solid #f1f1f1;
-      border-radius: 0;
-      font-size: 1.13333rem;
       width: 100%;
-      transition: border-color 0.1s, box-shadow 0.1s;
-      &:hover {
-        transition: 0.5s;
-        box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.15);
-        &::placeholder {
-          transition: 0.5s;
-          color: inherit;
-        }
-        &:focus {
-          box-shadow: 0 0 0 0 transparent;
-        }
-      }
+      height: 100%;
     }
+  }
+
+  &__icon {
+    // transition: 0.3s;
+    color: #868686;
+    padding: 0 1rem;
+    &::before {
+      color: #868686;
+      font-size: 22px;
+    }
+  }
+
+  &__input {
+    transition: 0.5s;
+    font-size: 1.13333rem;
   }
 }
 </style>

@@ -8,7 +8,6 @@
           </div>
           <div class="footer__spoilers">
             <div class="footer__column">
-              <!-- {{ slotProps.spoilers[Object.keys(slotProps.spoilers)[0]] }} -->
               <div class="footer__block">
                 <div class="footer__text">Присоединяйтесь в соц. сетях</div>
                 <SocialNetworksNode></SocialNetworksNode>
@@ -27,8 +26,6 @@
                 <div class="footer__text_semi-transp">Другие магазины</div>
               </div>
             </div>
-            <!-- {{footerShopingOnline}} -->
-
             <div
               class="footer__column"
               v-for="(menu, key, index) in menus"
@@ -52,7 +49,7 @@
                       v-for="(item, index) in menu.items"
                       :key="index"
                     >
-                      {{ item.content }}
+                      <RouterLink to="/">{{ item.content }}</RouterLink>
                     </li>
                   </ul></template
                 >
@@ -76,7 +73,6 @@
 </template>
 
 <script>
-import { useStore } from "vuex";
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 
 import SocialNetworksNode from "@/components/SocialNetworksNode.vue";
@@ -108,15 +104,6 @@ export default {
 <style lang="scss">
 .footer {
   color: #d8d8d8;
-
-  // .spoiler_default {
-  //   .footer__title {
-  //     &::before {
-  //       transform: translate(0, -50%) rotate(-180deg);
-  //     }
-  //   }
-  // }
-
   &__main {
     background-color: #1e242c;
     padding-top: 2.6666666667rem;
@@ -124,9 +111,6 @@ export default {
     @media (max-width: ($md3+px)) {
       padding-top: 1.3rem;
     }
-  }
-
-  &__main-body {
   }
 
   &__logo {
@@ -274,15 +258,12 @@ export default {
 
     .button {
       border: 0.0666666667rem solid #868686;
-
       &:hover {
         background: #868686;
-
         &::before {
           color: #1e242c;
         }
       }
-
       &::before {
         color: #d8d8d8;
       }

@@ -1,22 +1,13 @@
 <template>
-  <div
-    class="product"
-    @click="
-      $router.push({
-        name: 'SingleProduct',
-        params: { productSlug: product?.slug },
-      })
-    "
-    :class="catalogType ? 'catalog-type' : ''"
-  >
+  <div class="product" :class="`product_${viewType}`">
     <div class="product__body">
-      <div class="product__image">
-        <img v-if="product.images[3]" :src="product.images[3].src" alt="" />
-        <img v-if="product.images[0]" :src="product.images[0].src" alt="" />
+      <div class="product__image" @click="routeToSingle">
+        <img v-if="product.images?.[3]" :src="product.images?.[3].src" alt="" />
+        <img v-if="product.images?.[0]" :src="product.images?.[0].src" alt="" />
       </div>
       <div class="product__content">
         <div class="product__brand">{{ brand(1) }}</div>
-        <h3 class="product__title">
+        <h3 class="product__title" @click="routeToSingle">
           <button>
             {{ product.name }}
           </button>
@@ -27,7 +18,11 @@
         ></ProductPricesNode>
       </div>
       <div class="product__actions">
-        <button @click="$router.push('/favorite')" class="product__favorite icon-favorite"></button>
+        <WishlistBtnNode
+          v-if="viewType === 'catalog'"
+          :productData="{ product_id: product.id }"
+          class="product__wishlist icon-wishlist"
+        ></WishlistBtnNode>
         <ul class="product__colors">
           <li
             class="product__color"
@@ -50,18 +45,20 @@ import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 import { isEmpty } from "lodash-es";
 
 import ProductPricesNode from "@/components/product/ProductPricesNode.vue";
+import WishlistBtnNode from "@/components/preparing/WishlistBtnNode.vue";
 
 export default {
   components: {
     ProductPricesNode,
+    WishlistBtnNode,
   },
   props: {
     /**
      * Тип отображения, отвечает за стили
      */
-    catalogType: {
-      type: Boolean,
-      default: true,
+    viewType: {
+      type: String,
+      default: "slider",
     },
     product: {
       type: Object,
@@ -136,6 +133,12 @@ export default {
         attrId,
       })?.options;
     },
+    routeToSingle() {
+      this.$router.push({
+        name: "SingleProduct",
+        params: { productSlug: this.product?.slug },
+      });
+    },
   },
   created() {},
   mounted() {
@@ -192,22 +195,23 @@ export default {
     }
   }
 
-  // margin: 0 0 1rem 0;
-  &.catalog-type {
-    // margin: 0 0 0 0;
+  &_catalog {
     padding: 0 0.66rem 3rem 0.66rem;
-
     .product__content {
       justify-items: start;
     }
-
     .product__sizes {
       display: block !important;
     }
-
     .product-prices__procent-sale {
       left: 20px;
     }
+  }
+
+  &_wishlist {
+  }
+
+  &_default {
   }
 
   &:hover {
@@ -220,11 +224,12 @@ export default {
     &::before {
       opacity: 1;
     }
-
-    .product__image {
-      img {
-        &:nth-child(2) {
-          opacity: 0;
+    &_catalog {
+      .product__image {
+        img {
+          &:nth-child(2) {
+            opacity: 0;
+          }
         }
       }
     }
@@ -301,8 +306,7 @@ export default {
       }
     }
     @media (max-width: ($md4+px)) {
-    margin-bottom: .3rem;
-       
+      margin-bottom: 0.3rem;
     }
     button {
       font-size: 1rem;
@@ -330,7 +334,7 @@ export default {
   &__actions {
   }
 
-  &__favorite {
+  &__wishlist {
     position: absolute;
     top: 0.6666666667rem;
     right: 1.2rem;

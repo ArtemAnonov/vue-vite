@@ -1,32 +1,32 @@
 import { createStore } from "vuex"
 
 
-import { commonModule } from "@/store/modules/commonModule.js"
+import { commonModule } from "@/store/modules/Callback/common.module.js"
+import { menusModule } from "@/store/modules/Callback/menus.module.js"
+import { filterModule } from "@/store/modules/Callback/filter.module.js"
+import { siteModule } from "@/store/modules/Callback/site.module.js"
 
-import { menusModule } from "@/store/modules/menusModule.js"
-import { siteModule } from "@/store/modules/siteModule.js"
-import { pagesModule } from "@/store/modules/pagesModule.js"
-import { bannersModule } from "@/store/modules/bannersModule.js"
-import { mediaModule } from "@/store/modules/mediaModule.js"
+import { pagesModule } from "@/store/modules/WP/pages.module.js"
+import { bannersModule } from "@/store/modules/WP/banners.module.js"
+import { mediaModule } from "@/store/modules/WP/media.module.js"
 
-import { customersModule } from "@/store/modules/customersModule.js"
-import { ordersModule } from "@/store/modules/ordersModule.js"
-import { productsCategoriesModule } from "@/store/modules/productsCategoriesModule.js"
-import { productsModule } from "@/store/modules/productsModule.js"
-import { productsAttributesModule } from "@/store/modules/productsAttributesModule.js"
-import { productsTermsBrandsModule } from "@/store/modules/productsTermsBrandsModule.js"
-import { productsTermsMaterialsModule } from "@/store/modules/productsTermsMaterialsModule.js"
-import { productsTermsColorsModule } from "@/store/modules/productsTermsColorsModule.js"
-import { productsTermsSizesModule } from "@/store/modules/productsTermsSizesModule.js"
-import { paymentGatewaysModule } from "@/store/modules/paymentGatewaysModule.js"
+import { customersModule } from "@/store/modules//VWSSG/customers.module.js"
+import { ordersModule } from "@/store/modules/VWSSG/orders.module.js"
 
+import { productsCategoriesModule } from "@/store/modules/WC/productsCategories.module.js"
+import { productsModule } from "@/store/modules/WC/products.module.js"
+import { productsAttributesModule } from "@/store/modules/WC/productsAttributes.module.js"
+import { productsTermsBrandsModule } from "@/store/modules/WC/productsTermsBrands.module.js"
+import { productsTermsMaterialsModule } from "@/store/modules/WC/productsTermsMaterials.module.js"
+import { productsTermsColorsModule } from "@/store/modules/WC/productsTermsColors.module.js"
+import { productsTermsSizesModule } from "@/store/modules/WC/productsTermsSizes.module.js"
+import { paymentGatewaysModule } from "@/store/modules/WC/paymentGateways.module.js"
+import { wishlistModule } from "@/store/modules/WC/wishlist.module.js"
 
+import { cartModule } from "@/store/modules/WCGB/cart.module.js"
+import { checkoutModule } from "@/store/modules/WCGB/checkout.module.js"
 
-import { filterModule } from "@/store/modules/filterModule.js"
-import { cartModule } from "@/store/modules/cartModule.js"
-import { checkoutModule } from "@/store/modules/checkoutModule.js"
-
-import { authModule } from "@/store/modules/authModule.js"
+import { authModule } from "@/store/modules/Base/auth.module.js"
 
 import getters from "@/store/getters"
 import mutations from "@/store/mutations"
@@ -54,6 +54,7 @@ export default createStore({
         productsTermsColors: productsTermsColorsModule,
         productsTermsSizes: productsTermsSizesModule,
         paymentGateways: paymentGatewaysModule,
+        wishlist: wishlistModule,
 
         filter: filterModule,
         auth: authModule,

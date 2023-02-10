@@ -1,5 +1,5 @@
 <template>
-  <MainPageNode class="page_home" :pageHeadNodeShow="false">
+  <MainPageNode class="home" :pageHeadNodeShow="false">
     <template #page-main>
       <SliderBannersNode
         class="slider-banners-main"
@@ -11,7 +11,10 @@
         :slides-per-view="1"
       >
         <template #banner-title="bannerTitleProps">
-          <div @click="$router.push('/blog-page')"  class="slider-banners-main__title">
+          <div
+            @click="$router.push('/blog-page')"
+            class="slider-banners-main__title"
+          >
             {{ bannerTitleProps.banner.title.rendered }}
           </div>
         </template>
@@ -92,7 +95,7 @@ export default {
 </script>
 
 <style lang="scss">
-.page_home {
+.home {
   .page-content {
     background-color: #f1f1f1;
     color: #868686;
@@ -134,6 +137,7 @@ export default {
   }
 
   &__title {
+    white-space: nowrap;
     cursor: pointer;
     font-size: 1.4rem;
     line-height: 2rem;
@@ -145,7 +149,9 @@ export default {
     bottom: -5rem;
     left: 50%;
     transform: translate(-50%, 0);
-
+    // @media (max-width: ($md2+px)) {
+    //   font-size: 1.13rem;
+    // }
     @media (max-width: ($md3+px)) {
       bottom: -3.5rem;
       line-height: 1.6rem;
@@ -155,7 +161,7 @@ export default {
 
   .slider-banners__body {
     @media (max-width: ($md3+px)) {
-      padding: 1.3rem 0;
+      // padding: 1.3rem 0;
     }
   }
 

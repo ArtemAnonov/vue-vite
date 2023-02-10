@@ -1,9 +1,10 @@
 <template>
-  <!--   -->
   <div v-show="element.active" class="popup">
-    <div @click.stop class="popup__wrapper">
-      <div class="popup__inner">
-        <slot></slot>
+    <div class="popup__scroll-wrapper">
+      <div @click.stop class="popup__wrapper">
+        <div class="popup__inner">
+          <slot></slot>
+        </div>
       </div>
     </div>
   </div>
@@ -42,7 +43,7 @@ export default {
   left: 0;
   background: rgba(0, 0, 0, 0.747);
   overflow: auto;
-  height: 100%;
+  height: 101%;
   width: 100%;
   position: fixed;
 
@@ -57,9 +58,10 @@ export default {
     height: 80%;
     width: 80%;
   }
+  &__scroll-wrapper {
+    height: 101%;
+  }
   &__inner {
-    // display: table-cell;
-    // vertical-align: middle;
   }
 
   &__close {

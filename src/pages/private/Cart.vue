@@ -123,10 +123,10 @@
 <script>
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 import { cloneDeep } from "lodash-es";
-import CartItemNode from "@/components/cart-and-ordering/CartItemNode.vue";
+import CartItemNode from "@/components/preparing/CartItemNode.vue";
 import MainPageNode from "@/components/structure/MainPageNode.vue";
 import PageHeadTruncatedNode from "@/components/structure/PageHeadTruncatedNode.vue";
-import MiddleContentNode from "@/components/cart-and-ordering/MiddleContentNode.vue";
+import MiddleContentNode from "@/components/preparing/MiddleContentNode.vue";
 import PreloadWrapContainerNode from "@/components/structure/PreloadWrapContainerNode.vue";
 
 export default {
@@ -154,7 +154,7 @@ export default {
             let idsCartItems = cartItems.map((el) => el.id);
             let basedRequest = cloneDeep(this.productsRequest);
             basedRequest.params = { _include: idsCartItems };
-            this.getItems(basedRequest);
+            this.getItems({ basedRequest });
           }
         }
       },
@@ -197,24 +197,19 @@ export default {
   // .cart__body
   &__body {
   }
-
   // .cart__item
   &__item {
   }
-
   .preload-wrap {
     margin-bottom: 1rem;
   }
-
   .middle-content {
     &__items {
       border-top: 0.0625rem solid rgba(0, 0, 0, 0.08);
-
       @media (max-width: ($md2+px)) {
         margin: 0;
         grid-column: 2/3;
       }
-
       @media (max-width: ($md3+px)) {
         grid-column: 1/2;
       }

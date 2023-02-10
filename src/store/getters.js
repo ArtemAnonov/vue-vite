@@ -1,4 +1,4 @@
-import { isEqual } from 'lodash-es'
+import { isEqual } from "lodash-es";
 
 export default {
   total:
@@ -68,9 +68,7 @@ export default {
   itemById:
     (state, getters) =>
     ({ type, id }) => {
-      let item;
-      item = state[type]["items"][id];
-      return item;
+      return state[type]["items"][id];
     },
 
   ///////////////////////////////////////////////////////////////////////////////////////
@@ -81,7 +79,7 @@ export default {
    * @param {*} getters
    * @returns
    */
-  requestedItems:
+  resultItems:
     (state, getters) =>
     ({ type, params }) => {
       let request = getters.request({ type, params });
@@ -173,11 +171,11 @@ export default {
           });
         }
       }
-      return items || {};
+      return items;
     },
 
   /**
-   * Имитирует map
+   * Получает значение свойства, записывает в массив
    * @param {*} state
    * @param {*} getters
    * @returns array ids
@@ -192,7 +190,7 @@ export default {
           ids.push(element[inputKey]);
         }
       }
-      return ids || [];
+      return ids;
     },
 
   /**
@@ -207,6 +205,17 @@ export default {
     ({ type, param, value }) => {
       return state[type].requests.find((req) => req.params[param] == value);
     },
+
+  itemsByIds: (state) => (type, ids) => {
+    const items = {};
+    ids.forEach((id) => {
+      const item = state[type].items?.[id];
+      if (item) {
+        items[id] = item;
+      }
+    });
+    return items
+  },
 
   ///////////////////////////////////////////////////////////////////////////////////////
 };

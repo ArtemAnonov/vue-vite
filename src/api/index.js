@@ -16,42 +16,47 @@ url = url.protocol + "//" + url.hostname;
  *
  *
  */
-// const wpRouteBases = ["/wp/v2/", "/jwt-auth/v1/", "/wc/v3/"];
-
 /**
  * Post: (url, data, params)
+ *
+ * Установка axios.create({withCredentials: true}) необходима для того, чтобы в режиме разработки
+ * запрос неавторизованного пользователя устанавливал куку.
+ * Однако это меняет респонс и такой запрос не совместим для запроса, который должен получать nonce
  *
  * @param {*} apiType
  * @returns
  */
-const defaultAjax = (apiType = "/wp/v2/") =>
-  
+const axiosInstance = (apiType, withCredentials = false) =>
   axios.create({
     baseURL: `${url}/wp-json${apiType}`,
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
-    timeout: 20000,
+    timeout: 200000,
+    withCredentials:
+      import.meta.env.MODE === "development" && withCredentials ? true : false,
   });
 
 /**
  * @param {string} Payload.route_base - products/categories
  * @param {string} Payload.apiType - /wp/v2/
  * @param {string} Payload.method - get
- * @param {object} Payload.config - 
- * @param {object} Payload.data - 
- * @returns 
+ * @param {object} Payload.config -
+ * @param {object} Payload.data -
+ * @returns
  */
 export async function mainFetch({
   id = null,
-  route_base = '',
-  apiType = "/wp/v2/",
-  method = "get",
+  basedRequest,
+  method = 'get',
   config = {},
   data = {},
 }) {
-  let showProgress = config.hasOwnProperty("onDownloadProgress") && config.onDownloadProgress;
+  const {route_base, apiType, type} = basedRequest
+  let withCredentials = Boolean(store.state[type]?.withCredentials)
+  let showProgress =
+    config.hasOwnProperty("onDownloadProgress") && config.onDownloadProgress;
   try {
     if (showProgress) {
       config.onDownloadProgress = (progressEvent) => {
@@ -66,17 +71,15 @@ export async function mainFetch({
         });
       };
     }
-
-    const response = await defaultAjax(apiType)[method](
-      `/${route_base}/${id !== null ? id : ''}`,
+    // console.log(withCredentials, basedRequest, store.state[type]);
+    const response = await axiosInstance(apiType, withCredentials)[method](
+      `/${route_base}/${id !== null ? id : ""}`,
       method === "get" ? config : data,
       method === "get" ? undefined : config
     );
     return response;
-
   } catch (error) {
-
-    console.log("Error in method 'mainFetch'", error);
+    console.log("Error in method 'mainFetch'", {error, basedRequest});
   } finally {
     if (showProgress) {
       setTimeout(() => {
@@ -86,6 +89,5 @@ export async function mainFetch({
         });
       }, 500);
     }
-
   }
 }

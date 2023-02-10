@@ -150,8 +150,8 @@ import { getNonceToken } from "@/api/helpers.js";
 import MainPageNode from "@/components/structure/MainPageNode.vue";
 import PreloadWrapContainerNode from "@/components/structure/PreloadWrapContainerNode.vue";
 import PageHeadTruncatedNode from "@/components/structure/PageHeadTruncatedNode.vue";
-import MiddleContentNode from "@/components/cart-and-ordering/MiddleContentNode.vue";
-import CheckoutBlockNode from "@/components/cart-and-ordering/CheckoutBlockNode.vue";
+import MiddleContentNode from "@/components/preparing/MiddleContentNode.vue";
+import CheckoutBlockNode from "@/components/preparing/CheckoutBlockNode.vue";
 
 export default {
   components: {
@@ -193,19 +193,16 @@ export default {
     ...mapMutations({
       SET_VALUE: "SET_VALUE",
       updateRev: "common/updateRev",
-      updateMessage: "common/updateMessage",
       setCurrentURLPayment: "auth/setCurrentURLPayment",
     }),
     ...mapActions({
       mainFetchRequest: "mainFetchRequest",
       updateMessage: "common/updateMessage",
       getCart: "cart/getCart",
-      // getItems: "getItems",
     }),
     getCheckout() {
       this.mainFetchRequest({
-        apiType: this.checkoutRequest.apiType,
-        route_base: this.checkoutRequest.route_base,
+        basedRequest: this.checkoutRequest,
         method: "get",
         data: {},
         config: { headers: getNonceToken() },
@@ -213,7 +210,7 @@ export default {
         (result) => {
           if (result?.response?.data) {
             this.draftOrderLoaded = true;
-            this.draftOrder = result.response.data;
+            this.draftOrder = result.data;
           }
         },
         (error) => console.log(error)
@@ -221,27 +218,26 @@ export default {
     },
     postCheckout() {
       if (!this.draftOrder.payment_method) {
-        this.updateMessage({ name: "notSelectPaymentMethod" });
+        this.updateMessage("notSelectPaymentMethod");
         return;
       }
       this.mainFetchRequest({
-        apiType: this.checkoutRequest.apiType,
-        route_base: this.checkoutRequest.route_base,
+        basedRequest: this.checkoutRequest,
         method: "post",
         data: this.draftOrder,
         config: { headers: getNonceToken() },
       }).then(
         (result) => {
-          console.log(result);
-          this.setCurrentURLPayment(result.response.data.payment_result.redirect_url);
+          this.setCurrentURLPayment(
+            result.response.data.payment_result.redirect_url
+          );
           this.$router.push({ name: "Payment" });
-
           this.getCart();
         },
         (error) => {
           console.log(error);
           //(!) - ошибка генериться на уровне выше
-          this.updateMessage({ name: "orderingError" });
+          this.updateMessage("orderingError");
         }
       );
     },

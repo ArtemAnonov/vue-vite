@@ -16,10 +16,18 @@
     }"
   >
     <template #banner-category-name>
-      <div @click="$router.push('/blog-page')"  class="slider-banners-fashion-blog__title">Fashion-блог</div>
+      <div
+        @click="$router.push('/blog-page')"
+        class="slider-banners-fashion-blog__title"
+      >
+        Fashion-блог
+      </div>
     </template>
     <template #banner-title="bannerTitleProps">
-      <div @click="$router.push('/blog-page')"  class="slider-banners-fashion-blog__banner-title">
+      <div
+        @click="$router.push('/blog-page')"
+        class="slider-banners-fashion-blog__banner-title"
+      >
         {{ bannerTitleProps.banner.title.rendered }}
       </div>
     </template>
@@ -70,10 +78,13 @@ export default {
       display: flex;
       justify-content: space-between;
       color: #fff;
-      margin: 0.6666666667rem 0 1.3333333333rem;
+      margin: 0.6666666667rem 0 2.3333333333rem;
     }
     &__image {
       padding: 0 0 60% 0;
+    }
+    &__body {
+      padding: 2.6666666667rem 0 !important;
     }
   }
   .slider-arrows {

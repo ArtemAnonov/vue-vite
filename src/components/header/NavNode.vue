@@ -1,7 +1,7 @@
 <template>
   <nav class="header-nav">
     <ul class="header-nav__list">
-      <slot></slot>
+      <slot name="in"></slot>
       <li class="header-nav__item">
         <button class="header-nav__btn" @click="$router.push('/')">
           г.Москва
@@ -13,6 +13,7 @@
         </button>
       </li>
     </ul>
+    <slot name="out"></slot>
   </nav>
 </template>
 
@@ -44,7 +45,6 @@ export default {
     }),
     ...mapActions({
       logout: "auth/logout",
-
     }),
   },
 };

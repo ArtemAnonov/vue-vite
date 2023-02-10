@@ -71,39 +71,7 @@ export default {
       setMinPrice: "filter/setMinPrice",
     }),
     ...mapActions({
-      mainFetchRequest: "mainFetchRequest",
     }),
-    /**
-     * deprecated - получение цен благодаря продуктам - нудно при этом получать продукты с помощью WCGB
-     * ONLI (VITE_LIKE_A_SPA)
-     */
-    // getPrices() {
-    //   let params = {
-    //     orderby: "price",
-    //     order: "asc",
-    //     per_page: 1,
-    //     _fields: ["price"],
-    //   };
-    //   this.getPrice(params, "Min");
-    //   params.order = "desc";
-    //   this.getPrice(params, "Max");
-    // },
-    /**
-     * deprecated - получение цен благодаря продуктам - нудно при этом получать продукты с помощью WCGB
-     * ONLI (VITE_LIKE_A_SPA)
-     */
-    // async getPrice(params, type) {
-    //   const { request, response } = await this.mainFetchRequest({
-    //     config: { params },
-    //     route_base: this.productsRequest.route_base,
-    //     apiType: this.productsRequest.apiType,
-    //   });
-    //   if (!response) return;
-    //   let price = Number(response.data[0].price);
-
-    //   this[`set${type}Cost`](price);
-    //   this[`set${type}Price`](price);
-    // },
     updatePrices(newValue) {
       this.setMinPrice(newValue[0]);
       this.setMaxPrice(newValue[1]);
