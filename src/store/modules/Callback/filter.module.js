@@ -1,4 +1,4 @@
-import { VUE_WP_INSTANCE, handleWPDate } from "@/api/helpers.js";
+import { VUE_WP_INSTANCE, handleWPDate } from "@/api/helpers";
 
 const instance = VUE_WP_INSTANCE().state.filter.returned;
 
@@ -10,7 +10,8 @@ const instance = VUE_WP_INSTANCE().state.filter.returned;
  */
 export default {
   namespaced: true,
-  state: () => (instance),
+  settings: {},
+  state: () => ({ ...{ settings: {} }, ...instance }),
   getters: {
     params(state, getters, rootState) {
       return state.params;
@@ -43,19 +44,6 @@ export default {
       if (one.price > two.price) return -1;
       return 0;
     },
-    // /**
-    //  * Параметры начинающиеся на pa_
-    //  */
-    // paramsAttributesKeys(state) {
-    //     const attrs = {}
-    //     for (const key in state.params) {
-    //         if (Object.hasOwnProperty.call(state.params, key)) {
-    //             const element = state.params[key];
-    //             if(! key.match(/^pa*/)) attrs[key] = element
-    //         }
-    //     }
-    //     return attrs
-    // }
   },
   mutations: {
     setCategoryId(state, value) {

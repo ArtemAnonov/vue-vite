@@ -53,7 +53,7 @@
           @swiper="onSwiper">
           <SwiperSlide v-for="(image, index) in images"
             :key="index">
-            <PreloadWrapNode :paddingBottom="image?.src ? '' : 50"
+            <PreloadWrapNode :paddingBottom="image?.src ? 0 : 50"
               :targetPreloadElement="image?.src">
               <div class="slider-single__image">
                 <picture>
@@ -132,7 +132,6 @@ export default {
 
   .container {
     height: 100%;
-
   }
 
   &__sliders {
@@ -161,11 +160,12 @@ export default {
     .slider-single__image {
       height: 100%;
       width: 100%;
-      padding-bottom: 50%;
+      padding-bottom: 150%;
+      // padding-bottom: 160%;
 
-      @media (max-width: ($md2+px)) {
-        padding-bottom: 150%;
-      }
+      // @media (max-width: ($md2+px)) {
+      //   padding-bottom: 150%;
+      // }
 
       @media (max-width: ($md3+px)) {}
 

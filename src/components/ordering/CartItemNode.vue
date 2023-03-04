@@ -16,7 +16,7 @@
       <div class="cart-item__content">
         <div class="cart-item__brand">{{ brand(1) }}</div>
         <button class="cart-item__name"
-          @click="routeToSingle(ident)">
+          @click="routeToSingleProduct(ident)">
           {{ cartItem?.name }}
         </button>
         <div class="cart-item__color">{{ color(2) }}</div>
@@ -99,7 +99,7 @@ export default {
       paramsDecrease,
       routeBase: "cart/update-item",
       updateCart: (payload) => store.dispatch("cart/updateCart", payload),
-      routeToSingle: (ident) => store.dispatch("products/routeToSingle", ident),
+      routeToSingleProduct: (ident) => store.dispatch("products/routeToSingleProduct", ident),
     };
   },
 

@@ -1,13 +1,13 @@
 <template>
   <section class="filter">
     <ContainerNode>
-      <ButtonNode
+      <BaseButtonNode
         class="filter__button filter__button_filter-show"
         @click.stop="setBasic({name: 'filter'})"
-      >Фильтр товаров</ButtonNode
+      >Фильтр товаров</BaseButtonNode
       >
-      <BasicNode :item="{name: 'filter'}"
-                 @click.stop
+      <BasicNode :item="{name: 'filter', active: true}"
+        @click.stop
       >
         <div
           ref="filterBody"
@@ -42,11 +42,11 @@
                 >
                   <template #title>{{ attr.name }}</template>
                   <template #main>
-                    <ul class="filter__sub-list">
+                    <ul class="filter__first-list">
                       <li
                         v-for="{ id, name } in singleAttribute(attr.slug)"
                         :key="id"
-                        class="filter__sub-item"
+                        class="filter__first-item"
                       >
                         <InputCheckboxNode
                           :modelValue="filterParamsChecked(attr.slug, id)"
@@ -57,7 +57,7 @@
                               value: { id, name },
                             })
                           "
-                        ></InputCheckboxNode>
+                        />
                       </li>
                     </ul>
                   </template>
@@ -67,7 +67,7 @@
                 <InputCheckboxNode
                   v-model="onlineOnly"
                   labelText="Доступно онлайн"
-                ></InputCheckboxNode>
+                />
               </li>
             </ul>
             <ButtonNode
@@ -90,7 +90,6 @@
  * (подразумевается синхронизация булевого modelValue чекбокса и элемента массива опций)
  */
 
-// setAttributeTerms({ type: attr.slug, value: { id, name } })
 import Sticky from "sticky-js";
 
 import {
@@ -111,7 +110,6 @@ export default {
   data() {
     return {
       onlineOnly: true,
-      // filterShow: true,
       applyValidate: true,
       revealings: {
         sorting: {},
@@ -129,16 +127,11 @@ export default {
     }),
     ...mapState({
       browserReady: (state) => state.common.browserReady,
-      // minCost: state => state.products.minCost,
-      // maxCost: state => state.products.maxCost,
       minCost: (state) => state.filter.minCost || 10000,
       maxCost: (state) => state.filter.maxCost || 1000000,
       min_price: (state) => state.filter.params.min_price,
       max_price: (state) => state.filter.params.max_price,
-
-      // orderAndOrderBy: state => state.filter.params.orderAndOrderBy,
       filterParams: (state) => state.filter.params,
-
       productsBrandsRequest: (state) => state.productsTermsBrands.basedRequest,
       productsColorsRequest: (state) => state.productsTermsColors.basedRequest,
       productsMaterialsRequest: (state) => state.productsTermsMaterials.basedRequest,
@@ -158,23 +151,6 @@ export default {
         },
       );
     },
-  },
-  watch: {
-    /**
-     * Хз зачем это здесь
-     */
-    // attributes(newValue) {
-    //   this.attributesSlugsRevs(newValue);
-    // },
-  },
-  created() {
-    if (import.meta.env.VITE_LIKE_A_SPA) {
-      this.getItems({ basedRequest: this.productsBrandsRequest });
-      this.getItems({ basedRequest: this.productsMaterialsRequest });
-      this.getItems({ basedRequest: this.productsColorsRequest });
-      this.getItems({ basedRequest: this.productsSizesRequest });
-      this.getItems({ basedRequest: this.productsAttributesRequest });
-    }
   },
   mounted() {
     // eslint-disable-next-line no-new
@@ -205,41 +181,26 @@ export default {
     }),
 
     ...mapActions({
-      getItems: "getItems",
       setDefaultFilter: "filter/setDefaultFilter",
       updateAllOpeningTypeItems: "common/updateAllOpeningTypeItems",
     }),
 
     singleAttribute(attributeSlug) {
       switch (attributeSlug) {
-        case "pa_brand":
-          return this.itemsBased(this.productsBrandsRequest);
-        case "pa_material":
-          return this.itemsBased(this.productsMaterialsRequest);
-        case "pa_tcvet":
-          return this.itemsBased(this.productsColorsRequest);
-        case "pa_razmer":
-          return this.itemsBased(this.productsSizesRequest);
-        default:
-          break;
+      case "pa_brand":
+        return this.itemsBased(this.productsBrandsRequest);
+      case "pa_material":
+        return this.itemsBased(this.productsMaterialsRequest);
+      case "pa_tcvet":
+        return this.itemsBased(this.productsColorsRequest);
+      case "pa_razmer":
+        return this.itemsBased(this.productsSizesRequest);
+      default:
+        break;
       }
       return {};
     },
 
-    // /**
-    //  * Возвращает объект формата { "pa_brand": false }
-    //  */
-    // attributesSlugsRevs(object) {
-    //   if (isEmpty(object)) return;
-    //   const items = {};
-    //   for (const key in object) {
-    //     if (Object.hasOwnProperty.call(object, key)) {
-    //       const element = object[key];
-    //       items[element.slug] = {};
-    //     }
-    //   }
-    //   return items;
-    // },
     /**
      * Установка чекбоксов атрибутов. Извлекает установленное значение
      */
@@ -249,10 +210,6 @@ export default {
       if (term) return true;
       return false;
     },
-
-    // filterVisible() {
-    //   this.filterShow ? (this.filterShow = false) : (this.filterShow = true);
-    // },
 
     /**
      * Производится установка дефолтных значения для компонентов revealing-node -
@@ -308,14 +265,9 @@ export default {
   .basic_active {
     .filter__body {
       // border-bottom: 0.0666666667rem solid #d8d8d8;
+
       &::after {
-        position: absolute;
-        content: '';
-        width: 500%;
-        height: 0.0666666667rem;
-        bottom: 0;
-        left: -200%;
-        background: #d8d8d8;
+        display: block;
       }
     }
     .filter__wrapper {
@@ -337,8 +289,19 @@ export default {
   }
 
   &__body {
-  position: relative;
+    min-height: 0 !important;
 
+    position: relative;
+    &::after {
+      position: absolute;
+      content: '';
+      width: 500%;
+      height: 0.0666666667rem;
+      bottom: 0;
+      left: -200%;
+      background: #d8d8d8;
+      display: none;
+    }
   }
 
   &__wrapper {
@@ -348,7 +311,9 @@ export default {
     opacity: 0;
     visibility: hidden;
     display: flex;
-
+    @media (max-width: ($md4+px)) {
+      flex-direction: column-reverse;
+    }
     //
     z-index: 1;
     &::before {
@@ -368,9 +333,9 @@ export default {
         opacity: 1;
       }
       padding: 0 !important;
-      .filter__button_clean {
-        display: none;
-      }
+      // .filter__button_clean {
+      //   display: none;
+      // }
     }
   }
 
@@ -395,7 +360,7 @@ export default {
     }
   }
 
-  &__sub-item {
+  &__first-item {
     margin-bottom: 0.8rem;
   }
 
@@ -418,6 +383,11 @@ export default {
         border-width: 0.0666666667rem 0 0 0.0666666667rem;
         transform: rotate(45deg);
       }
+      @media (max-width: ($md4+px)) {
+        width: 100%;
+        position: static;
+        margin: 1.3333333333rem 0 0 0;
+      }
     }
     &_clean {
       margin-left: 1rem;
@@ -425,9 +395,8 @@ export default {
         margin-left: 0.3rem;
       }
       @media (max-width: ($md4+px)) {
-        span {
-          display: none;
-        }
+        margin-left: 0;
+
       }
     }
   }

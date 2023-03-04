@@ -1,22 +1,23 @@
-export default {
-  ADD_SETTINGS(state, { type, settings }) {
-    state[type].settings = settings;
-  },
+import { has } from "lodash-es";
+import store from "@/store";
 
-  SET_LOADING(state, loading) {
-    state.site.loading = loading;
-  },
-  SET_DOC_TITLE(state, title) {
-    state.site.docTitle = title;
-  },
+export default {
+  // ADD_SETTINGS(state, { type, settings }) {
+  //   state[type].settings = settings;
+  // },
+
+  // SET_LOADING(state, loading) {
+  //   state.site.loading = loading;
+  // },
+  // SET_DOC_TITLE(state, title) {
+  //   state.site.docTitle = title;
+  // },
   /**
    *
    * @param {*} state
    * @param {*} param1 - payload
    */
   ADD_ITEM(state, { type, item }) {
-    // console.log(item);
-
     let id;
     const keys = ["id", "item_id"];
     keys.forEach((key) => {
@@ -24,8 +25,8 @@ export default {
         id = key;
       }
     });
-    if (item && type && !state[type]["items"].hasOwnProperty(item[id])) {
-      state[type]["items"][item[id]] = item;
+    if (item && type && !has(state[type].items, item[id])) {
+      state[type].items[item[id]] = item;
     }
   },
   REMOVE_ITEM(state, { type, id }) {
@@ -70,7 +71,7 @@ export default {
    * @param {*} state
    * @param {*} param1
    */
-  SET_VALUE(state, { type, key, value }) {
+  setValue(state, { type, key, value }) {
     if (type) {
       state[type][key] = value;
     } else {
@@ -78,8 +79,27 @@ export default {
     }
   },
 
-  UNSET_MODULE_DATA(state, type) {
-    state[type].items = {};
-    state[type].requests = [];
+  /**
+   * Обновляет чувствительные данные при авторизации/логауте
+   * Проходит по мутациям для модулей с параметором settings.sensitive = true
+   * и без '_' (такие мутации исключения) и устанавливает их дефолтные значения,
+   *
+   */
+  updateSensitiveData(state) {
+    for (const key in state) {
+      if (has(state, key)) {
+        const stateModule = state[key];
+        if (stateModule.settings?.sensitive) {
+          for (const mutationName in store._mutations) {
+            if (has(store._mutations, mutationName)) {
+              const { type } = stateModule.basedRequest;
+              if (mutationName.match(RegExp(`${type}`)) && !mutationName.match(/_/)) {
+                store.commit(mutationName);
+              }
+            }
+          }
+        }
+      }
+    }
   },
 };

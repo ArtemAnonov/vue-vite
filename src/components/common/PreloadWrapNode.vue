@@ -27,16 +27,14 @@ export default {
     watch(
       () => props.targetPreloadElement,
       (newValue) => {
-      // console.log(newValue, typeof newValue, isEmpty(newValue));
-      // console.log(props.targetPreloadElement.value);
         switch (typeof newValue) {
-          case "string":
-          case "object":
-          case "array":
-            showLoading.value = isEmpty(newValue);
-            break;
-          default:
-            showLoading.value = Boolean(newValue);
+        case "string":
+        case "object":
+        case "array":
+          showLoading.value = isEmpty(newValue);
+          break;
+        default:
+          showLoading.value = Boolean(newValue);
         }
       },
       { immediate: true },
@@ -70,12 +68,12 @@ export default {
   &::after {
     content: "";
     position: absolute;
-    height: 100%;
+    height: 97%;
     width: 100%;
     top: 0;
     left: 0;
     background-color: #e7e7e7;
-    z-index: 6;
+    z-index: 1;
     display: none;
   }
 
@@ -88,7 +86,7 @@ export default {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: 7;
+    z-index: 2;
     display: none;
   }
 }

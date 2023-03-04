@@ -20,16 +20,25 @@ export default {
   align-items: center;
   max-height: 40px;
   transition: 0.3s;
-  cursor: pointer;
   padding: 0.5rem 1rem 0.5rem 1rem;
   border: 0.0666666667rem solid #d8d8d8;
   white-space: nowrap;
-  &.checked {
-    border: 1px solid #1e242c;
+  &.minimal {
+    border: none;
+    padding: 0;
     &:hover {
-      border-color: #1e242c;
+      border-color: transparent;
+      box-shadow: none;
+      outline: none;
     }
   }
+
+  // &.checked {
+  //   border: 1px solid #1e242c;
+  //   &:hover {
+  //     border-color: #1e242c;
+  //   }
+  // }
   &:hover {
     border-color: #d8d8d8;
     box-shadow: 0 0.3333333333rem 1rem 0 rgba(0, 0, 0, 0.15);

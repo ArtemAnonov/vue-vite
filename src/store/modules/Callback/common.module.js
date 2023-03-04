@@ -1,9 +1,12 @@
+import { has } from "lodash-es";
 import { togglerOpening } from "@/api/helpers";
 import { messages } from "@/api/utils.js";
 
 export default {
   namespaced: true,
+
   state: () => ({
+    settings: {},
     scrollY: null,
     scrollFlag: true,
     /**
@@ -11,7 +14,6 @@ export default {
      */
     browserReady: false,
     windowWidth: null,
-    // windowWidth: import.meta.env.VITE_LIKE_A_SPA ? window.innerWidth : null,
     breakpoint: "",
     /**
      * Наполняется атрибутами при их подгрузке
@@ -40,10 +42,16 @@ export default {
 
   mutations: {
     addOpening(state, item) {
+      if (has(state.openings[item.type], item.name)) {
+        console.error(`Такой opening ${item.name} уже существует`);
+        return;
+        // throw new Error(`Такой opening ${item.name} уже существует`);
+      }
+
       /**
        * element.default - обычный. Для спойлеров - это то, что, например, он не скрыт
        * из-за определенного
-       * разрешения экрана. Ддя сatalogRevealing's - это стандартное отображения
+       * разрешения экрана. Для сatalogRevealing's - это стандартное отображения
        */
       const element = {
         name: item.name,
@@ -89,13 +97,13 @@ export default {
     ) {
       const items = type !== null ? state.openings[type] : state.openings;
       for (const key in items) {
-        if (Object.hasOwnProperty.call(items, key)) {
+        if (has(items, key)) {
           const item = items[key];
           if (type !== null) {
             item[prop] = value;
           } else {
             for (const nestedKey in item) {
-              if (Object.hasOwnProperty.call(item, nestedKey)) {
+              if (has(item, nestedKey)) {
                 const element = item[nestedKey];
                 element[prop] = value;
               }

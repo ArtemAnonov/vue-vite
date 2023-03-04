@@ -1,17 +1,16 @@
 //
-import { routes } from "@/router/routes";
-import store from "@/store";
-
 import {
   createRouter,
   createWebHistory,
   createMemoryHistory,
 } from "vue-router";
+import { routes } from "@/router/routes";
+import store from "@/store";
 
 const router = createRouter({
   routes,
   history: import.meta.env.SSR
-    ? createMemoryHistory() // /test/
+    ? createMemoryHistory()
     : createWebHistory(),
   scrollBehavior(to, from, savedPosition) {
     return new Promise((resolve, reject) => {
@@ -22,7 +21,6 @@ const router = createRouter({
   },
 });
 
-// let userAuth = store?.state?.auth.userAuth;
 router.beforeEach((to, from) => {
   /**
    * Изначально userAuth установлен в false. Так как загрузка компонентов и Store происходит
@@ -31,19 +29,16 @@ router.beforeEach((to, from) => {
    * юзер не мог сразу открыть Orders маршрут, так как смена userAuth происходила из created хука компонента App)
    */
   store.dispatch("auth/updateUserAuth");
-  let userAuth = store.state?.auth.userAuth;
-  // let userAuth = Boolean(Cookies.get('jwt-token'))
+
+  const userAuth = store.state?.auth.userAuth;
   /**
    * (!) - userAuth можно изменить из фронта и попасть на маршрут (правильно ли это?)
-   *
    */
   if (userAuth === false && to.name === "Checkout") {
     return { name: "Cart" };
   }
-  if (userAuth === false && to.name === "Orders") {
-    console.log(userAuth);
-    return { name: "Home" };
-  }
+
+  return true;
 });
 
 export default router;

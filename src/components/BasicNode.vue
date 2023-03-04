@@ -1,12 +1,12 @@
 <template>
-    <div
-      v-if="element.default"
-      class="basic"
-      :class="{
-        basic_active: element.active,
-        basic_default: element.default,
-      }"
-    ><slot></slot></div>
+  <div
+    v-if="element.default"
+    class="basic"
+    :class="{
+      basic_active: element.active,
+      basic_default: element.default,
+    }"
+  ><slot/></div>
 </template>
 
 <script>

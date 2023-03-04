@@ -1,10 +1,11 @@
-import { VUE_WP_INSTANCE } from "@/api/helpers.js";
+import { VUE_WP_INSTANCE } from "@/api/helpers";
 
-const items = VUE_WP_INSTANCE().state.site.returned;
+const instance = VUE_WP_INSTANCE().state.site.returned;
 export default {
   namespaced: true,
-  state: () => (items),
+  state: () => ({ settings: {}, items: instance }),
+
   getters: {
-    loading: (state) => () => state.site.loading,
+    // loading: (state) => () => state.site.loading,
   },
 };

@@ -42,11 +42,9 @@
                 class="header-bot header-bot_scroller">
                 <CategoriesNode
                   v-slot="slotProps"
-                  :parentID="0"
-                  :neastedLevel="0"
                 >
                   <CategoriesNode
-                    :neastedLevel="1"
+                    :nestedLevel="slotProps.nestedLevel"
                     :parentID="slotProps.parentID"
                   />
                 </CategoriesNode>
@@ -72,11 +70,9 @@
         <div v-show="scrollY < 99"
           class="header-bot">
           <ContainerNode>
-            <CategoriesNode v-slot="slotProps"
-              :parentID="0"
-              :neastedLevel="0">
+            <CategoriesNode v-slot="slotProps">
               <CategoriesNode
-                :neastedLevel="1"
+                :nestedLevel="slotProps.nestedLevel"
                 :parentID="slotProps.parentID"
               />
             </CategoriesNode>
@@ -355,7 +351,7 @@ export default {
       // flex: 1 1 auto;
       // display: inline-flex;
       &:hover {
-        .categories__sub-list {
+        .categories__first-list {
           opacity: 1;
           visibility: visible;
         }
@@ -366,7 +362,7 @@ export default {
     }
   }
 
-  .categories__sub-list {
+  .categories__first-list {
     top: 39px;
     opacity: 0;
     visibility: hidden;
@@ -385,7 +381,7 @@ export default {
   }
 
   .categories__item,
-  .categories__sub-item {
+  .categories__first-item {
     &::before {
       display: none;
     }

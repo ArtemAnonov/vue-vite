@@ -98,7 +98,7 @@ export default {
   position: relative;
   &_active {
     .catalog-revealing__actions {
-      z-index: 3;
+      z-index: 6;
     }
     .catalog-revealing__button_main {
       border: 1px solid transparent;
@@ -108,7 +108,7 @@ export default {
     }
     .catalog-revealing__arrow {
       &::before {
-        transform: translate(0, 20%) rotate(-90deg);
+        transform: translate(0, -50%) rotate(-90deg);
       }
     }
   }
@@ -131,16 +131,18 @@ export default {
   &__arrow {
     &::before {
       transition: 0.1s;
-      transform: translate(0, 20%) rotate(90deg);
+      position: absolute;
+      top: 50%;
+      right: 1rem;
+      transform: translate(0, -50%) rotate(90deg);
       font-size: 12px;
-      color: #868686;
-      position: relative;
     }
   }
 
   &__button {
     // width: 100%;
     // display: flex;
+    padding: 0.5rem 2rem 0.5rem 1rem;
     .button__span {
       align-items: center;
     }
@@ -176,7 +178,7 @@ export default {
     background-color: #fff;
     border: 0.0666666667rem solid #d8d8d8;
     box-shadow: 0 0.3333333333rem 1rem 0 rgba(0, 0, 0, 0.15);
-    z-index: 2;
+    z-index: 5;
     &_active {
       opacity: 1;
     }

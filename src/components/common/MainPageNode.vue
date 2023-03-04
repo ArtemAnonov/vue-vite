@@ -1,32 +1,35 @@
 <template>
-<!-- (!) -->
-  <main class="page" :class="templatePage ? '' : 'page_product'">
-    <div class="page__head-wrapper" v-if="pageHeadNodeShow">
+  <!-- (!) -->
+  <main class="page"
+    :class="templatePage ? '' : 'page_product'">
+    <div v-if="pageHeadNodeShow"
+      class="page__head-wrapper">
       <slot name="page-head">
         <PageHeadNode
           :title="templatePage ? templatePage.title.rendered : ''"
           :navRaw="navRaw"
           :additionalTitle="additionalTitle"
-        ></PageHeadNode>
+        />
       </slot>
     </div>
 
-    <div class="page-main" :class="$attrs.class">
-      <slot name="page-main"></slot>
+    <div class="page-main"
+      :class="$attrs.class">
+      <slot name="page-main"/>
     </div>
   </main>
 </template>
 
 <script>
-import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 import PageHeadNode from "@/components/structure/PageHeadNode.vue";
+
 export default {
   name: "MainPageNode",
-  inheritAttrs: false,
 
   components: {
     PageHeadNode,
   },
+  inheritAttrs: false,
   props: {
     pageHeadNodeShow: {
       type: Boolean,
@@ -36,17 +39,6 @@ export default {
 
     navRaw: Object,
     additionalTitle: String,
-  },
-  data() {
-    return {};
-  },
-  computed: {
-    ...mapGetters({}),
-    ...mapState({}),
-  },
-  methods: {
-    ...mapMutations({}),
-    ...mapActions({}),
   },
 };
 </script>

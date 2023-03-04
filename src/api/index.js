@@ -1,10 +1,10 @@
 import axios from "axios";
-import { siteURL } from "@/api/helpers.js";
+import { has } from "lodash-es";
+import { siteURL, actionJWTResolver } from "@/api/helpers";
 /**
  * Импорт глобального хранилища VUEX
  */
-import store from "../store";
-import _ from "lodash-es";
+import store from "@/store";
 
 /**
  * routeBase - конкретное значение, в отличие от type, который используется как ярлык
@@ -34,16 +34,15 @@ const headers = () => {
  * @returns
  */
 const axiosInstance = (
-  baseURL
+  baseURL,
   // withCredentials = false
-) =>
-  axios.create({
-    baseURL,
-    headers,
-    timeout: 200000,
-    // withCredentials:
-    //   import.meta.env.MODE === "development" && withCredentials ? true : false,
-  });
+) => axios.create({
+  baseURL,
+  headers,
+  timeout: 200000,
+  // withCredentials:
+  //   import.meta.env.MODE === "development" && withCredentials ? true : false,
+});
 
 // axios.create().get("http://anyaaa6t.beget.tech/wp-json/wp/v2/media");
 
@@ -62,21 +61,21 @@ export async function mainFetch({
   config = {},
   data = {},
 }) {
-  const { routeBase, apiType, type } = basedRequest;
+  const { routeBase, apiType, type, params } = basedRequest;
+  const handledConfig = actionJWTResolver({
+    type, config,
+  });
+  handledConfig.params = params;
   const baseURL = `${siteURL()}wp-json${apiType}`;
-  config.withCredentials =
-    import.meta.env.MODE === "development" &&
-    Boolean(store.state[type]?.withCredentials);
-  let showProgress =
-    config.hasOwnProperty("onDownloadProgress") && config.onDownloadProgress;
+  handledConfig.withCredentials = import.meta.env.MODE === "development"
+    && Boolean(store.state[type]?.withCredentials);
+  const showProgress = has(handledConfig, "onDownloadProgress") && handledConfig.onDownloadProgress;
   try {
     if (showProgress) {
-      config.onDownloadProgress = (progressEvent) => {
-        // if (progressEvent.lengthComputable === false) return;
-        let percentCompleted = Math.floor(
-          (progressEvent.loaded / progressEvent.total) * 100
+      handledConfig.onDownloadProgress = (progressEvent) => {
+        const percentCompleted = Math.floor(
+          (progressEvent.loaded / progressEvent.total) * 100,
         );
-        // console.log('p');
         store.commit("common/setProgress", percentCompleted);
         store.commit("common/setProgressLoad", {
           visible: true,
@@ -84,18 +83,17 @@ export async function mainFetch({
         });
       };
     }
-    // console.log(data, config, basedRequest, store.state[type]);
     const response = await axiosInstance(
-      baseURL
+      baseURL,
       // withCredentials
     )[method](
       `/${routeBase}/${id !== null ? id : ""}`,
-      method === "get" ? config : data,
-      method === "get" ? undefined : config
+      method === "get" ? handledConfig : data,
+      method === "get" ? undefined : handledConfig,
     );
     return response;
   } catch (error) {
-    console.log("Error in method 'mainFetch'", { error, basedRequest });
+    console.error("Error in method 'mainFetch'", { error, basedRequest });
   } finally {
     if (showProgress) {
       setTimeout(() => {

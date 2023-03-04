@@ -126,8 +126,8 @@
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 import { isEmpty } from "lodash-es";
 
-import { getNonceToken } from "@/api/helpers.js";
-import MainPageNode from "@/components/structure/MainPageNode.vue";
+import { mainFetch } from "@/api";
+import { getNonceToken } from "@/api/helpers";
 import PreloadWrapContainerNode from "@/components/structure/PreloadWrapContainerNode.vue";
 import PageHeadTruncatedNode from "@/components/structure/PageHeadTruncatedNode.vue";
 import MiddleContentNode from "@/components/ordering/MiddleContentNode.vue";
@@ -135,7 +135,6 @@ import CheckoutBlockNode from "@/components/ordering/CheckoutBlockNode.vue";
 
 export default {
   components: {
-    MainPageNode,
     PreloadWrapContainerNode,
     PageHeadTruncatedNode,
     MiddleContentNode,
@@ -161,7 +160,6 @@ export default {
     cartStore: {
       handler(newValue) {
         if (!isEmpty(newValue) && isEmpty(this.draftOrder)) {
-          // console.log(getNonceToken());
           this.getCheckout();
         }
       },
@@ -170,17 +168,16 @@ export default {
   },
   methods: {
     ...mapMutations({
-      SET_VALUE: "SET_VALUE",
+      setValue: "setValue",
       updateRev: "common/updateRev",
       setCurrentURLPayment: "auth/setCurrentURLPayment",
     }),
     ...mapActions({
-      mainFetchRequest: "mainFetchRequest",
       updateMessage: "common/updateMessage",
       getCart: "cart/getCart",
     }),
     getCheckout() {
-      this.mainFetchRequest({
+      this.mainFetch({
         basedRequest: this.checkoutRequest,
         method: "get",
         data: {},
@@ -200,7 +197,7 @@ export default {
         this.updateMessage("notSelectPaymentMethod");
         return;
       }
-      this.mainFetchRequest({
+      this.mainFetch({
         basedRequest: this.checkoutRequest,
         method: "post",
         data: this.draftOrder,

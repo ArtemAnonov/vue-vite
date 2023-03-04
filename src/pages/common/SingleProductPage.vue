@@ -1,4 +1,4 @@
-div<template>
+<template>
   <MainPageNode
     :navRaw="product ? product.categories[1] : undefined"
     :additionalTitle="product ? product.name : undefined"
@@ -72,13 +72,13 @@ div<template>
                     >Купить</ButtonNode
                     >
                     <!--  @errorValidation="errorValidation" -->
-                    <ButtonNode
+                    <!-- icon -->
+                    <ButtonWishlistNode class="sidebar-single__wishlist"
                       :resolver="{
-                        func: () => {},
-                        payload: cartPayload,
-                      }"
-                      class="sidebar-single__wishlist icon icon-wishlist"
-                    />
+                        func: updateWishlist,
+                        payload: wishlistPayload,
+                      }"/>
+
                   </div>
                   <SocialNetworksNode
                     class="sidebar-single__item"
@@ -88,7 +88,7 @@ div<template>
               <div class="single__rows">
                 <div class="single__row single__data data-single">
                   <div class="data-single__info">
-                    <div class="data-single__title">Информация о товаре</div>
+                    <h2 class="data-single__title">Информация о товаре</h2>
                     <ul class="data-single__list">
                       <li
                         v-for="(attr, index) in product?.attributes"
@@ -110,6 +110,7 @@ div<template>
                 </div>
                 <div class="single__row">
                   <SliderProductsSectionNode
+                    slug="single-product-concomitant"
                     title="Сопутствующие товары"
                     :productsCategoryId="20"
                     :breakpoints="slidersData.breakpoints.singleMain"
@@ -120,11 +121,11 @@ div<template>
           </div>
           <div class="single__bottom">
             <SliderProductsSectionNode
+              slug="single-product-additional"
               title="С этим товаром также покупают"
               :productsCategoryId="20"
             />
             <SliderBannersFashionBlogNode/>
-
             <DistributionNode/>
           </div>
         </div>
@@ -144,7 +145,7 @@ import SliderSingleNode from "@/components/sliders/SliderSingleNode.vue";
 import SocialNetworksNode from "@/components/SocialNetworksNode.vue";
 import DistributionNode from "@/components/DistributionNode.vue";
 import ProductPricesNode from "@/components/product/ProductPricesNode.vue";
-import MainPageNode from "@/components/structure/MainPageNode.vue";
+import ButtonWishlistNode from "@/components/product/ButtonWishlistNode.vue";
 
 export default {
   components: {
@@ -154,19 +155,15 @@ export default {
     SocialNetworksNode,
     DistributionNode,
     ProductPricesNode,
-    MainPageNode,
+    ButtonWishlistNode,
   },
   props: {
-    params: {
-      productSlug: String,
-    },
-    query: {},
+    params: Array,
   },
   data() {
     return {
       /**
-       * При обработке variations мутируют до пустого массива (пока
-       * нет ясности с variations)
+       * При обработке variations мутируют до пустого массива
        */
       cartPayload: {
         routeBase: "cart/add-item",
@@ -181,6 +178,7 @@ export default {
           ],
         },
       },
+
       slidersData: {
         breakpoints: {
           singleMain: {
@@ -200,16 +198,24 @@ export default {
   },
   computed: {
     ...mapGetters({
-      itemBySlug: "itemBySlug",
+      singleBySlug: "singleBySlug",
     }),
     ...mapState({
       productsRequest: (state) => state.products.basedRequest,
     }),
     product() {
-      return this.itemBySlug({
+      return this.singleBySlug({
         type: this.productsRequest.type,
-        slug: this.params.productSlug,
+        slug: this.productSlug,
       });
+    },
+    wishlistPayload() {
+      return {
+        product_id: this.product.id,
+      };
+    },
+    productSlug() {
+      return this.params[this.params.length - 1];
     },
   },
   watch: {
@@ -219,17 +225,11 @@ export default {
       }
     },
   },
-  /**
-   * ONLY (VITE_LIKE_A_SPA)
-   */
   created() {
-    if (import.meta.env.VITE_LIKE_A_SPA) {
-      this.getProduct();
-    } else {
-      this.cartPayload.params.id = this.product.id;
-    }
+    this.cartPayload.params.id = this.product.id;
   },
   mounted() {
+    // eslint-disable-next-line no-new
     new Sticky(".sidebar-single", {
       wrap: false,
       marginTop: 100,
@@ -245,34 +245,16 @@ export default {
     ...mapActions({
       getSingleBySlug: "getSingleBySlug",
       updateCart: "cart/updateCart",
+      updateWishlist: "wishlist/updateWishlist",
     }),
     attribute(attrId) {
-      if (isEmpty(this.product)) return;
-      return this.product.attributes.find((i) => i.id == attrId);
-    },
-    /**
-     * Если product уже загружен,
-     */
-    async getProduct() {
-      if (isEmpty(this.product)) {
-        const returned = await this.getSingleBySlug({
-          basedRequest: this.productsRequest,
-          params: { slug: this.params.productSlug, per_page: 1 },
-        });
-      }
-
-      this.cartPayload.params.id = this.product.id;
+      if (isEmpty(this.product)) return null;
+      return this.product.attributes.find((i) => i.id === attrId);
     },
     /**
      * Метод для вариативных продуктов (заменен фикцией)
      */
     setVariation(attribute, value) {
-      // const variation = this.cartPayload.params.variations.find(
-      //   (el) => el.name === attribute
-      // );
-      // if (variation) {
-      //   variation.value = value;
-      // }
       const settedValue = this.cartPayload.params.variations[0].value;
       this.cartPayload.params.variations[0].value = settedValue ? "" : value;
     },
@@ -448,8 +430,8 @@ export default {
   &__title {
     color: #000;
     margin-bottom: 20px;
-    font-size: 2rem;
-    line-height: 36px;
+    // font-size: 2rem;
+    // line-height: 36px;
   }
 
   &__list {

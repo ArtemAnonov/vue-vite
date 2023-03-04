@@ -1,10 +1,10 @@
 <template>
   <div class="slider-arrows">
     <div
-      :class="`slider-arrows__arrow slider-arrows__arrow_prev ${identificator}__arrow_prev icon-arrow`"
+      :class="`slider-arrows__arrow slider-arrows__arrow_prev ${slug}__arrow_prev icon-arrow`"
     />
     <div
-      :class="`slider-arrows__arrow slider-arrows__arrow_next ${identificator}__arrow_next icon-arrow`"
+      :class="`slider-arrows__arrow slider-arrows__arrow_next ${slug}__arrow_next icon-arrow`"
     />
   </div>
 </template>
@@ -12,9 +12,8 @@
 <script>
 export default {
   props: {
-    identificator: String,
+    slug: String,
   },
-  computed: {},
 };
 </script>
 

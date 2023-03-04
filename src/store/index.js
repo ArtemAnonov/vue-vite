@@ -1,4 +1,5 @@
 import { createStore } from "vuex";
+import { VUE_WP_INSTANCE } from "@/api/helpers";
 
 import common from "@/store/modules/Callback/common.module";
 import menus from "@/store/modules/Callback/menus.module";
@@ -31,6 +32,8 @@ import getters from "@/store/getters";
 import mutations from "@/store/mutations";
 import actions from "@/store/actions";
 import state from "@/store/state";
+
+console.log(VUE_WP_INSTANCE());
 
 export default createStore({
   modules: {

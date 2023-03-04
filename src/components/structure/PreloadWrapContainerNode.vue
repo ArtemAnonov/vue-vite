@@ -5,7 +5,7 @@
       <template v-for="(item, index) in arrayPreloadElements"
         :key="index">
         <PreloadWrapNode :targetPreloadElement="true"
-          paddingBottom="35"/>
+          :paddingBottom="35"/>
       </template>
     </div>
     <div else

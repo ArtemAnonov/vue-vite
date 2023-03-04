@@ -14,11 +14,11 @@
 </template>
 <script>
 import { useStore } from "vuex";
-import MainPageNode from "@/components/structure/MainPageNode.vue";
+// import MainPageNode from "@/components/structure/MainPageNode.vue";
 
 export default {
   components: {
-    MainPageNode,
+    // MainPageNode,
   },
   setup() {
     const store = useStore();

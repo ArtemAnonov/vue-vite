@@ -8,11 +8,12 @@
       width: progressLoad.percent + '%',
       opacity: progressLoad.visible ? 1 : 0,
     }"
-  ></div>
+  />
 </template>
 
 <script>
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
+
 export default {
   components: {},
   watch: {},

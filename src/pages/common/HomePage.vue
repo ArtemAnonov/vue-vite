@@ -6,7 +6,7 @@
         class="slider-banners-main"
         :bannerCategoryId="68"
         :containerStylesOff="windowWidth < 1024 ? true : false"
-        identificator="slider-banners-main"
+        slug="slider-banners-main"
         :autoplay="{ delay: 50000, disableOnInteraction: false }"
         pagination
         :slides-per-view="1"
@@ -21,10 +21,12 @@
         </template>
       </SliderBannersNode>
       <SliderProductsSectionNode
+        slug="home-for-women"
         title="Для женщин"
         :productsCategoryId="20"
       />
       <SliderProductsSectionNode
+        slug="home-for-men"
         title="Для мужчин"
         :productsCategoryId="22"
       />
@@ -47,16 +49,15 @@ import SliderBannersFashionBlogNode from "@/components/sliders/SliderBannersFash
 import SliderBannersNode from "@/components/sliders/SliderBannersNode.vue";
 import PageContentNode from "@/components/PageContentNode.vue";
 import DistributionNode from "@/components/DistributionNode.vue";
-import MainPageNode from "@/components/structure/MainPageNode.vue";
 
 export default {
+
   components: {
     SliderProductsSectionNode,
     SliderBannersNode,
     SliderBannersFashionBlogNode,
     PageContentNode,
     DistributionNode,
-    MainPageNode,
   },
   props: {
     slug: {
@@ -66,15 +67,18 @@ export default {
   },
   computed: {
     ...mapGetters({
-      itemBySlug: "itemBySlug",
+      singleBySlug: "singleBySlug",
     }),
     ...mapState({
       pagesRequest: (state) => state.pages.basedRequest,
       windowWidth: (state) => state.common.windowWidth,
     }),
     templatePage() {
-      return this.itemBySlug({ type: this.pagesRequest.type, slug: this.slug });
+      return this.singleBySlug({ type: this.pagesRequest.type, slug: this.slug });
     },
+  },
+  created() {
+    this.getTemplatePage();
   },
   methods: {
     ...mapMutations({
@@ -87,40 +91,37 @@ export default {
     async getTemplatePage() {
       await this.getSingleBySlug({
         basedRequest: this.pagesRequest,
-        params: { slug: this.slug },
+        slug: this.slug,
       });
     },
-  },
-  created() {
-    this.getTemplatePage();
   },
 };
 </script>
 
 <style lang="scss">
-.home {
-  .page-content {
-    background-color: #f1f1f1;
-    color: #868686;
+// .home {
+//   .page-content {
+//     background-color: #f1f1f1;
+//     color: #868686;
 
-    &__content {
-      display: grid;
-      grid-template-rows: repeat(4, auto);
-      grid-auto-flow: column;
-      column-gap: 2rem;
-      align-items: end;
+//     &__content {
+//       display: grid;
+//       grid-template-rows: repeat(4, auto);
+//       grid-auto-flow: column;
+//       column-gap: 2rem;
+//       align-items: end;
 
-      @media (max-width: ($md2+px)) {
-        grid-template-rows: auto;
-        grid-auto-flow: row;
-      }
-    }
+//       @media (max-width: ($md2+px)) {
+//         grid-template-rows: auto;
+//         grid-auto-flow: row;
+//       }
+//     }
 
-    h3 {
-      font-size: 1rem !important;
-    }
-  }
-}
+//     h3 {
+//       font-size: 1rem !important;
+//     }
+//   }
+// }
 
 .slider-banners-main {
   .swiper {

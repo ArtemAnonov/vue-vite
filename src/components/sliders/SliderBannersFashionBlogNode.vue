@@ -2,7 +2,7 @@
   <SliderBannersNode
     class="slider-banners-fashion-blog"
     :bannerCategoryId="69"
-    identificator="slider-banners-fashion-blog"
+    slug="slider-banners-fashion-blog"
     :space-between="60"
     :breakpoints="{
       '320': {

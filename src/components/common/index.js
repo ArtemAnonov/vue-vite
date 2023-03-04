@@ -12,6 +12,7 @@ import InputCheckboxNode from "@/components/common/InputCheckboxNode.vue";
 import InputRadioNode from "@/components/common/InputRadioNode.vue";
 import PreloadWrapNode from "@/components/common/PreloadWrapNode.vue";
 import RevealingNode from "@/components/common/RevealingNode.vue";
+import MainPageNode from "@/components/common/MainPageNode.vue";
 
 export default [
   BaseButtonNode,
@@ -28,4 +29,5 @@ export default [
   PreloadWrapNode,
   InputRadioNode,
   RevealingNode,
+  MainPageNode,
 ];

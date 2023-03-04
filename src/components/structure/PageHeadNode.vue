@@ -1,7 +1,9 @@
 <template>
-  <section class="page-head" :class="title ? '' : 'page-head_product'">
+  <section class="page-head"
+    :class="title ? '' : 'page-head_product'">
     <ContainerNode>
-      <div class="page-head__body" v-bind="$attrs">
+      <div class="page-head__body"
+        v-bind="$attrs">
         <div class="page-head__content">
           <button
             v-if="!title"
@@ -11,40 +13,53 @@
             Назад
           </button>
           <ul class="page-head__breadcrumbs">
-            <li><RouterLink to="/">Главная&nbsp;&nbsp;&nbsp;/</RouterLink></li>
+            <BaseLinkNode @click="$router.push('/')">Главная</BaseLinkNode>
+            <template v-for="(crumb, index) in crumbs"
+              :key="index"
+            >
+              <BaseLinkNode @click="crumb.routeTo">
+                {{ crumb?.title }}</BaseLinkNode>
+
+            </template>
+            <!-- <li><RouterLink to="/">Главная&nbsp;&nbsp;&nbsp;/</RouterLink></li>
             <template v-if="Array.isArray(crumbs)">
-              <li v-for="(crumb, index) in crumbs?.reverse()" :key="index">
+              <li v-for="(crumb, index) in crumbs?.reverse()"
+                :key="index">
                 <RouterLink :to="`/product-category/${crumb.slugs.join('/')}`">
                   {{ crumb.name }}&nbsp;&nbsp;&nbsp;<span
                     v-if="crumbs.length - 1 !== index || additionalTitle"
-                    >/</span
+                  >/</span
                   >
                 </RouterLink>
               </li>
             </template>
             <template v-else
-              ><li>
-                <button>
-                  <span>{{ navRaw }}</span>
-                </button>
-              </li></template
+            ><li>
+              <button>
+                <span>{{ navRaw }}</span>
+              </button>
+            </li></template
             >
             <li>
               <span v-if="additionalTitle">{{ additionalTitle }}</span>
-            </li>
+            </li> -->
           </ul>
         </div>
-        <h1 v-if="title" class="page-head__title">{{ title }}</h1>
+        <h1 v-if="title"
+          class="page-head__title">{{ title }}</h1>
       </div>
     </ContainerNode>
   </section>
 </template>
 
 <script>
-import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
+
+import { computed } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { useStore } from "vuex";
+import { getPathName, routeToSingleProductCategory } from "@/api/helpers";
 
 export default {
-  name: "PageHeadNode",
   inheritAttrs: false,
   props: {
     /**
@@ -57,71 +72,42 @@ export default {
      */
     navRaw: [Object, String, Array],
   },
-  data() {
-    return {};
-  },
-  computed: {
-    ...mapGetters({
-      itemById: "itemById",
-    }),
-    ...mapState({
-      productsCategoriesRequest: (state) =>
-        state.productsCategories.basedRequest,
-    }),
-
+  setup() {
+    const store = useStore();
+    const route = useRoute();
+    const router = useRouter();
+    const productsCategoriesType = store.state.productsCategories.basedRequest.type;
+    const productsType = store.state.products.basedRequest.type;
     /**
-     * Заметочка: попытка сделать рекурсивную функцию с итеративной передачей
-     * массива не получилась \/
-     *
-     * Прим. Не всегда работает корректно. Ошибка замечена при попытке выдать категории
+     * В массиве els может присутствовать префикс например /product-category/,
+     * который выкидывается pages/pageBySlug, но остается в el.path
+     * Много мороки с правилным путём категори, т.к. таксономии не имеют свойтсв
+     * типа product.permalink
      */
-    crumbs() {
-      if (!this.navRaw) return;
+    const crumbs = computed(() => {
+      const handledPath = getPathName(route.path, "array");
+      let items = [];
+      // if (handledPath?.prefix) { // поиск по категориям продуктов
+      //   const catSlugs = handledPath.items;
+      //   for (let i = 0; i < catSlugs.length; i++) {
+      //     const el = catSlugs[i]; // iubki
+      //     const pCat = store.getters.singleBySlug({ type: productsCategoriesType, slug: el });
+      //     items.push({ title: pCat.name, routeTo: () => routeToSingleProductCategory(pCat) });
+      //   }
+      //   if (handledPath?.last) items.push({ title: store.getters.singleBySlug({ type: productsType, slug: handledPath.last }).name });
+      // } else { // поиск по страницам
+      items = handledPath.items.map((el) => {
+        const title = store.getters["pages/pageBySlug"](el)?.title.rendered;
+        return title ? { title, routeTo: () => router.push(el) } : null;
+      });
+      // }
 
-      let type = typeof this.navRaw;
-      if (type === "string" || type === "array") return this.navRaw;
+      return items;
+    });
+    return {
+      crumbs,
 
-      let category;
-      if (this.navRaw.hasOwnProperty("parent")) {
-        category = this.navRaw;
-      } else
-        category = this.itemById({
-          type: this.productsCategoriesRequest.type,
-          id: this.navRaw.id,
-        });
-
-      let parent = 0;
-      let index = 0;
-      const crumbs = [];
-      let parentCheck = (category) => {
-        if (!category) return;
-        let parentCategoryId = category.parent;
-        if (parentCategoryId != parent) {
-          crumbs.push({ name: category.name, slugs: [category.slug] });
-          if (index !== 0) {
-            crumbs[index - 1].slugs.unshift(category.slug);
-          }
-          index++;
-          const parentCategory = this.itemById({
-            type: this.productsCategoriesRequest.type,
-            id: parentCategoryId,
-          });
-          parentCheck(parentCategory);
-        } else {
-          crumbs.push({ name: category.name, slugs: [category.slug] });
-          if (index !== 0) {
-            crumbs[index - 1].slugs.unshift(category.slug);
-          }
-          index++;
-        }
-      };
-      parentCheck(category);
-      return crumbs;
-    },
-  },
-  methods: {
-    ...mapMutations({}),
-    ...mapActions({}),
+    };
   },
 };
 </script>

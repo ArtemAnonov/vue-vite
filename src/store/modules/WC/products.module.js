@@ -1,9 +1,10 @@
-import { isEmpty, cloneDeep } from "lodash-es";
+import { isEmpty, cloneDeep, has } from "lodash-es";
 import router from "@/router/index.js";
 import {
   VUE_WP_INSTANCE,
   mutateObjectForReplaceProperty,
-} from "@/api/helpers.js";
+  getPathName,
+} from "@/api/helpers";
 
 /**
  * Фильтрация и сортировка во фроненде работает для предзагрузки товаров,
@@ -22,17 +23,18 @@ export default {
    *
    * @returns
    */
+
   state: () => ({
+    settings: instance?.settings ? instance.settings : {},
+    requests: instance.requests,
     basedRequest: {
       apiType: instance.apiType,
       type: instance.type,
       routeBase: instance.route_base,
-      params: import.meta.env.VITE_LIKE_A_SPA
-        ? instance.params
-        : mutateObjectForReplaceProperty(instance.params, { per_page: 8 }),
+      params: mutateObjectForReplaceProperty(instance.params, { per_page: 8 }),
       preparedParams: {},
     },
-    requests: instance.requests,
+
     items: instance.items,
     itemsPaginated: {},
     totalPages: null,
@@ -49,7 +51,7 @@ export default {
         const items = [];
         if (
           !isEmpty(state.itemsPaginated)
-          && state.itemsPaginated.hasOwnProperty(state.basedRequest.params.page)
+          && has(state.itemsPaginated, state.basedRequest.params.page)
         ) {
           const ids = state.itemsPaginated[state.basedRequest.params.page];
           for (let i = 0; i < ids.length; i++) {
@@ -75,15 +77,15 @@ export default {
      * @returns
      */
     filtredProductAttributes:
-      (state, getters, rootState, rootGetters) => ({ requestAttributes, item }) => {
+      () => ({ requestAttributes, item }) => {
         let confirmed = true;
         const filter = {};
-        requestAttributes: for (const reqAttrKey in requestAttributes) {
-          if (Object.hasOwnProperty.call(requestAttributes, reqAttrKey)) {
+        check: for (const reqAttrKey in requestAttributes) {
+          if (has(requestAttributes, reqAttrKey)) {
             const reqAttrObject = requestAttributes[reqAttrKey]; // attributes['pa_brand']
             for (let i = 0; i < item.attributes.length; i++) {
               const itemAtrrObject = item.attributes[i];
-              if (itemAtrrObject.id == reqAttrObject.id) {
+              if (itemAtrrObject.id === reqAttrObject.id) {
                 for (
                   let index = 0;
                   index < itemAtrrObject.options.length;
@@ -91,14 +93,14 @@ export default {
                 ) {
                   const itemOption = itemAtrrObject.options[index];
                   for (
-                    let index = 0;
-                    index < reqAttrObject.options.length;
-                    index++
+                    let ind = 0;
+                    ind < reqAttrObject.options.length;
+                    ind++
                   ) {
-                    const inputOption = reqAttrObject.options[index];
-                    if (inputOption.name == itemOption) {
+                    const inputOption = reqAttrObject.options[ind];
+                    if (inputOption.name === itemOption) {
                       filter[reqAttrKey] = true;
-                      continue requestAttributes;
+                      continue check;
                     } else {
                       filter[reqAttrKey] = false;
                     }
@@ -109,7 +111,7 @@ export default {
           }
         }
         for (const opt in filter) {
-          if (Object.hasOwnProperty.call(filter, opt)) {
+          if (has(filter, opt)) {
             const bool = filter[opt];
             if (!bool) {
               confirmed = false;
@@ -124,16 +126,17 @@ export default {
      * @returns - Скидка в процентах
      */
     procentPriceSale: (state) => (product) => Math.round(
-      100 - (product.sale_price / product.regular_price) * 100,
+      100 - ((product.sale_price / product.regular_price) * 100),
     ),
     singleProductAttribute:
-      (state) => ({ productId, attrId }) => state.items?.[productId]?.attributes.find((i) => i.id == attrId),
+      (state) => ({ productId, attrId }) => state.items?.[productId]?.attributes.find((i) => i.id === attrId),
 
     sortingProducts:
       (state, getters, rootState, rootGetters) => (items, type) => {
-        if (type == 0) return items.sort(rootGetters["filter/sortDefault"]); //
-        if (type == 1) { return items.sort(rootGetters["filter/sortPriceMinToMax"]); } // цена, по убыванию
-        if (type == 2) { return items.sort(rootGetters["filter/sortPriceMaxToMin"]); } // цены по возрастанию
+        if (type === 0) return items.sort(rootGetters["filter/sortDefault"]); //
+        if (type === 1) { return items.sort(rootGetters["filter/sortPriceMinToMax"]); } // цена, по убыванию
+        if (type === 2) { return items.sort(rootGetters["filter/sortPriceMaxToMin"]); } // цены по возрастанию
+        return null;
       },
   },
   mutations: {
@@ -151,33 +154,35 @@ export default {
        * Цикл для запроса
        */
       for (const key in filterParams) {
-        const neastedValue = filterParams[key];
-        if (
-          typeof neastedValue === "object"
-          && !neastedValue.hasOwnProperty("options")
-        ) {
-          // (*)
-          for (const neastedValueKey in neastedValue) {
-            if (Object.hasOwnProperty.call(neastedValue, neastedValueKey)) {
-              const element = neastedValue[neastedValueKey];
-              if (params.hasOwnProperty(neastedValueKey)) {
-                params[neastedValueKey] = element;
+        if (has(filterParams, key)) {
+          const neastedValue = filterParams[key];
+          if (
+            typeof neastedValue === "object"
+            && !has(neastedValue, "options")
+          ) {
+            // (*)
+            for (const neastedValueKey in neastedValue) {
+              if (has(neastedValue, neastedValueKey)) {
+                const element = neastedValue[neastedValueKey];
+                if (has(params, neastedValueKey)) {
+                  params[neastedValueKey] = element;
+                }
               }
             }
           }
-        }
-        if (params.hasOwnProperty(key)) {
-          // (**)
-          if (
-            typeof neastedValue === "number"
-            || typeof neastedValue === "string"
-            || typeof neastedValue === "array"
-          ) {
-            params[key] = neastedValue;
-          } else if (typeof neastedValue === "object") {
-            // (***)
-            if (neastedValue.hasOwnProperty("options")) {
-              params[key] = neastedValue.options.map((object) => object.id);
+          if (has(params, key)) {
+            // (**)
+            if (
+              typeof neastedValue === "number"
+              || typeof neastedValue === "string"
+              || Array.isArray(neastedValue)
+            ) {
+              params[key] = neastedValue;
+            } else if (typeof neastedValue === "object") {
+              // (***)
+              if (has(neastedValue, "options")) {
+                params[key] = neastedValue.options.map((object) => object.id);
+              }
             }
           }
         }
@@ -186,14 +191,16 @@ export default {
        * Цикл для preparedParams
        */
       for (const key in filterParams) {
-        const filterParam = filterParams[key];
-        if (
-          typeof filterParam === "number"
-          || typeof filterParam === "string"
-        ) {
-          state.basedRequest.preparedParams[key] = filterParam; // optionalParams.price = 500
-        } else {
-          state.basedRequest.preparedParams[key] = cloneDeep(filterParam);
+        if (has(filterParams, key)) {
+          const filterParam = filterParams[key];
+          if (
+            typeof filterParam === "number"
+            || typeof filterParam === "string"
+          ) {
+            state.basedRequest.preparedParams[key] = filterParam; // optionalParams.price = 500
+          } else {
+            state.basedRequest.preparedParams[key] = cloneDeep(filterParam);
+          }
         }
       }
     },
@@ -207,10 +214,6 @@ export default {
     setProductsCategoryId(state, value) {
       state.basedRequest.params.category = value;
     },
-    // setExclude(state, value) {
-    //     state.optionalParams.exclude = value;
-    // },
-
     setItemsPaginated(state, { pageNumber, value }) {
       state.itemsPaginated[pageNumber] = value;
     },
@@ -227,9 +230,7 @@ export default {
       state, dispatch, commit, getters, rootGetters,
     }) => {
       const { preparedParams } = state.basedRequest;
-      /**
-       * Достаем тот реквест, у которого page совпадает с текщим basedRequest
-       */
+      // Достаем тот реквест, у которого page совпадает с текщим basedRequest
       const requestAttributes = {};
       let items = [];
       /**
@@ -237,7 +238,7 @@ export default {
        * не включается
        */
       for (const key in preparedParams) {
-        if (Object.hasOwnProperty.call(preparedParams, key)) {
+        if (has(preparedParams, key)) {
           const param = preparedParams[key];
           if (key.match(/^pa_[a-z]+/) && param.options.length) {
             // && !isEmpty(element.options)
@@ -254,9 +255,9 @@ export default {
         let confirmed = false;
         const id = ids[index];
         const item = state.items[id];
-        for (let index = 0; index < item.categories.length; index++) {
-          const category = item.categories[index];
-          if (category.id == preparedParams.category) {
+        for (let i = 0; i < item.categories.length; i++) {
+          const category = item.categories[i];
+          if (category.id === preparedParams.category) {
             confirmed = true;
             break;
           } else {
@@ -284,25 +285,25 @@ export default {
         state.basedRequest.preparedParams.orderAndOrderBy.id,
       );
 
-      const { per_page } = state.basedRequest.params;
+      const perPage = state.basedRequest.params.per_page;
 
-      commit("setTotalPages", Math.ceil(items.length / per_page));
+      commit("setTotalPages", Math.ceil(items.length / perPage));
 
       commit("unsetItemsPaginated");
       /**
        * Создаются шаблоны для страниц пагинации. Для отображения товаров
        * исрользуется getter filtredProducts
        */
-      const pageCount = Math.ceil(items.length / per_page);
+      const pageCount = Math.ceil(items.length / perPage);
       let itemMarker = 0;
       for (let pageNumber = 1; pageNumber <= pageCount; pageNumber++) {
         commit("setItemsPaginated", {
           pageNumber,
           value: items
-            .slice(itemMarker, itemMarker + per_page)
+            .slice(itemMarker, itemMarker + perPage)
             .map((i) => i.id),
         });
-        itemMarker += per_page;
+        itemMarker += perPage;
       }
     },
 
@@ -311,7 +312,7 @@ export default {
     }, page) {
       const value = Number(page);
       const pushObj = { name: "" };
-      if (value != 1) pushObj.query = { page: value };
+      if (value !== 1) pushObj.query = { page: value };
       const { type } = state.basedRequest;
       commit("SET_PAGE", { type, value }, { root: true });
       return pushObj;
@@ -328,13 +329,13 @@ export default {
       commit("setProductsParams", rootGetters["filter/params"]);
     },
 
-    routeToSingle({ state, rootGetters }, ident) {
-      if (typeof ident === "number") {
-        state.items[ident].slug;
-      }
+    routeToSingleProduct({ state, rootGetters }, value) {
+      const product = rootGetters.universalItem({ type: state.basedRequest.type, value });
+      const handledPath = getPathName(product.permalink, "array");
+      const mainPath = handledPath.items;
       router.push({
         name: "SingleProduct",
-        params: { productSlug: ident },
+        params: { mainPath },
       });
     },
   },

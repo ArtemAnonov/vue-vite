@@ -7,7 +7,7 @@
           :key="index"
           class="category-grid__item">
           <PreloadWrapNode :targetPreloadElement="false"
-            paddingBottom="100"/>
+            :paddingBottom="100"/>
         </article>
       </div>
       <div class="category-grid__items">
@@ -17,7 +17,7 @@
           <PreloadWrapNode>
             <div v-if="productSubCategory"
               @click="
-                routeToCategory(productSubCategory)
+                routeToSingleProductCategory(productSubCategory)
               ">
               <div class="category-grid__image">
                 <img v-if="productSubCategory.image"
@@ -42,12 +42,10 @@
 
 <script>
 import { mapState, mapGetters } from "vuex";
-// import PreloadWrapContainerNode from "@/components/structure/PreloadWrapContainerNode.vue";
-import { routeToCategory } from "@/api/helpers";
+import { routeToSingleProductCategory } from "@/api/helpers";
 
 export default {
   components: {
-    // PreloadWrapContainerNode,
   },
   props: {
     productCategory: {
@@ -57,7 +55,7 @@ export default {
   },
   setup() {
     return {
-      routeToCategory,
+      routeToSingleProductCategory,
     };
   },
   computed: {
@@ -66,7 +64,7 @@ export default {
     }),
     ...mapGetters({
       itemsMatchedByCallback: "itemsMatchedByCallback",
-      itemBySlug: "itemBySlug",
+      singleBySlug: "singleBySlug",
     }),
     productsCategories() {
       if (!this.productCategory) return [];

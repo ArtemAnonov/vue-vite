@@ -1,9 +1,26 @@
 <template>
-  <div class="blog-page">blog page</div>
+  <MainPageNode :pageHeadNodeShow="false">
+    <template #page-main>
+      <ContainerNode>
+        <TroubleNode
+          :text="['Для категории по этому маршруту', 'ещё не создана страница!']" />
+      </ContainerNode>
+    </template>
+  </MainPageNode>
 </template>
 
 <script>
-export default {};
+// import MainPageNode from "@/components/structure/MainPageNode.vue";
+import TroubleNode from "@/components/TroubleNode.vue";
+
+export default {
+  components: {
+    // MainPageNode,
+    TroubleNode,
+  },
+};
 </script>
 
-<style></style>
+<style lang="scss">
+
+</style>

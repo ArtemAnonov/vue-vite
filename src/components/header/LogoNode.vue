@@ -7,6 +7,7 @@
 <style lang="scss">
 .logo {
   display: flex;
+  color: #1e242c;
   @media (max-width: ($md2+px)) {
     flex: 1 1 auto;
     margin-right: 1.3333333333rem;

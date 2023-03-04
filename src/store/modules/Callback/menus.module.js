@@ -1,10 +1,10 @@
-import { VUE_WP_INSTANCE } from "@/api/helpers.js";
+import { VUE_WP_INSTANCE } from "@/api/helpers";
 
-const items = VUE_WP_INSTANCE().state.menus.returned;
+const instance = VUE_WP_INSTANCE().state.menus.returned;
 export default {
   namespaced: true,
-  state: () => (items),
+  state: () => ({ settings: {}, items: instance }),
   getters: {
-    menu: (state) => ({ name }) => state.menus[name],
+    menu: (state) => ({ name }) => state.menus.items[name],
   },
 };

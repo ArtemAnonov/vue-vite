@@ -2,13 +2,13 @@
   <section class="slider-products-section">
     <ContainerNode>
       <div class="slider-products-section__body">
-        <div class="slider-products-section__title">
-          <button @click="routeToCategory(productsCategory)">
+        <h2 class="slider-products-section__title">
+          <button @click="routeToSingleProductCategory(productsCategory)">
             {{ title }}
           </button>
-        </div>
+        </h2>
         <SliderProductsNode
-          :identificator="identificator"
+          :slug="slug"
           :products="products"
           :breakpoints="breakpoints"
           class="slider-products-section__slider"
@@ -20,9 +20,8 @@
 
 <script>
 import { mapState, mapGetters, mapActions } from "vuex";
-import { isEmpty } from "lodash-es";
 import SliderProductsNode from "@/components/sliders/SliderProductsNode.vue";
-import { routeToCategory } from "@/api/helpers";
+import { routeToSingleProductCategory } from "@/api/helpers";
 
 export default {
   components: {
@@ -33,15 +32,16 @@ export default {
     productsCategoryId: Number,
     title: String,
     breakpoints: Object,
+    slug: String,
   },
   setup() {
     return {
-      routeToCategory,
+      routeToSingleProductCategory,
     };
   },
   computed: {
     ...mapGetters({
-      itemById: "itemById",
+      singleById: "singleById",
       itemsMatchedByCallback: "itemsMatchedByCallback",
     }),
     ...mapState({
@@ -65,32 +65,11 @@ export default {
       );
     },
     productsCategory() {
-      return this.itemById({
+      return this.singleById({
         type: this.productsCategoriesRequest.type,
         id: this.productsCategoryId,
       });
     },
-    identificator() {
-      if (!isEmpty(this.productsCategory)) {
-        return this.productsCategory.slug;
-      }
-      return null;
-    },
-  },
-  created() {
-    if (import.meta.env.VITE_LIKE_A_SPA) {
-      this.getItems({
-        basedRequest: {
-          ...{ category: this.productsCategoryId },
-          ...this.productsRequest,
-        },
-      });
-    }
-  },
-  methods: {
-    ...mapActions({
-      getItems: "getItems",
-    }),
   },
 };
 </script>
@@ -123,15 +102,17 @@ export default {
   }
   &__title {
     text-align: center;
-    margin-bottom: 1rem;
+    // margin-bottom: 1rem;
+    margin: 0.6rem 0 1.5rem 0;
+      // font-weight: 400;
     // @media (max-width: ($md3+px)) {
     //   margin: 0;
     // }
     button {
-      font-size: 2rem;
-      line-height: 1.2;
-      margin: 0.6rem 0 0.6rem 0;
-      font-weight: 400;
+      // font-size: inherit;
+      // font-size: 2rem;
+      // line-height: 1.2;
+
     }
   }
 }

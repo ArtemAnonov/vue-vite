@@ -1,24 +1,45 @@
 <template>
-  <ProfilePageNode>
-    <template #content>
-      <OrdersListNode />
-    </template>
-  </ProfilePageNode>
+  <PreloadWrapContainerNode
+    v-slot="slotProps"
+    class="order"
+    :quantityPreloadElements="4"
+    :iterable="handledOrders"
+  >
+    <OrderNode :order="slotProps.item"/>
+  </PreloadWrapContainerNode>
 </template>
 
 <script>
-import OrdersListNode from "@/components/personal/OrdersListNode.vue";
-// import ProfilePageNode from "@/components/personal/ProfilePageNode.vue";
-
-import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
+import { computed } from "vue";
 import { useStore } from "vuex";
+import PreloadWrapContainerNode from "@/components/structure/PreloadWrapContainerNode.vue";
+import OrderNode from "@/components/ordering/OrderNode.vue";
+
 export default {
   components: {
-    OrdersListNode,
-    // ProfilePageNode,
+    PreloadWrapContainerNode,
+    OrderNode,
+  },
+  async setup() {
+    const store = useStore();
+    const { basedRequest, items } = store.state.orders;
+
+    store.dispatch("getItems", { basedRequest });
+
+    // const handledOrders = computed(() => items);
+
+    function openPaymentPage(url) {
+      window.open(url);
+    }
+
+    return {
+      openPaymentPage,
+      handledOrders: computed(() => items),
+    };
   },
 };
 </script>
 
-<style>
+<style lang="scss">
+
 </style>

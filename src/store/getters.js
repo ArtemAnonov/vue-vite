@@ -1,4 +1,4 @@
-import { isEqual } from "lodash-es";
+import { isEqual, has } from "lodash-es";
 
 export default {
   total: (state, getters) => ({ type, params }, property) => {
@@ -24,13 +24,12 @@ export default {
   requestByParam: (state) => ({ type }, { param, value }) => state[type].requests.find((req) => req.params[param] === value),
 
   /**
-   * decodeURI()
    *
    * @param {*} state
    * @returns
    */
-  itemBySlug: (state) => ({ type, slug }) => {
-    let item;
+  singleBySlug: (state) => ({ type, slug }) => {
+    let item = null;
     for (const id in state[type].items) {
       if (state[type].items[id].slug === slug) {
         item = state[type].items[id];
@@ -45,7 +44,7 @@ export default {
    * @param {*} getters
    * @returns
    */
-  itemById: (state) => ({ type, id }) => state[type].items[id],
+  singleById: (state) => ({ type, id }) => state[type].items[id],
 
   /**
    * Каждому id из request.data присваивается объект из state[type]
@@ -83,7 +82,7 @@ export default {
     const items = [];
     const paramsKeys = Object.keys(params);
     for (const key in state[type].items) {
-      if (Object.hasOwnProperty.call(state[type].items, key)) {
+      if (has(state[type].items, key)) {
         const element = state[type].items[key];
         paramsKeys.forEach((paramKey) => {
           if (element[paramKey] === params[paramKey]) {
@@ -112,7 +111,7 @@ export default {
     const items = [];
     const keys = Object.keys(params);
     for (const key in state[type].items) {
-      if (Object.hasOwnProperty.call(state[type].items, key)) {
+      if (has(state[type].items, key)) {
         const element = state[type].items[key];
         const callbackResult = callback(element, keys, params, items);
         if (callbackResult) items.push(element);
@@ -127,7 +126,7 @@ export default {
   itemsInclude: (state) => ({ type }, includeArray = []) => {
     const items = {};
     for (const key in state[type].items) {
-      if (Object.hasOwnProperty.call(state[type].items, key)) {
+      if (has(state[type].items, key)) {
         const element = state[type].items[key];
         includeArray.forEach((includeId) => {
           if (element.id === includeId) {
@@ -148,7 +147,7 @@ export default {
   mapItemsByKey: (state) => ({ type }, inputKey) => {
     const ids = [];
     for (const key in state[type].items) {
-      if (Object.hasOwnProperty.call(state[type].items, key)) {
+      if (has(state[type].items, key)) {
         const element = state[type].items[key];
         ids.push(element[inputKey]);
       }
@@ -181,7 +180,7 @@ export default {
     const outputItems = {};
     if (!str || str.length < 3) return outputItems;
     for (const key in items) {
-      if (Object.hasOwnProperty.call(items, key)) {
+      if (has(items, key)) {
         const item = items[key];
         const regexp = new RegExp(str, "i");
         if (item.name.match(regexp)) {
@@ -190,5 +189,23 @@ export default {
       }
     }
     return outputItems;
+  },
+
+  universalItem: (state, getters) => ({ type, value }) => {
+    let item;
+    switch (typeof value) {
+    case "object":
+      item = value;
+      break;
+    case "number":
+      item = state[type].items[value];
+      break;
+    case "string":
+      item = getters.singleBySlug({ type, slug: value });
+      break;
+    default:
+      break;
+    }
+    return item;
   },
 };

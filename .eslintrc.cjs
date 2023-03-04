@@ -20,11 +20,9 @@ module.exports = {
     "linebreak-style": 0,
 
     // "linebreak-style": ["error", "unix"],
-    "no-console": "error", // без console.log
+    // "no-console": ["error", { allow: ["warn", "error"] }], // без console.log
     indent: ["error", 2, {}],
     "no-debugger": "error", // без debugger
-    // конструкторы производных классов должны вызывать super().
-    // Конструкторы не производных классов не должны вызывать super().
     "constructor-super": "off",
     "no-mixed-operators": [
       // Заключение сложных выражений в круглые скобки проясняет замысел разработчика
@@ -44,6 +42,7 @@ module.exports = {
     // ESLint предпочитает экспорт по умолчанию импорт/предпочитает экспорт по умолчанию
     "import/prefer-default-export": "off",
     "no-unused-expressions": "error", // нет неиспользуемых выражений
+    "no-underscore-dangle": "off",
     "prefer-destructuring": [
       "error",
       {
@@ -56,7 +55,8 @@ module.exports = {
       },
     ],
     "no-bitwise": ["error", { allow: ["~"] }], // запрещает побитовые операторы.
-    "no-unused-vars": ["error", { argsIgnorePattern: "^_" }], // запрещает неиспользуемые переменные.
+    // "no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
+    "no-unused-vars": "off",
     "max-len": ["error", { code: 200 }], // обеспечивает максимальную длину строки.
     "object-curly-newline": [
       "error",
@@ -76,7 +76,6 @@ module.exports = {
     // отключает ошибки при импотре js файлов, когда с расширением и без выаодит ошибку
     // "import/extensions": [0, { "<js>": "always" }],
     "no-restricted-syntax": "off",
-    "import/no-unresolved": "off", // костыль
     "import/no-extraneous-dependencies": ["error", { devDependencies: true }],
     quotes: ["error", "double"],
     "comma-dangle": ["error", "always-multiline"],
@@ -235,6 +234,11 @@ module.exports = {
         ignorePropertyModificationsFor: ["state"],
       },
     ],
+
+    // ДОЛЖГНЫ БЫТЬ РАССМОТРЕНЫ
+    "no-labels": "off",
+    "no-continue": "off",
+    "import/no-unresolved": "off",
   },
   // settings: {
   //   // должен работать для разрешения алиасов
@@ -247,4 +251,4 @@ module.exports = {
   //     },
   //   },
   // },
-}
+};

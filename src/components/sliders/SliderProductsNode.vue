@@ -1,13 +1,13 @@
 <template>
   <div class="slider-products">
-    <ArrowsSliderNode :identificator="identificator"/>
+    <ArrowsSliderNode :slug="slug"/>
     <!-- :loop="true" -->
     <Swiper v-bind="$attrs"
       :slides-per-view="2"
       :space-between="20"
       :navigation="{
-        prevEl: `.${identificator}__arrow_prev`,
-        nextEl: `.${identificator}__arrow_next`,
+        prevEl: `.${slug}__arrow_prev`,
+        nextEl: `.${slug}__arrow_next`,
       }"
       :modules="modules"
       :breakpoints="swiperBreakpoints"
@@ -15,11 +15,8 @@
       @slideChange="onSlideChange">
       <SwiperSlide v-for="(product, index) in products"
         :key="index">
-        <PreloadWrapNode :targetPreloadElement="product"
-          :paddingBottom="product ? 0 : 146">
-          <ProductNode v-if="product"
-            :product="product"/>
-        </PreloadWrapNode>
+        <ProductNode v-if="product"
+          :product="product"/>
       </SwiperSlide>
     </Swiper>
   </div>
@@ -28,8 +25,8 @@
 <script>
 import { Navigation, Pagination, Autoplay, FreeMode } from "swiper";
 import { mapState, mapGetters } from "vuex";
-
 import { Swiper, SwiperSlide } from "swiper/vue";
+
 import ProductNode from "@/components/ProductNode.vue";
 import ArrowsSliderNode from "@/components/sliders/ArrowsSliderNode.vue";
 
@@ -44,11 +41,11 @@ export default {
   },
   inheritAttrs: false,
   props: {
-    identificator: Object,
+    slug: String,
     products: Object,
     breakpoints: Object,
   },
-  setup() {
+  setup(props) {
     const onSwiper = () => { };
     const onSlideChange = () => { };
     return {
@@ -75,7 +72,7 @@ export default {
   computed: {
     ...mapGetters({
       requestByParam: "requestByParam",
-      itemById: "itemById",
+      singleById: "singleById",
       itemsMatchedByCallback: "itemsMatchedByCallback",
     }),
     ...mapState({

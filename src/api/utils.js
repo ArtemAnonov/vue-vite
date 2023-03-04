@@ -1,19 +1,12 @@
 export function handleMonth(n) {
-  const months = [
-    "Января",
-    "Февраля",
-    "Марта",
-    "Апреля",
-    "Мая",
-    "Июня",
-    "Июля",
-    "Августа",
-    "Сентября",
-    "Октября",
-    "Ноября",
-    "Декабря",
+  const months = ["Января", "Февраля", "Марта", "Апреля", "Мая", "Июня", "Июля", "Августа", "Сентября", "Октября", "Ноября", "Декабря",
   ];
   return months[n];
+}
+
+export function toOrdinal(n) {
+  const ordinalNumbers = ["zero", "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth"];
+  return ordinalNumbers[n];
 }
 
 export const messages = {
@@ -36,7 +29,7 @@ export const messages = {
   allError: {
     name: "allError",
     type: "error",
-    html: `Произошла ошибка при выполнении операции`,
+    html: "Произошла ошибка при выполнении операции",
   },
   //
   productAddedToWishlist: {
@@ -44,11 +37,12 @@ export const messages = {
     type: "success",
     html: {
       template: `
-      Товар добавлен в Ваш список желаний.<ButtonNode
-        @click="$router.push({ name: 'PersonalWishlist' })"
-      >
-        Избранное
-      </ButtonNode>`,
+      Товар добавлен в Ваш список желаний.<button
+      @click="$router.push({ name: 'PersonalWishlist' })"
+      class="message-link"
+    >
+      Избранное.
+    </button>`,
     },
   },
   currentPaymentURLNotSet: {

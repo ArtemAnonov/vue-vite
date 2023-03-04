@@ -14,6 +14,7 @@
 
 <script>
 import { useStore } from "vuex";
+import { ref } from "vue";
 
 export default {
   name: "ButtonNode",
@@ -33,16 +34,16 @@ export default {
   },
   setup(props) {
     const store = useStore();
-    let disabled = false;
+    const disabled = ref(false);
     const expectAsync = async () => {
-      disabled = true;
+      disabled.value = true;
       try {
         await props.resolver.func(props.resolver.payload);
       } catch (e) {
         store.dispatch("common/updateMessage", "allError");
-        throw e;
+        console.error(e);
       } finally {
-        disabled = false;
+        disabled.value = false;
       }
     };
     return {

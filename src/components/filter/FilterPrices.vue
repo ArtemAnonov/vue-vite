@@ -24,7 +24,7 @@
 
 <script>
 import {
-  mapState, mapGetters, mapMutations, mapActions,
+  mapState, mapMutations, mapActions,
 } from "vuex";
 import VueSlider from "vue-slider-component/dist-css/vue-slider-component.umd.min.js";
 import "vue-slider-component/dist-css/vue-slider-component.css";
@@ -35,7 +35,6 @@ export default {
     VueSlider,
   },
   computed: {
-    ...mapGetters({}),
     ...mapState({
       minCost: (state) => state.filter.minCost,
       maxCost: (state) => state.filter.maxCost,
@@ -62,11 +61,6 @@ export default {
     pointValues() {
       return [this.min_price, this.max_price];
     },
-  },
-  created() {
-    if (import.meta.env.VITE_LIKE_A_SPA) {
-      this.getPrices();
-    }
   },
   methods: {
     ...mapMutations({

@@ -7,7 +7,7 @@
           <slot name="banner-category-name" />
           <ArrowsSliderNode
             v-show="banners?.length !== 0"
-            :identificator="identificator"
+            :slug="slug"
           />
         </div>
         <Swiper
@@ -15,29 +15,19 @@
           :modules="modules"
           :loop="true"
           :navigation="{
-            prevEl: `.${identificator}__arrow_prev`,
-            nextEl: `.${identificator}__arrow_next`,
+            prevEl: `.${slug}__arrow_prev`,
+            nextEl: `.${slug}__arrow_next`,
           }"
           :freeMode="{
             enabled: true,
             sticky: true,
           }"
-          @swiper="onSwiper"
-          @slideChange="onSlideChange"
         >
-          <!-- <SwiperSlide v-if="banners?.length === 0">
-            <PreloadWrapNode :targetPreloadElement="false">
-              <div class="slider-banners__image">
-                <img src="" alt="" />
-              </div>
-            </PreloadWrapNode>
-          </SwiperSlide> -->
           <SwiperSlide
             v-for="banner in banners"
             :key="banner.id"
             @click="$router.push('/blog-page')"
           >
-            <!-- Если src картинки равен пустой строке, то отображается псевдоэлемент -->
             <PreloadWrapNode
               :targetPreloadElement="bannerOneMedia(banner.featured_media)"
             >
@@ -74,7 +64,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/autoplay";
 /**
- * (import.meta.env.VITE_LIKE_A_SPA) - Каждый requests.request соостветсвует экземпляру компонента
+ * Каждый requests.request соостветсвует экземпляру компонента
  * Баннеры запускаются по очереди так же меняются и banner_categories. Возможно использование более
  * одной banner_categories?
  * но по факту используется одна категория. Блоки вызывают запрос с разным значением banner_categories
@@ -83,10 +73,6 @@ import "swiper/css/autoplay";
  * Баннеры и Медиафайлы загружаются исходя из необходимых ids, которые берутся не из
  * даты запросов, а из хранилища. Такой подход позволяет избежать перезаписывания локальных
  * свойств после перерисовки, из-за которой геттеры отрабатывают неправильно и шаблоны пропадают - отрисовка ломается
- *
- * (! import.meta.env.VITE_LIKE_A_SPA)
- *
- *
  */
 export default {
   components: {
@@ -98,24 +84,20 @@ export default {
   props: {
     bannerCategoryId: Number,
 
-    identificator: String,
+    slug: String,
     containerStylesOff: {
       type: Boolean,
       default: false,
     },
   },
   setup() {
-    const onSwiper = () => {};
-    const onSlideChange = () => {};
     return {
-      onSwiper,
-      onSlideChange,
       modules: [Navigation, Pagination, Autoplay, FreeMode],
     };
   },
   computed: {
     ...mapGetters({
-      itemById: "itemById",
+      singleById: "singleById",
       itemsInclude: "itemsInclude",
       requestByParam: "requestByParam",
       mapItemsByKey: "mapItemsByKey",
@@ -125,18 +107,7 @@ export default {
       bannersRequest: (state) => state.banners.basedRequest,
       mediaRequest: (state) => state.media.basedRequest,
     }),
-    /**
-     * (VITE_LIKE_A_SPA)
-     *    Метод запрашивает ids баннеров, полученных для конкретного экземпляра компонента
-     * (! VITE_LIKE_A_SPA)
-     */
     banners() {
-      if (import.meta.env.VITE_LIKE_A_SPA) {
-        if (this.bannersIds()) {
-          return this.itemsInclude(this.bannersRequest, this.bannersIds());
-        }
-        return [];
-      }
       return this.itemsMatchedByCallback(
         this.bannersRequest,
         {
@@ -151,17 +122,6 @@ export default {
         },
       );
     },
-    /**
-     * ONLY (VITE_LIKE_A_SPA)
-     */
-    mediaBanners() {
-      return this.itemsInclude(this.mediaRequest, this.mediaIds());
-    },
-  },
-  created() {
-    if (import.meta.env.VITE_LIKE_A_SPA) {
-      this.getBanners();
-    }
   },
   methods: {
     ...mapActions({
@@ -171,47 +131,10 @@ export default {
       SET_INCLUDE: "SET_INCLUDE",
       setBannerCategoriesIds: "banners/setBannerCategoriesIds",
     }),
-    /**
-     * ONLY (VITE_LIKE_A_SPA)
-     */
-    async getBanners() {
-      this.setBannerCategoriesIds(this.bannerCategoryId);
-      const banners = await this.getItems({
-        basedRequest: this.bannersRequest,
-      });
-
-      if (isEmpty(banners.response)) return;
-
-      this.SET_INCLUDE({
-        type: this.mediaRequest.type,
-        value: this.mediaIds(),
-      });
-    },
 
     bannerOneMedia(value) {
-      let item;
-      if (import.meta.env.VITE_LIKE_A_SPA) {
-        item = this.mediaBanners[value];
-      } else {
-        item = this.itemById({ type: this.mediaRequest.type, id: value });
-      }
+      const item = this.singleById({ type: this.mediaRequest.type, id: value });
       return item.guid.rendered || "";
-    },
-    /**
-     * ONLY (VITE_LIKE_A_SPA)
-     */
-    bannersIds() {
-      const request = this.requestByParam(this.bannersRequest, {
-        param: "banner_categories",
-        value: this.bannerCategoryId,
-      });
-      return request?.data;
-    },
-    /**
-     * ONLY (VITE_LIKE_A_SPA)
-     */
-    mediaIds() {
-      return this.mapItemsByKey(this.bannersRequest, "featured_media");
     },
   },
 };

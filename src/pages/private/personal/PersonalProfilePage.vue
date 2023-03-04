@@ -1,13 +1,11 @@
 <template>
-  <ProfilePageNode>
-    <template #content>
-    </template>
-  </ProfilePageNode>
+  <div class="profile">prof</div>
 </template>
 
 <script>
 
 import { useStore } from "vuex";
+
 export default {
   setup() {
     const store = useStore();

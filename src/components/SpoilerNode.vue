@@ -1,24 +1,24 @@
 <template>
+  <div
+    v-if="item.default"
+    class="spoiler"
+    :class="{
+      spoiler_active: element.active,
+      spoiler_default: element.default,
+    }"
+  >
     <div
-      v-if="element.default"
-      class="spoiler"
-      :class="{
-        spoiler_active: element.active,
-        spoiler_default: element.default,
-      }"
+      class="spoiler__button icon-arrow"
+      @click.stop="element.default ? openSpoiler() : ''"
     >
-      <div
-        class="spoiler__button icon-arrow"
-        @click.stop="element.default ? openSpoiler() : ''"
-      >
-        <slot name="button"></slot>
-      </div>
-      <div class="spoiler__list"><slot name="list"></slot></div>
+      <slot name="button"/>
     </div>
-    <div v-else>
-      <slot name="button"></slot>
-      <slot name="list"></slot>
-    </div>
+    <div class="spoiler__list"><slot name="list"/></div>
+  </div>
+  <template v-else>
+    <slot name="button"/>
+    <slot name="list"/>
+  </template>
 </template>
 
 <script>
@@ -40,6 +40,7 @@ export default {
     },
   },
   setup(props) {
+    if (props.item.default === false) return {};
     const store = useStore();
     const item = { ...{ type: "spoiler" }, ...props.item };
     watch(props, (newProps) => {
@@ -51,7 +52,7 @@ export default {
     });
 
     const { element } = useOpening(item);
-    const openSpoiler = function () {
+    const openSpoiler = () => {
       store.commit("common/setSpoiler", {
         name: element.name,
         prop: "active",

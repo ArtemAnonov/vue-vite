@@ -1,82 +1,106 @@
 <template>
   <MainPageNode :class="name">
-    <template #page-head>
+    <!-- <template #page-head>
       <PageHeadNode
-        :title="pageByLink(fullPath)?.title.rendered"
-        :navRaw="pageByLink(fullPath)?.title.rendered"
-      ></PageHeadNode>
-    </template>
+        :title="templatePage?.title.rendered"
+        navRaw="Избранное"
+      />
+    </template> -->
     <template #page-main>
-      <!-- <ContainerNode> -->
-      <Suspense>
-        <template #default>
-          <section class="personal">
-            <ContainerNode>
+      <ContainerNode>
+        <Suspense>
+          <template #default>
+            <section class="personal">
               <div class="personal__body">
                 <div class="personal__sidebar">
-                  <div class="personal__items">
+                  <div
+                    class="personal__items">
                     <SpoilerNode
-                      v-for="item in profileSectionItems"
+                      v-for="item in profileSectionItemsOutput"
                       :key="item.id"
                       :item="{ name: `personal${item.id}` }"
                     >
-                      <template #button>
+                      <template
+                        #button>
                         <button>{{ item.content }}</button>
                       </template>
                       <template #list>
-                        <button v-for="subItem in subItems(item.url)" :key="subItem.id">{{subItem.content}}</button>
+                        <button v-for="(subItem, index) in subItems(item.url)"
+                          :key="subItem.id"
+                          @click="index === 0 ?
+                            routeTo(item.url) :
+                            routeTo(subItem.url)">
+                          {{subItem.content}}
+                        </button>
                       </template>
                     </SpoilerNode>
-                    <LogoutButtonNode />
+                    <LogoutButtonNode v-if="userAuth" />
                   </div>
                 </div>
                 <div class="personal__content">
                   <RouterView/>
                 </div>
               </div>
-            </ContainerNode>
-          </section>
-        </template>
-        <template #fallback>
-          <div>Loading...</div>
-        </template>
-      </Suspense>
-      <!-- </ContainerNode> -->
+            </section>
+          </template>
+          <template #fallback>
+            <div>Loading...</div>
+          </template>
+        </Suspense>
+      </ContainerNode>
     </template>
   </MainPageNode>
 </template>
 
 <script>
-import { kebabCase } from "lodash-es";
-import { getPathByURL } from "@/api/helpers.js";
+/**
+ * Логика компонента такова, что родительские маршруты сочетаются с именами страниц/маршрутов,
+ * идущими первыми по списку. Так, PersonalWishlistPage сочетается с "Избранное/Без списка"
+ * и так далее. В CMS при этом есть страницы и меню с соответсвующими страницами.
+ */
+import { ref, computed, watch } from "vue";
+import { kebabCase, isEmpty, has } from "lodash-es";
 import { useStore } from "vuex";
-import { useRouter, useRoute } from "vue-router";
-import MainPageNode from "@/components/structure/MainPageNode.vue";
-import PageHeadNode from "@/components/structure/PageHeadNode.vue";
+import { useRoute, useRouter } from "vue-router";
+import { getPathName } from "@/api/helpers";
+// import PageHeadNode from "@/components/structure/PageHeadNode.vue";
 import SpoilerNode from "@/components/SpoilerNode.vue";
 import LogoutButtonNode from "@/components/personal/LogoutButtonNode.vue";
 
 export default {
   components: {
-    MainPageNode,
-    PageHeadNode,
+    // PageHeadNode,
     SpoilerNode,
     LogoutButtonNode,
   },
   setup() {
     const store = useStore();
-    const profileSectionItems = store.state.menus.profileSectionsList.items;
-    const menus = store.state.menus;
+    const router = useRouter();
+    const routes = router.getRoutes();
+    const userAuth = computed(() => store.state.auth.userAuth);
+    const profileSectionItems = store.state.menus.items.profileSectionsList.items;
+    const { items } = store.state.menus;
     const pageByLink = store.getters["pages/pageByLink"];
+    const profileSectionItemsHandled = [];
+
+    for (const key in routes) {
+      if (has(routes, key)) {
+        const route = routes[key];
+        if (route.path.match(/personal\/[a-z]/) && !route.beforeEnter) {
+          profileSectionItemsHandled.push(profileSectionItems.find((el) => getPathName(el.url) === route.path));
+        }
+      }
+    }
 
     return {
+      userAuth,
       pageByLink,
       name: kebabCase(useRoute().name),
-      fullPath: useRoute().fullPath,
-      profileSectionItems,
-      subItems: (url) => {
-        return menus[getPathByURL(url, "array")[1]].items;
-      },  
+      profileSectionItemsOutput: computed(() => (userAuth.value ? profileSectionItems : profileSectionItemsHandled)),
+      subItems: (url) => items[getPathName(url, "array").items[1]].items, // wishlist, profile, orders
+      routeTo: (url) => router.push(getPathName(url)),
+      isEmpty,
+      templatePage: pageByLink(useRoute().fullPath),
     };
   },
 };
@@ -109,10 +133,11 @@ export default {
 
   .spoiler {
     padding: 10px 0;
-    border-bottom: 1px solid #f1f1f1;
   }
 
   .logout-button {
+    border-top: 1px solid #f1f1f1;
+
     padding: 10px 0;
   }
 }

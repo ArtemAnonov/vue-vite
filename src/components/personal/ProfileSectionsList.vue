@@ -3,7 +3,7 @@
     <button
       v-for="item in items"
       :key="item.id"
-      @click="$router.push(getPathByURL(item.url))"
+      @click="$router.push(getPathName(item.url))"
     >
       {{ item.content }}
     </button>
@@ -13,7 +13,7 @@
 
 <script>
 import { useStore } from "vuex";
-import { getPathByURL } from "@/api/helpers.js";
+import { getPathName } from "@/api/helpers";
 import LogoutButtonNode from "@/components/personal/LogoutButtonNode.vue";
 
 export default {
@@ -22,8 +22,9 @@ export default {
   },
   setup() {
     const store = useStore();
-    const { items } = store.state.menus.profileSectionsList;
-    return { items, getPathByURL };
+    const { items } = store.state.menus.items.profileSectionsList;
+
+    return { items, getPathName };
   },
 };
 </script>

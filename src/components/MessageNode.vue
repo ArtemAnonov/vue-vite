@@ -1,6 +1,9 @@
 <template>
-  <div v-if="item" class="message" :class="classes">
-    <component :is="message" v-if="typeof item.html === 'object'"></component>
+  <div v-if="item"
+    class="message"
+    :class="classes">
+    <component :is="message"
+      v-if="typeof item.html === 'object'"/>
     <span v-else>{{ message }}</span>
   </div>
 </template>

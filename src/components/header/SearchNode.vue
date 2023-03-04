@@ -9,13 +9,13 @@
       <span class="search__icon icon-search" />
       <span class="search__input">Поиск</span>
     </button>
-    <PopupNode :item="{ name: 'search', active: true }">
+    <PopupNode :item="{ name: 'search' }">
       <form class="search__form">
         <span class="search__icon icon-search" />
         <input
           v-model="queryString"
           class="search__input"
-          placeholder="Введите запрос..."
+          placeholder="Юбки"
           type="text"
           @input="searchAll"
         >
@@ -35,7 +35,7 @@
                   v-for="item in pCats"
                   :key="item.id"
                   class="result-search__category"
-                  @click="routeToCategory(item)"
+                  @click="routeToSingleProductCategory(item)"
                 >
                   {{ item.name }}
                 </button>
@@ -46,10 +46,9 @@
               <h3 class="result-search__title">Результаты поиска</h3>
               <div class="result-search__items">
                 <div class="result-search__products">
-                  <!--           :identificator="identificator"
-          :breakpoints="breakpoints"
- -->
+                  <!-- :breakpoints="breakpoints" -->
                   <SliderProductsNode
+                    slug="header-search"
                     :products="products"
                     class="slider-products-section__slider"
                   />
@@ -62,8 +61,7 @@
           <div class="result-search__row">
             <h3 class="result-search__title">Популярные разделы</h3>
             <div class="result-search__items">
-              <CategoriesNode :parentID="0"
-                :neastedLevel="0" />
+              <CategoriesNode/>
             </div></div
           ></template>
       </div>
@@ -75,7 +73,7 @@
 import { ref, computed } from "vue";
 import { useStore } from "vuex";
 import { isEmpty } from "lodash-es";
-import { routeToCategory } from "@/api/helpers";
+import { routeToSingleProductCategory } from "@/api/helpers";
 import SliderProductsNode from "@/components/sliders/SliderProductsNode.vue";
 import CategoriesNode from "@/components/header/CategoriesNode.vue";
 
@@ -109,7 +107,7 @@ export default {
 
     return {
       isEmpty,
-      routeToCategory,
+      routeToSingleProductCategory,
       setPopup,
       products,
       pCats,
@@ -225,6 +223,7 @@ export default {
 
   &__icon {
     // transition: 0.3s;
+    display: flex;
     color: #868686;
     padding: 0 1rem;
     &::before {

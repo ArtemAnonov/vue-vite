@@ -3,22 +3,23 @@
     <div class="">
       <div class="login__buttons">
         <button
-          @click="currentTab = 1"
           class="login__title"
           :class="currentTab === 1 ? 'active' : ''"
+          @click="currentTab = 1"
         >
           Вход
         </button>
         <button
-          @click="currentTab = 2"
           class="login__title"
           :class="currentTab === 2 ? 'active' : ''"
+          @click="currentTab = 2"
         >
           Регистрация
         </button>
       </div>
       <div class="login__columns">
-        <div v-show="currentTab == 1" class="login__column tab-login">
+        <div v-show="currentTab == 1"
+          class="login__column tab-login">
           <div class="login-tab__body">
             <div class="login-tab__form">
               <form>
@@ -27,22 +28,23 @@
                     name="typeLogin"
                     labelText="Через логин"
                     :modelValue="true"
-                  ></InputRadioNode>
+                  />
                   <InputRadioNode
                     :disabled="true"
                     name="typeLogin"
                     labelText="Через СМС-код"
                     :modelValue="false"
-                  >
-                  </InputRadioNode>
+                  />
                 </div>
-                <InputNode class="main" type="text" v-model="authData.email">
+                <InputNode v-model="authData.email"
+                  class="main"
+                  type="text">
                   <template #before><label>Почта</label></template>
                 </InputNode>
                 <InputNode
+                  v-model="authData.password"
                   class="main"
                   type="password"
-                  v-model="authData.password"
                 >
                   <template #before><label>Пароль</label></template>
                 </InputNode>
@@ -50,33 +52,41 @@
                 <ButtonNode
                   buttonStyle="dark"
                   :resolver="{ func: login, payload: authData }"
-                  >Войти</ButtonNode
+                >Войти</ButtonNode
                 >
               </form>
             </div>
           </div>
         </div>
-        <div v-show="currentTab === 2" class="login__column tab-register">
+        <div v-show="currentTab === 2"
+          class="login__column tab-register">
           <div class="register-tab__body">
             <form>
-              <InputNode class="main" type="text" v-model="authData.first_name">
+              <InputNode v-model="authData.first_name"
+                class="main"
+                type="text">
                 <template #before><label>Имя</label></template>
               </InputNode>
-              <InputNode class="main" type="text" v-model="authData.last_name">
+              <InputNode v-model="authData.last_name"
+                class="main"
+                type="text">
                 <template #before><label>Фамилия</label></template>
               </InputNode>
-              <InputNode class="main" type="text" v-model="authData.email">
+              <InputNode v-model="authData.email"
+                class="main"
+                type="text">
                 <template #before><label>Почта</label></template>
               </InputNode>
               <InputNode
+                v-model="authData.password"
                 class="main"
                 type="password"
-                v-model="authData.password"
               >
                 <template #before><label>Пароль</label></template>
               </InputNode>
-              <ButtonNode buttonStyle="dark" @click.prevent="register(authData)"
-                >Зарегистрироваться</ButtonNode
+              <ButtonNode buttonStyle="dark"
+                @click.prevent="register(authData)"
+              >Зарегистрироваться</ButtonNode
               >
             </form>
           </div>
@@ -92,6 +102,7 @@ import { mapState, mapGetters, mapActions, mapMutations } from "vuex";
 import { cloneDeep } from "lodash-es";
 
 import { mainFetch } from "@/api";
+
 export default {
   data() {
     return {
@@ -114,7 +125,7 @@ export default {
   },
   methods: {
     ...mapMutations({
-      SET_VALUE: "SET_VALUE",
+      setValue: "setValue",
     }),
     ...mapActions({
       getCart: "cart/getCart",

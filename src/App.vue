@@ -56,22 +56,27 @@ export default {
       this.scrollDocument();
     },
     userAuth: {
+      /**
+       * getUser() в первом блоке не актуален, так как метод
+       * вызывается из login()
+       */
       async handler(userAuth) {
-        if (userAuth === true && isEmpty(this.userData)) {
+        // console.log("uAC");
+        if (userAuth === true && !this.userData?.id) {
           if (!Cookies.get("tinv_wlk_log")) {
             await this.getUser();
             await this.getWishlistByUser();
           } else {
             this.getUser();
           }
+          this.getWishlistProductsByShareKey();
         }
         if (userAuth === false) {
-          this.setUserData();
           if (!Cookies.get("tinv_wishlistkey")) {
             await this.getWishlistByUser();
           }
+          this.getWishlistProductsByShareKey();
         }
-        this.getWishlistProductsByShareKey();
       },
       immediate: true,
     },
@@ -80,11 +85,8 @@ export default {
    * Аутентификация(*) и загрузка корзины. Загрузка категорий, если они по какой-то причинне
    * не загружены из web php
    * (*) Аутентификация перенесена в router/indexs
-   */ created() {
-    // this.updateUserAuth();
-    if (import.meta.env.VITE_LIKE_A_SPA) {
-      this.getItems({ basedRequest: this.productsCategories.basedRequest });
-    }
+   */
+  created() {
     this.getCart();
   },
 
@@ -103,19 +105,19 @@ export default {
   },
   methods: {
     ...mapMutations({
-      SET_VALUE: "SET_VALUE",
+      setValue: "setValue",
       setWindowWidth: "common/setWindowWidth",
       setScrollY: "common/setScrollY",
       setBreakpoint: "common/setBreakpoint",
       closeRevs: "common/closeRevs",
       setBrowserReady: "common/setBrowserReady",
       setUserData: "auth/setUserData",
+      updateSensitiveData: "updateSensitiveData",
     }),
     ...mapActions({
       getItems: "getItems",
       getCart: "cart/getCart",
       getUser: "auth/getUser",
-      updateUserAuth: "auth/updateUserAuth",
       updateAllOpeningTypeItems: "common/updateAllOpeningTypeItems",
       getWishlistByUser: "wishlist/getWishlistByUser",
       getWishlistProductsByShareKey: "wishlist/getWishlistProductsByShareKey",
@@ -163,15 +165,5 @@ export default {
   color: #5073a2;
   margin-left: 4px;
 }
-
-// .link {
-//   transition: .1s;
-//   &:hover {
-//     color: #5073a2;
-//   }
-//   &:disabled {
-
-//   }
-// }
 
 </style>

@@ -39,7 +39,7 @@ export default {
     ...mapState({
       userAuth: (state) => state.auth.userAuth,
 
-      items: (state) => state.menus.top_header.items,
+      items: (state) => state.menus.items.top_header.items,
     }),
   },
   methods: {

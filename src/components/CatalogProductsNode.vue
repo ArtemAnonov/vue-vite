@@ -1,31 +1,36 @@
 <template>
-  <div class="catalog-products">
-    <PreloadWrapNode v-for="(product, index) in products"
+  <div v-if="!isEmpty(products)"
+    class="catalog-products">
+    <!-- v-if="product" -->
+    <ProductNode
+      v-for="(product, index) in products"
       :key="index"
-      :targetPreloadElement="product"
-      :paddingBottom="product ? 0 : 180">
-      <ProductNode v-if="product"
-        :product="product"
-        viewType="catalog"/>
-    </PreloadWrapNode>
+      :product="product"
+      viewType="catalog"/>
   </div>
+  <TroubleNode v-else
+    :text="['Для этой категории ', 'ещё не добавлено товаров!']" />
 </template>
 
 <script>
+
+import { isEmpty } from "lodash-es";
 import {
   mapState, mapGetters,
-  // mapActions,
   mapMutations,
 } from "vuex";
+import TroubleNode from "@/components/TroubleNode.vue";
 
 import ProductNode from "@/components/ProductNode.vue";
 
 export default {
   components: {
-    ProductNode,
+    ProductNode, TroubleNode,
   },
   data() {
-    return {};
+    return {
+      isEmpty,
+    };
   },
   computed: {
     ...mapGetters({

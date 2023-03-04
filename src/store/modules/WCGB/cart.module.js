@@ -1,11 +1,14 @@
 import { cloneDeep } from "lodash-es";
 import Cookies from "js-cookie";
-import { VUE_WP_INSTANCE, getNonceToken } from "@/api/helpers.js";
+import { VUE_WP_INSTANCE, getNonceToken } from "@/api/helpers";
+import { mainFetch } from "@/api";
 
 const instance = VUE_WP_INSTANCE().state.cart;
 export default {
   namespaced: true,
+
   state: () => ({
+    settings: instance?.settings ? instance.settings : {},
     basedRequest: {
       apiType: instance.apiType,
       type: instance.type,
@@ -16,10 +19,6 @@ export default {
      * Параметры запроса, которые должны быть в запросе POST, но не добавляются
      */
     aditionalStore: {},
-    JWTRequestConfig: {
-      JWTMaintain: true,
-      JWTReqired: false,
-    },
   }),
   getters: {},
 
@@ -27,19 +26,18 @@ export default {
     async getCart({
       state, getters, commit, dispatch,
     }) {
+      let response;
       try {
-        const response = await dispatch(
-          "mainFetchRequest",
+        response = await mainFetch(
           { basedRequest: state.basedRequest },
-          { root: true },
         );
         const { headers } = response;
         Cookies.set("nonce-token", headers.nonce);
         commit("setCart", response.data);
-        return response;
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
+      return response;
     },
 
     /**
@@ -55,17 +53,11 @@ export default {
       },
       { routeBase, params },
     ) {
+      let response;
       const config = {
         headers: getNonceToken(),
         params: {},
       };
-      // пока что демо логика
-      // if (
-      //   dispatch("validationVariations", config.params.variations) === false
-      // ) {
-      //   dispatch("common/updateMessage", "notSelectProductSize", { root: true });
-      //   return;
-      // }
       // чистим для упрощения
       config.params = cloneDeep(params);
       config.params.variations = [];
@@ -74,27 +66,20 @@ export default {
       const basedRequest = { ...{}, ...state.basedRequest };
       basedRequest.routeBase = routeBase;
       try {
-        const response = await dispatch(
-          "mainFetchRequest",
-          {
-            basedRequest,
-            config,
-            method: "post",
-          },
-          { root: true },
-        );
+        response = await mainFetch({ basedRequest, config, method: "post" });
         commit("setCart", response.data);
         switch (routeBase) {
-          case "cart/add-item":
-            dispatch("common/updateMessage", "productAddedToCart", { root: true });
-            break;
-          default:
-            break;
+        case "cart/add-item":
+          dispatch("common/updateMessage", "productAddedToCart", { root: true });
+          break;
+        default:
+          break;
         }
         return response;
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
+      return response;
     },
 
     /**

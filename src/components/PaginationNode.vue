@@ -1,10 +1,10 @@
 <template>
   <div class="pagination">
-    <loading-node :loading="loading"></loading-node>
+    <!-- <loading-node :loading="loading"/> -->
     <button
-      :class="currentPage == page ? 'active' : ''"
       v-for="(page, index) in totalPages"
       :key="index"
+      :class="currentPage == page ? 'active' : ''"
       @click="changePageLocal(page)"
     >
       {{ page }}
@@ -14,6 +14,7 @@
 
 <script>
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
+
 export default {
   props: {
     type: {
@@ -22,11 +23,12 @@ export default {
     },
   },
   computed: {
-    ...mapGetters({}),
+    ...mapGetters({
+      // loading: (state) => state.site.loading,
+    }),
     ...mapState({
       totalPages: (state) => state.products.totalPages,
       currentPage: (state) => state.products.basedRequest.params.page,
-      loading: (state) => state.site.loading,
     }),
   },
 

@@ -9,12 +9,10 @@
     <PopupNode :item="{ name: 'headerMenu' }">
       <CategoriesNode
         v-slot="slotProps"
-        :parentID="0"
-        :neastedLevel="0"
         :spoilerType="true"
       >
         <CategoriesNode
-          :neastedLevel="1"
+          :nestedLevel="slotProps.nestedLevel"
           :parentID="slotProps.parentID"
           :parentCategorySlug="slotProps.parentCategorySlug"
         />
@@ -76,8 +74,9 @@ export default {
   .popup {
     z-index: -2;
     &__scroll-wrapper {
-      margin: 40px 0;
-  }
+      // margin: 40px 0;
+      margin: 0 !important;
+    }
     &__wrapper {
     overflow: hidden;
     position: absolute;
@@ -103,7 +102,7 @@ export default {
     }
   }
 
-  .categories__sub-list {
+  .categories__first-list {
     opacity: 1 !important;
     visibility: visible !important;
     right: 0;
@@ -134,7 +133,7 @@ export default {
   }
 
   .categories__item,
-  .categories__sub-item {
+  .categories__first-item {
     position: relative;
     display: block !important;
 

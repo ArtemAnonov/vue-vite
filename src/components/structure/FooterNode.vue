@@ -81,9 +81,9 @@ export default {
   computed: {
     ...mapState({
       windowWidth: (state) => state.common.windowWidth,
-      footerShopingOnline: (state) => state.menus.footerShopingOnline,
-      footerForCustomers: (state) => state.menus.footerForCustomers,
-      footerCompany: (state) => state.menus.footerCompany,
+      footerShopingOnline: (state) => state.menus.items.footerShopingOnline,
+      footerForCustomers: (state) => state.menus.items.footerForCustomers,
+      footerCompany: (state) => state.menus.items.footerCompany,
     }),
     menus() {
       return {
@@ -99,7 +99,7 @@ export default {
 <style lang="scss">
 .footer {
   color: #d8d8d8;
-
+  // margin-top: 2rem;
   &__main {
     background-color: #1e242c;
     padding-top: 2.6666666667rem;

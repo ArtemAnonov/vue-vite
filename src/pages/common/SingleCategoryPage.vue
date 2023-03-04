@@ -4,11 +4,12 @@
     :templatePage="templatePage"
     :navRaw="productCategory"
   >
+
     <template #page-main>
-      <ContainerNode>
-        <div class="single-category__body">
+      <ContainerNode >
+        <div v-if="templatePage"
+          class="single-category__body">
           <CatalogSidebarNode
-            :mainCategory="productCategory"
             :total="total"
           />
           <div class="single-category__sections">
@@ -16,13 +17,14 @@
               class="slider-banners-single-category"
               :bannerCategoryId="68"
               :containerStylesOff="true"
-              identificator="slider-banners-main_single-category"
+              slug="slider-banners-main_single-category"
               :autoplay="{ delay: 50000, disableOnInteraction: false }"
               pagination
               :slides-per-view="1"
             />
             <CategoryGrid :productCategory="productCategory"/>
             <SliderProductsSectionNode
+              slug="single-category-for-women"
               title="Для женщин"
               :productsCategoryId="20"
               :breakpoints="{
@@ -42,41 +44,36 @@
             />
           </div>
         </div>
+        <TroubleNode v-else
+          :text="['Для категории по этому маршруту', 'ещё не создана страница!']" />
       </ContainerNode>
     </template>
   </MainPageNode>
 </template>
 
 <script>
-//                       :prevCategory="params.category"                         :parent="productCategory.id"
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 import { isEmpty } from "lodash-es";
-
 import CatalogSidebarNode from "@/components/CatalogSidebarNode.vue";
 import CategoryGrid from "@/components/CategoryGrid.vue";
 import SliderProductsSectionNode from "@/components/sliders/SliderProductsSectionNode.vue";
 import SliderBannersNode from "@/components/sliders/SliderBannersNode.vue";
-import MainPageNode from "@/components/structure/MainPageNode.vue";
+import TroubleNode from "@/components/TroubleNode.vue";
 
 export default {
+
   components: {
     CatalogSidebarNode,
     CategoryGrid,
     SliderProductsSectionNode,
     SliderBannersNode,
-    MainPageNode,
+    TroubleNode,
   },
   props: {
     params: {
       mainCategorySlug: String,
     },
   },
-  data() {
-    return {
-      // categoryId: String
-    };
-  },
-  watch: {},
   computed: {
     ...mapState({
       productsRequest: (state) => state.products.basedRequest,
@@ -84,7 +81,7 @@ export default {
       pagesRequest: (state) => state.pages.basedRequest,
     }),
     ...mapGetters({
-      itemBySlug: "itemBySlug",
+      singleBySlug: "singleBySlug",
       requestByItemParam: "requestByItemParam",
     }),
 
@@ -92,14 +89,14 @@ export default {
      * Метод получает дату категории страницы. Перед этим во VUEX state pC добавляется slug
      */
     productCategory() {
-      return this.itemBySlug({
+      return this.singleBySlug({
         type: this.pCRequest.type,
         slug: this.params.mainCategorySlug,
       });
     },
 
     templatePage() {
-      return this.itemBySlug({
+      return this.singleBySlug({
         type: this.pagesRequest.type,
         slug: this.params.mainCategorySlug,
       });
@@ -110,37 +107,12 @@ export default {
       return this.productCategory.count;
     },
   },
-
   methods: {
     ...mapMutations({
       SET_SINGLE_PARAM: "SET_SINGLE_PARAM",
     }),
-    ...mapActions({
-      getSingleBySlug: "getSingleBySlug",
-    }),
-    async getTemplatePage() {
-      this.getSingleBySlug({
-        basedRequest: this.pagesRequest,
-        params: { slug: this.params.mainCategorySlug },
-      });
-    },
-    async getProductCategory() {
-      if (isEmpty(this.productCategory)) {
-        const returned = await this.getSingleBySlug({
-          basedRequest: this.pCRequest,
-          params: { slug: this.params.mainCategorySlug },
-        });
-      }
-    },
   },
-  /**
-   * Маршрут предоставляет slug, который используется для получения категории. Полученный slug записывается
-   * в basedRequest productsCategories. Далее он перезаписывается при переходе на другие категории, в том числе
-   * дочернего уровня
-   */
-  created() {
-    this.getTemplatePage(this.params.mainCategorySlug);
-  },
+
 };
 </script>
 

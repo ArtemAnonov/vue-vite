@@ -122,9 +122,7 @@
 
 <script>
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
-import { cloneDeep } from "lodash-es";
 import CartItemNode from "@/components/ordering/CartItemNode.vue";
-import MainPageNode from "@/components/structure/MainPageNode.vue";
 import PageHeadTruncatedNode from "@/components/structure/PageHeadTruncatedNode.vue";
 import MiddleContentNode from "@/components/ordering/MiddleContentNode.vue";
 import PreloadWrapContainerNode from "@/components/structure/PreloadWrapContainerNode.vue";
@@ -132,7 +130,7 @@ import PreloadWrapContainerNode from "@/components/structure/PreloadWrapContaine
 export default {
   components: {
     CartItemNode,
-    MainPageNode,
+    // MainPageNode,
     PageHeadTruncatedNode,
     MiddleContentNode,
     PreloadWrapContainerNode,
@@ -153,32 +151,10 @@ export default {
       cartStore: (state) => state.cart.store,
     }),
   },
-  watch: {
-    /**
-     * (!)
-     * Служит костылем
-     */
-    cartItems: {
-      handler(cartItems) {
-        if (import.meta.env.VITE_LIKE_A_SPA) {
-          if (cartItems?.length && cartItems?.length !== 0) {
-            const idsCartItems = cartItems.map((el) => el.id);
-            const basedRequest = cloneDeep(this.productsRequest);
-            basedRequest.params = { _include: idsCartItems };
-            this.getItems({ basedRequest });
-          }
-        }
-      },
-      immediate: true,
-    },
-  },
   methods: {
     ...mapMutations({
-      SET_VALUE: "SET_VALUE",
+      setValue: "setValue",
       setPopup: "common/setPopup",
-    }),
-    ...mapActions({
-      getItems: "getItems",
     }),
     toCheckout() {
       if (this.userAuth === false) {

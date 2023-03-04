@@ -4,6 +4,7 @@ import common from "@/components/common";
 import store from "@/store";
 import router from "@/router";
 import App from "@/App.vue";
+
 export function createApp() {
   const app = createSSRApp(App);
   common.forEach((component) => {

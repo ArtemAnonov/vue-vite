@@ -4,27 +4,28 @@
 
 
 @font-face {
-	font-family: 'RezaZulmiSerif';
-	src:  
+  font-family: 'RezaZulmiSerif';
+  src:
     url('@/assets/fonts/RezaZulmiSerif.woff2?dsrsmp') format('woff2'),
-	  url('@/assets/fonts/RezaZulmiSerif.woff?dsrsmp') format('woff');
-	font-weight: normal;
-	font-style: normal;
-	font-display: block;
+    url('@/assets/fonts/RezaZulmiSerif.woff?dsrsmp') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
 }
 
 @font-face {
-	font-family: 'BsbTextClassic';
-	src:  
+  font-family: 'BsbTextClassic';
+  src:
     url('@/assets/fonts/BsbTextClassic.woff2?dsrsmp') format('woff2'),
-	  url('@/assets/fonts/BsbTextClassic.woff?dsrsmp') format('woff');
-	font-weight: normal;
-	font-style: normal;
-	font-display: block;
+    url('@/assets/fonts/BsbTextClassic.woff?dsrsmp') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
 }
 
 
-[class^="icon-"], [class*=" icon-"]::before {
+[class^="icon-"],
+[class*=" icon-"]::before {
   font-family: 'icomoon' !important;
   speak: never;
   font-style: normal;
@@ -37,69 +38,94 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-arrow:before {
-content: "\e900";
-}
-.icon-call:before {
-content: "\e901";
-}
-.icon-cart:before {
-content: "\e902";
-}
-.icon-cart_credit:before {
-content: "\e903";
-}
-.icon-cash:before {
-content: "\e904";
-}
-.icon-check:before {
-content: "\e905";
-}
-.icon-delivery:before {
-content: "\e907";
-}
-.icon-delivery_same:before {
-content: "\e908";
-}
 .icon-wishlist:before {
-content: "\e909";
+  content: "\e906";
 }
+
+.icon-wishlist-fill:before {
+  content: "\e909";
+}
+
+.icon-arrow:before {
+  content: "\e900";
+}
+
+.icon-call:before {
+  content: "\e901";
+}
+
+.icon-cart:before {
+  content: "\e902";
+}
+
+.icon-credit:before {
+  content: "\e903";
+}
+
+.icon-cash:before {
+  content: "\e904";
+}
+
+.icon-check:before {
+  content: "\e905";
+}
+
+.icon-delivery_same:before {
+  content: "\e907";
+}
+
+.icon-delivery:before {
+  content: "\e908";
+}
+
 .icon-image_ms:before {
-content: "\e90a";
+  content: "\e90a";
 }
+
 .icon-image_tg:before {
-content: "\e90b";
+  content: "\e90b";
 }
+
 .icon-image_vk:before {
-content: "\e90c";
+  content: "\e90c";
 }
+
 .icon-image_ya:before {
-content: "\e90d";
+  content: "\e90d";
 }
+
 .icon-info:before {
-content: "\e90e";
+  content: "\e90e";
 }
+
 .icon-long_arrow:before {
-content: "\e90f";
+  content: "\e90f";
 }
+
 .icon-minus:before {
-content: "\e910";
+  content: "\e910";
 }
+
 .icon-plus:before {
-content: "\e911";
+  content: "\e911";
 }
+
 .icon-point:before {
-content: "\e912";
+  content: "\e912";
 }
+
 .icon-search:before {
-content: "\e913";
+  content: "\e913";
 }
+
 .icon-trash:before {
-content: "\e914";
+  content: "\e914";
 }
+
 .icon-warn:before {
   content: "\e915";
 }
+
 .icon-profile:before {
   content: "\e916";
 }

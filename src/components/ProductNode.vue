@@ -1,68 +1,65 @@
 <template>
-  <div class="product"
-    :class="`product_${viewType}`">
-    <div class="product__body">
-      <div class="product__image"
-        @click="routeToSingle(product.slug)">
-        <img v-if="product.images?.[3]"
-          :src="product.images?.[3].src"
-          alt="" >
-        <img v-if="product.images?.[0]"
-          :src="product.images?.[0].src"
-          alt="" >
-      </div>
-      <div class="product__content">
-        <div class="product__brand">{{ brand(1) }}</div>
-        <h3 class="product__title"
-          @click="routeToSingle(product.slug)">
-          <button>
-            {{ product.name }}
-          </button>
-        </h3>
-        <ProductPricesNode
-          class="product__prices"
-          :pricesObject="product"
-        />
-      </div>
-      <div class="product__actions">
-        <ButtonNode
-          viewType="minimal"
-          class="product__wishlist icon-wishlist"
-          :class="{
-            'wishlist-btn_active': productContanedInWishlist(product.id),
-          }"
-          :resolver="{
-            func: updateWishlist,
-            payload: {},
-          }"
-        />
-        <ul class="product__colors">
-          <li
-            v-for="(color, index) in colorsRGBList"
-            :key="index"
-            class="product__color"
-            :style="{ background: `#${color}` }"
+  <PreloadWrapNode :targetPreloadElement="product"
+    :paddingBottom="product ? 0 : 146">
+    <article class="product"
+      :class="`product_${viewType}`">
+      <div class="product__body">
+        <div class="product__image"
+          @click="routeToSingleProduct(product)">
+          <img v-if="product.images?.[3]"
+            :src="product.images?.[3].src"
+            alt="" >
+          <img v-if="product.images?.[0]"
+            :src="product.images?.[0].src"
+            alt="" >
+        </div>
+        <div class="product__content">
+          <div class="product__brand">{{ brand(1) }}</div>
+          <h3 class="product__title"
+            @click="routeToSingleProduct(product)">
+            <button>
+              {{ product.name }}
+            </button>
+          </h3>
+          <ProductPricesNode
+            class="product__prices"
+            :pricesObject="product"
           />
-        </ul>
-        <ul class="product__sizes">
-          <li v-for="(index, size) in sizes(4)"
-            :key="index">
-            {{ sizes(4)?.[size] }}
-          </li>
-        </ul>
+        </div>
+        <div class="product__actions">
+          <ButtonWishlistNode :resolver="{ func: updateWishlist, payload: wishlistPayload }"
+            class="product__wishlist minimal" />
+          <ul class="product__colors">
+            <li
+              v-for="(color, index) in colorsRGBList"
+              :key="index"
+              class="product__color"
+              :style="{ background: `#${color}` }"
+            />
+          </ul>
+          <ul class="product__sizes">
+            <li v-for="(index, size) in sizes(4)"
+              :key="index">
+              {{ sizes(4)?.[size] }}
+            </li>
+          </ul>
+        </div>
       </div>
-    </div>
-  </div>
+    </article>
+  </PreloadWrapNode>
+
 </template>
+
 <script>
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 import { isEmpty } from "lodash-es";
 
 import ProductPricesNode from "@/components/product/ProductPricesNode.vue";
+import ButtonWishlistNode from "@/components/product/ButtonWishlistNode.vue";
 
 export default {
   components: {
-    ProductPricesNode,
+    ProductPricesNode, ButtonWishlistNode,
   },
   props: {
     /**
@@ -101,6 +98,13 @@ export default {
     ...mapState({
       colorsRequest: (state) => state.productsTermsColors.basedRequest,
     }),
+    wishlistPayload() {
+      return {
+        product_id: this.product.id,
+        // variation_id, //
+        // meta: [] //
+      };
+    },
   },
   mounted() {
     this.colorsRGB();
@@ -109,14 +113,14 @@ export default {
     ...mapMutations({}),
     ...mapActions({
       updateWishlist: "wishlist/updateWishlist",
-      routeToSingle: "products/routeToSingle",
+      routeToSingleProduct: "products/routeToSingleProduct",
     }),
 
     colorsRGB() {
       if (isEmpty(this.product)) return;
       const colors = [];
       const productColorNames = this.product.attributes.find(
-        (el) => el.id == 5,
+        (el) => el.id === 5,
       ).options;
       productColorNames.forEach((element) => {
         const color = this.itemsMatchedOneProperty(
@@ -167,52 +171,13 @@ export default {
   justify-items: center;
   position: relative;
   padding: 0 0 2rem 0;
-
-  .product-prices {
-    &__costs {
-      display: flex;
-      justify-content: center;
-    }
-
-    &__sale-price {
-      font-size: 0.9333333333rem;
-      line-height: 1.2rem;
-      font-weight: 700;
-      margin: 0 5px 0 0;
-      @media (max-width: ($md4+px)) {
-        font-size: 1rem;
-      }
-    }
-
-    &__regular-price {
-      font-size: 0.9333333333rem;
-      line-height: 1.2rem;
-      font-weight: 400;
-      text-decoration: line-through;
-      @media (max-width: ($md4+px)) {
-        font-size: 13px;
-      }
-
-      &_only {
-        text-decoration: none;
-        line-height: 1.4rem;
-        font-weight: 700;
-      }
-    }
-
-    &__procent-sale {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      cursor: pointer;
-    }
-  }
-
+    margin: 0 0 1rem 0;
   &_catalog {
-    padding: 0 0.66rem 3rem 0.66rem;
-    .product__content {
-      justify-items: start;
-    }
+    // padding: 0 0.66rem 3rem 0.66rem;
+
+    // .product__content {
+    //   justify-items: start;
+    // }
     .product__sizes {
       display: block !important;
     }
@@ -221,41 +186,39 @@ export default {
     }
   }
 
-  &_wishlist {
-  }
-
-  &_default {
-  }
-
-  &:hover {
-    &.catalog-type {
-      .product__colors {
-        display: flex;
+  @media (any-hover: hover) {
+    &:hover {
+      &.catalog-type {
+        .product__colors {
+          display: flex;
+        }
       }
-    }
-
-    &::before {
-      opacity: 1;
-    }
-    &_catalog {
-      .product__image {
-        img {
-          &:nth-child(2) {
-            opacity: 0;
+      .product__wishlist {
+        color: $mainColor;
+        opacity: 1;
+      }
+      &::before {
+        opacity: 1;
+      }
+      &_catalog {
+        .product__image {
+          img {
+            &:nth-child(2) {
+              opacity: 0;
+            }
           }
         }
       }
-    }
-
-    .product__sizes {
-      opacity: 1;
+      .product__sizes {
+        opacity: 1;
+      }
     }
   }
 
   &::before {
     content: "";
     position: absolute;
-    top: -0.66rem;
+    // top: -0.66rem;
     left: 0;
     width: 100%;
     height: 100%;
@@ -289,13 +252,14 @@ export default {
   }
 
   &__content {
+    padding: 0 0.66rem;
     min-width: 100%;
     display: grid;
     grid-template-columns: 1fr;
     margin-top: 0.8rem;
     font-size: 1.13333rem;
     line-height: 21px;
-    justify-items: center;
+    justify-items: start;
   }
 
   &__brand {
@@ -349,15 +313,18 @@ export default {
 
   &__wishlist {
     position: absolute;
-    top: 0.6666666667rem;
-    right: 1.2rem;
-    color: #d8d8d8;
+    top: 0.6rem;
+    right: 0.6rem;
+    // color: $mainColor;
     font-size: 1.2rem;
     cursor: pointer;
 
-    &:hover {
-      color: #231f20;
+    @media (any-hover: hover) {
+      opacity: 0;
     }
+    // &:hover {
+    //   color: #231f20;
+    // }
   }
 
   &__colors {
@@ -383,8 +350,8 @@ export default {
   &__sizes {
     display: none !important;
     position: absolute;
-    bottom: 1rem;
-    padding: 0.4rem 0 0.4rem;
+    // bottom: 1rem;
+    padding: 0.4rem 0 0 0.66rem;
     background-color: #fff;
     transition: opacity 0.1s;
     opacity: 0;
@@ -399,5 +366,46 @@ export default {
       margin: 0 0.7333333333rem 0 0;
     }
   }
+
+  .product-prices {
+    &__costs {
+      display: flex;
+      justify-content: center;
+    }
+
+    &__sale-price {
+      font-size: 0.9333333333rem;
+      line-height: 1.2rem;
+      font-weight: 700;
+      margin: 0 5px 0 0;
+      @media (max-width: ($md4+px)) {
+        font-size: 1rem;
+      }
+    }
+
+    &__regular-price {
+      font-size: 0.9333333333rem;
+      line-height: 1.2rem;
+      font-weight: 400;
+      text-decoration: line-through;
+      @media (max-width: ($md4+px)) {
+        font-size: 13px;
+      }
+
+      &_only {
+        text-decoration: none;
+        line-height: 1.4rem;
+        font-weight: 700;
+      }
+    }
+
+    &__procent-sale {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      cursor: pointer;
+    }
+  }
+
 }
 </style>

@@ -1,92 +1,81 @@
 <template>
-  <!--         v-if="category && mainCategory && templatePage"  -->
-  <MainPageNode :templatePage="templatePage" :navRaw="category">
+  <MainPageNode :templatePage="templatePage"
+    :navRaw="category">
     <template #page-main>
-      <TheFilterNode @updateFilter="updateFilter"></TheFilterNode>
+      <TheFilterNode @updateFilter="updateFilter"/>
       <ContainerNode>
         <div class="catalog__body">
           <div class="catalog__main">
-            <div class="catalog__sidebar">
-              <CatalogSidebarNode
-                v-if="mainCategory && category"
-                :mainCategory="mainCategory"
-                :category="category"
-                :total="total"
-              ></CatalogSidebarNode>
-            </div>
+            <CatalogSidebarNode
+              :total="total"
+            />
             <div class="catalog__products">
               <div class="catalog__sorting">
                 <CatalogRevealingNode
                   :bodyLoaded="sortOptions ? true : false"
-                  @apply="updateFilter"
                   :item="{ name: 'catalogSorting' }"
+                  @apply="updateFilter"
                 >
                   <template #title>Сортировка</template>
                   <template #main>
                     <InputRadioNode
                       v-for="option in sortOptions"
+                      :key="option.id"
                       :modelValue="equalOptionSort(option)"
                       :labelText="option.name"
-                      @input="setOrderAndOrderBy(option)"
                       :checked="option.id === 0"
                       name="sort"
-                      :key="option.id"
                       :disabled="
                         option.id == 3 || option.id == 4 || option.id == 5
                       "
-                    >
-                    </InputRadioNode>
+                      @input="setOrderAndOrderBy(option)"
+                    />
                   </template>
                 </CatalogRevealingNode>
               </div>
               <CatalogProductsNode
                 :categoryId="categoryId"
-              ></CatalogProductsNode>
-              <PaginationNode :type="productsRequest.type"></PaginationNode>
+              />
+              <PaginationNode :type="productsRequest.type"/>
             </div>
-            <!-- <div class="observer" v-intersection="loadMoreProducts" v-if="page < totalPages"></div> -->
           </div>
         </div>
-        <PageContentNode
-          v-if="templatePage"
-          :page="templatePage"
-        ></PageContentNode>
-        <DistributionNode></DistributionNode>
+        <DistributionNode/>
       </ContainerNode>
+      <PageContentNode
+        v-if="templatePage"
+        :page="templatePage"
+      />
     </template>
   </MainPageNode>
 </template>
 
 <script>
-//
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 import { isEmpty, isEqual } from "lodash-es";
-
-import CatalogSidebarNode from "@/components/CatalogSidebarNode.vue";
 import TheFilterNode from "@/components/TheFilterNode.vue";
 import CatalogProductsNode from "@/components/CatalogProductsNode.vue";
 import PaginationNode from "@/components/PaginationNode.vue";
 import CatalogRevealingNode from "@/components/CatalogRevealingNode.vue";
 import PageContentNode from "@/components/PageContentNode.vue";
 import DistributionNode from "@/components/DistributionNode.vue";
-import MainPageNode from "@/components/structure/MainPageNode.vue";
+import CatalogSidebarNode from "@/components/CatalogSidebarNode.vue";
+/**
+ * В компоненте в первую очередь утанавливается data страницы каталога,
+ * затем (маркером установки является установка старницы категории в request)
+ * осуществляется загрузка первых товаров, вместе с тем устанавливается общее
+ * число страниц...
+ */
 
 export default {
-  /**
-   * В компоненте в первую очередь утанавливается data страницы каталога,
-   * затем (маркером установки является установка старницы категории в request)
-   * осуществляется загрузка первых товаров, вместе с тем устанавливается общее
-   * число страниц...
-   */
   components: {
-    CatalogRevealingNode,
     CatalogSidebarNode,
+    CatalogRevealingNode,
     TheFilterNode,
     CatalogProductsNode,
     PaginationNode,
     PageContentNode,
     DistributionNode,
-    MainPageNode,
   },
   props: {
     params: {
@@ -103,7 +92,7 @@ export default {
   computed: {
     ...mapGetters({
       pageBySlug: "pages/pageBySlug",
-      itemBySlug: "itemBySlug",
+      singleBySlug: "singleBySlug",
       total: "total",
       requestByItemParam: "requestByItemParam",
       filtredProducts: "products/filtredProducts",
@@ -111,37 +100,33 @@ export default {
     ...mapState({
       productsSSGDefaultRequest: (state) => state.products.requests[0],
       productsRequest: (state) => state.products.basedRequest,
-      productsCategoriesRequest: (state) =>
-        state.productsCategories.basedRequest,
+      productsCategoriesRequest: (state) => state.productsCategories.basedRequest,
       totalProducts: (state) => state.products.total,
       totalPages: (state) => state.products.totalPages,
       page: (state) => state.products.basedRequest.params.page,
-      loading: (state) => state.site.loading,
       pagesRequest: (state) => state.pages.basedRequest,
-      /**filter*/
+      /** filter */
       sortOptions: (state) => state.filter.defaultValues.sort,
       categoryId: (state) => state.filter.params.category,
       orderAndOrderBy: (state) => state.filter.params.orderAndOrderBy,
     }),
-    /**
-     * Slug from props
-     */
+
     category() {
-      return this.itemBySlug({
+      return this.singleBySlug({
         type: this.productsCategoriesRequest.type,
         slug: this.params.categorySlug,
       });
     },
 
     mainCategory() {
-      return this.itemBySlug({
+      return this.singleBySlug({
         type: this.productsCategoriesRequest.type,
         slug: this.params.mainCategorySlug,
       });
     },
 
     templatePage() {
-      return this.pageBySlug(this.params.mainCategorySlug);
+      return this.pageBySlug(this.params.categorySlug);
     },
     total() {
       if (isEmpty(this.mainCategory)) return;
@@ -156,35 +141,16 @@ export default {
     /**
      * За установкой номера каталога-категории следует инициализация
      * каталога
-     *
      * @param {*} newValue
      */
     async categoryId(newValue) {
       if (newValue !== null && !this.initMarker) {
         this.initCatalog();
-        // this.getTemplatePage()
-      }
-    },
-
-    /**
-     * Проверка if() необходима для того, чтобы во время выполнения initCatalog()
-     * не происходил ненужный запрос в связи с изменением page
-     *
-     * ONLY (VITE_LIKE_A_SPA)
-     */
-    page(newValue) {
-      if (import.meta.env.VITE_LIKE_A_SPA) {
-        if (newValue != this.query.page) {
-          this.loadMoreProducts();
-        }
       }
     },
   },
   created() {
     this.setCategoryId(this.category.id);
-    if (import.meta.env.VITE_LIKE_A_SPA) {
-      this.getTemplatePage();
-    }
   },
   /**
    * Run after change category
@@ -192,9 +158,6 @@ export default {
   beforeUpdate() {
     this.initMarker = false;
     this.setCategoryId(this.category.id);
-    if (import.meta.env.VITE_LIKE_A_SPA) {
-      this.getTemplatePage();
-    }
   },
   methods: {
     ...mapMutations({
@@ -204,16 +167,14 @@ export default {
       setPage: "filter/setPage",
       setItemsPaginated: "products/setItemsPaginated",
       SET_SINGLE_PARAM: "SET_SINGLE_PARAM",
-      /**filter */
+      /** filter */
       setOrderAndOrderBy: "filter/setOrderAndOrderBy",
     }),
     ...mapActions({
-      getItems: "getItems",
       updateRequestParams: "products/updateRequestParams",
       filterAndPaginate: "products/filterAndPaginate",
       changePage: "products/changePage",
       validateValues: "filter/validateValues",
-      getSingleBySlug: "getSingleBySlug",
     }),
 
     /**
@@ -222,18 +183,7 @@ export default {
     async initCatalog() {
       this.setPage(this.query.page ? this.query.page : 1);
       this.updateRequestParams();
-      let request;
-      if (import.meta.env.VITE_LIKE_A_SPA) {
-        request = await this.getItems({ basedRequest: this.productsRequest })
-          .request;
-        this.setTotalPages(request.totalPages);
-        this.setItemsPaginated({
-          pageNumber: request.params.page,
-          value: request.data,
-        });
-      } else {
-        this.filterAndPaginate();
-      }
+      this.filterAndPaginate();
       this.initMarker = true;
     },
 
@@ -245,40 +195,6 @@ export default {
       this.validateValues();
       this.updateRequestParams();
       this.filterAndPaginate();
-      // надо тут написать другой способ получения request
-      // if (import.meta.env.VITE_LIKE_A_SPA) {
-      //   // const { request } = await this.getItems({basedRequest: })
-      //   //   Object.assign({ onDownloadProgress: Function }, this.productsRequest)
-      //   // );
-      //   // this.setTotalPages(request.totalPages);
-      //   // this.setItemsPaginated({
-      //   //   pageNumber: request.params.page,
-      //   //   value: request.data,
-      //   // });
-      // }
-    },
-
-    /**
-     * ONLY (VITE_LIKE_A_SPA)
-     */
-    async loadMoreProducts() {
-      const { request } = await this.getItems({
-        basedRequest: this.productsRequest,
-      });
-      this.setItemsPaginated({
-        pageNumber: request.params.page,
-        value: request.data,
-      });
-    },
-
-    /**
-     * ONLY (VITE_LIKE_A_SPA)
-     */
-    getTemplatePage() {
-      this.getSingleBySlug({
-        basedRequest: this.pagesRequest,
-        params: { slug: this.params.categorySlug },
-      });
     },
 
     /**
