@@ -1,8 +1,6 @@
 import Cookies from "js-cookie";
-import { isEmpty, has } from "lodash-es";
-import __VUE_WORDPRESS__ from "@/json/vuewp.json";
-import router from "@/router";
-import { prefixes } from "@/router/routes";
+import { isEmpty, has, last } from "lodash-es";
+import __INST__ from "@/json/vuewp.json";
 import store from "@/store";
 
 export function fullName(value) {
@@ -89,10 +87,6 @@ export function handleWPDate(value) {
   return new Date(...yearMonthDate, ...hoursMinutesSeconds);
 }
 
-export function VUE_WP_INSTANCE() {
-  return __VUE_WORDPRESS__;
-}
-
 export function togglerOpening(name, prop, value, state, type) {
   const element = state.openings[type][name];
   if (value === null) {
@@ -129,36 +123,6 @@ export function actionJWTResolver({ type, config = {} }) {
 }
 
 /**
- *
- * @param {*} category - (reqired: {parent, slug}) категория (родительская(базовая) или одна из дочерних)
- * @param {*} parentCategorySlug - передаётся при переходе к одной из дочерних категорий
- * @returns
- */
-export function routeToSingleProductCategory(category) {
-  if (isEmpty(category)) throw new Error("Не передана категория");
-  let routerObject = {};
-  if (category.parent === 0) {
-    //
-    routerObject = router.push({
-      name: "SingleCategory",
-      params: { mainCategorySlug: category.slug },
-    });
-  } else {
-    const parentCategorySlug = store.state.productsCategories.items?.[category.parent].slug;
-    routerObject = router.push({
-      name: "SingleSubCategory",
-      params: {
-        mainCategorySlug: parentCategorySlug,
-        categorySlug: category.slug,
-      },
-    });
-  }
-  store.dispatch("common/updateAllOpeningTypeItems", {});
-  // store.commit("common/setScrollFlag", { value: true });
-  return routerObject;
-}
-
-/**
  * Функция переопределяет те свойства, ключи которых имеются в объекте с заменяющими значниями
  * (Написана была для переопределения per_page в productsModule - для SSG, так как реквест,
  * возвращаемый запросом из бэка per_page определял как 100)
@@ -188,54 +152,6 @@ export function getWishListKeyFromCookieKey() {
   return Cookies.get("tinv_wishlistkey");
 }
 
-export function siteURL() {
-  let { url } = VUE_WP_INSTANCE().routing.returned;
-  url = new URL(url);
-  url = `${url.protocol}//${url.hostname}/`;
-  return url;
-}
-/**
- * Позволяет получать развёрнутый путь. Поддерживает возврат объекта,
- * который может содержать префикс (/product/) и последний элемент,
- * розволяющий отделять элементы в виде: /prefix/cat1/cat2/product-slug
- *
- * @param {String} str - полный адрес или путь
- * @param {String} returnType
- * @param {Boolean} prefix - результирующий набор становится объектом и отделяет префикс
- * @returns {Object|String}
- */
-export function getPathName(str, returnType = "string") {
-  let pathName;
-  if (str.indexOf(siteURL()) === 0) {
-    pathName = str.slice(siteURL().length - 1); // exm. '/orders/'
-  } else {
-    pathName = str;
-  }
-  switch (returnType) {
-  case "string":
-    return `${pathName}`;
-  case "array": {
-    let handled = {
-      items: pathName.split("/").filter((el) => el),
-    };
-    const [first] = handled.items;
-    if (!Object.keys(prefixes).includes(first)) {
-      return handled;
-    }
-    handled.prefix = first;
-    handled.items.splice(0, 1);
-
-    if (prefixes[first]) {
-      handled = prefixes[first](handled);
-    }
-
-    return handled;
-  }
-  default:
-    return null;
-  }
-}
-
 /**
  * Вызывает action/mutation, если такой метод существует
  * @param {String} methodName - название метода в формате 'type/MethodName'
@@ -244,8 +160,6 @@ export function getPathName(str, returnType = "string") {
  * @param {*} callback - колбэк, вызывается если передан. Вместо несуществущего метода
  */
 export function callStoreMethod(methodName, methodType = "dispatch", payload = undefined, callback = null) {
-  // const handlerFunctionName = `${type}/handleItemsResponse`;
-  // console.log(methodName, methodType, payload, callback);
   let typeStore;
   switch (methodType) {
   case "dispatch":
@@ -260,11 +174,8 @@ export function callStoreMethod(methodName, methodType = "dispatch", payload = u
   // eslint-disable-next-line no-underscore-dangle
   const methodExists = Object.keys(store[typeStore]).findIndex((key) => key === methodName) !== -1;
   if (methodExists) {
-    // console.log("е");
     store[methodType](methodName, payload);
   } else if (callback) {
-    // console.log("nE");
-
     callback(payload);
   }
 }

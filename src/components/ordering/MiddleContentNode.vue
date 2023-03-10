@@ -5,9 +5,7 @@
         <slot name="items"/>
       </ul>
       <div class="middle-content__sidebar">
-        <PreloadWrapNode :targetPreloadElement="cartStore">
-          <slot name="sidebar"/>
-        </PreloadWrapNode>
+        <slot name="sidebar"/>
       </div>
     </div>
   </div>
@@ -45,7 +43,16 @@ export default {
   }
 
   // .middle-content__items
-  &__items {}
+  &__items {
+    border-top: 0.0625rem solid rgba(0, 0, 0, 0.08);
+      @media (max-width: ($md2+px)) {
+        margin: 0;
+        grid-column: 2/3;
+      }
+      @media (max-width: ($md3+px)) {
+        grid-column: 1/2;
+      }
+  }
 
   // .middle-content__sidebar
   &__sidebar {

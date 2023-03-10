@@ -8,10 +8,12 @@
   </div>
 </template>
 <script>
-import { defineAsyncComponent, watch, ref } from "vue";
-
-// import test from "@/api/test.js";
-// import { messages } from "@/api/utils.js";
+import { markRaw, shallowRef, watch, ref } from "vue";
+/**
+ * //(?) - spread для <component/> позволяет не использовать shallowRef и убирает ошибку https://stackoverflow.com/questions/65716637/vue3-performance-warning-using-ref
+ *
+ *
+ */
 export default {
   props: {
     item: {
@@ -19,7 +21,7 @@ export default {
     },
   },
   setup(props) {
-    const message = ref({});
+    const message = shallowRef();
     watch(
       props,
       (newProps) => {

@@ -1,8 +1,9 @@
 <template>
   <button class="link">
-    <span>
-      <slot/>
-    </span>
+    <slot/>
+    <!-- <span>
+
+    </span> -->
   </button>
 </template>
 
@@ -14,14 +15,15 @@ export default {
 
 <style lang="scss">
 .link {
-  &_blue {
-    transition: .1s;
+  transition: .1s;
     &:hover {
       color: #5073a2;
     }
     &:disabled {
 
     }
-  }
+  // &_blue {
+
+  // }
 }
 </style>

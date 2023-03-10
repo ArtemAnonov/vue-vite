@@ -1,6 +1,8 @@
 import axios from "axios";
 import { has } from "lodash-es";
-import { siteURL, actionJWTResolver } from "@/api/helpers";
+import { actionJWTResolver } from "@/api/helpers";
+import { siteURL } from "@/api/uni";
+
 /**
  * Импорт глобального хранилища VUEX
  */
@@ -35,25 +37,17 @@ const headers = () => {
  */
 const axiosInstance = (
   baseURL,
-  // withCredentials = false
-) => axios.create({
-  baseURL,
-  headers,
-  timeout: 200000,
-  // withCredentials:
-  //   import.meta.env.MODE === "development" && withCredentials ? true : false,
-});
+// eslint-disable-next-line arrow-body-style
+) => {
+  return axios.create({
+    baseURL,
+    headers,
+    timeout: 200000,
+  });
+};
 
 // axios.create().get("http://anyaaa6t.beget.tech/wp-json/wp/v2/media");
 
-// /**
-//  * @param {string} Payload.routeBase - products/categories
-//  * @param {string} Payload.apiType - /wp/v2/
-//  * @param {string} Payload.method - get
-//  * @param {object} Payload.config -
-//  * @param {object} Payload.data -
-//  * @returns
-//  */
 export async function mainFetch({
   id = null,
   basedRequest,
@@ -65,7 +59,6 @@ export async function mainFetch({
   const handledConfig = actionJWTResolver({
     type, config,
   });
-  handledConfig.params = params;
   const baseURL = `${siteURL()}wp-json${apiType}`;
   handledConfig.withCredentials = import.meta.env.MODE === "development"
     && Boolean(store.state[type]?.withCredentials);
@@ -85,7 +78,6 @@ export async function mainFetch({
     }
     const response = await axiosInstance(
       baseURL,
-      // withCredentials
     )[method](
       `/${routeBase}/${id !== null ? id : ""}`,
       method === "get" ? handledConfig : data,
@@ -104,4 +96,5 @@ export async function mainFetch({
       }, 2000);
     }
   }
+  return null;
 }

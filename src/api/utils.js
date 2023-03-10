@@ -35,40 +35,43 @@ export const messages = {
   productAddedToWishlist: {
     name: "productAddedToWishlist",
     type: "success",
-    html: {
-      template: `
-      Товар добавлен в Ваш список желаний.<button
-      @click="$router.push({ name: 'PersonalWishlist' })"
-      class="message-link"
-    >
-      Избранное.
-    </button>`,
-    },
+    html: "Товар добавлен в Ваш список желаний.",
+    // html: {
+    //   template: `
+    //   Товар добавлен в Ваш список желаний.<button
+    //   @click="$router.push({ name: 'PersonalWishlist' })"
+    //   class="message-link"
+    // >
+    //   Избранное.
+    // </button>`,
+    // },
   },
   currentPaymentURLNotSet: {
     name: "currentPaymentURLNotSet",
     type: "error",
-    html: {
-      template: `Ссылка на страницу оплаты не была получена. Попробуйте оплатить из
+    html: "Ссылка на страницу оплаты не была получена.",
+    // html: {
+    //   template: `Ссылка на страницу оплаты не была получена. Попробуйте оплатить из
 
-      <button
-        @click="$router.push({ name: 'PersonalOrders' })"
-        class="message-link"
-      >
-        Личного кабинета
-      </button>`,
-    },
+    //   <button
+    //     @click="$router.push({ name: 'PersonalOrders' })"
+    //     class="message-link"
+    //   >
+    //     Личного кабинета
+    //   </button>`,
+    // },
   },
   productAddedToCart: {
     name: "productAddedToCart",
     type: "success",
-    html: {
-      template: `Товар добавлен.<button
-      @click="$router.push({ name: 'Checkout' })"
-      class="message-link"
-    >
-      Оформить заказ?
-    </button>`,
-    },
+    html: "Товар добавлен в корзину.",
+    // html: {
+    //   template: `Товар добавлен.<button
+    //   @click="$router.push({ name: 'OrderingCheckout' })"
+    //   class="message-link"
+    // >
+    //   Оформить заказ?
+    // </button>`,
+    // },
   },
 };

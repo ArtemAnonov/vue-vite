@@ -3,17 +3,17 @@
     <ContainerNode>
       <div class="page-head_truncated__body">
         <div class="page-head_truncated__row">
-          <button class="page-head_truncated__back icon-long_arrow" @click="$router.back()">
-            <!--  v-if="!pageTitle" -->
-            <!-- <div class=""></div> -->
+          <!--  v-if="last(handledPath?.items) !== 'payment'" -->
+          <button
+            class="page-head_truncated__back icon-long_arrow"
+            @click="$router.back()">
             {{ backLinkName }}
           </button>
         </div>
         <div class="page-head_truncated__row">
           <div class="page-head_truncated__title">
-            {{ pageTitle }}
+            {{ templatePage?.title.rendered }}
           </div>
-          <!-- <slot name="content"></slot> -->
         </div>
       </div>
     </ContainerNode>
@@ -21,12 +21,23 @@
 </template>
 
 <script>
+import { last } from "lodash-es";
+
 export default {
   props: {
     backLinkName: String,
-    pageTitle: String,
-  }
-}
+    handledPath: Object,
+    templatePage: {
+      type: Object,
+      default: null,
+    },
+    setup(props) {
+      return {
+        last,
+      };
+    },
+  },
+};
 </script>
 
 <style lang="scss">
@@ -46,7 +57,8 @@ export default {
     &::before {
       position: relative;
       margin-right: .66rem;
-      top: .25rem;
+      // top: .25rem;
+      top: .1rem;
     }
   }
 

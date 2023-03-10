@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="item.default"
+    v-if="element?.default"
     class="spoiler"
     :class="{
       spoiler_active: element.active,
@@ -29,7 +29,7 @@
  */
 import { useStore } from "vuex";
 
-import { watch } from "vue";
+import { watch, ref } from "vue";
 import { useOpening } from "@/composables/opening.js";
 
 export default {
@@ -42,19 +42,27 @@ export default {
   setup(props) {
     if (props.item.default === false) return {};
     const store = useStore();
-    const item = { ...{ type: "spoiler" }, ...props.item };
+    const item = ref({ ...{ type: "spoiler" }, ...props.item });
+    // гарантирует отзывчивость (например из-за изменения размера окна)
     watch(props, (newProps) => {
       store.commit("common/setSpoiler", {
         name: newProps.item.name,
-        value: newProps.item.default,
+        // (~)
+        value: newProps.item.default === undefined ? true : newProps.item.default,
+        // value: newProps.item.default,
         prop: "default",
+      });
+      store.commit("common/setSpoiler", {
+        name: newProps.item.name,
+        // (~)
+        value: newProps.item.active,
       });
     });
 
     const { element } = useOpening(item);
     const openSpoiler = () => {
       store.commit("common/setSpoiler", {
-        name: element.name,
+        name: element.value.name,
         prop: "active",
       });
     };

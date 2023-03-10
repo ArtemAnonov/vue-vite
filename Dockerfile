@@ -1,4 +1,4 @@
-# run with vite - error  http://localhost:24678/wp-content/themes/logotype-ssr/vue-vite-ssg/dist/static/
+# run with vite - error  http://localhost:24678/wp-content/themes/logotype-ssg/vue-vite-ssg/dist/static/
 
 FROM node:latest
 

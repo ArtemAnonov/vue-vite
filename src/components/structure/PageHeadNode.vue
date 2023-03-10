@@ -12,37 +12,16 @@
           >
             Назад
           </button>
-          <ul class="page-head__breadcrumbs">
-            <BaseLinkNode @click="$router.push('/')">Главная</BaseLinkNode>
-            <template v-for="(crumb, index) in crumbs"
+          <ul class="page-head__links">
+            <BaseLinkNode class="page-head__link"
+              @click="$router.push('/')">Главная<span>/</span></BaseLinkNode>
+            <template v-for="(crumb, index) in links"
               :key="index"
             >
-              <BaseLinkNode @click="crumb.routeTo">
-                {{ crumb?.title }}</BaseLinkNode>
-
+              <BaseLinkNode  class="page-head__link"
+                @click="crumb?.routeTo">
+                {{ crumb?.title }}<span v-if="index<links.length-1">/</span></BaseLinkNode>
             </template>
-            <!-- <li><RouterLink to="/">Главная&nbsp;&nbsp;&nbsp;/</RouterLink></li>
-            <template v-if="Array.isArray(crumbs)">
-              <li v-for="(crumb, index) in crumbs?.reverse()"
-                :key="index">
-                <RouterLink :to="`/product-category/${crumb.slugs.join('/')}`">
-                  {{ crumb.name }}&nbsp;&nbsp;&nbsp;<span
-                    v-if="crumbs.length - 1 !== index || additionalTitle"
-                  >/</span
-                  >
-                </RouterLink>
-              </li>
-            </template>
-            <template v-else
-            ><li>
-              <button>
-                <span>{{ navRaw }}</span>
-              </button>
-            </li></template
-            >
-            <li>
-              <span v-if="additionalTitle">{{ additionalTitle }}</span>
-            </li> -->
           </ul>
         </div>
         <h1 v-if="title"
@@ -57,56 +36,49 @@
 import { computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
-import { getPathName, routeToSingleProductCategory } from "@/api/helpers";
+import { getPathName } from "@/api/uni";
 
 export default {
   inheritAttrs: false,
   props: {
-    /**
-     * Для продуктов
-     */
-    additionalTitle: String,
-    title: String,
-    /**
-     * Может быть моделью-категорией или Route ((([хотя хк])))
-     */
-    navRaw: [Object, String, Array],
+    handledPath: Object,
+    templatePage: {
+      type: Object,
+      default: null,
+    },
   },
-  setup() {
-    const store = useStore();
-    const route = useRoute();
+  setup(props) {
+    const { state, getters } = useStore();
     const router = useRouter();
-    const productsCategoriesType = store.state.productsCategories.basedRequest.type;
-    const productsType = store.state.products.basedRequest.type;
+    const productsCategoriesType = state.productsCategories.basedRequest.type;
+    const productsType = state.products.basedRequest.type;
     /**
-     * В массиве els может присутствовать префикс например /product-category/,
-     * который выкидывается pages/pageBySlug, но остается в el.path
-     * Много мороки с правилным путём категори, т.к. таксономии не имеют свойтсв
-     * типа product.permalink
+     * Три варианта использования: для продуктов, для каегорий продуктов и для страниц.
+     * Для кат.прод. используются именно category.name, хотя и для каждой страницы должен быть
+     * создана страница - в page.title.rendered используются полные названия категорий
      */
-    const crumbs = computed(() => {
-      const handledPath = getPathName(route.path, "array");
+    const links = computed(() => {
       let items = [];
-      // if (handledPath?.prefix) { // поиск по категориям продуктов
-      //   const catSlugs = handledPath.items;
-      //   for (let i = 0; i < catSlugs.length; i++) {
-      //     const el = catSlugs[i]; // iubki
-      //     const pCat = store.getters.singleBySlug({ type: productsCategoriesType, slug: el });
-      //     items.push({ title: pCat.name, routeTo: () => routeToSingleProductCategory(pCat) });
-      //   }
-      //   if (handledPath?.last) items.push({ title: store.getters.singleBySlug({ type: productsType, slug: handledPath.last }).name });
-      // } else { // поиск по страницам
-      items = handledPath.items.map((el) => {
-        const title = store.getters["pages/pageBySlug"](el)?.title.rendered;
-        return title ? { title, routeTo: () => router.push(el) } : null;
-      });
-      // }
-
+      if (props.handledPath?.prefix) {
+        items = props.handledPath.items.map((slug) => {
+          const category = getters.singleBySlug({ type: productsCategoriesType, slug });
+          return { title: category.name, routeTo: () => router.push(getPathName(category.permalink)) };
+        });
+        if (props.handledPath?.last) {
+          const product = getters.singleBySlug({ type: productsType, slug: props.handledPath.last });
+          items.push({ title: product.name });
+        }
+      } else {
+        items = props.handledPath.items.map((slug) => {
+          const page = getters["pages/pageBySlug"](slug);
+          return { title: page.title.rendered, routeTo: () => router.push(getPathName(page.link)) };
+        });
+      }
       return items;
     });
     return {
-      crumbs,
-
+      links,
+      title: computed(() => (typeof props.templatePage === "object" ? props.templatePage.title.rendered : null)),
     };
   },
 };
@@ -116,29 +88,32 @@ export default {
 .page-head {
   padding: 2.6666666667rem 0 0 0;
   margin-bottom: 1rem;
-  // border-bottom: 0.0666666667rem solid #d8d8d8;
-  &_product {
-    padding: 2rem 0 1rem 0;
-    @media (max-width: ($md3+px)) {
-      padding: 1rem 0 1rem 0;
-    }
+  @media (max-width: ($md3+px)) {
+    padding: 1.666667rem 0 0 0;
   }
+  // &_product {
+  //   padding: 2rem 0 1rem 0;
+  //   @media (max-width: ($md3+px)) {
+  //     padding: 1rem 0 1rem 0;
+  //   }
+  // }
   &__body {
   }
 
-  &__breadcrumbs {
+  &__links {
     font-size: 0.9333333333rem;
     line-height: 1.0666666667rem;
     display: inline-flex;
     flex-wrap: wrap;
+  }
 
-    li {
-      display: inline-flex;
-      margin-right: 0.3rem;
-      a,
-      button {
-        color: #868686 !important;
-      }
+  &__link {
+    display: inline-flex;
+    margin-right: 0.2rem;
+    color: #868686;
+    span {
+      margin-left: 0.4rem;
+
     }
   }
 

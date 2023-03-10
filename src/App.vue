@@ -61,7 +61,6 @@ export default {
        * вызывается из login()
        */
       async handler(userAuth) {
-        // console.log("uAC");
         if (userAuth === true && !this.userData?.id) {
           if (!Cookies.get("tinv_wlk_log")) {
             await this.getUser();
@@ -135,8 +134,12 @@ export default {
       document.body.style.overflow = "hidden";
       // document.body.style.paddingRight = "20px";
     },
+    /**
+     * (~)
+     * @param {*} value
+     */
     truncatedComponent(value) {
-      return !!truncatedComponents.find((el) => el.name === value);
+      return !!truncatedComponents[0].children.find((el) => el.name === value);
     },
   },
 };
@@ -164,6 +167,17 @@ export default {
 .message-link {
   color: #5073a2;
   margin-left: 4px;
+}
+
+h2 {
+  font-size: 1.8rem;
+  line-height: 2rem;
+  font-weight: 400;
+
+  @media (max-width: ($md3+px)) {
+      font-size: 1.4rem;
+      line-height: 1.8rem;
+  }
 }
 
 </style>

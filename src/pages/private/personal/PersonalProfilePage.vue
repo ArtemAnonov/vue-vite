@@ -1,5 +1,5 @@
 <template>
-  <div class="profile">prof</div>
+  <div class="profile">Страница редактироание данных пользователя находится в разработке...</div>
 </template>
 
 <script>

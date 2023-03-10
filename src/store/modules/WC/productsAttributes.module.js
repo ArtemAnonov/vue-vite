@@ -1,7 +1,7 @@
 import { has } from "lodash-es";
-import { VUE_WP_INSTANCE } from "@/api/helpers";
+import __INST__ from "@/json/vuewp.json";
 
-const instance = VUE_WP_INSTANCE().state.productsAttributes;
+const instance = __INST__.state.productsAttributes;
 export default {
   namespaced: true,
 

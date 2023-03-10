@@ -1,11 +1,9 @@
 import Cookies from "js-cookie";
-// import { useRouter, useRoute } from 'vue-router'
-import router from "@/router/index.js";
+import __INST__ from "@/json/vuewp.json";
 import { mainFetch } from "@/api";
+import { loginFromMail } from "@/api/helpers";
 
-import { VUE_WP_INSTANCE, loginFromMail } from "@/api/helpers";
-
-const instance = VUE_WP_INSTANCE().state.auth;
+const instance = __INST__.state.auth;
 export default {
   namespaced: true,
   state: () => ({
@@ -90,9 +88,7 @@ export default {
     setUserAuth(state, value) {
       state.userAuth = value === undefined ? !state.userAuth : value;
     },
-    setCurrentURLPayment(state, value = "") {
-      state.currentURLPayment = value;
-    },
+
     setUserData(state, value = { id: 0 }) {
       state.userData = value;
     },

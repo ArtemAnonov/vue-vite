@@ -1,9 +1,9 @@
-import { VUE_WP_INSTANCE, handleWPDate } from "@/api/helpers";
+import __INST__ from "@/json/vuewp.json";
+import { handleWPDate } from "@/api/helpers";
 
-const instance = VUE_WP_INSTANCE().state.orders;
+const instance = __INST__.state.orders;
 export default {
   namespaced: true,
-
   state: () => ({
     settings: instance?.settings ? instance.settings : {},
     requests: instance.requests,

@@ -1,9 +1,9 @@
 import { basename } from "node:path";
 import { ssrRenderAttrs, ssrRenderSlot, ssrRenderComponent, ssrRenderAttr, ssrRenderClass, ssrInterpolate, ssrRenderList, ssrRenderStyle, ssrRenderSuspense, ssrRenderVNode, renderToString } from "vue/server-renderer";
-import { useSSRContext, mergeProps, ref, resolveComponent, withCtx, renderSlot, watchEffect, watch, computed, createVNode, openBlock, createBlock, createCommentVNode, toDisplayString, Fragment, renderList, withDirectives, vShow, createTextVNode, withModifiers, Suspense, vModelText, resolveDynamicComponent, createSSRApp } from "vue";
-import { useStore, mapGetters, mapState, mapMutations, mapActions, createStore } from "vuex";
-import { isEmpty, isEqual, kebabCase, cloneDeep, pickBy, identity } from "lodash-es";
-import { useRouter, useRoute, createRouter, createMemoryHistory } from "vue-router";
+import { useSSRContext, mergeProps, ref, resolveComponent, withCtx, renderSlot, isRef, watchEffect, watch, computed, createTextVNode, createVNode, toDisplayString, openBlock, createBlock, createCommentVNode, Fragment, renderList, withDirectives, vShow, withModifiers, Suspense, vModelText, shallowRef, resolveDynamicComponent, createSSRApp } from "vue";
+import { useStore, mapState, mapGetters, mapMutations, mapActions, createStore } from "vuex";
+import { isEmpty, last, has, isArray, isEqual, kebabCase, cloneDeep } from "lodash-es";
+import { useRouter, useRoute, onBeforeRouteLeave, createRouter, createMemoryHistory } from "vue-router";
 import Cookies from "js-cookie";
 import { Navigation, Pagination, Autoplay, FreeMode, Thumbs } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/vue";
@@ -19,38 +19,38 @@ const _export_sfc = (sfc, props) => {
   }
   return target;
 };
-const _sfc_main$16 = {
+const _sfc_main$17 = {
   name: "BaseButtonNode"
 };
-function _sfc_ssrRender$16(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$17(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   _push(`<button${ssrRenderAttrs(mergeProps({ class: "button" }, _attrs))}><span>`);
   ssrRenderSlot(_ctx.$slots, "default", {}, null, _push, _parent);
   _push(`</span></button>`);
 }
+const _sfc_setup$17 = _sfc_main$17.setup;
+_sfc_main$17.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/base/BaseButtonNode.vue");
+  return _sfc_setup$17 ? _sfc_setup$17(props, ctx) : void 0;
+};
+const BaseButtonNode = /* @__PURE__ */ _export_sfc(_sfc_main$17, [["ssrRender", _sfc_ssrRender$17]]);
+const BaseLinkNode_vue_vue_type_style_index_0_lang = "";
+const _sfc_main$16 = {
+  name: "BaseLinkNode"
+};
+function _sfc_ssrRender$16(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  _push(`<button${ssrRenderAttrs(mergeProps({ class: "link" }, _attrs))}>`);
+  ssrRenderSlot(_ctx.$slots, "default", {}, null, _push, _parent);
+  _push(`</button>`);
+}
 const _sfc_setup$16 = _sfc_main$16.setup;
 _sfc_main$16.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/base/BaseButtonNode.vue");
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/base/BaseLinkNode.vue");
   return _sfc_setup$16 ? _sfc_setup$16(props, ctx) : void 0;
 };
-const BaseButtonNode = /* @__PURE__ */ _export_sfc(_sfc_main$16, [["ssrRender", _sfc_ssrRender$16]]);
-const BaseLinkNode_vue_vue_type_style_index_0_lang = "";
+const BaseLinkNode = /* @__PURE__ */ _export_sfc(_sfc_main$16, [["ssrRender", _sfc_ssrRender$16]]);
 const _sfc_main$15 = {
-  name: "BaseLinkNode"
-};
-function _sfc_ssrRender$15(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
-  _push(`<button${ssrRenderAttrs(mergeProps({ class: "link" }, _attrs))}><span>`);
-  ssrRenderSlot(_ctx.$slots, "default", {}, null, _push, _parent);
-  _push(`</span></button>`);
-}
-const _sfc_setup$15 = _sfc_main$15.setup;
-_sfc_main$15.setup = (props, ctx) => {
-  const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/base/BaseLinkNode.vue");
-  return _sfc_setup$15 ? _sfc_setup$15(props, ctx) : void 0;
-};
-const BaseLinkNode = /* @__PURE__ */ _export_sfc(_sfc_main$15, [["ssrRender", _sfc_ssrRender$15]]);
-const _sfc_main$14 = {
   name: "ButtonNode",
   props: {
     viewType: {
@@ -86,7 +86,7 @@ const _sfc_main$14 = {
     };
   }
 };
-function _sfc_ssrRender$14(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$15(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   const _component_BaseButtonNode = resolveComponent("BaseButtonNode");
   if ($props.viewType === "base") {
     _push(ssrRenderComponent(_component_BaseButtonNode, mergeProps({
@@ -109,15 +109,15 @@ function _sfc_ssrRender$14(_ctx, _push, _parent, _attrs, $props, $setup, $data, 
     _push(`<button${ssrRenderAttrs(mergeProps({ disabled: $setup.disabled }, _attrs))}></button>`);
   }
 }
-const _sfc_setup$14 = _sfc_main$14.setup;
-_sfc_main$14.setup = (props, ctx) => {
+const _sfc_setup$15 = _sfc_main$15.setup;
+_sfc_main$15.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/common/ButtonNode.vue");
-  return _sfc_setup$14 ? _sfc_setup$14(props, ctx) : void 0;
+  return _sfc_setup$15 ? _sfc_setup$15(props, ctx) : void 0;
 };
-const ButtonNode = /* @__PURE__ */ _export_sfc(_sfc_main$14, [["ssrRender", _sfc_ssrRender$14]]);
+const ButtonNode = /* @__PURE__ */ _export_sfc(_sfc_main$15, [["ssrRender", _sfc_ssrRender$15]]);
 const InputNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$13 = {
+const _sfc_main$14 = {
   name: "InputNode",
   inheritAttrs: false,
   props: {
@@ -137,7 +137,7 @@ const _sfc_main$13 = {
     }
   }
 };
-function _sfc_ssrRender$13(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$14(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   _push(`<div${ssrRenderAttrs(mergeProps({
     class: ["input input_text", [_ctx.$attrs.class, { input_text_focus: $data.focus }]]
   }, _attrs))}>`);
@@ -149,46 +149,88 @@ function _sfc_ssrRender$13(_ctx, _push, _parent, _attrs, $props, $setup, $data, 
   ssrRenderSlot(_ctx.$slots, "after", {}, null, _push, _parent);
   _push(`</div>`);
 }
-const _sfc_setup$13 = _sfc_main$13.setup;
-_sfc_main$13.setup = (props, ctx) => {
+const _sfc_setup$14 = _sfc_main$14.setup;
+_sfc_main$14.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/common/InputNode.vue");
-  return _sfc_setup$13 ? _sfc_setup$13(props, ctx) : void 0;
+  return _sfc_setup$14 ? _sfc_setup$14(props, ctx) : void 0;
 };
-const InputNode = /* @__PURE__ */ _export_sfc(_sfc_main$13, [["ssrRender", _sfc_ssrRender$13]]);
+const InputNode = /* @__PURE__ */ _export_sfc(_sfc_main$14, [["ssrRender", _sfc_ssrRender$14]]);
 function useOpening(item) {
   const store2 = useStore();
-  store2.commit("common/addOpening", item);
-  const element = store2.state.common.openings[item.type][item.name];
+  const element = ref();
+  if (isRef(item)) {
+    store2.commit("common/addOpening", item.value);
+    element.value = store2.state.common.openings[item.value.type][item.value.name];
+  } else {
+    store2.commit("common/addOpening", item);
+    element.value = store2.state.common.openings[item.type][item.name];
+  }
   return {
     element
   };
 }
+const CloseBtnNode_vue_vue_type_style_index_0_scoped_e73485b1_lang = "";
+const _sfc_main$13 = {
+  name: "CloseBtnNode",
+  data() {
+    return {};
+  }
+};
+function _sfc_ssrRender$13(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  _push(`<button${ssrRenderAttrs(mergeProps({ class: "close-btn" }, _attrs))} data-v-e73485b1></button>`);
+}
+const _sfc_setup$13 = _sfc_main$13.setup;
+_sfc_main$13.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/common/CloseBtnNode.vue");
+  return _sfc_setup$13 ? _sfc_setup$13(props, ctx) : void 0;
+};
+const CloseBtnNode = /* @__PURE__ */ _export_sfc(_sfc_main$13, [["ssrRender", _sfc_ssrRender$13], ["__scopeId", "data-v-e73485b1"]]);
 const PopupNode_vue_vue_type_style_index_0_lang = "";
 const _sfc_main$12 = {
   name: "PopupNode",
+  components: {
+    CloseBtnNode
+  },
   props: {
-    item: Object
+    item: Object,
+    showCloseBtn: {
+      type: Boolean,
+      default: false
+    }
   },
   setup(props) {
-    const store2 = useStore();
+    const { dispatch, commit } = useStore();
     const item = { ...{ type: "popup" }, ...props.item };
     const { element } = useOpening(item);
     watchEffect(() => {
       if (element.active) {
-        store2.commit("common/setScrollFlag", { value: true });
+        commit("common/setScrollFlag", { value: true });
       }
     });
-    return { element };
+    return {
+      element,
+      setPopup: (name) => commit("common/setPopup", { name })
+    };
   }
 };
 function _sfc_ssrRender$12(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  const _component_CloseBtnNode = resolveComponent("CloseBtnNode");
   _push(`<div${ssrRenderAttrs(mergeProps({
     style: $setup.element.active ? null : { display: "none" },
     class: "popup"
   }, _attrs))}><div class="popup__scroll-wrapper"><div class="popup__wrapper"><div class="popup__inner">`);
   ssrRenderSlot(_ctx.$slots, "default", {}, null, _push, _parent);
-  _push(`</div></div></div></div>`);
+  _push(`</div>`);
+  if ($props.showCloseBtn) {
+    _push(ssrRenderComponent(_component_CloseBtnNode, {
+      onClick: ($event) => $setup.setPopup($setup.element.name)
+    }, null, _parent));
+  } else {
+    _push(`<!---->`);
+  }
+  _push(`</div></div></div>`);
 }
 const _sfc_setup$12 = _sfc_main$12.setup;
 _sfc_main$12.setup = (props, ctx) => {
@@ -197,7 +239,7 @@ _sfc_main$12.setup = (props, ctx) => {
   return _sfc_setup$12 ? _sfc_setup$12(props, ctx) : void 0;
 };
 const PopupNode = /* @__PURE__ */ _export_sfc(_sfc_main$12, [["ssrRender", _sfc_ssrRender$12]]);
-const _imports_0 = "/wp-content/themes/logotype-ssr/vue-vite-ssg/dist/static/assets/spinner.f13e5c14.gif";
+const _imports_0 = "/wp-content/themes/logotype-ssg/vue-vite-ssg/dist/static/assets/spinner.f13e5c14.gif";
 const LoadingNode_vue_vue_type_style_index_0_lang = "";
 const _sfc_main$11 = {
   name: "LoadingNode",
@@ -220,25 +262,8 @@ _sfc_main$11.setup = (props, ctx) => {
   return _sfc_setup$11 ? _sfc_setup$11(props, ctx) : void 0;
 };
 const LoadingNode = /* @__PURE__ */ _export_sfc(_sfc_main$11, [["ssrRender", _sfc_ssrRender$11]]);
-const CloseBtnNode_vue_vue_type_style_index_0_scoped_2983857f_lang = "";
-const _sfc_main$10 = {
-  name: "CloseBtnNode",
-  data() {
-    return {};
-  }
-};
-function _sfc_ssrRender$10(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
-  _push(`<button${ssrRenderAttrs(_attrs)} data-v-2983857f></button>`);
-}
-const _sfc_setup$10 = _sfc_main$10.setup;
-_sfc_main$10.setup = (props, ctx) => {
-  const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/common/CloseBtnNode.vue");
-  return _sfc_setup$10 ? _sfc_setup$10(props, ctx) : void 0;
-};
-const CloseBtnNode = /* @__PURE__ */ _export_sfc(_sfc_main$10, [["ssrRender", _sfc_ssrRender$10], ["__scopeId", "data-v-2983857f"]]);
 const ContainerNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$$ = {
+const _sfc_main$10 = {
   name: "ContainerNode",
   props: {
     containerStylesOff: {
@@ -247,22 +272,22 @@ const _sfc_main$$ = {
     }
   }
 };
-function _sfc_ssrRender$$(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$10(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   _push(`<div${ssrRenderAttrs(mergeProps({
     class: [$props.containerStylesOff ? "styles-off" : "", "container"]
   }, _attrs))}>`);
   ssrRenderSlot(_ctx.$slots, "default", {}, null, _push, _parent);
   _push(`</div>`);
 }
-const _sfc_setup$$ = _sfc_main$$.setup;
-_sfc_main$$.setup = (props, ctx) => {
+const _sfc_setup$10 = _sfc_main$10.setup;
+_sfc_main$10.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/common/ContainerNode.vue");
-  return _sfc_setup$$ ? _sfc_setup$$(props, ctx) : void 0;
+  return _sfc_setup$10 ? _sfc_setup$10(props, ctx) : void 0;
 };
-const ContainerNode = /* @__PURE__ */ _export_sfc(_sfc_main$$, [["ssrRender", _sfc_ssrRender$$]]);
+const ContainerNode = /* @__PURE__ */ _export_sfc(_sfc_main$10, [["ssrRender", _sfc_ssrRender$10]]);
 const InputStoreNode_vue_vue_type_style_index_0_scoped_d5932d4c_lang = "";
-const _sfc_main$_ = {
+const _sfc_main$$ = {
   name: "input-store-node",
   inheritAttrs: false,
   props: {
@@ -274,20 +299,20 @@ const _sfc_main$_ = {
     }
   }
 };
-function _sfc_ssrRender$_(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$$(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   _push(`<div${ssrRenderAttrs(mergeProps({ class: "input" }, _attrs))} data-v-d5932d4c>`);
   ssrRenderSlot(_ctx.$slots, "default", {}, null, _push, _parent);
   _push(`<input${ssrRenderAttrs(mergeProps(_ctx.$attrs, { value: $props.modelValue }))} data-v-d5932d4c></div>`);
 }
-const _sfc_setup$_ = _sfc_main$_.setup;
-_sfc_main$_.setup = (props, ctx) => {
+const _sfc_setup$$ = _sfc_main$$.setup;
+_sfc_main$$.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/common/InputStoreNode.vue");
-  return _sfc_setup$_ ? _sfc_setup$_(props, ctx) : void 0;
+  return _sfc_setup$$ ? _sfc_setup$$(props, ctx) : void 0;
 };
-const InputStoreNode = /* @__PURE__ */ _export_sfc(_sfc_main$_, [["ssrRender", _sfc_ssrRender$_], ["__scopeId", "data-v-d5932d4c"]]);
+const InputStoreNode = /* @__PURE__ */ _export_sfc(_sfc_main$$, [["ssrRender", _sfc_ssrRender$$], ["__scopeId", "data-v-d5932d4c"]]);
 const InputCheckboxNode_vue_vue_type_style_index_0_scoped_72d61b7f_lang = "";
-const _sfc_main$Z = {
+const _sfc_main$_ = {
   name: "InputCheckboxNode",
   inheritAttrs: false,
   props: {
@@ -295,18 +320,18 @@ const _sfc_main$Z = {
     labelText: String
   }
 };
-function _sfc_ssrRender$Z(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$_(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   _push(`<div${ssrRenderAttrs(mergeProps({ class: "input input_checkbox" }, _attrs))} data-v-72d61b7f><span class="${ssrRenderClass([$props.modelValue ? "checked" : "", "icon-check"])}" data-v-72d61b7f></span><label for="" data-v-72d61b7f>${ssrInterpolate(_ctx.$props.labelText)}</label><input${ssrRenderAttrs(mergeProps({ type: "checkbox" }, _ctx.$attrs, { value: $props.modelValue }))} data-v-72d61b7f></div>`);
 }
-const _sfc_setup$Z = _sfc_main$Z.setup;
-_sfc_main$Z.setup = (props, ctx) => {
+const _sfc_setup$_ = _sfc_main$_.setup;
+_sfc_main$_.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/common/InputCheckboxNode.vue");
-  return _sfc_setup$Z ? _sfc_setup$Z(props, ctx) : void 0;
+  return _sfc_setup$_ ? _sfc_setup$_(props, ctx) : void 0;
 };
-const InputCheckboxNode = /* @__PURE__ */ _export_sfc(_sfc_main$Z, [["ssrRender", _sfc_ssrRender$Z], ["__scopeId", "data-v-72d61b7f"]]);
+const InputCheckboxNode = /* @__PURE__ */ _export_sfc(_sfc_main$_, [["ssrRender", _sfc_ssrRender$_], ["__scopeId", "data-v-72d61b7f"]]);
 const InputRadioNode_vue_vue_type_style_index_0_scoped_5443c736_lang = "";
-const _sfc_main$Y = {
+const _sfc_main$Z = {
   name: "InputRadioNode",
   inheritAttrs: false,
   props: {
@@ -318,7 +343,7 @@ const _sfc_main$Y = {
     }
   }
 };
-function _sfc_ssrRender$Y(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$Z(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   _push(`<div${ssrRenderAttrs(mergeProps({
     class: ["input input_radio", $props.disabled ? "disabled" : ""]
   }, _attrs))} data-v-5443c736><input${ssrRenderAttrs(mergeProps({
@@ -326,22 +351,25 @@ function _sfc_ssrRender$Y(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
     type: "radio"
   }, _ctx.$attrs))} data-v-5443c736><span class="${ssrRenderClass($props.modelValue ? "checked" : "")}" data-v-5443c736></span><label for="" data-v-5443c736>${ssrInterpolate(_ctx.$props.labelText)}</label></div>`);
 }
-const _sfc_setup$Y = _sfc_main$Y.setup;
-_sfc_main$Y.setup = (props, ctx) => {
+const _sfc_setup$Z = _sfc_main$Z.setup;
+_sfc_main$Z.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/common/InputRadioNode.vue");
-  return _sfc_setup$Y ? _sfc_setup$Y(props, ctx) : void 0;
+  return _sfc_setup$Z ? _sfc_setup$Z(props, ctx) : void 0;
 };
-const InputRadioNode = /* @__PURE__ */ _export_sfc(_sfc_main$Y, [["ssrRender", _sfc_ssrRender$Y], ["__scopeId", "data-v-5443c736"]]);
+const InputRadioNode = /* @__PURE__ */ _export_sfc(_sfc_main$Z, [["ssrRender", _sfc_ssrRender$Z], ["__scopeId", "data-v-5443c736"]]);
 const PreloadWrapNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$X = {
+const _sfc_main$Y = {
   name: "PreloadWrapNode",
   props: {
     route: Object,
     targetPreloadElement: {
       default: false
     },
-    paddingBottom: Number
+    paddingBottom: {
+      type: Number,
+      default: 10
+    }
   },
   setup(props) {
     const showLoading = ref(false);
@@ -372,23 +400,23 @@ const _sfc_main$X = {
     }
   }
 };
-function _sfc_ssrRender$X(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$Y(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   _push(`<div${ssrRenderAttrs(mergeProps({
-    style: $props.paddingBottom ? { paddingBottom: `${$props.paddingBottom}%` } : {},
+    style: $props.paddingBottom && $setup.showLoading ? { paddingBottom: `${$props.paddingBottom}%` } : {},
     class: [{ visible: $setup.showLoading }, "preload-wrap"]
   }, _attrs))}>`);
   ssrRenderSlot(_ctx.$slots, "default", {}, null, _push, _parent);
   _push(`</div>`);
 }
-const _sfc_setup$X = _sfc_main$X.setup;
-_sfc_main$X.setup = (props, ctx) => {
+const _sfc_setup$Y = _sfc_main$Y.setup;
+_sfc_main$Y.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/common/PreloadWrapNode.vue");
-  return _sfc_setup$X ? _sfc_setup$X(props, ctx) : void 0;
+  return _sfc_setup$Y ? _sfc_setup$Y(props, ctx) : void 0;
 };
-const PreloadWrapNode = /* @__PURE__ */ _export_sfc(_sfc_main$X, [["ssrRender", _sfc_ssrRender$X]]);
+const PreloadWrapNode = /* @__PURE__ */ _export_sfc(_sfc_main$Y, [["ssrRender", _sfc_ssrRender$Y]]);
 const RevealingNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$W = {
+const _sfc_main$X = {
   name: "RevealingNode",
   props: {
     item: Object
@@ -399,7 +427,7 @@ const _sfc_main$W = {
     return { element };
   }
 };
-function _sfc_ssrRender$W(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$X(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   _push(`<div${ssrRenderAttrs(mergeProps({
     style: $setup.element.active ? null : { display: "none" },
     class: "revealing"
@@ -407,13 +435,22 @@ function _sfc_ssrRender$W(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
   ssrRenderSlot(_ctx.$slots, "default", {}, null, _push, _parent);
   _push(`</div></div>`);
 }
-const _sfc_setup$W = _sfc_main$W.setup;
-_sfc_main$W.setup = (props, ctx) => {
+const _sfc_setup$X = _sfc_main$X.setup;
+_sfc_main$X.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/common/RevealingNode.vue");
-  return _sfc_setup$W ? _sfc_setup$W(props, ctx) : void 0;
+  return _sfc_setup$X ? _sfc_setup$X(props, ctx) : void 0;
 };
-const RevealingNode = /* @__PURE__ */ _export_sfc(_sfc_main$W, [["ssrRender", _sfc_ssrRender$W]]);
+const RevealingNode = /* @__PURE__ */ _export_sfc(_sfc_main$X, [["ssrRender", _sfc_ssrRender$X]]);
+const prefixes = {
+  product: (path) => {
+    const handledPath = path;
+    handledPath.last = handledPath.items[handledPath.items.length - 1];
+    handledPath.items.pop();
+    return handledPath;
+  },
+  "product-category": null
+};
 const routing = {
   returned: {
     category_base: "",
@@ -464,19 +501,19 @@ const state$1 = {
   checkout: {
     route_base: "checkout",
     type: "checkout",
+    settings: {
+      sensitive: true,
+      JWTRequestConfig: {
+        JWTMaintain: true,
+        JWTReqired: true
+      }
+    },
     apiType: "/wc/store/v1/",
     params: {
       per_page: 100
     },
     items: {},
     requests: [],
-    settings: {
-      sensitive: false,
-      JWTRequestConfig: {
-        JWTMaintain: true,
-        JWTReqired: true
-      }
-    },
     single_params: [],
     specific_params: []
   },
@@ -591,11 +628,11 @@ const state$1 = {
           rendered: "\u0418\u043D\u0442\u0435\u0440\u043D\u0435\u0442-\u043C\u0430\u0433\u0430\u0437\u0438\u043D \u043E\u0434\u0435\u0436\u0434\u044B, \u043E\u0431\u0443\u0432\u0438, \u0430\u043A\u0441\u0435\u0441\u0441\u0443\u0430\u0440\u043E\u0432, \u043A\u043E\u0441\u043C\u0435\u0442\u0438\u043A\u0438 \u0438 \u043F\u0430\u0440\u0444\u044E\u043C\u0435\u0440\u0438\u0438, \u0438 \u0442\u043E\u0432\u0430\u0440\u043E\u0432 \u0434\u043B\u044F \u0434\u043E\u043C\u0430"
         },
         content: {
-          rendered: "\n<h3>\u0415\u0432\u0440\u043E\u043F\u0435\u0439\u0441\u043A\u0438\u0439 \u0443\u0440\u043E\u0432\u0435\u043D\u044C \u0448\u043E\u043F\u043F\u0438\u043D\u0433\u0430</h3>\n\n\n\n<p>\u0421\u0430\u0439\u0442 logotype.ru \u2013 \u043E\u0444\u0438\u0446\u0438\u0430\u043B\u044C\u043D\u044B\u0439 \u0438\u043D\u0442\u0435\u0440\u043D\u0435\u0442-\u043C\u0430\u0433\u0430\u0437\u0438\u043D \u0441\u0435\u0442\u0438 LOGOTYPE. \u0412 \u0435\u0434\u0438\u043D\u043E\u043C \u043A\u0430\u0442\u0430\u043B\u043E\u0433\u0435 \u0441\u043E\u0431\u0440\u0430\u043D\u044B \u0442\u043E\u0432\u0430\u0440\u044B \u0434\u043B\u044F \u0432\u0441\u0435\u0439 \u0441\u0435\u043C\u044C\u0438 &#8212; \u0436\u0435\u043D\u0441\u043A\u0430\u044F, \u043C\u0443\u0436\u0441\u043A\u0430\u044F \u0438 \u0434\u0435\u0442\u0441\u043A\u0430\u044F \u043E\u0434\u0435\u0436\u0434\u0430, \xA0\u0438 \u043F\u0430\u0440\u0444\u044E\u043C\u0435\u0440\u0438\u044F, \u0430\u043A\u0441\u0435\u0441\u0441\u0443\u0430\u0440\u044B, \u0430 \u0442\u0430\u043A\u0436\u0435 \u0442\u043E\u0432\u0430\u0440\u044B \u0434\u043B\u044F \u0434\u043E\u043C\u0430 \u2013 \u043F\u043E\u0441\u0443\u0434\u0430, \u0442\u0435\u043A\u0441\u0442\u0438\u043B\u044C, \u0430\u043A\u0441\u0435\u0441\u0441\u0443\u0430\u0440\u044B \u0434\u043B\u044F \u0432\u0430\u043D\u043D\u043E\u0439, \u043F\u0440\u0435\u0434\u043C\u0435\u0442\u044B \u0438\u043D\u0442\u0435\u0440\u044C\u0435\u0440\u0430 \u0438 \u043C\u043D\u043E\u0433\u043E\u0435 \u0434\u0440\u0443\u0433\u043E\u0435.</p>\n\n\n\n<p>\u0418\u043D\u0442\u0443\u0438\u0442\u0438\u0432\u043D\u043E-\u043F\u043E\u043D\u044F\u0442\u043D\u0430\u044F \u043D\u0430\u0432\u0438\u0433\u0430\u0446\u0438\u044F \u0441\u0430\u0439\u0442\u0430 \u043F\u043E\u0437\u0432\u043E\u043B\u044F\u0435\u0442 \u043B\u0435\u0433\u043A\u043E \u0441\u043E\u0440\u0442\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0442\u043E\u0432\u0430\u0440\u044B \u043F\u043E \u0441\u0435\u0437\u043E\u043D\u0443, \u0441\u0442\u0438\u043B\u044E, \u0446\u0432\u0435\u0442\u0443 \u0438 \u0446\u0435\u043D\u0435 \u0438 \u0431\u044B\u0441\u0442\u0440\u043E \u043D\u0430\u0445\u043E\u0434\u0438\u0442\u044C \u043F\u043E\u0434\u0445\u043E\u0434\u044F\u0449\u0438\u0435 \u0432\u0430\u0440\u0438\u0430\u043D\u0442\u044B \u0441\u0440\u0435\u0434\u0438 \u0431\u043E\u043B\u044C\u0448\u043E\u0433\u043E \u0447\u0438\u0441\u043B\u0430 \u043C\u043E\u0434\u0435\u043B\u0435\u0439. \u0412 \u0440\u0430\u0437\u0434\u0435\u043B\u0430\u0445 \u043F\u0440\u0435\u0434\u0441\u0442\u0430\u0432\u043B\u0435\u043D\u0430 \u0438\u043D\u0444\u043E\u0440\u043C\u0430\u0446\u0438\u044F \u043E \u043D\u0430\u043B\u0438\u0447\u0438\u0438 \u0440\u0430\u0437\u043C\u0435\u0440\u043E\u0432 \u043D\u0430 \u0441\u0430\u0439\u0442\u0435 \u0438 \u0440\u043E\u0437\u043D\u0438\u0447\u043D\u044B\u0445 \u043C\u0430\u0433\u0430\u0437\u0438\u043D\u0430\u0445 \u0441\u0435\u0442\u0438.</p>\n\n\n\n<p>\u0418\u043D\u0442\u0443\u0438\u0442\u0438\u0432\u043D\u043E-\u043F\u043E\u043D\u044F\u0442\u043D\u0430\u044F \u043D\u0430\u0432\u0438\u0433\u0430\u0446\u0438\u044F \u0441\u0430\u0439\u0442\u0430 \u043F\u043E\u0437\u0432\u043E\u043B\u044F\u0435\u0442 \u043B\u0435\u0433\u043A\u043E \u0441\u043E\u0440\u0442\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0442\u043E\u0432\u0430\u0440\u044B \u043F\u043E \u0441\u0435\u0437\u043E\u043D\u0443, \u0441\u0442\u0438\u043B\u044E, \u0446\u0432\u0435\u0442\u0443 \u0438 \u0446\u0435\u043D\u0435 \u0438 \u0431\u044B\u0441\u0442\u0440\u043E \u043D\u0430\u0445\u043E\u0434\u0438\u0442\u044C \u043F\u043E\u0434\u0445\u043E\u0434\u044F\u0449\u0438\u0435 \u0432\u0430\u0440\u0438\u0430\u043D\u0442\u044B \u0441\u0440\u0435\u0434\u0438 \u0431\u043E\u043B\u044C\u0448\u043E\u0433\u043E \u0447\u0438\u0441\u043B\u0430 \u043C\u043E\u0434\u0435\u043B\u0435\u0439. \u0412 \u0440\u0430\u0437\u0434\u0435\u043B\u0430\u0445 \u043F\u0440\u0435\u0434\u0441\u0442\u0430\u0432\u043B\u0435\u043D\u0430 \u0438\u043D\u0444\u043E\u0440\u043C\u0430\u0446\u0438\u044F \u043E \u043D\u0430\u043B\u0438\u0447\u0438\u0438 \u0440\u0430\u0437\u043C\u0435\u0440\u043E\u0432 \u043D\u0430 \u0441\u0430\u0439\u0442\u0435 \u0438 \u0440\u043E\u0437\u043D\u0438\u0447\u043D\u044B\u0445 \u043C\u0430\u0433\u0430\u0437\u0438\u043D\u0430\u0445 \u0441\u0435\u0442\u0438.</p>\n\n\n\n<h3><strong>\u041A\u043E\u043B\u043B\u0435\u043A\u0446\u0438\u0438 \u0438 \u0431\u0440\u0435\u043D\u0434\u044B</strong></h3>\n\n\n\n<p>\u0418\u043D\u0442\u0443\u0438\u0442\u0438\u0432\u043D\u043E-\u043F\u043E\u043D\u044F\u0442\u043D\u0430\u044F \u043D\u0430\u0432\u0438\u0433\u0430\u0446\u0438\u044F \u0441\u0430\u0439\u0442\u0430 \u043F\u043E\u0437\u0432\u043E\u043B\u044F\u0435\u0442 \u043B\u0435\u0433\u043A\u043E \u0441\u043E\u0440\u0442\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0442\u043E\u0432\u0430\u0440\u044B \u043F\u043E \u0441\u0435\u0437\u043E\u043D\u0443, \u0441\u0442\u0438\u043B\u044E, \u0446\u0432\u0435\u0442\u0443 \u0438 \u0446\u0435\u043D\u0435 \u0438 \u0431\u044B\u0441\u0442\u0440\u043E \u043D\u0430\u0445\u043E\u0434\u0438\u0442\u044C \u043F\u043E\u0434\u0445\u043E\u0434\u044F\u0449\u0438\u0435 \u0432\u0430\u0440\u0438\u0430\u043D\u0442\u044B \u0441\u0440\u0435\u0434\u0438 \u0431\u043E\u043B\u044C\u0448\u043E\u0433\u043E \u0447\u0438\u0441\u043B\u0430 \u043C\u043E\u0434\u0435\u043B\u0435\u0439. \u0412 \u0440\u0430\u0437\u0434\u0435\u043B\u0430\u0445 \u043F\u0440\u0435\u0434\u0441\u0442\u0430\u0432\u043B\u0435\u043D\u0430 \u0438\u043D\u0444\u043E\u0440\u043C\u0430\u0446\u0438\u044F \u043E \u043D\u0430\u043B\u0438\u0447\u0438\u0438 \u0440\u0430\u0437\u043C\u0435\u0440\u043E\u0432 \u043D\u0430 \u0441\u0430\u0439\u0442\u0435 \u0438 \u0440\u043E\u0437\u043D\u0438\u0447\u043D\u044B\u0445 \u043C\u0430\u0433\u0430\u0437\u0438\u043D\u0430\u0445 \u0441\u0435\u0442\u0438.</p>\n\n\n\n<p>\u0418\u043D\u0442\u0443\u0438\u0442\u0438\u0432\u043D\u043E-\u043F\u043E\u043D\u044F\u0442\u043D\u0430\u044F \u043D\u0430\u0432\u0438\u0433\u0430\u0446\u0438\u044F \u0441\u0430\u0439\u0442\u0430 \u043F\u043E\u0437\u0432\u043E\u043B\u044F\u0435\u0442 \u043B\u0435\u0433\u043A\u043E \u0441\u043E\u0440\u0442\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0442\u043E\u0432\u0430\u0440\u044B \u043F\u043E \u0441\u0435\u0437\u043E\u043D\u0443, \u0441\u0442\u0438\u043B\u044E, \u0446\u0432\u0435\u0442\u0443 \u0438 \u0446\u0435\u043D\u0435 \u0438 \u0431\u044B\u0441\u0442\u0440\u043E \u043D\u0430\u0445\u043E\u0434\u0438\u0442\u044C \u043F\u043E\u0434\u0445\u043E\u0434\u044F\u0449\u0438\u0435 \u0432\u0430\u0440\u0438\u0430\u043D\u0442\u044B \u0441\u0440\u0435\u0434\u0438 \u0431\u043E\u043B\u044C\u0448\u043E\u0433\u043E \u0447\u0438\u0441\u043B\u0430 \u043C\u043E\u0434\u0435\u043B\u0435\u0439. \u0412 \u0440\u0430\u0437\u0434\u0435\u043B\u0430\u0445 \u043F\u0440\u0435\u0434\u0441\u0442\u0430\u0432\u043B\u0435\u043D\u0430 \u0438\u043D\u0444\u043E\u0440\u043C\u0430\u0446\u0438\u044F \u043E \u043D\u0430\u043B\u0438\u0447\u0438\u0438 \u0440\u0430\u0437\u043C\u0435\u0440\u043E\u0432 \u043D\u0430 \u0441\u0430\u0439\u0442\u0435 \u0438 \u0440\u043E\u0437\u043D\u0438\u0447\u043D\u044B\u0445 \u043C\u0430\u0433\u0430\u0437\u0438\u043D\u0430\u0445 \u0441\u0435\u0442\u0438.</p>\n",
+          rendered: "\n<h3>\u0415\u0432\u0440\u043E\u043F\u0435\u0439\u0441\u043A\u0438\u0439 \u0443\u0440\u043E\u0432\u0435\u043D\u044C \u0448\u043E\u043F\u043F\u0438\u043D\u0433\u0430</h3>\n\n\n\n<p>\u0421\u0430\u0439\u0442 logotype.ru \u2013 \u043E\u0444\u0438\u0446\u0438\u0430\u043B\u044C\u043D\u044B\u0439 \u0438\u043D\u0442\u0435\u0440\u043D\u0435\u0442-\u043C\u0430\u0433\u0430\u0437\u0438\u043D \u0441\u0435\u0442\u0438 LOGOTYPE. \u0412 \u0435\u0434\u0438\u043D\u043E\u043C \u043A\u0430\u0442\u0430\u043B\u043E\u0433\u0435 \u0441\u043E\u0431\u0440\u0430\u043D\u044B \u0442\u043E\u0432\u0430\u0440\u044B \u0434\u043B\u044F \u0432\u0441\u0435\u0439 \u0441\u0435\u043C\u044C\u0438 &#8211; \u0436\u0435\u043D\u0441\u043A\u0430\u044F, \u043C\u0443\u0436\u0441\u043A\u0430\u044F \u0438 \u0434\u0435\u0442\u0441\u043A\u0430\u044F \u043E\u0434\u0435\u0436\u0434\u0430, \xA0\u0438 \u043F\u0430\u0440\u0444\u044E\u043C\u0435\u0440\u0438\u044F, \u0430\u043A\u0441\u0435\u0441\u0441\u0443\u0430\u0440\u044B, \u0430 \u0442\u0430\u043A\u0436\u0435 \u0442\u043E\u0432\u0430\u0440\u044B \u0434\u043B\u044F \u0434\u043E\u043C\u0430 \u2013 \u043F\u043E\u0441\u0443\u0434\u0430, \u0442\u0435\u043A\u0441\u0442\u0438\u043B\u044C, \u0430\u043A\u0441\u0435\u0441\u0441\u0443\u0430\u0440\u044B \u0434\u043B\u044F \u0432\u0430\u043D\u043D\u043E\u0439, \u043F\u0440\u0435\u0434\u043C\u0435\u0442\u044B \u0438\u043D\u0442\u0435\u0440\u044C\u0435\u0440\u0430 \u0438 \u043C\u043D\u043E\u0433\u043E\u0435 \u0434\u0440\u0443\u0433\u043E\u0435.</p>\n\n\n\n<p>\u0418\u043D\u0442\u0443\u0438\u0442\u0438\u0432\u043D\u043E-\u043F\u043E\u043D\u044F\u0442\u043D\u0430\u044F \u043D\u0430\u0432\u0438\u0433\u0430\u0446\u0438\u044F \u0441\u0430\u0439\u0442\u0430 \u043F\u043E\u0437\u0432\u043E\u043B\u044F\u0435\u0442 \u043B\u0435\u0433\u043A\u043E \u0441\u043E\u0440\u0442\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0442\u043E\u0432\u0430\u0440\u044B \u043F\u043E \u0441\u0435\u0437\u043E\u043D\u0443, \u0441\u0442\u0438\u043B\u044E, \u0446\u0432\u0435\u0442\u0443 \u0438 \u0446\u0435\u043D\u0435 \u0438 \u0431\u044B\u0441\u0442\u0440\u043E \u043D\u0430\u0445\u043E\u0434\u0438\u0442\u044C \u043F\u043E\u0434\u0445\u043E\u0434\u044F\u0449\u0438\u0435 \u0432\u0430\u0440\u0438\u0430\u043D\u0442\u044B \u0441\u0440\u0435\u0434\u0438 \u0431\u043E\u043B\u044C\u0448\u043E\u0433\u043E \u0447\u0438\u0441\u043B\u0430 \u043C\u043E\u0434\u0435\u043B\u0435\u0439. \u0412 \u0440\u0430\u0437\u0434\u0435\u043B\u0430\u0445 \u043F\u0440\u0435\u0434\u0441\u0442\u0430\u0432\u043B\u0435\u043D\u0430 \u0438\u043D\u0444\u043E\u0440\u043C\u0430\u0446\u0438\u044F \u043E \u043D\u0430\u043B\u0438\u0447\u0438\u0438 \u0440\u0430\u0437\u043C\u0435\u0440\u043E\u0432 \u043D\u0430 \u0441\u0430\u0439\u0442\u0435 \u0438 \u0440\u043E\u0437\u043D\u0438\u0447\u043D\u044B\u0445 \u043C\u0430\u0433\u0430\u0437\u0438\u043D\u0430\u0445 \u0441\u0435\u0442\u0438.</p>\n\n\n\n<p>\u0418\u043D\u0442\u0443\u0438\u0442\u0438\u0432\u043D\u043E-\u043F\u043E\u043D\u044F\u0442\u043D\u0430\u044F \u043D\u0430\u0432\u0438\u0433\u0430\u0446\u0438\u044F \u0441\u0430\u0439\u0442\u0430 \u043F\u043E\u0437\u0432\u043E\u043B\u044F\u0435\u0442 \u043B\u0435\u0433\u043A\u043E \u0441\u043E\u0440\u0442\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0442\u043E\u0432\u0430\u0440\u044B \u043F\u043E \u0441\u0435\u0437\u043E\u043D\u0443, \u0441\u0442\u0438\u043B\u044E, \u0446\u0432\u0435\u0442\u0443 \u0438 \u0446\u0435\u043D\u0435 \u0438 \u0431\u044B\u0441\u0442\u0440\u043E \u043D\u0430\u0445\u043E\u0434\u0438\u0442\u044C \u043F\u043E\u0434\u0445\u043E\u0434\u044F\u0449\u0438\u0435 \u0432\u0430\u0440\u0438\u0430\u043D\u0442\u044B \u0441\u0440\u0435\u0434\u0438 \u0431\u043E\u043B\u044C\u0448\u043E\u0433\u043E \u0447\u0438\u0441\u043B\u0430 \u043C\u043E\u0434\u0435\u043B\u0435\u0439. \u0412 \u0440\u0430\u0437\u0434\u0435\u043B\u0430\u0445 \u043F\u0440\u0435\u0434\u0441\u0442\u0430\u0432\u043B\u0435\u043D\u0430 \u0438\u043D\u0444\u043E\u0440\u043C\u0430\u0446\u0438\u044F \u043E \u043D\u0430\u043B\u0438\u0447\u0438\u0438 \u0440\u0430\u0437\u043C\u0435\u0440\u043E\u0432 \u043D\u0430 \u0441\u0430\u0439\u0442\u0435 \u0438 \u0440\u043E\u0437\u043D\u0438\u0447\u043D\u044B\u0445 \u043C\u0430\u0433\u0430\u0437\u0438\u043D\u0430\u0445 \u0441\u0435\u0442\u0438.</p>\n\n\n\n<h3><strong>\u041A\u043E\u043B\u043B\u0435\u043A\u0446\u0438\u0438 \u0438 \u0431\u0440\u0435\u043D\u0434\u044B</strong></h3>\n\n\n\n<p>\u0418\u043D\u0442\u0443\u0438\u0442\u0438\u0432\u043D\u043E-\u043F\u043E\u043D\u044F\u0442\u043D\u0430\u044F \u043D\u0430\u0432\u0438\u0433\u0430\u0446\u0438\u044F \u0441\u0430\u0439\u0442\u0430 \u043F\u043E\u0437\u0432\u043E\u043B\u044F\u0435\u0442 \u043B\u0435\u0433\u043A\u043E \u0441\u043E\u0440\u0442\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0442\u043E\u0432\u0430\u0440\u044B \u043F\u043E \u0441\u0435\u0437\u043E\u043D\u0443, \u0441\u0442\u0438\u043B\u044E, \u0446\u0432\u0435\u0442\u0443 \u0438 \u0446\u0435\u043D\u0435 \u0438 \u0431\u044B\u0441\u0442\u0440\u043E \u043D\u0430\u0445\u043E\u0434\u0438\u0442\u044C \u043F\u043E\u0434\u0445\u043E\u0434\u044F\u0449\u0438\u0435 \u0432\u0430\u0440\u0438\u0430\u043D\u0442\u044B \u0441\u0440\u0435\u0434\u0438 \u0431\u043E\u043B\u044C\u0448\u043E\u0433\u043E \u0447\u0438\u0441\u043B\u0430 \u043C\u043E\u0434\u0435\u043B\u0435\u0439. \u0412 \u0440\u0430\u0437\u0434\u0435\u043B\u0430\u0445 \u043F\u0440\u0435\u0434\u0441\u0442\u0430\u0432\u043B\u0435\u043D\u0430 \u0438\u043D\u0444\u043E\u0440\u043C\u0430\u0446\u0438\u044F \u043E \u043D\u0430\u043B\u0438\u0447\u0438\u0438 \u0440\u0430\u0437\u043C\u0435\u0440\u043E\u0432 \u043D\u0430 \u0441\u0430\u0439\u0442\u0435 \u0438 \u0440\u043E\u0437\u043D\u0438\u0447\u043D\u044B\u0445 \u043C\u0430\u0433\u0430\u0437\u0438\u043D\u0430\u0445 \u0441\u0435\u0442\u0438.</p>\n\n\n\n<p>\u0418\u043D\u0442\u0443\u0438\u0442\u0438\u0432\u043D\u043E-\u043F\u043E\u043D\u044F\u0442\u043D\u0430\u044F \u043D\u0430\u0432\u0438\u0433\u0430\u0446\u0438\u044F \u0441\u0430\u0439\u0442\u0430 \u043F\u043E\u0437\u0432\u043E\u043B\u044F\u0435\u0442 \u043B\u0435\u0433\u043A\u043E \u0441\u043E\u0440\u0442\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0442\u043E\u0432\u0430\u0440\u044B \u043F\u043E \u0441\u0435\u0437\u043E\u043D\u0443, \u0441\u0442\u0438\u043B\u044E, \u0446\u0432\u0435\u0442\u0443 \u0438 \u0446\u0435\u043D\u0435 \u0438 \u0431\u044B\u0441\u0442\u0440\u043E \u043D\u0430\u0445\u043E\u0434\u0438\u0442\u044C \u043F\u043E\u0434\u0445\u043E\u0434\u044F\u0449\u0438\u0435 \u0432\u0430\u0440\u0438\u0430\u043D\u0442\u044B \u0441\u0440\u0435\u0434\u0438 \u0431\u043E\u043B\u044C\u0448\u043E\u0433\u043E \u0447\u0438\u0441\u043B\u0430 \u043C\u043E\u0434\u0435\u043B\u0435\u0439. \u0412 \u0440\u0430\u0437\u0434\u0435\u043B\u0430\u0445 \u043F\u0440\u0435\u0434\u0441\u0442\u0430\u0432\u043B\u0435\u043D\u0430 \u0438\u043D\u0444\u043E\u0440\u043C\u0430\u0446\u0438\u044F \u043E \u043D\u0430\u043B\u0438\u0447\u0438\u0438 \u0440\u0430\u0437\u043C\u0435\u0440\u043E\u0432 \u043D\u0430 \u0441\u0430\u0439\u0442\u0435 \u0438 \u0440\u043E\u0437\u043D\u0438\u0447\u043D\u044B\u0445 \u043C\u0430\u0433\u0430\u0437\u0438\u043D\u0430\u0445 \u0441\u0435\u0442\u0438.</p>\n",
           "protected": false
         },
         excerpt: {
-          rendered: "<p>\u0415\u0432\u0440\u043E\u043F\u0435\u0439\u0441\u043A\u0438\u0439 \u0443\u0440\u043E\u0432\u0435\u043D\u044C \u0448\u043E\u043F\u043F\u0438\u043D\u0433\u0430 \u0421\u0430\u0439\u0442 logotype.ru \u2013 \u043E\u0444\u0438\u0446\u0438\u0430\u043B\u044C\u043D\u044B\u0439 \u0438\u043D\u0442\u0435\u0440\u043D\u0435\u0442-\u043C\u0430\u0433\u0430\u0437\u0438\u043D \u0441\u0435\u0442\u0438 LOGOTYPE. \u0412 \u0435\u0434\u0438\u043D\u043E\u043C \u043A\u0430\u0442\u0430\u043B\u043E\u0433\u0435 \u0441\u043E\u0431\u0440\u0430\u043D\u044B \u0442\u043E\u0432\u0430\u0440\u044B \u0434\u043B\u044F \u0432\u0441\u0435\u0439 \u0441\u0435\u043C\u044C\u0438 &#8212; \u0436\u0435\u043D\u0441\u043A\u0430\u044F, \u043C\u0443\u0436\u0441\u043A\u0430\u044F \u0438 \u0434\u0435\u0442\u0441\u043A\u0430\u044F \u043E\u0434\u0435\u0436\u0434\u0430, \xA0\u0438 \u043F\u0430\u0440\u0444\u044E\u043C\u0435\u0440\u0438\u044F, \u0430\u043A\u0441\u0435\u0441\u0441\u0443\u0430\u0440\u044B, \u0430 \u0442\u0430\u043A\u0436\u0435 \u0442\u043E\u0432\u0430\u0440\u044B \u0434\u043B\u044F \u0434\u043E\u043C\u0430 \u2013 \u043F\u043E\u0441\u0443\u0434\u0430, \u0442\u0435\u043A\u0441\u0442\u0438\u043B\u044C, \u0430\u043A\u0441\u0435\u0441\u0441\u0443\u0430\u0440\u044B \u0434\u043B\u044F \u0432\u0430\u043D\u043D\u043E\u0439, \u043F\u0440\u0435\u0434\u043C\u0435\u0442\u044B \u0438\u043D\u0442\u0435\u0440\u044C\u0435\u0440\u0430 \u0438 \u043C\u043D\u043E\u0433\u043E\u0435 \u0434\u0440\u0443\u0433\u043E\u0435. \u0418\u043D\u0442\u0443\u0438\u0442\u0438\u0432\u043D\u043E-\u043F\u043E\u043D\u044F\u0442\u043D\u0430\u044F \u043D\u0430\u0432\u0438\u0433\u0430\u0446\u0438\u044F \u0441\u0430\u0439\u0442\u0430 \u043F\u043E\u0437\u0432\u043E\u043B\u044F\u0435\u0442 \u043B\u0435\u0433\u043A\u043E \u0441\u043E\u0440\u0442\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0442\u043E\u0432\u0430\u0440\u044B \u043F\u043E \u0441\u0435\u0437\u043E\u043D\u0443, \u0441\u0442\u0438\u043B\u044E, \u0446\u0432\u0435\u0442\u0443 \u0438 [&hellip;]</p>\n",
+          rendered: "<p>\u0415\u0432\u0440\u043E\u043F\u0435\u0439\u0441\u043A\u0438\u0439 \u0443\u0440\u043E\u0432\u0435\u043D\u044C \u0448\u043E\u043F\u043F\u0438\u043D\u0433\u0430 \u0421\u0430\u0439\u0442 logotype.ru \u2013 \u043E\u0444\u0438\u0446\u0438\u0430\u043B\u044C\u043D\u044B\u0439 \u0438\u043D\u0442\u0435\u0440\u043D\u0435\u0442-\u043C\u0430\u0433\u0430\u0437\u0438\u043D \u0441\u0435\u0442\u0438 LOGOTYPE. \u0412 \u0435\u0434\u0438\u043D\u043E\u043C \u043A\u0430\u0442\u0430\u043B\u043E\u0433\u0435 \u0441\u043E\u0431\u0440\u0430\u043D\u044B \u0442\u043E\u0432\u0430\u0440\u044B \u0434\u043B\u044F \u0432\u0441\u0435\u0439 \u0441\u0435\u043C\u044C\u0438 &#8211; \u0436\u0435\u043D\u0441\u043A\u0430\u044F, \u043C\u0443\u0436\u0441\u043A\u0430\u044F \u0438 \u0434\u0435\u0442\u0441\u043A\u0430\u044F \u043E\u0434\u0435\u0436\u0434\u0430, \xA0\u0438 \u043F\u0430\u0440\u0444\u044E\u043C\u0435\u0440\u0438\u044F, \u0430\u043A\u0441\u0435\u0441\u0441\u0443\u0430\u0440\u044B, \u0430 \u0442\u0430\u043A\u0436\u0435 \u0442\u043E\u0432\u0430\u0440\u044B \u0434\u043B\u044F \u0434\u043E\u043C\u0430 \u2013 \u043F\u043E\u0441\u0443\u0434\u0430, \u0442\u0435\u043A\u0441\u0442\u0438\u043B\u044C, \u0430\u043A\u0441\u0435\u0441\u0441\u0443\u0430\u0440\u044B \u0434\u043B\u044F \u0432\u0430\u043D\u043D\u043E\u0439, \u043F\u0440\u0435\u0434\u043C\u0435\u0442\u044B \u0438\u043D\u0442\u0435\u0440\u044C\u0435\u0440\u0430 \u0438 \u043C\u043D\u043E\u0433\u043E\u0435 \u0434\u0440\u0443\u0433\u043E\u0435. \u0418\u043D\u0442\u0443\u0438\u0442\u0438\u0432\u043D\u043E-\u043F\u043E\u043D\u044F\u0442\u043D\u0430\u044F \u043D\u0430\u0432\u0438\u0433\u0430\u0446\u0438\u044F \u0441\u0430\u0439\u0442\u0430 \u043F\u043E\u0437\u0432\u043E\u043B\u044F\u0435\u0442 \u043B\u0435\u0433\u043A\u043E \u0441\u043E\u0440\u0442\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0442\u043E\u0432\u0430\u0440\u044B \u043F\u043E \u0441\u0435\u0437\u043E\u043D\u0443, \u0441\u0442\u0438\u043B\u044E, \u0446\u0432\u0435\u0442\u0443 \u0438 [&hellip;]</p>\n",
           "protected": false
         },
         author: 1,
@@ -747,14 +784,14 @@ const state$1 = {
         guid: {
           rendered: "http://localhost/cart/"
         },
-        modified: "2022-11-28T14:12:43",
-        modified_gmt: "2022-11-28T11:12:43",
+        modified: "2023-03-10T18:40:09",
+        modified_gmt: "2023-03-10T15:40:09",
         slug: "cart",
         status: "publish",
         type: "page",
-        link: "http://localhost/cart/",
+        link: "http://localhost/ordering/cart/",
         title: {
-          rendered: "Cart"
+          rendered: "\u041A\u043E\u0440\u0437\u0438\u043D\u0430"
         },
         content: {
           rendered: "\n\n\n\n<h2>cart wp</h2>\n",
@@ -766,7 +803,7 @@ const state$1 = {
         },
         author: 1,
         featured_media: 0,
-        parent: 0,
+        parent: 520,
         menu_order: 0,
         comment_status: "closed",
         ping_status: "closed",
@@ -808,8 +845,14 @@ const state$1 = {
           ],
           "predecessor-version": [
             {
-              id: 373,
-              href: "http://localhost/wp-json/wp/v2/pages/53/revisions/373"
+              id: 539,
+              href: "http://localhost/wp-json/wp/v2/pages/53/revisions/539"
+            }
+          ],
+          up: [
+            {
+              embeddable: true,
+              href: "http://localhost/wp-json/wp/v2/pages/520"
             }
           ],
           "wp:attachment": [
@@ -833,14 +876,14 @@ const state$1 = {
         guid: {
           rendered: "http://localhost/checkout/"
         },
-        modified: "2022-05-07T10:18:19",
-        modified_gmt: "2022-05-07T07:18:19",
+        modified: "2023-03-10T18:40:29",
+        modified_gmt: "2023-03-10T15:40:29",
         slug: "checkout",
         status: "publish",
         type: "page",
-        link: "http://localhost/checkout/",
+        link: "http://localhost/ordering/checkout/",
         title: {
-          rendered: "Checkout"
+          rendered: "\u041E\u0444\u043E\u0440\u043C\u043B\u0435\u043D\u0438\u0435 \u0437\u0430\u043A\u0430\u0437\u0430"
         },
         content: {
           rendered: '<div class="woocommerce"></div>\n',
@@ -852,7 +895,7 @@ const state$1 = {
         },
         author: 1,
         featured_media: 0,
-        parent: 0,
+        parent: 520,
         menu_order: 0,
         comment_status: "closed",
         ping_status: "closed",
@@ -888,8 +931,20 @@ const state$1 = {
           ],
           "version-history": [
             {
-              count: 0,
+              count: 2,
               href: "http://localhost/wp-json/wp/v2/pages/54/revisions"
+            }
+          ],
+          "predecessor-version": [
+            {
+              id: 540,
+              href: "http://localhost/wp-json/wp/v2/pages/54/revisions/540"
+            }
+          ],
+          up: [
+            {
+              embeddable: true,
+              href: "http://localhost/wp-json/wp/v2/pages/520"
             }
           ],
           "wp:attachment": [
@@ -1140,7 +1195,7 @@ const state$1 = {
           ],
           "version-history": [
             {
-              count: 6,
+              count: 5,
               href: "http://localhost/wp-json/wp/v2/pages/275/revisions"
             }
           ],
@@ -1263,12 +1318,12 @@ const state$1 = {
         guid: {
           rendered: "http://localhost/?page_id=296"
         },
-        modified: "2023-02-25T13:21:48",
-        modified_gmt: "2023-02-25T10:21:48",
+        modified: "2023-03-03T23:22:03",
+        modified_gmt: "2023-03-03T20:22:03",
         slug: "midi",
         status: "publish",
         type: "page",
-        link: "http://localhost/midi/",
+        link: "http://localhost/zhenshchinam/iubki/midi/",
         title: {
           rendered: "\u0416\u0435\u043D\u0441\u043A\u0438\u0435 \u044E\u0431\u043A\u0438-\u043C\u0438\u0434\u0438"
         },
@@ -1282,7 +1337,7 @@ const state$1 = {
         },
         author: 1,
         featured_media: 0,
-        parent: 0,
+        parent: 279,
         menu_order: 0,
         comment_status: "closed",
         ping_status: "closed",
@@ -1328,6 +1383,12 @@ const state$1 = {
               href: "http://localhost/wp-json/wp/v2/pages/296/revisions/501"
             }
           ],
+          up: [
+            {
+              embeddable: true,
+              href: "http://localhost/wp-json/wp/v2/pages/279"
+            }
+          ],
           "wp:attachment": [
             {
               href: "http://localhost/wp-json/wp/v2/media?parent=296"
@@ -1359,7 +1420,101 @@ const state$1 = {
           rendered: "\u0418\u0437\u0431\u0440\u0430\u043D\u043D\u043E\u0435"
         },
         content: {
-          rendered: '<div class="tinv-wishlist woocommerce">\n	<div class="tinv-header">\n	<h2>Default wishlist</h2>\n	</div>\n		<p class="cart-empty woocommerce-info">\n					\u0412\u0430\u0448 \u0441\u043F\u0438\u0441\u043E\u043A \u0436\u0435\u043B\u0430\u043D\u0438\u0439 \u0432 \u043D\u0430\u0441\u0442\u043E\u044F\u0449\u0435\u0435 \u0432\u0440\u0435\u043C\u044F \u043F\u0443\u0441\u0442.			</p>\n\n	\n	<p class="return-to-shop">\n		<a class="button wc-backward"\n		   href="http://localhost/shop/">\u0412\u0435\u0440\u043D\u0443\u0442\u044C\u0441\u044F \u0432 \u043C\u0430\u0433\u0430\u0437\u0438\u043D</a>\n	</p>\n</div>\n\n',
+          rendered: `<div class="tinv-wishlist woocommerce tinv-wishlist-clear">
+	<div class="tinv-header">
+	<h2>Default wishlist</h2>
+	</div>
+			<form action="http://localhost/personal/wishlist/022ebb/" method="post" autocomplete="off"
+		  data-tinvwl_paged="1" data-tinvwl_sharekey="022ebb">
+				<table class="tinvwl-table-manage-list">
+			<thead>
+			<tr>
+									<th class="product-cb"><input type="checkbox" class="global-cb"
+												  title="Select all for bulk action">
+					</th>
+								<th class="product-remove"></th>
+				<th class="product-thumbnail">&nbsp;</th>
+				<th class="product-name"><span
+						class="tinvwl-full">Product Name</span><span
+						class="tinvwl-mobile">Product</span>
+				</th>
+									<th class="product-price">Unit Price</th>
+													<th class="product-date">Date Added</th>
+													<th class="product-stock">Stock Status</th>
+													<th class="product-action">&nbsp;</th>
+							</tr>
+			</thead>
+			<tbody>
+			
+								<tr class="wishlist_item">
+													<td class="product-cb">
+								<input type="checkbox" name="wishlist_pr[]" value="50" title="Select for bulk action">							</td>
+												<td class="product-remove">
+							<button type="submit" name="tinvwl-remove"
+									value="50"
+									title="Remove"><i
+									class="ftinvwl ftinvwl-times"></i>
+							</button>
+						</td>
+						<td class="product-thumbnail">
+							<a href="http://localhost/product/zhenshchinam/tolstovki-i-svitshoty/tolstovki/twinset-ub/?tiwp=50"><img width="300" height="300" src="http://localhost/wp-content/uploads/2022/07/4835549_1-300x300.jpg" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4835549_1-300x300.jpg 300w, http://localhost/wp-content/uploads/2022/07/4835549_1-100x100.jpg 100w, http://localhost/wp-content/uploads/2022/07/4835549_1-150x150.jpg 150w" sizes="(max-width: 300px) 100vw, 300px" /></a>						</td>
+						<td class="product-name">
+							<a href="http://localhost/product/zhenshchinam/tolstovki-i-svitshoty/tolstovki/twinset-ub/?tiwp=50">\u0416\u0435\u043D\u0441\u043A\u0438\u0439 \u0441\u0432\u0438\u0442\u0448\u043E\u0442</a>						</td>
+													<td class="product-price">
+								<del aria-hidden="true"><span class="woocommerce-Price-amount amount"><bdi>19000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8381;</span></bdi></span></del> <ins><span class="woocommerce-Price-amount amount"><bdi>18000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8381;</span></bdi></span></ins>							</td>
+																			<td class="product-date">
+								<time class="entry-date" datetime="2023-03-06 13:51:35">06.03.2023</time>							</td>
+																			<td class="product-stock">
+								<p class="stock in-stock"><span><i class="ftinvwl ftinvwl-check"></i></span><span class="tinvwl-txt">In stock</span></p>							</td>
+																			<td class="product-action">
+																	<button class="button alt" name="tinvwl-add-to-cart"
+											value="50"
+											title="Add to Cart">
+										<i
+											class="ftinvwl ftinvwl-shopping-cart"></i><span
+											class="tinvwl-txt">Add to Cart</span>
+									</button>
+															</td>
+											</tr>
+											</tbody>
+			<tfoot>
+			<tr>
+				<td colspan="100">
+					<input type="hidden" name="lists_per_page" value="10" id="tinvwl_lists_per_page"  /><select name="product_actions" id="tinvwl_product_actions" class="tinvwl-break-input-filed form-control" ><option value="" selected="selected">Actions</option><option value="add_to_cart_selected">Add to Cart</option><option value="remove_selected">Remove</option></select><span class="tinvwl-input-group-btn"><button type="submit" class="button" name="tinvwl-action-product_apply" value="product_apply" title="Apply Action">Apply <span class='tinvwl-mobile'>Action</span></button><button type="submit" class="button" name="tinvwl-action-product_selected" value="product_selected" title="Add Selected to Cart">Add Selected to Cart</button><button type="submit" class="button" name="tinvwl-action-product_all" value="product_all" title="Add All to Cart">Add All to Cart</button>					<input type="hidden" id="wishlist_nonce" name="wishlist_nonce" value="dd2f1a7728" /><input type="hidden" name="_wp_http_referer" value="/wp-admin/admin.php?page=ssg-generator" />				</td>
+			</tr>
+			</tfoot>
+		</table>
+	</form>
+	<div class="social-buttons">
+			<span>Share on</span>
+		<ul>
+					<li><a href="https://www.facebook.com/sharer/sharer.php?"
+				   class="social social-facebook "
+				   title="Facebook"><i
+							class="ftinvwl ftinvwl-facebook"></i></a></li>
+					<li><a href="https://twitter.com/share?"
+				   class="social social-twitter "
+				   title="Twitter"><i
+							class="ftinvwl ftinvwl-twitter"></i></a></li>
+					<li><a href="http://pinterest.com/pin/create/button/?"
+				   class="social social-pinterest "
+				   title="Pinterest"><i
+							class="ftinvwl ftinvwl-pinterest"></i></a></li>
+					<li><a href="https://api.whatsapp.com/send?"
+				   class="social social-whatsapp "
+				   title="WhatsApp"><i
+							class="ftinvwl ftinvwl-whatsapp"></i></a></li>
+					<li><a href="mailto:?"
+				   class="social social-email "
+				   title="Email"><i
+							class="ftinvwl ftinvwl-email"></i></a></li>
+			</ul>
+</div>
+	<div class="tinv-lists-nav tinv-wishlist-clear">
+			</div>
+</div>
+
+`,
           "protected": false
         },
         excerpt: {
@@ -1993,12 +2148,12 @@ const state$1 = {
         guid: {
           rendered: "http://localhost/?page_id=502"
         },
-        modified: "2023-02-25T13:23:32",
-        modified_gmt: "2023-02-25T10:23:32",
+        modified: "2023-03-03T23:22:10",
+        modified_gmt: "2023-03-03T20:22:10",
         slug: "mini",
         status: "publish",
         type: "page",
-        link: "http://localhost/mini/",
+        link: "http://localhost/zhenshchinam/iubki/mini/",
         title: {
           rendered: "\u0416\u0435\u043D\u0441\u043A\u0438\u0435 \u044E\u0431\u043A\u0438-\u043C\u0438\u043D\u0438"
         },
@@ -2012,7 +2167,7 @@ const state$1 = {
         },
         author: 8,
         featured_media: 0,
-        parent: 0,
+        parent: 279,
         menu_order: 0,
         comment_status: "closed",
         ping_status: "closed",
@@ -2058,6 +2213,12 @@ const state$1 = {
               href: "http://localhost/wp-json/wp/v2/pages/502/revisions/503"
             }
           ],
+          up: [
+            {
+              embeddable: true,
+              href: "http://localhost/wp-json/wp/v2/pages/279"
+            }
+          ],
           "wp:attachment": [
             {
               href: "http://localhost/wp-json/wp/v2/media?parent=502"
@@ -2079,12 +2240,12 @@ const state$1 = {
         guid: {
           rendered: "http://localhost/?page_id=504"
         },
-        modified: "2023-02-25T13:24:52",
-        modified_gmt: "2023-02-25T10:24:52",
+        modified: "2023-03-03T23:22:24",
+        modified_gmt: "2023-03-03T20:22:24",
         slug: "trapetcii",
         status: "publish",
         type: "page",
-        link: "http://localhost/trapetcii/",
+        link: "http://localhost/zhenshchinam/iubki/trapetcii/",
         title: {
           rendered: "\u0416\u0435\u043D\u0441\u043A\u0438\u0435 \u044E\u0431\u043A\u0438-\u0442\u0440\u0430\u043F\u0435\u0446\u0438\u0438"
         },
@@ -2098,7 +2259,7 @@ const state$1 = {
         },
         author: 8,
         featured_media: 0,
-        parent: 0,
+        parent: 279,
         menu_order: 0,
         comment_status: "closed",
         ping_status: "closed",
@@ -2144,6 +2305,12 @@ const state$1 = {
               href: "http://localhost/wp-json/wp/v2/pages/504/revisions/506"
             }
           ],
+          up: [
+            {
+              embeddable: true,
+              href: "http://localhost/wp-json/wp/v2/pages/279"
+            }
+          ],
           "wp:attachment": [
             {
               href: "http://localhost/wp-json/wp/v2/media?parent=504"
@@ -2165,12 +2332,12 @@ const state$1 = {
         guid: {
           rendered: "http://localhost/?page_id=507"
         },
-        modified: "2023-02-25T13:25:47",
-        modified_gmt: "2023-02-25T10:25:47",
+        modified: "2023-03-03T23:22:17",
+        modified_gmt: "2023-03-03T20:22:17",
         slug: "priamye",
         status: "publish",
         type: "page",
-        link: "http://localhost/priamye/",
+        link: "http://localhost/zhenshchinam/iubki/priamye/",
         title: {
           rendered: "\u0416\u0435\u043D\u0441\u043A\u0438\u0435 \u044E\u0431\u043A\u0438-\u043F\u0440\u044F\u043C\u044B\u0435"
         },
@@ -2184,7 +2351,7 @@ const state$1 = {
         },
         author: 8,
         featured_media: 0,
-        parent: 0,
+        parent: 279,
         menu_order: 0,
         comment_status: "closed",
         ping_status: "closed",
@@ -2230,6 +2397,12 @@ const state$1 = {
               href: "http://localhost/wp-json/wp/v2/pages/507/revisions/508"
             }
           ],
+          up: [
+            {
+              embeddable: true,
+              href: "http://localhost/wp-json/wp/v2/pages/279"
+            }
+          ],
           "wp:attachment": [
             {
               href: "http://localhost/wp-json/wp/v2/media?parent=507"
@@ -2251,12 +2424,12 @@ const state$1 = {
         guid: {
           rendered: "http://localhost/?page_id=509"
         },
-        modified: "2023-02-25T13:26:28",
-        modified_gmt: "2023-02-25T10:26:28",
+        modified: "2023-03-03T23:23:40",
+        modified_gmt: "2023-03-03T20:23:40",
         slug: "tolstovki-i-svitshoty",
         status: "publish",
         type: "page",
-        link: "http://localhost/tolstovki-i-svitshoty/",
+        link: "http://localhost/zhenshchinam/tolstovki-i-svitshoty/",
         title: {
           rendered: "\u0422\u043E\u043B\u0441\u0442\u043E\u0432\u043A\u0438 \u0438 \u0441\u0432\u0438\u0442\u0448\u043E\u0442\u044B"
         },
@@ -2270,7 +2443,7 @@ const state$1 = {
         },
         author: 8,
         featured_media: 0,
-        parent: 0,
+        parent: 275,
         menu_order: 0,
         comment_status: "closed",
         ping_status: "closed",
@@ -2316,6 +2489,12 @@ const state$1 = {
               href: "http://localhost/wp-json/wp/v2/pages/509/revisions/510"
             }
           ],
+          up: [
+            {
+              embeddable: true,
+              href: "http://localhost/wp-json/wp/v2/pages/275"
+            }
+          ],
           "wp:attachment": [
             {
               href: "http://localhost/wp-json/wp/v2/media?parent=509"
@@ -2337,12 +2516,12 @@ const state$1 = {
         guid: {
           rendered: "http://localhost/?page_id=511"
         },
-        modified: "2023-02-25T13:27:26",
-        modified_gmt: "2023-02-25T10:27:26",
+        modified: "2023-03-03T23:23:51",
+        modified_gmt: "2023-03-03T20:23:51",
         slug: "tolstovki",
         status: "publish",
         type: "page",
-        link: "http://localhost/tolstovki/",
+        link: "http://localhost/zhenshchinam/tolstovki-i-svitshoty/tolstovki/",
         title: {
           rendered: "\u0422\u043E\u043B\u0441\u0442\u043E\u0432\u043A\u0438"
         },
@@ -2356,7 +2535,7 @@ const state$1 = {
         },
         author: 8,
         featured_media: 0,
-        parent: 0,
+        parent: 509,
         menu_order: 0,
         comment_status: "closed",
         ping_status: "closed",
@@ -2402,6 +2581,12 @@ const state$1 = {
               href: "http://localhost/wp-json/wp/v2/pages/511/revisions/512"
             }
           ],
+          up: [
+            {
+              embeddable: true,
+              href: "http://localhost/wp-json/wp/v2/pages/509"
+            }
+          ],
           "wp:attachment": [
             {
               href: "http://localhost/wp-json/wp/v2/media?parent=511"
@@ -2416,21 +2601,21 @@ const state$1 = {
           ]
         }
       },
-      "513": {
-        id: 513,
-        date: "2023-02-28T20:02:03",
-        date_gmt: "2023-02-28T17:02:03",
+      "520": {
+        id: 520,
+        date: "2023-03-08T19:47:58",
+        date_gmt: "2023-03-08T16:47:58",
         guid: {
-          rendered: "http://localhost/?page_id=513"
+          rendered: "http://localhost/?page_id=520"
         },
-        modified: "2023-02-28T20:02:03",
-        modified_gmt: "2023-02-28T17:02:03",
-        slug: "tolstovki-i-svitshoty-2",
+        modified: "2023-03-10T18:40:59",
+        modified_gmt: "2023-03-10T15:40:59",
+        slug: "ordering",
         status: "publish",
         type: "page",
-        link: "http://localhost/tolstovki-i-svitshoty-2/",
+        link: "http://localhost/ordering/",
         title: {
-          rendered: "\u0422\u043E\u043B\u0441\u0442\u043E\u0432\u043A\u0438 \u0438 \u0441\u0432\u0438\u0442\u0448\u043E\u0442\u044B"
+          rendered: "\u041E\u0444\u043E\u0440\u043C\u043B\u0435\u043D\u0438\u0435"
         },
         content: {
           rendered: "",
@@ -2451,7 +2636,7 @@ const state$1 = {
         _links: {
           self: [
             {
-              href: "http://localhost/wp-json/wp/v2/pages/513"
+              href: "http://localhost/wp-json/wp/v2/pages/520"
             }
           ],
           collection: [
@@ -2473,24 +2658,24 @@ const state$1 = {
           replies: [
             {
               embeddable: true,
-              href: "http://localhost/wp-json/wp/v2/comments?post=513"
+              href: "http://localhost/wp-json/wp/v2/comments?post=520"
             }
           ],
           "version-history": [
             {
-              count: 1,
-              href: "http://localhost/wp-json/wp/v2/pages/513/revisions"
+              count: 2,
+              href: "http://localhost/wp-json/wp/v2/pages/520/revisions"
             }
           ],
           "predecessor-version": [
             {
-              id: 514,
-              href: "http://localhost/wp-json/wp/v2/pages/513/revisions/514"
+              id: 538,
+              href: "http://localhost/wp-json/wp/v2/pages/520/revisions/538"
             }
           ],
           "wp:attachment": [
             {
-              href: "http://localhost/wp-json/wp/v2/media?parent=513"
+              href: "http://localhost/wp-json/wp/v2/media?parent=520"
             }
           ],
           curies: [
@@ -2502,21 +2687,21 @@ const state$1 = {
           ]
         }
       },
-      "515": {
-        id: 515,
-        date: "2023-02-28T20:02:35",
-        date_gmt: "2023-02-28T17:02:35",
+      "523": {
+        id: 523,
+        date: "2023-03-08T19:49:33",
+        date_gmt: "2023-03-08T16:49:33",
         guid: {
-          rendered: "http://localhost/?page_id=515"
+          rendered: "http://localhost/?page_id=523"
         },
-        modified: "2023-02-28T20:02:35",
-        modified_gmt: "2023-02-28T17:02:35",
-        slug: "tolstovki-2",
+        modified: "2023-03-10T18:40:49",
+        modified_gmt: "2023-03-10T15:40:49",
+        slug: "payment",
         status: "publish",
         type: "page",
-        link: "http://localhost/tolstovki-2/",
+        link: "http://localhost/ordering/payment/",
         title: {
-          rendered: "\u0422\u043E\u043B\u0441\u0442\u043E\u0432\u043A\u0438"
+          rendered: "\u0417\u0430\u043A\u0430\u0437 \u043E\u0444\u043E\u0440\u043C\u043B\u0435\u043D!"
         },
         content: {
           rendered: "",
@@ -2528,7 +2713,7 @@ const state$1 = {
         },
         author: 8,
         featured_media: 0,
-        parent: 0,
+        parent: 520,
         menu_order: 0,
         comment_status: "closed",
         ping_status: "closed",
@@ -2537,7 +2722,7 @@ const state$1 = {
         _links: {
           self: [
             {
-              href: "http://localhost/wp-json/wp/v2/pages/515"
+              href: "http://localhost/wp-json/wp/v2/pages/523"
             }
           ],
           collection: [
@@ -2559,24 +2744,30 @@ const state$1 = {
           replies: [
             {
               embeddable: true,
-              href: "http://localhost/wp-json/wp/v2/comments?post=515"
+              href: "http://localhost/wp-json/wp/v2/comments?post=523"
             }
           ],
           "version-history": [
             {
-              count: 1,
-              href: "http://localhost/wp-json/wp/v2/pages/515/revisions"
+              count: 2,
+              href: "http://localhost/wp-json/wp/v2/pages/523/revisions"
             }
           ],
           "predecessor-version": [
             {
-              id: 516,
-              href: "http://localhost/wp-json/wp/v2/pages/515/revisions/516"
+              id: 541,
+              href: "http://localhost/wp-json/wp/v2/pages/523/revisions/541"
+            }
+          ],
+          up: [
+            {
+              embeddable: true,
+              href: "http://localhost/wp-json/wp/v2/pages/520"
             }
           ],
           "wp:attachment": [
             {
-              href: "http://localhost/wp-json/wp/v2/media?parent=515"
+              href: "http://localhost/wp-json/wp/v2/media?parent=523"
             }
           ],
           curies: [
@@ -2595,8 +2786,8 @@ const state$1 = {
           per_page: 100
         },
         data: [
-          515,
-          513,
+          523,
+          520,
           511,
           509,
           507,
@@ -3113,7 +3304,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/05/4787313_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/05/4787313_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/05/4787313_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/05/4787313_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/05/4787313_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/05/4787313_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/05/4787313_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/05/4787313_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/05/4787313_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/05/4787313_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -3275,7 +3466,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/05/4787313_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/05/4787313_2-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/05/4787313_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/05/4787313_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/05/4787313_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/05/4787313_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/05/4787313_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/05/4787313_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/05/4787313_2-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/05/4787313_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/05/4787313_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/05/4787313_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/05/4787313_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/05/4787313_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -3437,7 +3628,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/05/4787313_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/05/4787313_3-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/05/4787313_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/05/4787313_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/05/4787313_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/05/4787313_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/05/4787313_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/05/4787313_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/05/4787313_3-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/05/4787313_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/05/4787313_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/05/4787313_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/05/4787313_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/05/4787313_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -3599,7 +3790,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/05/4787313_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/05/4787313_4-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/05/4787313_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/05/4787313_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/05/4787313_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/05/4787313_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/05/4787313_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/05/4787313_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/05/4787313_4-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/05/4787313_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/05/4787313_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/05/4787313_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/05/4787313_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/05/4787313_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -3761,7 +3952,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4826292_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4826292_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4826292_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4826292_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4826292_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4826292_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4826292_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4826292_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4826292_1-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4826292_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4826292_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4826292_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4826292_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4826292_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -3923,7 +4114,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4826292_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4826292_2-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4826292_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4826292_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4826292_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4826292_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4826292_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4826292_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4826292_2-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4826292_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4826292_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4826292_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4826292_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4826292_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -4085,7 +4276,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4826292_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4826292_3-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4826292_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4826292_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4826292_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4826292_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4826292_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4826292_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4826292_3-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4826292_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4826292_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4826292_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4826292_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4826292_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -4247,7 +4438,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4826292_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4826292_4-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4826292_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4826292_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4826292_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4826292_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4826292_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4826292_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4826292_4-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4826292_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4826292_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4826292_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4826292_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4826292_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -4409,7 +4600,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4832898_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4832898_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4832898_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4832898_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4832898_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4832898_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4832898_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4832898_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4832898_1-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4832898_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4832898_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4832898_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4832898_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4832898_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -4571,7 +4762,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4832898_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4832898_2-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4832898_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4832898_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4832898_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4832898_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4832898_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4832898_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4832898_2-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4832898_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4832898_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4832898_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4832898_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4832898_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -4733,7 +4924,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4832898_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4832898_3-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4832898_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4832898_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4832898_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4832898_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4832898_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4832898_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4832898_3-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4832898_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4832898_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4832898_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4832898_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4832898_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -4895,7 +5086,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4832898_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4832898_4-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4832898_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4832898_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4832898_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4832898_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4832898_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4832898_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4832898_4-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4832898_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4832898_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4832898_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4832898_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4832898_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -5057,7 +5248,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4848125_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4848125_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4848125_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4848125_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4848125_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4848125_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4848125_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4848125_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4848125_1-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4848125_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4848125_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4848125_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4848125_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4848125_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -5219,7 +5410,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4848125_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4848125_2-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4848125_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4848125_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4848125_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4848125_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4848125_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4848125_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4848125_2-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4848125_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4848125_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4848125_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4848125_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4848125_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -5381,7 +5572,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4848125_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4848125_3-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4848125_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4848125_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4848125_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4848125_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4848125_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4848125_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4848125_3-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4848125_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4848125_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4848125_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4848125_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4848125_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -5543,7 +5734,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4848125_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4848125_4-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4848125_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4848125_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4848125_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4848125_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4848125_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4848125_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4848125_4-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4848125_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4848125_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4848125_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4848125_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4848125_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -5705,7 +5896,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4852616_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4852616_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4852616_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4852616_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4852616_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4852616_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4852616_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4852616_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4852616_1-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4852616_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4852616_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4852616_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4852616_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4852616_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -5867,7 +6058,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4852616_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4852616_2-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4852616_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4852616_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4852616_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4852616_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4852616_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4852616_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4852616_2-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4852616_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4852616_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4852616_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4852616_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4852616_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -6029,7 +6220,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4852616_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4852616_3-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4852616_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4852616_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4852616_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4852616_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4852616_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4852616_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4852616_3-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4852616_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4852616_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4852616_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4852616_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4852616_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -6191,7 +6382,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4852616_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4852616_4-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4852616_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4852616_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4852616_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4852616_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4852616_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4852616_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4852616_4-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4852616_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4852616_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4852616_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4852616_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4852616_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -6353,7 +6544,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4782543_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4782543_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4782543_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4782543_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4782543_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4782543_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4782543_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4782543_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4782543_1-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4782543_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4782543_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4782543_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4782543_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4782543_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -6515,7 +6706,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4782543_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4782543_2-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4782543_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4782543_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4782543_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4782543_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4782543_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4782543_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4782543_2-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4782543_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4782543_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4782543_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4782543_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4782543_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -6677,7 +6868,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4782543_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4782543_3-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4782543_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4782543_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4782543_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4782543_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4782543_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4782543_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4782543_3-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4782543_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4782543_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4782543_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4782543_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4782543_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -6839,7 +7030,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4782543_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4782543_4-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4782543_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4782543_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4782543_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4782543_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4782543_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4782543_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4782543_4-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4782543_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4782543_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4782543_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4782543_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4782543_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -7001,7 +7192,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4603336_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4603336_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4603336_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4603336_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4603336_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4603336_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4603336_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4603336_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4603336_1-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4603336_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4603336_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4603336_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4603336_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4603336_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -7163,7 +7354,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4603336_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4603336_2-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4603336_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4603336_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4603336_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4603336_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4603336_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4603336_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4603336_2-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4603336_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4603336_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4603336_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4603336_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4603336_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -7325,7 +7516,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4603336_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4603336_3-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4603336_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4603336_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4603336_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4603336_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4603336_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4603336_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4603336_3-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4603336_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4603336_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4603336_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4603336_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4603336_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -7487,7 +7678,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4603336_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4603336_4-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4603336_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4603336_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4603336_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4603336_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4603336_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4603336_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4603336_4-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4603336_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4603336_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4603336_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4603336_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4603336_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -7649,7 +7840,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4647038_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4647038_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4647038_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4647038_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4647038_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4647038_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4647038_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4647038_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4647038_1-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4647038_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4647038_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4647038_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4647038_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4647038_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -7811,7 +8002,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4647038_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4647038_2-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4647038_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4647038_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4647038_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4647038_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4647038_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4647038_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4647038_2-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4647038_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4647038_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4647038_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4647038_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4647038_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -7973,7 +8164,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4647038_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4647038_3-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4647038_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4647038_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4647038_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4647038_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4647038_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4647038_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4647038_3-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4647038_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4647038_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4647038_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4647038_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4647038_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -8135,7 +8326,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4647038_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4647038_4-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4647038_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4647038_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4647038_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4647038_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4647038_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/06/4647038_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/06/4647038_4-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/06/4647038_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/06/4647038_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/06/4647038_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/06/4647038_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/06/4647038_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -8297,7 +8488,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/Sayt_2360kh1000-1.webp'><img width="300" height="127" src="http://localhost/wp-content/uploads/2022/07/Sayt_2360kh1000-1-300x127.webp" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/Sayt_2360kh1000-1-300x127.webp 300w, http://localhost/wp-content/uploads/2022/07/Sayt_2360kh1000-1-600x254.webp 600w, http://localhost/wp-content/uploads/2022/07/Sayt_2360kh1000-1-1024x434.webp 1024w, http://localhost/wp-content/uploads/2022/07/Sayt_2360kh1000-1-768x326.webp 768w, http://localhost/wp-content/uploads/2022/07/Sayt_2360kh1000-1.webp 1179w" sizes="(max-width: 300px) 100vw, 300px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/Sayt_2360kh1000-1.webp'><img width="300" height="127" src="http://localhost/wp-content/uploads/2022/07/Sayt_2360kh1000-1-300x127.webp" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/Sayt_2360kh1000-1-300x127.webp 300w, http://localhost/wp-content/uploads/2022/07/Sayt_2360kh1000-1-600x254.webp 600w, http://localhost/wp-content/uploads/2022/07/Sayt_2360kh1000-1-1024x434.webp 1024w, http://localhost/wp-content/uploads/2022/07/Sayt_2360kh1000-1-768x326.webp 768w, http://localhost/wp-content/uploads/2022/07/Sayt_2360kh1000-1.webp 1179w" sizes="(max-width: 300px) 100vw, 300px" /></a></p>
 `
         },
         caption: {
@@ -8471,7 +8662,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/top-home-1-1.jpg'><img width="300" height="127" src="http://localhost/wp-content/uploads/2022/07/top-home-1-1-300x127.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/top-home-1-1-300x127.jpg 300w, http://localhost/wp-content/uploads/2022/07/top-home-1-1-600x254.jpg 600w, http://localhost/wp-content/uploads/2022/07/top-home-1-1-1024x434.jpg 1024w, http://localhost/wp-content/uploads/2022/07/top-home-1-1-768x326.jpg 768w, http://localhost/wp-content/uploads/2022/07/top-home-1-1.jpg 1179w" sizes="(max-width: 300px) 100vw, 300px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/top-home-1-1.jpg'><img width="300" height="127" src="http://localhost/wp-content/uploads/2022/07/top-home-1-1-300x127.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/top-home-1-1-300x127.jpg 300w, http://localhost/wp-content/uploads/2022/07/top-home-1-1-600x254.jpg 600w, http://localhost/wp-content/uploads/2022/07/top-home-1-1-1024x434.jpg 1024w, http://localhost/wp-content/uploads/2022/07/top-home-1-1-768x326.jpg 768w, http://localhost/wp-content/uploads/2022/07/top-home-1-1.jpg 1179w" sizes="(max-width: 300px) 100vw, 300px" /></a></p>
 `
         },
         caption: {
@@ -8645,7 +8836,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/middle-home-0-1.png'><img width="300" height="180" src="http://localhost/wp-content/uploads/2022/07/middle-home-0-1-300x180.png" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/middle-home-0-1-300x180.png 300w, http://localhost/wp-content/uploads/2022/07/middle-home-0-1-416x250.png 416w, http://localhost/wp-content/uploads/2022/07/middle-home-0-1.png 500w" sizes="(max-width: 300px) 100vw, 300px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/middle-home-0-1.png'><img width="300" height="180" src="http://localhost/wp-content/uploads/2022/07/middle-home-0-1-300x180.png" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/middle-home-0-1-300x180.png 300w, http://localhost/wp-content/uploads/2022/07/middle-home-0-1-416x250.png 416w, http://localhost/wp-content/uploads/2022/07/middle-home-0-1.png 500w" sizes="(max-width: 300px) 100vw, 300px" /></a></p>
 `
         },
         caption: {
@@ -8795,7 +8986,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/middle-home-1-1.png'><img width="300" height="181" src="http://localhost/wp-content/uploads/2022/07/middle-home-1-1-300x181.png" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/middle-home-1-1-300x181.png 300w, http://localhost/wp-content/uploads/2022/07/middle-home-1-1-416x251.png 416w, http://localhost/wp-content/uploads/2022/07/middle-home-1-1.png 497w" sizes="(max-width: 300px) 100vw, 300px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/middle-home-1-1.png'><img width="300" height="181" src="http://localhost/wp-content/uploads/2022/07/middle-home-1-1-300x181.png" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/middle-home-1-1-300x181.png 300w, http://localhost/wp-content/uploads/2022/07/middle-home-1-1-416x251.png 416w, http://localhost/wp-content/uploads/2022/07/middle-home-1-1.png 497w" sizes="(max-width: 300px) 100vw, 300px" /></a></p>
 `
         },
         caption: {
@@ -8945,7 +9136,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/middle-home-2.png'><img width="300" height="180" src="http://localhost/wp-content/uploads/2022/07/middle-home-2-300x180.png" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/middle-home-2-300x180.png 300w, http://localhost/wp-content/uploads/2022/07/middle-home-2-416x250.png 416w, http://localhost/wp-content/uploads/2022/07/middle-home-2.png 500w" sizes="(max-width: 300px) 100vw, 300px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/middle-home-2.png'><img width="300" height="180" src="http://localhost/wp-content/uploads/2022/07/middle-home-2-300x180.png" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/middle-home-2-300x180.png 300w, http://localhost/wp-content/uploads/2022/07/middle-home-2-416x250.png 416w, http://localhost/wp-content/uploads/2022/07/middle-home-2.png 500w" sizes="(max-width: 300px) 100vw, 300px" /></a></p>
 `
         },
         caption: {
@@ -9095,7 +9286,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/top-home-2.jpg'><img width="300" height="127" src="http://localhost/wp-content/uploads/2022/07/top-home-2-300x127.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/top-home-2-300x127.jpg 300w, http://localhost/wp-content/uploads/2022/07/top-home-2-600x254.jpg 600w, http://localhost/wp-content/uploads/2022/07/top-home-2-1024x434.jpg 1024w, http://localhost/wp-content/uploads/2022/07/top-home-2-768x326.jpg 768w, http://localhost/wp-content/uploads/2022/07/top-home-2.jpg 1179w" sizes="(max-width: 300px) 100vw, 300px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/top-home-2.jpg'><img width="300" height="127" src="http://localhost/wp-content/uploads/2022/07/top-home-2-300x127.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/top-home-2-300x127.jpg 300w, http://localhost/wp-content/uploads/2022/07/top-home-2-600x254.jpg 600w, http://localhost/wp-content/uploads/2022/07/top-home-2-1024x434.jpg 1024w, http://localhost/wp-content/uploads/2022/07/top-home-2-768x326.jpg 768w, http://localhost/wp-content/uploads/2022/07/top-home-2.jpg 1179w" sizes="(max-width: 300px) 100vw, 300px" /></a></p>
 `
         },
         caption: {
@@ -9269,7 +9460,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4508350_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4508350_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4508350_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4508350_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4508350_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4508350_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4508350_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4508350_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4508350_1-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4508350_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4508350_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4508350_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4508350_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4508350_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -9443,7 +9634,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4508350_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4508350_2-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4508350_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4508350_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4508350_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4508350_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4508350_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4508350_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4508350_2-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4508350_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4508350_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4508350_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4508350_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4508350_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -9617,7 +9808,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4508350_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4508350_3-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4508350_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4508350_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4508350_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4508350_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4508350_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4508350_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4508350_3-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4508350_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4508350_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4508350_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4508350_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4508350_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -9791,7 +9982,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4508350_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4508350_4-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4508350_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4508350_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4508350_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4508350_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4508350_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4508350_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4508350_4-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4508350_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4508350_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4508350_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4508350_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4508350_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -9965,7 +10156,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4603336_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4603336_1.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4603336_1.jpg 1020w, http://localhost/wp-content/uploads/2022/07/4603336_1-600x900.jpg 600w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4603336_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4603336_1.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4603336_1.jpg 1020w, http://localhost/wp-content/uploads/2022/07/4603336_1-600x900.jpg 600w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -10082,7 +10273,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4603336_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4603336_2-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4603336_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4603336_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4603336_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4603336_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4603336_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4603336_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4603336_2-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4603336_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4603336_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4603336_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4603336_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4603336_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -10256,7 +10447,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4603336_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4603336_3-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4603336_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4603336_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4603336_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4603336_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4603336_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4603336_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4603336_3-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4603336_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4603336_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4603336_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4603336_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4603336_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -10430,7 +10621,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4603336_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4603336_4-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4603336_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4603336_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4603336_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4603336_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4603336_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4603336_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4603336_4-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4603336_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4603336_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4603336_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4603336_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4603336_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -10604,7 +10795,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4647038_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4647038_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4647038_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4647038_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4647038_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4647038_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4647038_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4647038_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4647038_1-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4647038_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4647038_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4647038_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4647038_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4647038_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -10778,7 +10969,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4647038_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4647038_2-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4647038_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4647038_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4647038_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4647038_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4647038_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4647038_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4647038_2-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4647038_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4647038_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4647038_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4647038_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4647038_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -10952,7 +11143,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4647038_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4647038_3-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4647038_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4647038_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4647038_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4647038_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4647038_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4647038_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4647038_3-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4647038_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4647038_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4647038_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4647038_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4647038_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -11126,7 +11317,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4647038_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4647038_4-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4647038_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4647038_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4647038_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4647038_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4647038_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4647038_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4647038_4-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4647038_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4647038_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4647038_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4647038_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4647038_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -11300,7 +11491,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4770127_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4770127_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4770127_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4770127_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4770127_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4770127_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4770127_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4770127_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4770127_1-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4770127_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4770127_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4770127_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4770127_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4770127_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -11474,7 +11665,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4770127_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4770127_2-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4770127_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4770127_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4770127_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4770127_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4770127_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4770127_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4770127_2-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4770127_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4770127_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4770127_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4770127_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4770127_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -11648,7 +11839,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4770127_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4770127_3-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4770127_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4770127_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4770127_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4770127_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4770127_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4770127_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4770127_3-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4770127_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4770127_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4770127_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4770127_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4770127_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -11822,7 +12013,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4770127_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4770127_4-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4770127_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4770127_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4770127_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4770127_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4770127_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4770127_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4770127_4-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4770127_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4770127_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4770127_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4770127_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4770127_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -11996,7 +12187,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4770129_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4770129_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4770129_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4770129_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4770129_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4770129_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4770129_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4770129_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4770129_1-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4770129_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4770129_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4770129_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4770129_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4770129_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -12170,7 +12361,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4770129_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4770129_2-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4770129_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4770129_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4770129_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4770129_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4770129_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4770129_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4770129_2-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4770129_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4770129_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4770129_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4770129_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4770129_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -12344,7 +12535,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4770129_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4770129_3-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4770129_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4770129_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4770129_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4770129_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4770129_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4770129_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4770129_3-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4770129_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4770129_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4770129_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4770129_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4770129_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -12518,7 +12709,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4770129_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4770129_4-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4770129_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4770129_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4770129_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4770129_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4770129_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4770129_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4770129_4-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4770129_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4770129_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4770129_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4770129_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4770129_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -12692,7 +12883,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4776490_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4776490_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4776490_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4776490_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4776490_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4776490_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4776490_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4776490_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4776490_1-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4776490_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4776490_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4776490_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4776490_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4776490_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -12866,7 +13057,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4776490_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4776490_2-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4776490_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4776490_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4776490_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4776490_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4776490_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4776490_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4776490_2-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4776490_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4776490_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4776490_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4776490_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4776490_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -13040,7 +13231,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4776490_4-1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4776490_4-1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4776490_4-1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4776490_4-1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4776490_4-1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4776490_4-1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4776490_4-1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4776490_4-1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4776490_4-1-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4776490_4-1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4776490_4-1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4776490_4-1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4776490_4-1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4776490_4-1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -13214,7 +13405,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4776490_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4776490_4-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4776490_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4776490_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4776490_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4776490_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4776490_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4776490_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4776490_4-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4776490_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4776490_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4776490_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4776490_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4776490_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -13388,7 +13579,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4782543_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4782543_1.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4782543_1.jpg 1020w, http://localhost/wp-content/uploads/2022/07/4782543_1-600x900.jpg 600w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4782543_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4782543_1.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4782543_1.jpg 1020w, http://localhost/wp-content/uploads/2022/07/4782543_1-600x900.jpg 600w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -13505,7 +13696,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4782543_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4782543_2-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4782543_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4782543_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4782543_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4782543_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4782543_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4782543_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4782543_2-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4782543_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4782543_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4782543_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4782543_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4782543_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -13679,7 +13870,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4782543_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4782543_3-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4782543_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4782543_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4782543_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4782543_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4782543_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4782543_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4782543_3-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4782543_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4782543_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4782543_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4782543_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4782543_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -13853,7 +14044,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4782543_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4782543_4-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4782543_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4782543_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4782543_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4782543_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4782543_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4782543_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4782543_4-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4782543_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4782543_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4782543_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4782543_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4782543_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -14027,7 +14218,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4787313_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4787313_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4787313_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4787313_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4787313_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4787313_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4787313_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4787313_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4787313_1-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4787313_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4787313_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4787313_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4787313_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4787313_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -14201,7 +14392,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4787313_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4787313_2.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4787313_2.jpg 1020w, http://localhost/wp-content/uploads/2022/07/4787313_2-600x900.jpg 600w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4787313_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4787313_2.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4787313_2.jpg 1020w, http://localhost/wp-content/uploads/2022/07/4787313_2-600x900.jpg 600w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -14318,7 +14509,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4787313_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4787313_3-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4787313_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4787313_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4787313_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4787313_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4787313_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4787313_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4787313_3-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4787313_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4787313_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4787313_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4787313_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4787313_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -14492,7 +14683,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4787313_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4787313_4-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4787313_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4787313_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4787313_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4787313_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4787313_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4787313_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4787313_4-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4787313_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4787313_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4787313_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4787313_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4787313_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -14666,7 +14857,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4826292_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4826292_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4826292_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4826292_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4826292_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4826292_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4826292_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4826292_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4826292_1-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4826292_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4826292_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4826292_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4826292_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4826292_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -14840,7 +15031,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4826292_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4826292_2-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4826292_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4826292_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4826292_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4826292_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4826292_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4826292_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4826292_2-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4826292_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4826292_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4826292_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4826292_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4826292_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -15014,7 +15205,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4826292_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4826292_3-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4826292_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4826292_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4826292_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4826292_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4826292_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4826292_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4826292_3-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4826292_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4826292_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4826292_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4826292_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4826292_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -15188,7 +15379,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4826292_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4826292_4-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4826292_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4826292_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4826292_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4826292_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4826292_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4826292_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4826292_4-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4826292_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4826292_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4826292_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4826292_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4826292_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -15362,7 +15553,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4832898_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4832898_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4832898_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4832898_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4832898_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4832898_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4832898_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4832898_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4832898_1-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4832898_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4832898_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4832898_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4832898_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4832898_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -15536,7 +15727,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4832898_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4832898_2-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4832898_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4832898_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4832898_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4832898_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4832898_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4832898_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4832898_2-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4832898_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4832898_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4832898_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4832898_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4832898_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -15710,7 +15901,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4832898_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4832898_3-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4832898_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4832898_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4832898_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4832898_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4832898_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4832898_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4832898_3-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4832898_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4832898_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4832898_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4832898_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4832898_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -15884,7 +16075,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4832898_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4832898_4-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4832898_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4832898_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4832898_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4832898_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4832898_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4832898_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4832898_4-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4832898_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4832898_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4832898_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4832898_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4832898_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -16058,7 +16249,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4835549_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4835549_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4835549_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4835549_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4835549_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4835549_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4835549_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4835549_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4835549_1-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4835549_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4835549_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4835549_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4835549_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4835549_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -16232,7 +16423,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4835549_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4835549_2-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4835549_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4835549_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4835549_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4835549_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4835549_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4835549_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4835549_2-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4835549_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4835549_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4835549_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4835549_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4835549_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -16406,7 +16597,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4835549_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4835549_3-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4835549_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4835549_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4835549_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4835549_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4835549_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4835549_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4835549_3-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4835549_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4835549_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4835549_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4835549_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4835549_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -16580,7 +16771,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4835549_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4835549_4-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4835549_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4835549_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4835549_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4835549_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4835549_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4835549_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4835549_4-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4835549_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4835549_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4835549_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4835549_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4835549_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -16754,7 +16945,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4848125_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4848125_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4848125_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4848125_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4848125_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4848125_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4848125_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4848125_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4848125_1-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4848125_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4848125_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4848125_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4848125_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4848125_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -16928,7 +17119,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4848125_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4848125_2-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4848125_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4848125_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4848125_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4848125_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4848125_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4848125_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4848125_2-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4848125_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4848125_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4848125_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4848125_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4848125_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -17102,7 +17293,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4848125_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4848125_3-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4848125_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4848125_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4848125_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4848125_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4848125_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4848125_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4848125_3-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4848125_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4848125_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4848125_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4848125_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4848125_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -17276,7 +17467,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4848125_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4848125_4-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4848125_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4848125_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4848125_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4848125_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4848125_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4848125_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4848125_4-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4848125_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4848125_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4848125_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4848125_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4848125_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -17450,7 +17641,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4852616_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4852616_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4852616_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4852616_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4852616_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4852616_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4852616_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4852616_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4852616_1-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4852616_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4852616_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4852616_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4852616_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4852616_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -17624,7 +17815,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4852616_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4852616_2-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4852616_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4852616_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4852616_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4852616_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4852616_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4852616_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4852616_2-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4852616_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4852616_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4852616_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4852616_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4852616_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -17798,7 +17989,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4852616_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4852616_3.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4852616_3.jpg 1020w, http://localhost/wp-content/uploads/2022/07/4852616_3-600x900.jpg 600w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4852616_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4852616_3.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4852616_3.jpg 1020w, http://localhost/wp-content/uploads/2022/07/4852616_3-600x900.jpg 600w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -17915,7 +18106,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4852616_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4852616_4-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4852616_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4852616_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4852616_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4852616_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4852616_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/4852616_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/4852616_4-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/4852616_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/4852616_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/4852616_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/4852616_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/4852616_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -18089,7 +18280,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/5066454_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/5066454_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/5066454_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/5066454_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/5066454_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/5066454_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/5066454_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/5066454_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/5066454_1-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/5066454_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/5066454_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/5066454_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/5066454_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/5066454_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -18263,7 +18454,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/5066454_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/5066454_2-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/5066454_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/5066454_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/5066454_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/5066454_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/5066454_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/5066454_2.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/5066454_2-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/5066454_2-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/5066454_2-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/5066454_2-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/5066454_2-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/5066454_2.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -18437,7 +18628,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/5066454_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/5066454_3-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/5066454_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/5066454_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/5066454_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/5066454_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/5066454_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/5066454_3.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/5066454_3-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/5066454_3-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/5066454_3-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/5066454_3-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/5066454_3-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/5066454_3.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -18611,7 +18802,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/5066454_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/5066454_4-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/5066454_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/5066454_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/5066454_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/5066454_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/5066454_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/07/5066454_4.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/07/5066454_4-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/07/5066454_4-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/07/5066454_4-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/07/5066454_4-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/07/5066454_4-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/07/5066454_4.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `
         },
         caption: {
@@ -18785,7 +18976,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/08/273_kh_204.png'><img width="273" height="204" src="http://localhost/wp-content/uploads/2022/08/273_kh_204.png" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/08/273_kh_204.png'><img width="273" height="204" src="http://localhost/wp-content/uploads/2022/08/273_kh_204.png" class="attachment-medium size-medium" alt="" loading="lazy" /></a></p>
 `
         },
         caption: {
@@ -18901,7 +19092,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/08/outerwear2.png'><img width="273" height="204" src="http://localhost/wp-content/uploads/2022/08/outerwear2.png" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/08/outerwear2.png'><img width="273" height="204" src="http://localhost/wp-content/uploads/2022/08/outerwear2.png" class="attachment-medium size-medium" alt="" loading="lazy" /></a></p>
 `
         },
         caption: {
@@ -19017,7 +19208,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/08/skirt.png'><img width="273" height="204" src="http://localhost/wp-content/uploads/2022/08/skirt.png" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/08/skirt.png'><img width="273" height="204" src="http://localhost/wp-content/uploads/2022/08/skirt.png" class="attachment-medium size-medium" alt="" loading="lazy" /></a></p>
 `
         },
         caption: {
@@ -19133,7 +19324,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/08/273kh204_razdel_zhenshchiny_1.png'><img width="273" height="204" src="http://localhost/wp-content/uploads/2022/08/273kh204_razdel_zhenshchiny_1.png" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/08/273kh204_razdel_zhenshchiny_1.png'><img width="273" height="204" src="http://localhost/wp-content/uploads/2022/08/273kh204_razdel_zhenshchiny_1.png" class="attachment-medium size-medium" alt="" loading="lazy" /></a></p>
 `
         },
         caption: {
@@ -19249,7 +19440,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/08/273kh204_razdel_zhenshchiny_2.png'><img width="273" height="204" src="http://localhost/wp-content/uploads/2022/08/273kh204_razdel_zhenshchiny_2.png" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/08/273kh204_razdel_zhenshchiny_2.png'><img width="273" height="204" src="http://localhost/wp-content/uploads/2022/08/273kh204_razdel_zhenshchiny_2.png" class="attachment-medium size-medium" alt="" loading="lazy" /></a></p>
 `
         },
         caption: {
@@ -19365,7 +19556,7 @@ const state$1 = {
         template: "",
         meta: [],
         description: {
-          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/08/scarf.png'><img width="273" height="204" src="http://localhost/wp-content/uploads/2022/08/scarf.png" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" /></a></p>
+          rendered: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/08/scarf.png'><img width="273" height="204" src="http://localhost/wp-content/uploads/2022/08/scarf.png" class="attachment-medium size-medium" alt="" loading="lazy" /></a></p>
 `
         },
         caption: {
@@ -19626,7 +19817,7 @@ const state$1 = {
         featured: false,
         catalog_visibility: "visible",
         description: "<p><span>\u0412\u043E\u0437\u043C\u043E\u0436\u043D\u043E, \u0443 \u0432\u0430\u0441 \u0443\u0436\u0435 \u0435\u0441\u0442\u044C \u0432\u043E\u043F\u0440\u043E\u0441\u044B \u2014 \u043D\u0435 \u0432\u043E\u043B\u043D\u0443\u0439\u0442\u0435\u0441\u044C.\xA0</span><span>\u041C\u044B \u0440\u0430\u0441\u0441\u043C\u043E\u0442\u0440\u0438\u043C \u043A\u0430\u0436\u0434\u0443\u044E \u043C\u0435\u043B\u043E\u0447\u044C \u0432 \u043E\u0441\u0442\u0430\u043B\u044C\u043D\u043E\u0439 \u0447\u0430\u0441\u0442\u0438 \u0434\u043E\u043A\u0443\u043C\u0435\u043D\u0442\u0430\u0446\u0438\u0438.\xA0</span><span>\u0410 \u043F\u043E\u043A\u0430, \u043F\u043E\u0436\u0430\u043B\u0443\u0439\u0441\u0442\u0430, \u043F\u0440\u043E\u0447\u0438\u0442\u0430\u0439\u0442\u0435, \u0447\u0442\u043E\u0431\u044B \u0432\u044B \u043C\u043E\u0433\u043B\u0438 \u043F\u043E\u043B\u0443\u0447\u0438\u0442\u044C \u043E\u0431\u0449\u0435\u0435 \u043F\u0440\u0435\u0434\u0441\u0442\u0430\u0432\u043B\u0435\u043D\u0438\u0435 \u043E \u0442\u043E\u043C, \u0447\u0442\u043E \u043F\u0440\u0435\u0434\u043B\u0430\u0433\u0430\u0435\u0442 Vue.</span></p>\n",
-        short_description: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/05/4787313_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/05/4787313_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/05/4787313_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/05/4787313_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/05/4787313_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+        short_description: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/05/4787313_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/05/4787313_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/05/4787313_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/05/4787313_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/05/4787313_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 <p><span>\u0412\u043E\u0437\u043C\u043E\u0436\u043D\u043E, \u0443 \u0432\u0430\u0441 \u0443\u0436\u0435 \u0435\u0441\u0442\u044C \u0432\u043E\u043F\u0440\u043E\u0441\u044B \u2014 \u043D\u0435 \u0432\u043E\u043B\u043D\u0443\u0439\u0442\u0435\u0441\u044C.\xA0</span><span>\u041C\u044B \u0440\u0430\u0441\u0441\u043C\u043E\u0442\u0440\u0438\u043C \u043A\u0430\u0436\u0434\u0443\u044E \u043C\u0435\u043B\u043E\u0447\u044C \u0432 \u043E\u0441\u0442\u0430\u043B\u044C\u043D\u043E\u0439 \u0447\u0430\u0441\u0442\u0438 \u0434\u043E\u043A\u0443\u043C\u0435\u043D\u0442\u0430\u0446\u0438\u0438.</span></p>
 `,
         sku: "",
@@ -19791,13 +19982,12 @@ const state$1 = {
         variations: [],
         grouped_products: [],
         menu_order: 0,
+        categories_path: "/product-category/muzhchinam/hudi/",
         price_html: '<del aria-hidden="true"><span class="woocommerce-Price-amount amount"><bdi>10990&nbsp;<span class="woocommerce-Price-currencySymbol">&#8381;</span></bdi></span></del> <ins><span class="woocommerce-Price-amount amount"><bdi>9990&nbsp;<span class="woocommerce-Price-currencySymbol">&#8381;</span></bdi></span></ins>',
         related_ids: [
           81
         ],
         meta_data: [],
-        stock_status: "instock",
-        has_options: false,
         _links: {
           self: [
             {
@@ -19825,7 +20015,7 @@ const state$1 = {
         featured: false,
         catalog_visibility: "visible",
         description: "<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo inventore ex iusto aliquam a modi, nemo dolore atque consequuntur similique. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo inventore ex iusto aliquam a modi, nemo dolore atque consequuntur similique.</p>\n",
-        short_description: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/05/4787313_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/05/4787313_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/05/4787313_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/05/4787313_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/05/4787313_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+        short_description: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/05/4787313_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/05/4787313_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/05/4787313_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/05/4787313_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/05/4787313_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo inventore ex iusto aliquam a modi, nemo dolore atque consequuntur similique.</p>
 `,
         sku: "",
@@ -19990,13 +20180,14 @@ const state$1 = {
         variations: [],
         grouped_products: [],
         menu_order: 0,
+        categories_path: "/product-category/zhenshchinam/iubki/",
         price_html: '<del aria-hidden="true"><span class="woocommerce-Price-amount amount"><bdi>20000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8381;</span></bdi></span></del> <ins><span class="woocommerce-Price-amount amount"><bdi>18000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8381;</span></bdi></span></ins>',
         related_ids: [
-          96,
           90,
-          121,
-          274,
-          117
+          85,
+          117,
+          81,
+          112
         ],
         meta_data: [
           {
@@ -20005,8 +20196,6 @@ const state$1 = {
             value: "2022-05-14"
           }
         ],
-        stock_status: "instock",
-        has_options: false,
         _links: {
           self: [
             {
@@ -20034,7 +20223,7 @@ const state$1 = {
         featured: false,
         catalog_visibility: "visible",
         description: "<p>\u0412\u043E\u0437\u043C\u043E\u0436\u043D\u043E, \u0443 \u0432\u0430\u0441 \u0443\u0436\u0435 \u0435\u0441\u0442\u044C \u0432\u043E\u043F\u0440\u043E\u0441\u044B \u2014 \u043D\u0435 \u0432\u043E\u043B\u043D\u0443\u0439\u0442\u0435\u0441\u044C.\xA0\u041C\u044B \u0440\u0430\u0441\u0441\u043C\u043E\u0442\u0440\u0438\u043C \u043A\u0430\u0436\u0434\u0443\u044E \u043C\u0435\u043B\u043E\u0447\u044C \u0432 \u043E\u0441\u0442\u0430\u043B\u044C\u043D\u043E\u0439 \u0447\u0430\u0441\u0442\u0438 \u0434\u043E\u043A\u0443\u043C\u0435\u043D\u0442\u0430\u0446\u0438\u0438.\xA0\u0410 \u043F\u043E\u043A\u0430, \u043F\u043E\u0436\u0430\u043B\u0443\u0439\u0441\u0442\u0430, \u043F\u0440\u043E\u0447\u0438\u0442\u0430\u0439\u0442\u0435, \u0447\u0442\u043E\u0431\u044B \u0432\u044B \u043C\u043E\u0433\u043B\u0438 \u043F\u043E\u043B\u0443\u0447\u0438\u0442\u044C \u043E\u0431\u0449\u0435\u0435 \u043F\u0440\u0435\u0434\u0441\u0442\u0430\u0432\u043B\u0435\u043D\u0438\u0435 \u043E \u0442\u043E\u043C, \u0447\u0442\u043E \u043F\u0440\u0435\u0434\u043B\u0430\u0433\u0430\u0435\u0442 Vue.</p>\n",
-        short_description: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/05/4787313_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/05/4787313_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/05/4787313_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/05/4787313_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/05/4787313_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+        short_description: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/05/4787313_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/05/4787313_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/05/4787313_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/05/4787313_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/05/4787313_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 <p>\u0412\u043E\u0437\u043C\u043E\u0436\u043D\u043E, \u0443 \u0432\u0430\u0441 \u0443\u0436\u0435 \u0435\u0441\u0442\u044C \u0432\u043E\u043F\u0440\u043E\u0441\u044B \u2014 \u043D\u0435 \u0432\u043E\u043B\u043D\u0443\u0439\u0442\u0435\u0441\u044C.\xA0\u041C\u044B \u0440\u0430\u0441\u0441\u043C\u043E\u0442\u0440\u0438\u043C \u043A\u0430\u0436\u0434\u0443\u044E \u043C\u0435\u043B\u043E\u0447\u044C \u0432 \u043E\u0441\u0442\u0430\u043B\u044C\u043D\u043E\u0439 \u0447\u0430\u0441\u0442\u0438 \u0434\u043E\u043A\u0443\u043C\u0435\u043D\u0442\u0430\u0446\u0438\u0438.</p>
 `,
         sku: "",
@@ -20047,7 +20236,7 @@ const state$1 = {
         date_on_sale_to_gmt: null,
         on_sale: true,
         purchasable: true,
-        total_sales: 4,
+        total_sales: 6,
         virtual: false,
         downloadable: false,
         downloads: [],
@@ -20207,17 +20396,16 @@ const state$1 = {
         variations: [],
         grouped_products: [],
         menu_order: 0,
+        categories_path: "/product-category/zhenshchinam/tolstovki-i-svitshoty/tolstovki/",
         price_html: '<del aria-hidden="true"><span class="woocommerce-Price-amount amount"><bdi>19000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8381;</span></bdi></span></del> <ins><span class="woocommerce-Price-amount amount"><bdi>18000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8381;</span></bdi></span></ins>',
         related_ids: [
-          117,
           66,
-          120,
           112,
-          96
+          117,
+          96,
+          67
         ],
         meta_data: [],
-        stock_status: "instock",
-        has_options: false,
         _links: {
           self: [
             {
@@ -20245,7 +20433,7 @@ const state$1 = {
         featured: false,
         catalog_visibility: "visible",
         description: "<p>\u0414\u0436\u0438\u043D\u0441\u043E\u0432\u0430\u044F \u044E\u0431\u043A\u0430 \u0441 \u0440\u0432\u0430\u043D\u044B\u043C \u043A\u0440\u0430\u0435\u043C \u043E\u0442 LEVI'S \u0438\u0437\u0433\u043E\u0442\u043E\u0432\u043B\u0435\u043D\u0430 \u0438\u0437 100-\u043F\u0440\u043E\u0446\u0435\u043D\u0442\u043D\u043E\u0433\u043E \u043E\u0440\u0433\u0430\u043D\u0438\u0447\u0435\u0441\u043A\u043E\u0433\u043E \u0445\u043B\u043E\u043F\u043A\u0430. \u041F\u0440\u044F\u043C\u043E\u0439 \u043A\u0440\u043E\u0439 \u0438 \u043A\u043B\u0430\u0441\u0441\u0438\u0447\u0435\u0441\u043A\u0430\u044F \u043F\u043E\u0441\u0430\u0434\u043A\u0430 \u043A\u043E\u043D\u0442\u0440\u0430\u0441\u0442\u0438\u0440\u0443\u044E\u0442 \u0441 \u043E\u0431\u0442\u0440\u0435\u043F\u0430\u043D\u043D\u044B\u043C \u043F\u043E\u0434\u043E\u043B\u043E\u043C, \u043F\u0440\u0438\u0434\u0430\u044E\u0449\u0438\u043C \u043C\u043E\u0434\u0435\u043B\u0438 \u043D\u0435\u043F\u0440\u0438\u043D\u0443\u0436\u0434\u0435\u043D\u043D\u044B\u0435 \u0447\u0435\u0440\u0442\u044B. \u0411\u043B\u0430\u0433\u043E\u0434\u0430\u0440\u044F \u043D\u0430\u0442\u0443\u0440\u0430\u043B\u044C\u043D\u043E\u043C\u0443 \u0441\u043E\u0441\u0442\u0430\u0432\u0443 \u043E\u0431\u0435\u0441\u043F\u0435\u0447\u0435\u043D \u043A\u043E\u043C\u0444\u043E\u0440\u0442 \u0432 \u043B\u044E\u0431\u043E\u0439 \u0441\u0435\u0437\u043E\u043D. \u0422\u043A\u0430\u043D\u044C \u043E\u0431\u043B\u0430\u0434\u0430\u0435\u0442 \u0432\u044B\u0441\u043E\u043A\u043E\u0439 \u0438\u0437\u043D\u043E\u0441\u043E\u0441\u0442\u043E\u0439\u043A\u043E\u0441\u0442\u044C\u044E \u0438 \u043F\u0440\u0438\u044F\u0442\u043D\u0430 \u043D\u0430 \u043E\u0449\u0443\u043F\u044C.</p>\n",
-        short_description: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/05/4787313_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/05/4787313_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/05/4787313_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/05/4787313_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/05/4787313_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+        short_description: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/05/4787313_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/05/4787313_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/05/4787313_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/05/4787313_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/05/4787313_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 <p>\u0414\u0436\u0438\u043D\u0441\u043E\u0432\u0430\u044F \u044E\u0431\u043A\u0430 \u0441 \u0440\u0432\u0430\u043D\u044B\u043C \u043A\u0440\u0430\u0435\u043C</p>
 `,
         sku: "",
@@ -20258,7 +20446,7 @@ const state$1 = {
         date_on_sale_to_gmt: null,
         on_sale: false,
         purchasable: true,
-        total_sales: 2,
+        total_sales: 6,
         virtual: false,
         downloadable: false,
         downloads: [],
@@ -20410,17 +20598,16 @@ const state$1 = {
         variations: [],
         grouped_products: [],
         menu_order: 0,
+        categories_path: "/product-category/zhenshchinam/iubki/",
         price_html: '<span class="woocommerce-Price-amount amount"><bdi>10000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8381;</span></bdi></span>',
         related_ids: [
-          67,
-          121,
+          102,
+          120,
+          90,
           81,
-          96,
           274
         ],
         meta_data: [],
-        stock_status: "instock",
-        has_options: false,
         _links: {
           self: [
             {
@@ -20448,7 +20635,7 @@ const state$1 = {
         featured: false,
         catalog_visibility: "visible",
         description: '<p>\u042E\u0431\u043A\u0430 \u043C\u0430\u043A\u0441\u0438 \u0441 \u0444\u0438\u0440\u043C\u0435\u043D\u043D\u044B\u043C \u043F\u0440\u0438\u043D\u0442\u043E\u043C Lauren Ralph Lauren \u0410-\u043E\u0431\u0440\u0430\u0437\u043D\u043E\u0433\u043E \u0441\u0438\u043B\u0443\u044D\u0442\u0430 \u043E\u0442\u043B\u0438\u0447\u0430\u0435\u0442\u0441\u044F \u0437\u0430\u0432\u044B\u0448\u0435\u043D\u043D\u043E\u0439 \u043B\u0438\u043D\u0438\u0435\u0439 \u0442\u0430\u043B\u0438\u0438, \u0440\u0435\u0437\u0438\u043D\u043A\u043E\u0439 \u0441 \u0437\u0430\u0432\u044F\u0437\u043A\u0430\u043C\u0438. \u0414\u043B\u0438\u043D\u0430 \u043D\u0438\u0436\u0435 \u043A\u043E\u043B\u0435\u043D. \u0414\u0438\u0437\u0430\u0439\u043D - "\u0436\u0430\u0442\u0430\u044F" \u0442\u0435\u043A\u0441\u0442\u0443\u0440\u0430, \u0442\u0435\u043C\u043D\u044B\u0439 \u0444\u043E\u043D \u0441 \u0431\u0435\u043B\u043E\u0441\u043D\u0435\u0436\u043D\u043E\u0439 \u043A\u0440\u0443\u043F\u043D\u043E\u0439 \u043C\u043E\u043D\u043E\u0433\u0440\u0430\u043C\u043C\u043E\u0439 \u0431\u0440\u0435\u043D\u0434\u0430. \u041A\u043E\u043C\u0431\u0438\u043D\u0438\u0440\u0443\u0435\u0442\u0441\u044F \u0441 \u043A\u0440\u0430\u0441\u043E\u0447\u043D\u044B\u043C \u0438\u043B\u0438 \u043E\u0434\u043D\u043E\u0442\u043E\u043D\u043D\u044B\u043C \u0432\u0435\u0440\u0445\u043E\u043C \u0432 \u043F\u043E\u0432\u0441\u0435\u0434\u043D\u0435\u0432\u043D\u043E\u043C \u0438\u043B\u0438 \u043A\u044D\u0436\u0443\u0430\u043B-\u0441\u0442\u0438\u043B\u0435.</p>\n',
-        short_description: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/05/4787313_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/05/4787313_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/05/4787313_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/05/4787313_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/05/4787313_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+        short_description: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/05/4787313_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/05/4787313_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/05/4787313_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/05/4787313_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/05/4787313_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 <p>\u042E\u0431\u043A\u0430 \u043C\u0430\u043A\u0441\u0438 \u0441 \u0444\u0438\u0440\u043C\u0435\u043D\u043D\u044B\u043C \u043F\u0440\u0438\u043D\u0442\u043E\u043C</p>
 `,
         sku: "",
@@ -20461,7 +20648,7 @@ const state$1 = {
         date_on_sale_to_gmt: null,
         on_sale: false,
         purchasable: true,
-        total_sales: 0,
+        total_sales: 3,
         virtual: false,
         downloadable: false,
         downloads: [],
@@ -20624,17 +20811,16 @@ const state$1 = {
         variations: [],
         grouped_products: [],
         menu_order: 0,
+        categories_path: "/product-category/zhenshchinam/iubki/midi/",
         price_html: '<span class="woocommerce-Price-amount amount"><bdi>27190&nbsp;<span class="woocommerce-Price-currencySymbol">&#8381;</span></bdi></span>',
         related_ids: [
-          118,
-          112,
-          117,
-          85,
-          120
+          96,
+          81,
+          121,
+          120,
+          117
         ],
         meta_data: [],
-        stock_status: "instock",
-        has_options: false,
         _links: {
           self: [
             {
@@ -20662,7 +20848,7 @@ const state$1 = {
         featured: false,
         catalog_visibility: "visible",
         description: "<p>\u0410\u0442\u043B\u0430\u0441\u043D\u0430\u044F \u044E\u0431\u043A\u0430 \u043C\u0438\u0434\u0438 BOSS - \u044D\u0442\u043E \u0441\u0442\u0438\u043B\u044C\u043D\u044B\u0439 \u0410-\u0441\u0438\u043B\u0443\u044D\u0442, \u043F\u0440\u0438\u044F\u0442\u043D\u0430\u044F \u043A \u0442\u0435\u043B\u0443 \u0442\u043A\u0430\u043D \u0438 \u044D\u043B\u0435\u0433\u0430\u043D\u0442\u043D\u044B\u0439 \u0432\u043D\u0435\u0448\u043D\u0438\u0439 \u0432\u0438\u0434. \u041B\u0438\u043D\u0438\u044F \u0442\u0430\u043B\u0438\u0438 \u0441\u043B\u0435\u0433\u043A\u0430 \u0437\u0430\u0432\u044B\u0448\u0435\u043D\u0430, \u0434\u043B\u0438\u043D\u0430 - \u043D\u0438\u0436\u0435 \u043A\u043E\u043B\u0435\u043D\u0430. \u0414\u0438\u0437\u0430\u0439\u043D - \u043E\u0434\u043D\u043E\u0442\u043E\u043D\u043D\u044B\u0439 \u0431\u0438\u0440\u044E\u0437\u043E\u0432\u044B\u0439 \u043E\u0442\u0442\u0435\u043D\u043E\u043A \u0441 \u0448\u0435\u043B\u043A\u043E\u0432\u043E\u0439 \u0442\u0435\u043A\u0441\u0442\u0443\u0440\u043E\u0439, \u043E\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0438\u0435 \u0434\u0435\u043A\u043E\u0440\u0430. \u041C\u0430\u0442\u0435\u0440\u0438\u0430\u043B \u0433\u0438\u0433\u0440\u043E\u0441\u043A\u043E\u043F\u0438\u0447\u043D\u044B\u0439, \u043F\u0440\u043E\u0447\u043D\u044B\u0439. \u041C\u043E\u0434\u0435\u043B\u044C \u043F\u043E\u0434\u0445\u043E\u0434\u0438\u0442 \u0434\u043B\u044F \u0441\u043E\u0437\u0434\u0430\u043D\u0438\u044F \u0432\u0435\u0447\u0435\u0440\u043D\u0438\u0445 \u043E\u0431\u0440\u0430\u0437\u043E\u0432 \u0438\u043B\u0438 \u043F\u0440\u043E\u0433\u0443\u043B\u043E\u0447\u043D\u044B\u0445 \u043D\u0430\u0440\u044F\u0434\u043E\u0432.</p>\n",
-        short_description: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/05/4787313_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/05/4787313_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/05/4787313_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/05/4787313_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/05/4787313_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+        short_description: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/05/4787313_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/05/4787313_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/05/4787313_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/05/4787313_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/05/4787313_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 <p>\u041C\u043E\u0434\u0435\u043B\u044C \u043F\u043E\u0434\u0445\u043E\u0434\u0438\u0442 \u0434\u043B\u044F \u0441\u043E\u0437\u0434\u0430\u043D\u0438\u044F \u0432\u0435\u0447\u0435\u0440\u043D\u0438\u0445 \u043E\u0431\u0440\u0430\u0437\u043E\u0432 \u0438\u043B\u0438 \u043F\u0440\u043E\u0433\u0443\u043B\u043E\u0447\u043D\u044B\u0445 \u043D\u0430\u0440\u044F\u0434\u043E\u0432.</p>
 `,
         sku: "",
@@ -20826,17 +21012,16 @@ const state$1 = {
         variations: [],
         grouped_products: [],
         menu_order: 0,
+        categories_path: "/product-category/zhenshchinam/iubki/",
         price_html: '<span class="woocommerce-Price-amount amount"><bdi>24999&nbsp;<span class="woocommerce-Price-currencySymbol">&#8381;</span></bdi></span>',
         related_ids: [
           274,
-          90,
-          112,
-          117,
-          120
+          120,
+          121,
+          85,
+          67
         ],
         meta_data: [],
-        stock_status: "instock",
-        has_options: false,
         _links: {
           self: [
             {
@@ -20864,7 +21049,7 @@ const state$1 = {
         featured: false,
         catalog_visibility: "visible",
         description: '<div id="wpwrap">\n<div id="wpfooter" role="contentinfo">\u0414\u0438\u0437\u0430\u0439\u043D - \u043E\u0434\u043D\u043E\u0442\u043E\u043D\u043D\u044B\u0439 \u0431\u0438\u0440\u044E\u0437\u043E\u0432\u044B\u0439 \u043E\u0442\u0442\u0435\u043D\u043E\u043A \u0441 \u0448\u0435\u043B\u043A\u043E\u0432\u043E\u0439 \u0442\u0435\u043A\u0441\u0442\u0443\u0440\u043E\u0439, \u043E\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0438\u0435 \u0434\u0435\u043A\u043E\u0440\u0430. \u041C\u0430\u0442\u0435\u0440\u0438\u0430\u043B \u0433\u0438\u0433\u0440\u043E\u0441\u043A\u043E\u043F\u0438\u0447\u043D\u044B\u0439, \u043F\u0440\u043E\u0447\u043D\u044B\u0439. \u041C\u043E\u0434\u0435\u043B\u044C \u043F\u043E\u0434\u0445\u043E\u0434\u0438\u0442 \u0434\u043B\u044F \u0441\u043E\u0437\u0434\u0430\u043D\u0438\u044F \u0432\u0435\u0447\u0435\u0440\u043D\u0438\u0445 \u043E\u0431\u0440\u0430\u0437\u043E\u0432 \u0438\u043B\u0438 \u043F\u0440\u043E\u0433\u0443\u043B\u043E\u0447\u043D\u044B\u0445 \u043D\u0430\u0440\u044F\u0434\u043E\u0432.</div>\n</div>\n',
-        short_description: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/05/4787313_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/05/4787313_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/05/4787313_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/05/4787313_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/05/4787313_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+        short_description: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/05/4787313_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/05/4787313_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/05/4787313_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/05/4787313_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/05/4787313_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 <p>\u041C\u043E\u0434\u0435\u043B\u044C \u043F\u043E\u0434\u0445\u043E\u0434\u0438\u0442 \u0434\u043B\u044F \u0441\u043E\u0437\u0434\u0430\u043D\u0438\u044F \u0432\u0435\u0447\u0435\u0440\u043D\u0438\u0445 \u043E\u0431\u0440\u0430\u0437\u043E\u0432 \u0438\u043B\u0438 \u043F\u0440\u043E\u0433\u0443\u043B\u043E\u0447\u043D\u044B\u0445 \u043D\u0430\u0440\u044F\u0434\u043E\u0432.</p>
 `,
         sku: "",
@@ -21028,17 +21213,16 @@ const state$1 = {
         variations: [],
         grouped_products: [],
         menu_order: 0,
+        categories_path: "/product-category/zhenshchinam/iubki/",
         price_html: '<del aria-hidden="true"><span class="woocommerce-Price-amount amount"><bdi>28000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8381;</span></bdi></span></del> <ins><span class="woocommerce-Price-amount amount"><bdi>18000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8381;</span></bdi></span></ins>',
         related_ids: [
-          117,
-          85,
-          90,
           119,
-          96
+          121,
+          120,
+          117,
+          118
         ],
         meta_data: [],
-        stock_status: "instock",
-        has_options: false,
         _links: {
           self: [
             {
@@ -21066,7 +21250,7 @@ const state$1 = {
         featured: false,
         catalog_visibility: "visible",
         description: "",
-        short_description: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/05/4787313_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/05/4787313_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/05/4787313_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/05/4787313_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/05/4787313_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+        short_description: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/05/4787313_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/05/4787313_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/05/4787313_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/05/4787313_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/05/4787313_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 `,
         sku: "",
         price: "29400",
@@ -21078,7 +21262,7 @@ const state$1 = {
         date_on_sale_to_gmt: null,
         on_sale: true,
         purchasable: true,
-        total_sales: 0,
+        total_sales: 2,
         virtual: false,
         downloadable: false,
         downloads: [],
@@ -21229,17 +21413,16 @@ const state$1 = {
         variations: [],
         grouped_products: [],
         menu_order: 0,
+        categories_path: "/product-category/zhenshchinam/iubki/",
         price_html: '<del aria-hidden="true"><span class="woocommerce-Price-amount amount"><bdi>30555&nbsp;<span class="woocommerce-Price-currencySymbol">&#8381;</span></bdi></span></del> <ins><span class="woocommerce-Price-amount amount"><bdi>29400&nbsp;<span class="woocommerce-Price-currencySymbol">&#8381;</span></bdi></span></ins>',
         related_ids: [
           118,
-          117,
-          90,
-          81,
-          67
+          102,
+          96,
+          85,
+          90
         ],
         meta_data: [],
-        stock_status: "instock",
-        has_options: false,
         _links: {
           self: [
             {
@@ -21267,7 +21450,7 @@ const state$1 = {
         featured: false,
         catalog_visibility: "visible",
         description: "<p>\u041F\u0435\u0440\u0435\u0433\u0435\u043D\u0435\u0440\u0430\u0446\u0438\u044F \u043C\u0438\u043D\u0438\u0430\u0442\u044E\u0440 \u043F\u0440\u043E\u0438\u0441\u0445\u043E\u0434\u0438\u0442 \u0432 \u0444\u043E\u043D\u043E\u0432\u043E\u043C \u0440\u0435\u0436\u0438\u043C\u0435. \u0412 \u0437\u0430\u0432\u0438\u0441\u0438\u043C\u043E\u0441\u0442\u0438 \u043E\u0442 \u043A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u0430 \u0438\u0437\u043E\u0431\u0440\u0430\u0436\u0435\u043D\u0438\u0439 \u0432 \u0432\u0430\u0448\u0435\u043C \u043C\u0430\u0433\u0430\u0437\u0438\u043D\u0435 \u044D\u0442\u0430 \u043E\u043F\u0435\u0440\u0430\u0446\u0438\u044F \u043C\u043E\u0436\u0435\u0442 \u0437\u0430\u043D\u044F\u0442\u044C \u043D\u0435\u043A\u043E\u0442\u043E\u0440\u043E\u0435 \u0432\u0440\u0435\u043C\u044F. \u041F\u0435\u0440\u0435\u0433\u0435\u043D\u0435\u0440\u0430\u0446\u0438\u044F \u043C\u0438\u043D\u0438\u0430\u0442\u044E\u0440 \u043F\u0440\u043E\u0438\u0441\u0445\u043E\u0434\u0438\u0442 \u0432 \u0444\u043E\u043D\u043E\u0432\u043E\u043C \u0440\u0435\u0436\u0438\u043C\u0435. \u0412 \u0437\u0430\u0432\u0438\u0441\u0438\u043C\u043E\u0441\u0442\u0438 \u043E\u0442 \u043A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u0430 \u0438\u0437\u043E\u0431\u0440\u0430\u0436\u0435\u043D\u0438\u0439 \u0432 \u0432\u0430\u0448\u0435\u043C \u043C\u0430\u0433\u0430\u0437\u0438\u043D\u0435 \u044D\u0442\u0430 \u043E\u043F\u0435\u0440\u0430\u0446\u0438\u044F \u043C\u043E\u0436\u0435\u0442 \u0437\u0430\u043D\u044F\u0442\u044C \u043D\u0435\u043A\u043E\u0442\u043E\u0440\u043E\u0435 \u0432\u0440\u0435\u043C\u044F.</p>\n",
-        short_description: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/05/4787313_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/05/4787313_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/05/4787313_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/05/4787313_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/05/4787313_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+        short_description: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/05/4787313_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/05/4787313_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/05/4787313_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/05/4787313_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/05/4787313_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 <p>\u041F\u0435\u0440\u0435\u0433\u0435\u043D\u0435\u0440\u0430\u0446\u0438\u044F \u043C\u0438\u043D\u0438\u0430\u0442\u044E\u0440 \u043F\u0440\u043E\u0438\u0441\u0445\u043E\u0434\u0438\u0442 \u0432 \u0444\u043E\u043D\u043E\u0432\u043E\u043C \u0440\u0435\u0436\u0438\u043C\u0435. \u0412 \u0437\u0430\u0432\u0438\u0441\u0438\u043C\u043E\u0441\u0442\u0438 \u043E\u0442 \u043A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u0430 \u0438\u0437\u043E\u0431\u0440\u0430\u0436\u0435\u043D\u0438\u0439 \u0432 \u0432\u0430\u0448\u0435\u043C \u043C\u0430\u0433\u0430\u0437\u0438\u043D\u0435 \u044D\u0442\u0430 \u043E\u043F\u0435\u0440\u0430\u0446\u0438\u044F \u043C\u043E\u0436\u0435\u0442 \u0437\u0430\u043D\u044F\u0442\u044C \u043D\u0435\u043A\u043E\u0442\u043E\u0440\u043E\u0435 \u0432\u0440\u0435\u043C\u044F.</p>
 `,
         sku: "",
@@ -21432,17 +21615,16 @@ const state$1 = {
         variations: [],
         grouped_products: [],
         menu_order: 0,
+        categories_path: "/product-category/zhenshchinam/iubki/",
         price_html: '<del aria-hidden="true"><span class="woocommerce-Price-amount amount"><bdi>27190&nbsp;<span class="woocommerce-Price-currencySymbol">&#8381;</span></bdi></span></del> <ins><span class="woocommerce-Price-amount amount"><bdi>18000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8381;</span></bdi></span></ins>',
         related_ids: [
-          96,
-          81,
-          120,
+          90,
+          85,
+          118,
           67,
-          121
+          120
         ],
         meta_data: [],
-        stock_status: "instock",
-        has_options: false,
         _links: {
           self: [
             {
@@ -21470,7 +21652,7 @@ const state$1 = {
         featured: false,
         catalog_visibility: "visible",
         description: "<div>\n<div>\u0421\u043C\u0435\u043D\u0430 \u0437\u043D\u0430\u043A\u043E\u0432 \u043D\u0435 \u043F\u0440\u0438\u0432\u043E\u0434\u0438\u043B\u0430 \u043A \u043F\u0440\u0430\u0432\u0438\u043B\u044C\u043D\u043E\u0439 \u0441\u043E\u0440\u0442\u0438\u0440\u043E\u0432\u043A\u0435. \u0421\u043C\u0435\u043D\u0430 \u0434\u0430\u0451\u0442 \u043D\u0443\u0436\u043D\u044B\u0439 \u0440\u0435\u0437\u0443\u043B\u044C\u0442\u0430\u0442. \u0421\u043C\u0435\u043D\u0430 \u0437\u043D\u0430\u043A\u043E\u0432 \u043D\u0435 \u043F\u0440\u0438\u0432\u043E\u0434\u0438\u043B\u0430 \u043A \u043F\u0440\u0430\u0432\u0438\u043B\u044C\u043D\u043E\u0439 \u0441\u043E\u0440\u0442\u0438\u0440\u043E\u0432\u043A\u0435. \u0421\u043C\u0435\u043D\u0430 \u0434\u0430\u0451\u0442 \u043D\u0443\u0436\u043D\u044B\u0439 \u0440\u0435\u0437\u0443\u043B\u044C\u0442\u0430\u0442.</div>\n</div>\n",
-        short_description: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/05/4787313_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/05/4787313_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/05/4787313_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/05/4787313_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/05/4787313_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+        short_description: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/05/4787313_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/05/4787313_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/05/4787313_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/05/4787313_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/05/4787313_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 <p>\u0421\u043C\u0435\u043D\u0430 \u0437\u043D\u0430\u043A\u043E\u0432 \u043D\u0435 \u043F\u0440\u0438\u0432\u043E\u0434\u0438\u043B\u0430 \u043A \u043F\u0440\u0430\u0432\u0438\u043B\u044C\u043D\u043E\u0439 \u0441\u043E\u0440\u0442\u0438\u0440\u043E\u0432\u043A\u0435. \u0421\u043C\u0435\u043D\u0430 \u0434\u0430\u0451\u0442 \u043D\u0443\u0436\u043D\u044B\u0439 \u0440\u0435\u0437\u0443\u043B\u044C\u0442\u0430\u0442.</p>
 `,
         sku: "",
@@ -21639,17 +21821,16 @@ const state$1 = {
         variations: [],
         grouped_products: [],
         menu_order: 0,
+        categories_path: "/product-category/zhenshchinam/iubki/",
         price_html: '<span class="woocommerce-Price-amount amount"><bdi>86000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8381;</span></bdi></span>',
         related_ids: [
-          90,
-          81,
+          274,
+          119,
           117,
-          121,
-          85
+          112,
+          90
         ],
         meta_data: [],
-        stock_status: "instock",
-        has_options: false,
         _links: {
           self: [
             {
@@ -21677,7 +21858,7 @@ const state$1 = {
         featured: false,
         catalog_visibility: "visible",
         description: "<p>\u041F\u0435\u0440\u0435\u0433\u0435\u043D\u0435\u0440\u0430\u0446\u0438\u044F \u043C\u0438\u043D\u0438\u0430\u0442\u044E\u0440 \u043F\u0440\u043E\u0438\u0441\u0445\u043E\u0434\u0438\u0442 \u0432 \u0444\u043E\u043D\u043E\u0432\u043E\u043C \u0440\u0435\u0436\u0438\u043C\u0435. \u0412 \u0437\u0430\u0432\u0438\u0441\u0438\u043C\u043E\u0441\u0442\u0438 \u043E\u0442 \u043A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u0430 \u0438\u0437\u043E\u0431\u0440\u0430\u0436\u0435\u043D\u0438\u0439 \u0432 \u0432\u0430\u0448\u0435\u043C \u043C\u0430\u0433\u0430\u0437\u0438\u043D\u0435 \u044D\u0442\u0430 \u043E\u043F\u0435\u0440\u0430\u0446\u0438\u044F \u043C\u043E\u0436\u0435\u0442 \u0437\u0430\u043D\u044F\u0442\u044C \u043D\u0435\u043A\u043E\u0442\u043E\u0440\u043E\u0435 \u0432\u0440\u0435\u043C\u044F. \u041F\u0435\u0440\u0435\u0433\u0435\u043D\u0435\u0440\u0430\u0446\u0438\u044F \u043C\u0438\u043D\u0438\u0430\u0442\u044E\u0440 \u043F\u0440\u043E\u0438\u0441\u0445\u043E\u0434\u0438\u0442 \u0432 \u0444\u043E\u043D\u043E\u0432\u043E\u043C \u0440\u0435\u0436\u0438\u043C\u0435. \u0412 \u0437\u0430\u0432\u0438\u0441\u0438\u043C\u043E\u0441\u0442\u0438 \u043E\u0442 \u043A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u0430 \u0438\u0437\u043E\u0431\u0440\u0430\u0436\u0435\u043D\u0438\u0439 \u0432 \u0432\u0430\u0448\u0435\u043C \u043C\u0430\u0433\u0430\u0437\u0438\u043D\u0435 \u044D\u0442\u0430 \u043E\u043F\u0435\u0440\u0430\u0446\u0438\u044F \u043C\u043E\u0436\u0435\u0442 \u0437\u0430\u043D\u044F\u0442\u044C \u043D\u0435\u043A\u043E\u0442\u043E\u0440\u043E\u0435 \u0432\u0440\u0435\u043C\u044F.</p>\n",
-        short_description: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/05/4787313_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/05/4787313_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/05/4787313_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/05/4787313_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/05/4787313_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+        short_description: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/05/4787313_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/05/4787313_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/05/4787313_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/05/4787313_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/05/4787313_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 <p>\u041F\u0435\u0440\u0435\u0433\u0435\u043D\u0435\u0440\u0430\u0446\u0438\u044F \u043C\u0438\u043D\u0438\u0430\u0442\u044E\u0440 \u043F\u0440\u043E\u0438\u0441\u0445\u043E\u0434\u0438\u0442 \u0432 \u0444\u043E\u043D\u043E\u0432\u043E\u043C \u0440\u0435\u0436\u0438\u043C\u0435. \u0412 \u0437\u0430\u0432\u0438\u0441\u0438\u043C\u043E\u0441\u0442\u0438 \u043E\u0442 \u043A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u0430 \u0438\u0437\u043E\u0431\u0440\u0430\u0436\u0435\u043D\u0438\u0439 \u0432 \u0432\u0430\u0448\u0435\u043C \u043C\u0430\u0433\u0430\u0437\u0438\u043D\u0435 \u044D\u0442\u0430 \u043E\u043F\u0435\u0440\u0430\u0446\u0438\u044F \u043C\u043E\u0436\u0435\u0442 \u0437\u0430\u043D\u044F\u0442\u044C \u043D\u0435\u043A\u043E\u0442\u043E\u0440\u043E\u0435 \u0432\u0440\u0435\u043C\u044F.</p>
 `,
         sku: "",
@@ -21690,7 +21871,7 @@ const state$1 = {
         date_on_sale_to_gmt: null,
         on_sale: false,
         purchasable: true,
-        total_sales: 0,
+        total_sales: 4,
         virtual: false,
         downloadable: false,
         downloads: [],
@@ -21854,17 +22035,16 @@ const state$1 = {
         variations: [],
         grouped_products: [],
         menu_order: 0,
+        categories_path: "/product-category/zhenshchinam/iubki/priamye/",
         price_html: '<span class="woocommerce-Price-amount amount"><bdi>30000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8381;</span></bdi></span>',
         related_ids: [
-          120,
-          81,
-          85,
-          67,
-          96
+          117,
+          102,
+          96,
+          274,
+          112
         ],
         meta_data: [],
-        stock_status: "instock",
-        has_options: false,
         _links: {
           self: [
             {
@@ -21892,7 +22072,7 @@ const state$1 = {
         featured: false,
         catalog_visibility: "visible",
         description: "<p>\u0421\u043C\u0435\u043D\u0430 \u0437\u043D\u0430\u043A\u043E\u0432 \u043D\u0435 \u043F\u0440\u0438\u0432\u043E\u0434\u0438\u043B\u0430 \u043A \u043F\u0440\u0430\u0432\u0438\u043B\u044C\u043D\u043E\u0439 \u0441\u043E\u0440\u0442\u0438\u0440\u043E\u0432\u043A\u0435. \u0421\u043C\u0435\u043D\u0430 \u0434\u0430\u0451\u0442 \u043D\u0443\u0436\u043D\u044B\u0439 \u0440\u0435\u0437\u0443\u043B\u044C\u0442\u0430\u0442. \u0421\u043C\u0435\u043D\u0430 \u0437\u043D\u0430\u043A\u043E\u0432 \u043D\u0435 \u043F\u0440\u0438\u0432\u043E\u0434\u0438\u043B\u0430 \u043A \u043F\u0440\u0430\u0432\u0438\u043B\u044C\u043D\u043E\u0439 \u0441\u043E\u0440\u0442\u0438\u0440\u043E\u0432\u043A\u0435. \u0421\u043C\u0435\u043D\u0430 \u0434\u0430\u0451\u0442 \u043D\u0443\u0436\u043D\u044B\u0439 \u0440\u0435\u0437\u0443\u043B\u044C\u0442\u0430\u0442.</p>\n",
-        short_description: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/05/4787313_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/05/4787313_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/05/4787313_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/05/4787313_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/05/4787313_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+        short_description: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/05/4787313_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/05/4787313_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/05/4787313_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/05/4787313_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/05/4787313_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 <p>\u0421\u043C\u0435\u043D\u0430 \u0437\u043D\u0430\u043A\u043E\u0432 \u043D\u0435 \u043F\u0440\u0438\u0432\u043E\u0434\u0438\u043B\u0430 \u043A \u043F\u0440\u0430\u0432\u0438\u043B\u044C\u043D\u043E\u0439 \u0441\u043E\u0440\u0442\u0438\u0440\u043E\u0432\u043A\u0435. \u0421\u043C\u0435\u043D\u0430 \u0434\u0430\u0451\u0442 \u043D\u0443\u0436\u043D\u044B\u0439 \u0440\u0435\u0437\u0443\u043B\u044C\u0442\u0430\u0442.</p>
 `,
         sku: "",
@@ -21905,7 +22085,7 @@ const state$1 = {
         date_on_sale_to_gmt: null,
         on_sale: false,
         purchasable: true,
-        total_sales: 0,
+        total_sales: 2,
         virtual: false,
         downloadable: false,
         downloads: [],
@@ -22062,17 +22242,16 @@ const state$1 = {
         variations: [],
         grouped_products: [],
         menu_order: 0,
+        categories_path: "/product-category/zhenshchinam/iubki/midi/",
         price_html: '<span class="woocommerce-Price-amount amount"><bdi>54000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8381;</span></bdi></span>',
         related_ids: [
-          90,
-          118,
-          96,
           112,
-          81
+          96,
+          102,
+          67,
+          85
         ],
         meta_data: [],
-        stock_status: "instock",
-        has_options: false,
         _links: {
           self: [
             {
@@ -22100,7 +22279,7 @@ const state$1 = {
         featured: false,
         catalog_visibility: "visible",
         description: "<p>\u0421\u043C\u0435\u043D\u0430 \u0437\u043D\u0430\u043A\u043E\u0432 \u043D\u0435 \u043F\u0440\u0438\u0432\u043E\u0434\u0438\u043B\u0430 \u043A \u043F\u0440\u0430\u0432\u0438\u043B\u044C\u043D\u043E\u0439 \u0441\u043E\u0440\u0442\u0438\u0440\u043E\u0432\u043A\u0435. \u0421\u043C\u0435\u043D\u0430 \u0434\u0430\u0451\u0442 \u043D\u0443\u0436\u043D\u044B\u0439 \u0440\u0435\u0437\u0443\u043B\u044C\u0442\u0430\u0442. \u0421\u043C\u0435\u043D\u0430 \u0437\u043D\u0430\u043A\u043E\u0432 \u043D\u0435 \u043F\u0440\u0438\u0432\u043E\u0434\u0438\u043B\u0430 \u043A \u043F\u0440\u0430\u0432\u0438\u043B\u044C\u043D\u043E\u0439 \u0441\u043E\u0440\u0442\u0438\u0440\u043E\u0432\u043A\u0435. \u0421\u043C\u0435\u043D\u0430 \u0434\u0430\u0451\u0442 \u043D\u0443\u0436\u043D\u044B\u0439 \u0440\u0435\u0437\u0443\u043B\u044C\u0442\u0430\u0442.</p>\n",
-        short_description: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/05/4787313_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg" class="attachment-medium size-medium" alt="" decoding="async" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/05/4787313_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/05/4787313_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/05/4787313_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/05/4787313_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
+        short_description: `<p class="attachment"><a href='http://localhost/wp-content/uploads/2022/05/4787313_1.jpg'><img width="200" height="300" src="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg" class="attachment-medium size-medium" alt="" loading="lazy" srcset="http://localhost/wp-content/uploads/2022/05/4787313_1-200x300.jpg 200w, http://localhost/wp-content/uploads/2022/05/4787313_1-683x1024.jpg 683w, http://localhost/wp-content/uploads/2022/05/4787313_1-768x1152.jpg 768w, http://localhost/wp-content/uploads/2022/05/4787313_1-600x900.jpg 600w, http://localhost/wp-content/uploads/2022/05/4787313_1.jpg 1020w" sizes="(max-width: 200px) 100vw, 200px" /></a></p>
 <p>\u0421\u043C\u0435\u043D\u0430 \u0437\u043D\u0430\u043A\u043E\u0432 \u043D\u0435 \u043F\u0440\u0438\u0432\u043E\u0434\u0438\u043B\u0430 \u043A \u043F\u0440\u0430\u0432\u0438\u043B\u044C\u043D\u043E\u0439 \u0441\u043E\u0440\u0442\u0438\u0440\u043E\u0432\u043A\u0435. \u0421\u043C\u0435\u043D\u0430 \u0434\u0430\u0451\u0442 \u043D\u0443\u0436\u043D\u044B\u0439 \u0440\u0435\u0437\u0443\u043B\u044C\u0442\u0430\u0442.</p>
 `,
         sku: "",
@@ -22113,7 +22292,7 @@ const state$1 = {
         date_on_sale_to_gmt: null,
         on_sale: true,
         purchasable: true,
-        total_sales: 0,
+        total_sales: 1,
         virtual: false,
         downloadable: false,
         downloads: [],
@@ -22265,17 +22444,16 @@ const state$1 = {
         variations: [],
         grouped_products: [],
         menu_order: 0,
+        categories_path: "/product-category/zhenshchinam/iubki/trapetcii/",
         price_html: '<del aria-hidden="true"><span class="woocommerce-Price-amount amount"><bdi>13000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8381;</span></bdi></span></del> <ins><span class="woocommerce-Price-amount amount"><bdi>10000&nbsp;<span class="woocommerce-Price-currencySymbol">&#8381;</span></bdi></span></ins>',
         related_ids: [
-          112,
-          90,
-          81,
           119,
-          96
+          117,
+          120,
+          96,
+          274
         ],
         meta_data: [],
-        stock_status: "instock",
-        has_options: false,
         _links: {
           self: [
             {
@@ -22360,6 +22538,7 @@ const state$1 = {
         image: null,
         menu_order: 0,
         count: 13,
+        permalink: "http://localhost/product-category/zhenshchinam/",
         _links: {
           self: [
             {
@@ -22392,6 +22571,7 @@ const state$1 = {
         },
         menu_order: 0,
         count: 12,
+        permalink: "http://localhost/product-category/zhenshchinam/iubki/",
         _links: {
           self: [
             {
@@ -22420,6 +22600,7 @@ const state$1 = {
         image: null,
         menu_order: 0,
         count: 1,
+        permalink: "http://localhost/product-category/muzhchinam/",
         _links: {
           self: [
             {
@@ -22443,6 +22624,7 @@ const state$1 = {
         image: null,
         menu_order: 0,
         count: 1,
+        permalink: "http://localhost/product-category/muzhchinam/hudi/",
         _links: {
           self: [
             {
@@ -22480,6 +22662,7 @@ const state$1 = {
         },
         menu_order: 0,
         count: 0,
+        permalink: "http://localhost/product-category/zhenshchinam/verkhniaia-odezhda/",
         _links: {
           self: [
             {
@@ -22517,6 +22700,7 @@ const state$1 = {
         },
         menu_order: 0,
         count: 1,
+        permalink: "http://localhost/product-category/zhenshchinam/tolstovki-i-svitshoty/",
         _links: {
           self: [
             {
@@ -22545,6 +22729,7 @@ const state$1 = {
         image: null,
         menu_order: 0,
         count: 0,
+        permalink: "http://localhost/product-category/detiam/",
         _links: {
           self: [
             {
@@ -22568,6 +22753,7 @@ const state$1 = {
         image: null,
         menu_order: 0,
         count: 0,
+        permalink: "http://localhost/product-category/novinki/",
         _links: {
           self: [
             {
@@ -22591,6 +22777,7 @@ const state$1 = {
         image: null,
         menu_order: 0,
         count: 0,
+        permalink: "http://localhost/product-category/dlia-doma/",
         _links: {
           self: [
             {
@@ -22614,6 +22801,7 @@ const state$1 = {
         image: null,
         menu_order: 0,
         count: 0,
+        permalink: "http://localhost/product-category/kosmetika/",
         _links: {
           self: [
             {
@@ -22637,6 +22825,7 @@ const state$1 = {
         image: null,
         menu_order: 0,
         count: 0,
+        permalink: "http://localhost/product-category/brendy/",
         _links: {
           self: [
             {
@@ -22660,6 +22849,7 @@ const state$1 = {
         image: null,
         menu_order: 0,
         count: 0,
+        permalink: "http://localhost/product-category/sale/",
         _links: {
           self: [
             {
@@ -22683,6 +22873,7 @@ const state$1 = {
         image: null,
         menu_order: 0,
         count: 1,
+        permalink: "http://localhost/product-category/zhenshchinam/iubki/trapetcii/",
         _links: {
           self: [
             {
@@ -22711,6 +22902,7 @@ const state$1 = {
         image: null,
         menu_order: 0,
         count: 3,
+        permalink: "http://localhost/product-category/zhenshchinam/iubki/midi/",
         _links: {
           self: [
             {
@@ -22739,6 +22931,7 @@ const state$1 = {
         image: null,
         menu_order: 0,
         count: 0,
+        permalink: "http://localhost/product-category/zhenshchinam/iubki/mini/",
         _links: {
           self: [
             {
@@ -22767,6 +22960,7 @@ const state$1 = {
         image: null,
         menu_order: 0,
         count: 1,
+        permalink: "http://localhost/product-category/zhenshchinam/iubki/priamye/",
         _links: {
           self: [
             {
@@ -22804,6 +22998,7 @@ const state$1 = {
         },
         menu_order: 0,
         count: 0,
+        permalink: "http://localhost/product-category/zhenshchinam/briuki/",
         _links: {
           self: [
             {
@@ -22841,6 +23036,7 @@ const state$1 = {
         },
         menu_order: 0,
         count: 0,
+        permalink: "http://localhost/product-category/zhenshchinam/platia/",
         _links: {
           self: [
             {
@@ -22878,6 +23074,7 @@ const state$1 = {
         },
         menu_order: 0,
         count: 0,
+        permalink: "http://localhost/product-category/zhenshchinam/aksessuary/",
         _links: {
           self: [
             {
@@ -22906,6 +23103,7 @@ const state$1 = {
         image: null,
         menu_order: 0,
         count: 1,
+        permalink: "http://localhost/product-category/zhenshchinam/tolstovki-i-svitshoty/tolstovki/",
         _links: {
           self: [
             {
@@ -22934,6 +23132,7 @@ const state$1 = {
         image: null,
         menu_order: 0,
         count: 0,
+        permalink: "http://localhost/product-category/zhenshchinam/bluzki/",
         _links: {
           self: [
             {
@@ -23771,30 +23970,30 @@ const state$1 = {
         description: "Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order will not be shipped until the funds have cleared in our account.",
         order: 0,
         enabled: false,
-        method_title: "\u041F\u0440\u044F\u043C\u043E\u0439 \u0431\u0430\u043D\u043A\u043E\u0432\u0441\u043A\u0438\u0439 \u043F\u0435\u0440\u0435\u0432\u043E\u0434",
-        method_description: "\u041F\u0440\u0438\u043D\u0438\u043C\u0430\u0442\u044C \u043F\u043B\u0430\u0442\u0435\u0436\u0438 \u043B\u0438\u0447\u043D\u043E \u043F\u043E\u0441\u0440\u0435\u0434\u0441\u0442\u0432\u043E\u043C \u043F\u0440\u044F\u043C\u043E\u0433\u043E \u0431\u0430\u043D\u043A\u043E\u0432\u0441\u043A\u043E\u0433\u043E \u043F\u0435\u0440\u0435\u0432\u043E\u0434\u0430 (BACS).",
+        method_title: "Direct bank transfer",
+        method_description: "Take payments in person via BACS. More commonly known as direct bank/wire transfer.",
         method_supports: [
           "products"
         ],
         settings: {
           title: {
             id: "title",
-            label: "\u041D\u0430\u0438\u043C\u0435\u043D\u043E\u0432\u0430\u043D\u0438\u0435",
-            description: "\u0417\u0430\u0433\u043E\u043B\u043E\u0432\u043E\u043A, \u043A\u043E\u0442\u043E\u0440\u044B\u0439 \u0432\u0438\u0434\u0438\u0442 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C \u0432 \u043F\u0440\u043E\u0446\u0435\u0441\u0441\u0435 \u043E\u0444\u043E\u0440\u043C\u043B\u0435\u043D\u0438\u044F \u0437\u0430\u043A\u0430\u0437\u0430.",
+            label: "Title",
+            description: "This controls the title which the user sees during checkout.",
             type: "text",
             value: "Direct bank transfer",
-            "default": "\u041F\u0440\u044F\u043C\u043E\u0439 \u0431\u0430\u043D\u043A\u043E\u0432\u0441\u043A\u0438\u0439 \u043F\u0435\u0440\u0435\u0432\u043E\u0434",
-            tip: "\u0417\u0430\u0433\u043E\u043B\u043E\u0432\u043E\u043A, \u043A\u043E\u0442\u043E\u0440\u044B\u0439 \u0432\u0438\u0434\u0438\u0442 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C \u0432 \u043F\u0440\u043E\u0446\u0435\u0441\u0441\u0435 \u043E\u0444\u043E\u0440\u043C\u043B\u0435\u043D\u0438\u044F \u0437\u0430\u043A\u0430\u0437\u0430.",
+            "default": "Direct bank transfer",
+            tip: "This controls the title which the user sees during checkout.",
             placeholder: ""
           },
           instructions: {
             id: "instructions",
-            label: "\u0418\u043D\u0441\u0442\u0440\u0443\u043A\u0446\u0438\u0438",
-            description: "\u0418\u043D\u0441\u0442\u0440\u0443\u043A\u0446\u0438\u0438, \u043A\u043E\u0442\u043E\u0440\u044B\u0435 \u0431\u0443\u0434\u0443\u0442 \u0434\u043E\u0431\u0430\u0432\u043B\u0435\u043D\u044B \u043D\u0430 \u0441\u0442\u0440\u0430\u043D\u0438\u0446\u0443 \u0431\u043B\u0430\u0433\u043E\u0434\u0430\u0440\u043D\u043E\u0441\u0442\u0438 \u0438 \u0432 \u043F\u0438\u0441\u044C\u043C\u043E.",
+            label: "Instructions",
+            description: "Instructions that will be added to the thank you page and emails.",
             type: "textarea",
             value: "",
             "default": "",
-            tip: "\u0418\u043D\u0441\u0442\u0440\u0443\u043A\u0446\u0438\u0438, \u043A\u043E\u0442\u043E\u0440\u044B\u0435 \u0431\u0443\u0434\u0443\u0442 \u0434\u043E\u0431\u0430\u0432\u043B\u0435\u043D\u044B \u043D\u0430 \u0441\u0442\u0440\u0430\u043D\u0438\u0446\u0443 \u0431\u043B\u0430\u0433\u043E\u0434\u0430\u0440\u043D\u043E\u0441\u0442\u0438 \u0438 \u0432 \u043F\u0438\u0441\u044C\u043C\u043E.",
+            tip: "Instructions that will be added to the thank you page and emails.",
             placeholder: ""
           }
         },
@@ -23813,34 +24012,34 @@ const state$1 = {
       },
       cheque: {
         id: "cheque",
-        title: "\u0427\u0435\u043A\u043E\u0432\u044B\u0435 \u043F\u043B\u0430\u0442\u0435\u0436\u0438",
-        description: "\u041F\u043E\u0436\u0430\u043B\u0443\u0439\u0441\u0442\u0430, \u043E\u0442\u043F\u0440\u0430\u0432\u044C\u0442\u0435 \u0432\u0430\u0448 \u0447\u0435\u043A, \u0443\u043A\u0430\u0437\u0430\u0432 \u0434\u0430\u043D\u043D\u044B\u0435 \u043C\u0430\u0433\u0430\u0437\u0438\u043D\u0430: \u043D\u0430\u0437\u0432\u0430\u043D\u0438\u0435, \u0443\u043B\u0438\u0446\u0443, \u0433\u043E\u0440\u043E\u0434, \u043E\u0431\u043B\u0430\u0441\u0442\u044C / \u0440\u0430\u0439\u043E\u043D, \u0441\u0442\u0440\u0430\u043D\u0443, \u043F\u043E\u0447\u0442\u043E\u0432\u044B\u0439 \u0438\u043D\u0434\u0435\u043A\u0441.",
+        title: "Check payments",
+        description: "Please send a check to Store Name, Store Street, Store Town, Store State / County, Store Postcode.",
         order: 1,
         enabled: false,
-        method_title: "\u0427\u0435\u043A\u043E\u0432\u044B\u0435 \u043F\u043B\u0430\u0442\u0435\u0436\u0438",
-        method_description: "\u041F\u0440\u0438\u043D\u0438\u043C\u0430\u0442\u044C \u043F\u043B\u0430\u0442\u0435\u0436\u0438 \u043B\u0438\u0447\u043D\u043E \u043F\u043E\u0441\u0440\u0435\u0434\u0441\u0442\u0432\u043E\u043C \u0447\u0435\u043A\u043E\u0432. \u0414\u0430\u043D\u043D\u044B\u0439 \u0430\u0432\u0442\u043E\u043D\u043E\u043C\u043D\u044B\u0439 \u0448\u043B\u044E\u0437 \u043C\u043E\u0436\u043D\u043E \u0438\u0441\u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u044C \u0434\u043B\u044F \u0442\u0435\u0441\u0442\u043E\u0432\u044B\u0445 \u043F\u043E\u043A\u0443\u043F\u043E\u043A.",
+        method_title: "Check payments",
+        method_description: "Take payments in person via checks. This offline gateway can also be useful to test purchases.",
         method_supports: [
           "products"
         ],
         settings: {
           title: {
             id: "title",
-            label: "\u041D\u0430\u0438\u043C\u0435\u043D\u043E\u0432\u0430\u043D\u0438\u0435",
-            description: "\u0417\u0430\u0433\u043E\u043B\u043E\u0432\u043E\u043A, \u043A\u043E\u0442\u043E\u0440\u044B\u0439 \u0432\u0438\u0434\u0438\u0442 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C \u0432 \u043F\u0440\u043E\u0446\u0435\u0441\u0441\u0435 \u043E\u0444\u043E\u0440\u043C\u043B\u0435\u043D\u0438\u044F \u0437\u0430\u043A\u0430\u0437\u0430.",
+            label: "Title",
+            description: "This controls the title which the user sees during checkout.",
             type: "text",
-            value: "\u0427\u0435\u043A\u043E\u0432\u044B\u0435 \u043F\u043B\u0430\u0442\u0435\u0436\u0438",
-            "default": "\u0427\u0435\u043A\u043E\u0432\u044B\u0435 \u043F\u043B\u0430\u0442\u0435\u0436\u0438",
-            tip: "\u0417\u0430\u0433\u043E\u043B\u043E\u0432\u043E\u043A, \u043A\u043E\u0442\u043E\u0440\u044B\u0439 \u0432\u0438\u0434\u0438\u0442 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C \u0432 \u043F\u0440\u043E\u0446\u0435\u0441\u0441\u0435 \u043E\u0444\u043E\u0440\u043C\u043B\u0435\u043D\u0438\u044F \u0437\u0430\u043A\u0430\u0437\u0430.",
+            value: "Check payments",
+            "default": "Check payments",
+            tip: "This controls the title which the user sees during checkout.",
             placeholder: ""
           },
           instructions: {
             id: "instructions",
-            label: "\u0418\u043D\u0441\u0442\u0440\u0443\u043A\u0446\u0438\u0438",
-            description: "\u0418\u043D\u0441\u0442\u0440\u0443\u043A\u0446\u0438\u0438, \u043A\u043E\u0442\u043E\u0440\u044B\u0435 \u0431\u0443\u0434\u0443\u0442 \u0434\u043E\u0431\u0430\u0432\u043B\u0435\u043D\u044B \u043D\u0430 \u0441\u0442\u0440\u0430\u043D\u0438\u0446\u0443 \u0431\u043B\u0430\u0433\u043E\u0434\u0430\u0440\u043D\u043E\u0441\u0442\u0438 \u0438 \u0432 \u043F\u0438\u0441\u044C\u043C\u043E.",
+            label: "Instructions",
+            description: "Instructions that will be added to the thank you page and emails.",
             type: "textarea",
             value: "",
             "default": "",
-            tip: "\u0418\u043D\u0441\u0442\u0440\u0443\u043A\u0446\u0438\u0438, \u043A\u043E\u0442\u043E\u0440\u044B\u0435 \u0431\u0443\u0434\u0443\u0442 \u0434\u043E\u0431\u0430\u0432\u043B\u0435\u043D\u044B \u043D\u0430 \u0441\u0442\u0440\u0430\u043D\u0438\u0446\u0443 \u0431\u043B\u0430\u0433\u043E\u0434\u0430\u0440\u043D\u043E\u0441\u0442\u0438 \u0438 \u0432 \u043F\u0438\u0441\u044C\u043C\u043E.",
+            tip: "Instructions that will be added to the thank you page and emails.",
             placeholder: ""
           }
         },
@@ -23863,45 +24062,45 @@ const state$1 = {
         description: "Pay with cash upon delivery.",
         order: 2,
         enabled: true,
-        method_title: "\u041E\u043F\u043B\u0430\u0442\u0430 \u043F\u0440\u0438 \u0434\u043E\u0441\u0442\u0430\u0432\u043A\u0435",
-        method_description: "\u041E\u043F\u043B\u0430\u0442\u0430 \u043D\u0430\u043B\u0438\u0447\u043D\u044B\u043C\u0438 (\u0438\u043B\u0438 \u0438\u043D\u044B\u043C \u043C\u0435\u0442\u043E\u0434\u043E\u043C) \u043F\u043E \u0444\u0430\u043A\u0442\u0443 \u0434\u043E\u0441\u0442\u0430\u0432\u043A\u0438.",
+        method_title: "Cash on delivery",
+        method_description: "Have your customers pay with cash (or by other means) upon delivery.",
         method_supports: [
           "products"
         ],
         settings: {
           title: {
             id: "title",
-            label: "\u041D\u0430\u0438\u043C\u0435\u043D\u043E\u0432\u0430\u043D\u0438\u0435",
-            description: "\u041E\u043F\u0438\u0441\u0430\u043D\u0438\u0435 \u043C\u0435\u0442\u043E\u0434\u0430 \u043E\u043F\u043B\u0430\u0442\u044B, \u043A\u043E\u0442\u043E\u0440\u043E\u0435 \u043A\u043B\u0438\u0435\u043D\u0442 \u0431\u0443\u0434\u0435\u0442 \u0432\u0438\u0434\u0435\u0442\u044C \u043F\u0440\u0438 \u043E\u0444\u043E\u0440\u043C\u043B\u0435\u043D\u0438\u0438 \u0437\u0430\u043A\u0430\u0437\u0430.",
+            label: "Title",
+            description: "Payment method description that the customer will see on your checkout.",
             type: "text",
             value: "Cash on delivery",
-            "default": "\u041E\u043F\u043B\u0430\u0442\u0430 \u043F\u0440\u0438 \u0434\u043E\u0441\u0442\u0430\u0432\u043A\u0435",
-            tip: "\u041E\u043F\u0438\u0441\u0430\u043D\u0438\u0435 \u043C\u0435\u0442\u043E\u0434\u0430 \u043E\u043F\u043B\u0430\u0442\u044B, \u043A\u043E\u0442\u043E\u0440\u043E\u0435 \u043A\u043B\u0438\u0435\u043D\u0442 \u0431\u0443\u0434\u0435\u0442 \u0432\u0438\u0434\u0435\u0442\u044C \u043F\u0440\u0438 \u043E\u0444\u043E\u0440\u043C\u043B\u0435\u043D\u0438\u0438 \u0437\u0430\u043A\u0430\u0437\u0430.",
+            "default": "Cash on delivery",
+            tip: "Payment method description that the customer will see on your checkout.",
             placeholder: ""
           },
           instructions: {
             id: "instructions",
-            label: "\u0418\u043D\u0441\u0442\u0440\u0443\u043A\u0446\u0438\u0438",
-            description: "\u0418\u043D\u0441\u0442\u0440\u0443\u043A\u0446\u0438\u0438, \u043A\u043E\u0442\u043E\u0440\u044B\u0435 \u0431\u0443\u0434\u0443\u0442 \u0434\u043E\u0431\u0430\u0432\u043B\u0435\u043D\u044B \u043D\u0430 \u0441\u0442\u0440\u0430\u043D\u0438\u0446\u0443 \u0431\u043B\u0430\u0433\u043E\u0434\u0430\u0440\u043D\u043E\u0441\u0442\u0435\u0439.",
+            label: "Instructions",
+            description: "Instructions that will be added to the thank you page.",
             type: "textarea",
             value: "Pay with cash upon delivery.",
-            "default": "\u041E\u043F\u043B\u0430\u0442\u0430 \u043D\u0430\u043B\u0438\u0447\u043D\u044B\u043C\u0438 \u043F\u0440\u0438 \u0434\u043E\u0441\u0442\u0430\u0432\u043A\u0435 \u0437\u0430\u043A\u0430\u0437\u0430.",
-            tip: "\u0418\u043D\u0441\u0442\u0440\u0443\u043A\u0446\u0438\u0438, \u043A\u043E\u0442\u043E\u0440\u044B\u0435 \u0431\u0443\u0434\u0443\u0442 \u0434\u043E\u0431\u0430\u0432\u043B\u0435\u043D\u044B \u043D\u0430 \u0441\u0442\u0440\u0430\u043D\u0438\u0446\u0443 \u0431\u043B\u0430\u0433\u043E\u0434\u0430\u0440\u043D\u043E\u0441\u0442\u0435\u0439.",
+            "default": "Pay with cash upon delivery.",
+            tip: "Instructions that will be added to the thank you page.",
             placeholder: ""
           },
           enable_for_methods: {
             id: "enable_for_methods",
-            label: "\u0412\u043A\u043B\u044E\u0447\u0435\u043D\u043E \u0434\u043B\u044F \u0441\u043F\u043E\u0441\u043E\u0431\u043E\u0432 \u0434\u043E\u0441\u0442\u0430\u0432\u043A\u0438",
-            description: "\u0415\u0441\u043B\u0438 \u043E\u043F\u043B\u0430\u0442\u0430 \u043D\u0430\u043B\u043E\u0436\u0435\u043D\u043D\u044B\u043C \u043F\u043B\u0430\u0442\u0435\u0436\u043E\u043C \u0434\u043E\u0441\u0442\u0443\u043F\u043D\u0430 \u0442\u043E\u043B\u044C\u043A\u043E \u0434\u043B\u044F \u043E\u043F\u0440\u0435\u0434\u0435\u043B\u0435\u043D\u043D\u044B\u0445 \u0441\u043F\u043E\u0441\u043E\u0431\u043E\u0432 \u0434\u043E\u0441\u0442\u0430\u0432\u043A\u0438, \u0437\u0430\u0434\u0430\u0439\u0442\u0435 \u0438\u0445 \u0437\u0434\u0435\u0441\u044C. \u041E\u0441\u0442\u0430\u0432\u044C\u0442\u0435 \u043F\u043E\u043B\u0435 \u043F\u0443\u0441\u0442\u044B\u043C, \u0447\u0442\u043E\u0431\u044B \u0432\u043A\u043B\u044E\u0447\u0438\u0442\u044C \u0434\u043B\u044F \u0432\u0441\u0435\u0445 \u043C\u0435\u0442\u043E\u0434\u043E\u0432.",
+            label: "Enable for shipping methods",
+            description: "If COD is only available for certain methods, set it up here. Leave blank to enable for all methods.",
             type: "multiselect",
             value: "",
             "default": "",
-            tip: "\u0415\u0441\u043B\u0438 \u043E\u043F\u043B\u0430\u0442\u0430 \u043D\u0430\u043B\u043E\u0436\u0435\u043D\u043D\u044B\u043C \u043F\u043B\u0430\u0442\u0435\u0436\u043E\u043C \u0434\u043E\u0441\u0442\u0443\u043F\u043D\u0430 \u0442\u043E\u043B\u044C\u043A\u043E \u0434\u043B\u044F \u043E\u043F\u0440\u0435\u0434\u0435\u043B\u0435\u043D\u043D\u044B\u0445 \u0441\u043F\u043E\u0441\u043E\u0431\u043E\u0432 \u0434\u043E\u0441\u0442\u0430\u0432\u043A\u0438, \u0437\u0430\u0434\u0430\u0439\u0442\u0435 \u0438\u0445 \u0437\u0434\u0435\u0441\u044C. \u041E\u0441\u0442\u0430\u0432\u044C\u0442\u0435 \u043F\u043E\u043B\u0435 \u043F\u0443\u0441\u0442\u044B\u043C, \u0447\u0442\u043E\u0431\u044B \u0432\u043A\u043B\u044E\u0447\u0438\u0442\u044C \u0434\u043B\u044F \u0432\u0441\u0435\u0445 \u043C\u0435\u0442\u043E\u0434\u043E\u0432.",
+            tip: "If COD is only available for certain methods, set it up here. Leave blank to enable for all methods.",
             placeholder: ""
           },
           enable_for_virtual: {
             id: "enable_for_virtual",
-            label: "\u0420\u0430\u0437\u0440\u0435\u0448\u0438\u0442\u044C \u043E\u043F\u043B\u0430\u0442\u0443 \u043D\u0430\u043B\u043E\u0436\u0435\u043D\u043D\u044B\u043C \u043F\u043B\u0430\u0442\u0435\u0436\u043E\u043C \u0434\u043B\u044F \u0432\u0438\u0440\u0442\u0443\u0430\u043B\u044C\u043D\u044B\u0445 \u0437\u0430\u043A\u0430\u0437\u043E\u0432",
+            label: "Accept COD if the order is virtual",
             description: "",
             type: "checkbox",
             value: "yes",
@@ -23964,7 +24163,7 @@ const state$1 = {
         title: "\u0411\u0430\u043D\u043A\u043E\u0432\u0441\u043A\u0438\u0435 \u043A\u0430\u0440\u0442\u044B \u2014 Visa, Mastercard \u0438 Maestro, \xAB\u041C\u0438\u0440\xBB",
         description: "\u041E\u043F\u043B\u0430\u0442\u0430 \u0441 \u043F\u0440\u043E\u0438\u0437\u0432\u043E\u043B\u044C\u043D\u043E\u0439 \u0431\u0430\u043D\u043A\u043E\u0432\u0441\u043A\u043E\u0439 \u043A\u0430\u0440\u0442\u044B",
         order: 4,
-        enabled: true,
+        enabled: false,
         method_title: "\u0411\u0430\u043D\u043A\u043E\u0432\u0441\u043A\u0438\u0435 \u043A\u0430\u0440\u0442\u044B",
         method_description: "\u041E\u043F\u043B\u0430\u0442\u0430 \u0441 \u043F\u0440\u043E\u0438\u0437\u0432\u043E\u043B\u044C\u043D\u043E\u0439 \u0431\u0430\u043D\u043A\u043E\u0432\u0441\u043A\u043E\u0439 \u043A\u0430\u0440\u0442\u044B",
         method_supports: [
@@ -24857,12 +25056,672 @@ const state$1 = {
     }
   }
 };
-const __VUE_WORDPRESS__ = {
+const __INST__ = {
   routing,
   state: state$1
 };
-const ProductPricesNode_vue_vue_type_style_index_0_lang = "";
+function siteURL() {
+  let { url } = __INST__.routing.returned;
+  url = new URL(url);
+  url = `${url.protocol}//${url.hostname}/`;
+  return url;
+}
+function getPathName(str, returnType = "string") {
+  let path;
+  if (str.indexOf(siteURL()) === 0) {
+    path = str.slice(siteURL().length - 1);
+  } else {
+    path = str;
+  }
+  switch (returnType) {
+    case "string":
+      return `${path}`;
+    case "array": {
+      path = {
+        items: path.split("/").filter((el) => el)
+      };
+      const [first] = path.items;
+      if (!Object.keys(prefixes).includes(first)) {
+        return path;
+      }
+      path.prefix = first;
+      path.items.shift();
+      if (prefixes[first]) {
+        path = prefixes[first](path);
+      }
+      return path;
+    }
+    default:
+      return null;
+  }
+}
+function lastSlugParam(path) {
+  return last(getPathName(path, "array").items);
+}
+const PageHeadNode_vue_vue_type_style_index_0_lang = "";
+const _sfc_main$W = {
+  inheritAttrs: false,
+  props: {
+    handledPath: Object,
+    templatePage: {
+      type: Object,
+      default: null
+    }
+  },
+  setup(props) {
+    const { state: state2, getters: getters2 } = useStore();
+    const router2 = useRouter();
+    const productsCategoriesType = state2.productsCategories.basedRequest.type;
+    const productsType = state2.products.basedRequest.type;
+    const links = computed(() => {
+      var _a, _b;
+      let items = [];
+      if ((_a = props.handledPath) == null ? void 0 : _a.prefix) {
+        items = props.handledPath.items.map((slug) => {
+          const category = getters2.singleBySlug({ type: productsCategoriesType, slug });
+          return { title: category.name, routeTo: () => router2.push(getPathName(category.permalink)) };
+        });
+        if ((_b = props.handledPath) == null ? void 0 : _b.last) {
+          const product = getters2.singleBySlug({ type: productsType, slug: props.handledPath.last });
+          items.push({ title: product.name });
+        }
+      } else {
+        items = props.handledPath.items.map((slug) => {
+          const page = getters2["pages/pageBySlug"](slug);
+          return { title: page.title.rendered, routeTo: () => router2.push(getPathName(page.link)) };
+        });
+      }
+      return items;
+    });
+    return {
+      links,
+      title: computed(() => typeof props.templatePage === "object" ? props.templatePage.title.rendered : null)
+    };
+  }
+};
+function _sfc_ssrRender$W(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  const _component_ContainerNode = resolveComponent("ContainerNode");
+  const _component_BaseLinkNode = resolveComponent("BaseLinkNode");
+  _push(`<section${ssrRenderAttrs(mergeProps({
+    class: ["page-head", $setup.title ? "" : "page-head_product"]
+  }, _attrs))}>`);
+  _push(ssrRenderComponent(_component_ContainerNode, null, {
+    default: withCtx((_, _push2, _parent2, _scopeId) => {
+      if (_push2) {
+        _push2(`<div${ssrRenderAttrs(mergeProps({ class: "page-head__body" }, _ctx.$attrs))}${_scopeId}><div class="page-head__content"${_scopeId}>`);
+        if (!$setup.title) {
+          _push2(`<button class="page-head__back icon-arrow"${_scopeId}> \u041D\u0430\u0437\u0430\u0434 </button>`);
+        } else {
+          _push2(`<!---->`);
+        }
+        _push2(`<ul class="page-head__links"${_scopeId}>`);
+        _push2(ssrRenderComponent(_component_BaseLinkNode, {
+          class: "page-head__link",
+          onClick: ($event) => _ctx.$router.push("/")
+        }, {
+          default: withCtx((_2, _push3, _parent3, _scopeId2) => {
+            if (_push3) {
+              _push3(`\u0413\u043B\u0430\u0432\u043D\u0430\u044F<span${_scopeId2}>/</span>`);
+            } else {
+              return [
+                createTextVNode("\u0413\u043B\u0430\u0432\u043D\u0430\u044F"),
+                createVNode("span", null, "/")
+              ];
+            }
+          }),
+          _: 1
+        }, _parent2, _scopeId));
+        _push2(`<!--[-->`);
+        ssrRenderList($setup.links, (crumb, index) => {
+          _push2(ssrRenderComponent(_component_BaseLinkNode, {
+            class: "page-head__link",
+            onClick: crumb == null ? void 0 : crumb.routeTo
+          }, {
+            default: withCtx((_2, _push3, _parent3, _scopeId2) => {
+              if (_push3) {
+                _push3(`${ssrInterpolate(crumb == null ? void 0 : crumb.title)}`);
+                if (index < $setup.links.length - 1) {
+                  _push3(`<span${_scopeId2}>/</span>`);
+                } else {
+                  _push3(`<!---->`);
+                }
+              } else {
+                return [
+                  createTextVNode(toDisplayString(crumb == null ? void 0 : crumb.title), 1),
+                  index < $setup.links.length - 1 ? (openBlock(), createBlock("span", { key: 0 }, "/")) : createCommentVNode("", true)
+                ];
+              }
+            }),
+            _: 2
+          }, _parent2, _scopeId));
+        });
+        _push2(`<!--]--></ul></div>`);
+        if ($setup.title) {
+          _push2(`<h1 class="page-head__title"${_scopeId}>${ssrInterpolate($setup.title)}</h1>`);
+        } else {
+          _push2(`<!---->`);
+        }
+        _push2(`</div>`);
+      } else {
+        return [
+          createVNode("div", mergeProps({ class: "page-head__body" }, _ctx.$attrs), [
+            createVNode("div", { class: "page-head__content" }, [
+              !$setup.title ? (openBlock(), createBlock("button", {
+                key: 0,
+                class: "page-head__back icon-arrow",
+                onClick: ($event) => _ctx.$router.back()
+              }, " \u041D\u0430\u0437\u0430\u0434 ", 8, ["onClick"])) : createCommentVNode("", true),
+              createVNode("ul", { class: "page-head__links" }, [
+                createVNode(_component_BaseLinkNode, {
+                  class: "page-head__link",
+                  onClick: ($event) => _ctx.$router.push("/")
+                }, {
+                  default: withCtx(() => [
+                    createTextVNode("\u0413\u043B\u0430\u0432\u043D\u0430\u044F"),
+                    createVNode("span", null, "/")
+                  ]),
+                  _: 1
+                }, 8, ["onClick"]),
+                (openBlock(true), createBlock(Fragment, null, renderList($setup.links, (crumb, index) => {
+                  return openBlock(), createBlock(_component_BaseLinkNode, {
+                    key: index,
+                    class: "page-head__link",
+                    onClick: crumb == null ? void 0 : crumb.routeTo
+                  }, {
+                    default: withCtx(() => [
+                      createTextVNode(toDisplayString(crumb == null ? void 0 : crumb.title), 1),
+                      index < $setup.links.length - 1 ? (openBlock(), createBlock("span", { key: 0 }, "/")) : createCommentVNode("", true)
+                    ]),
+                    _: 2
+                  }, 1032, ["onClick"]);
+                }), 128))
+              ])
+            ]),
+            $setup.title ? (openBlock(), createBlock("h1", {
+              key: 0,
+              class: "page-head__title"
+            }, toDisplayString($setup.title), 1)) : createCommentVNode("", true)
+          ], 16)
+        ];
+      }
+    }),
+    _: 1
+  }, _parent));
+  _push(`</section>`);
+}
+const _sfc_setup$W = _sfc_main$W.setup;
+_sfc_main$W.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/structure/PageHeadNode.vue");
+  return _sfc_setup$W ? _sfc_setup$W(props, ctx) : void 0;
+};
+const PageHeadNode = /* @__PURE__ */ _export_sfc(_sfc_main$W, [["ssrRender", _sfc_ssrRender$W]]);
+const TroubleNode_vue_vue_type_style_index_0_lang = "";
 const _sfc_main$V = {
+  props: {
+    text: {
+      default: () => ["\u0414\u043B\u044F \u043A\u0430\u0442\u0435\u0433\u043E\u0440\u0438\u0438 \u043F\u043E \u044D\u0442\u043E\u043C\u0443 \u043C\u0430\u0440\u0448\u0440\u0443\u0442\u0443", "\u0435\u0449\u0451 \u043D\u0435 \u0441\u043E\u0437\u0434\u0430\u043D\u0430 \u0441\u0442\u0440\u0430\u043D\u0438\u0446\u0430!"],
+      type: Array
+    }
+  },
+  data() {
+    return {
+      location: ""
+    };
+  },
+  computed: {
+    ...mapState({
+      browserReady: (state2) => state2.common.browserReady
+    })
+  },
+  watch: {
+    browserReady: {
+      handler(newValue) {
+        if (newValue) {
+          this.location = window.location.href;
+        }
+      },
+      immediate: true
+    }
+  }
+};
+function _sfc_ssrRender$V(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  const _component_BaseButtonNode = resolveComponent("BaseButtonNode");
+  _push(`<div${ssrRenderAttrs(mergeProps({ class: "trouble" }, _attrs))}><div class="trouble__text">${ssrInterpolate($props.text[0])}</div><div class="trouble__path">${ssrInterpolate($data.location)}</div><div class="trouble__text">${ssrInterpolate($props.text[1])}</div>`);
+  ssrRenderSlot(_ctx.$slots, "default", {}, () => {
+    _push(ssrRenderComponent(_component_BaseButtonNode, {
+      buttonStyle: "dark",
+      onClick: ($event) => _ctx.$router.push("/")
+    }, {
+      default: withCtx((_, _push2, _parent2, _scopeId) => {
+        if (_push2) {
+          _push2(`\u0412\u0435\u0440\u043D\u0443\u0442\u044C\u0441\u044F \u043D\u0430 \u0413\u043B\u0430\u0432\u043D\u0443\u044E`);
+        } else {
+          return [
+            createTextVNode("\u0412\u0435\u0440\u043D\u0443\u0442\u044C\u0441\u044F \u043D\u0430 \u0413\u043B\u0430\u0432\u043D\u0443\u044E")
+          ];
+        }
+      }),
+      _: 1
+    }, _parent));
+  }, _push, _parent);
+  _push(`</div>`);
+}
+const _sfc_setup$V = _sfc_main$V.setup;
+_sfc_main$V.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/TroubleNode.vue");
+  return _sfc_setup$V ? _sfc_setup$V(props, ctx) : void 0;
+};
+const TroubleNode = /* @__PURE__ */ _export_sfc(_sfc_main$V, [["ssrRender", _sfc_ssrRender$V]]);
+const MainPageNode_vue_vue_type_style_index_0_lang = "";
+const _sfc_main$U = {
+  name: "MainPageNode",
+  components: {
+    TroubleNode,
+    PageHeadNode
+  },
+  inheritAttrs: false,
+  props: {
+    pageHeadNodeShow: {
+      type: Boolean,
+      default: true
+    }
+  },
+  setup(props) {
+    const { state: state2, getters: getters2 } = useStore();
+    const route = useRoute();
+    const handledPath = ref();
+    const templatePage = ref();
+    watch(route, () => {
+      handledPath.value = getPathName(route.path, "array");
+      if (!handledPath.value.last) {
+        templatePage.value = getters2.singleBySlug({
+          type: state2.pages.basedRequest.type,
+          slug: last(handledPath.value.items) || "home"
+        });
+      } else {
+        templatePage.value = true;
+      }
+    }, { immediate: true });
+    return {
+      handledPath,
+      templatePage
+    };
+  }
+};
+function _sfc_ssrRender$U(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  const _component_PageHeadNode = resolveComponent("PageHeadNode");
+  const _component_ContainerNode = resolveComponent("ContainerNode");
+  const _component_TroubleNode = resolveComponent("TroubleNode");
+  if ($setup.templatePage) {
+    _push(`<main${ssrRenderAttrs(mergeProps({
+      class: ["page", { "page_product": $setup.templatePage }]
+    }, _attrs))}>`);
+    if ($props.pageHeadNodeShow) {
+      _push(`<div class="page__head-wrapper">`);
+      ssrRenderSlot(_ctx.$slots, "page-head", {
+        handledPath: $setup.handledPath,
+        templatePage: $setup.templatePage
+      }, () => {
+        _push(ssrRenderComponent(_component_PageHeadNode, {
+          handledPath: $setup.handledPath,
+          templatePage: $setup.templatePage
+        }, null, _parent));
+      }, _push, _parent);
+      _push(`</div>`);
+    } else {
+      _push(`<!---->`);
+    }
+    _push(`<div class="${ssrRenderClass([_ctx.$attrs.class, "page-main"])}">`);
+    ssrRenderSlot(_ctx.$slots, "page-main", {}, null, _push, _parent);
+    _push(`</div></main>`);
+  } else {
+    _push(ssrRenderComponent(_component_ContainerNode, _attrs, {
+      default: withCtx((_, _push2, _parent2, _scopeId) => {
+        if (_push2) {
+          _push2(ssrRenderComponent(_component_TroubleNode, null, null, _parent2, _scopeId));
+        } else {
+          return [
+            createVNode(_component_TroubleNode)
+          ];
+        }
+      }),
+      _: 1
+    }, _parent));
+  }
+}
+const _sfc_setup$U = _sfc_main$U.setup;
+_sfc_main$U.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/common/MainPageNode.vue");
+  return _sfc_setup$U ? _sfc_setup$U(props, ctx) : void 0;
+};
+const MainPageNode = /* @__PURE__ */ _export_sfc(_sfc_main$U, [["ssrRender", _sfc_ssrRender$U]]);
+const common$1 = [
+  BaseButtonNode,
+  BaseLinkNode,
+  ButtonNode,
+  InputNode,
+  PopupNode,
+  LoadingNode,
+  CloseBtnNode,
+  ContainerNode,
+  InputStoreNode,
+  InputCheckboxNode,
+  PreloadWrapNode,
+  InputRadioNode,
+  RevealingNode,
+  MainPageNode
+];
+function getNonceToken(obj = {}) {
+  const objHandled = obj;
+  const nonceToken = Cookies.get("nonce-token");
+  if (!nonceToken) {
+    throw new Error("Nonce token undefined");
+  }
+  objHandled.Nonce = nonceToken;
+  return obj;
+}
+function findAllPositions(str, separator) {
+  let stop = false;
+  let pos = 0;
+  const foundPositions = [];
+  while (true) {
+    const foundPos = str.indexOf(separator, pos);
+    if (foundPos === -1 && !stop) {
+      foundPositions.push(str.length);
+      stop = true;
+    } else {
+      foundPositions.push(foundPos);
+      pos = foundPos + 1;
+    }
+    if (stop)
+      break;
+  }
+  return foundPositions;
+}
+function separateStringByArrayPositions(str, foundPositions) {
+  const subStrs = [];
+  let start = 0;
+  for (let index = 0; index < foundPositions.length; index++) {
+    const end = foundPositions[index];
+    const substr = str.slice(start, end);
+    subStrs.push(substr);
+    start += substr.length + 1;
+  }
+  return subStrs;
+}
+function handleWPDate(value) {
+  const separator = value.indexOf("T");
+  let yearMonthDate = value.slice(0, separator);
+  let hoursMinutesSeconds = value.slice(separator + 1);
+  yearMonthDate = separateStringByArrayPositions(
+    yearMonthDate,
+    findAllPositions(yearMonthDate, "-")
+  );
+  yearMonthDate[1] -= 1;
+  hoursMinutesSeconds = separateStringByArrayPositions(
+    hoursMinutesSeconds,
+    findAllPositions(hoursMinutesSeconds, ":")
+  );
+  return new Date(...yearMonthDate, ...hoursMinutesSeconds);
+}
+function togglerOpening(name, prop, value, state2, type) {
+  const element = state2.openings[type][name];
+  if (value === null) {
+    element[prop] = !element[prop];
+  } else {
+    state2.openings[type][element.name][prop] = value;
+  }
+}
+function loginFromMail(email) {
+  const str = email;
+  return str.slice(0, str.indexOf("@"));
+}
+function actionJWTResolver({ type, config = {} }) {
+  const { JWTRequestConfig: { JWTReqired, JWTMaintain } } = store.state[type].settings;
+  const handledConfig = config;
+  let JWTToken;
+  if (JWTReqired && JWTMaintain === false) {
+    throw new Error('\u0418\u0441\u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u043D\u0438\u0435 \u0444\u043B\u0430\u0433\u0430 "JWTReqired" \u043F\u043E\u0434\u0440\u0430\u0437\u0443\u043C\u0435\u0432\u0430\u0435\u0442 \u0443\u0441\u0442\u0430\u043D\u043E\u0432\u043A\u0443 JWTMaintain = true');
+  }
+  if (JWTMaintain) {
+    JWTToken = Cookies.get("jwt-token");
+    if (JWTToken) {
+      if (!has(handledConfig, "headers")) {
+        handledConfig.headers = {};
+      }
+      handledConfig.headers.Authorization = `Bearer ${JWTToken}`;
+    } else if (JWTReqired) {
+      throw new Error(`\u0414\u043B\u044F \u0432\u044B\u043F\u043E\u043B\u043D\u0435\u043D\u0438\u044F \u0434\u043B\u044F ${type} \u0437\u0430\u043F\u0440\u043E\u0441\u0430 \u043D\u0435\u043E\u0431\u0445\u043E\u0434\u0438\u043C \u0442\u043E\u043A\u0435\u043D`);
+    }
+  }
+  return handledConfig;
+}
+function mutateObjectForReplaceProperty(mutableObject, replacementProps) {
+  const mutableObjectHandled = mutableObject;
+  const replacementKeys = Object.keys(replacementProps);
+  replacementKeys.forEach((key) => {
+    if (has(mutableObjectHandled, key)) {
+      mutableObjectHandled[key] = replacementProps[key];
+    }
+  });
+  return mutableObjectHandled;
+}
+function getWishListKeyFromCookieKey() {
+  if (store.state.auth.userAuth) {
+    return Cookies.get("tinv_wlk_log");
+  }
+  return Cookies.get("tinv_wishlistkey");
+}
+function callStoreMethod(methodName, methodType = "dispatch", payload = void 0, callback = null) {
+  let typeStore;
+  switch (methodType) {
+    case "dispatch":
+      typeStore = "_actions";
+      break;
+    case "commit":
+      typeStore = "_mutations";
+      break;
+    default:
+      throw new Error("Wrong methodType");
+  }
+  const methodExists = Object.keys(store[typeStore]).findIndex((key) => key === methodName) !== -1;
+  if (methodExists) {
+    store[methodType](methodName, payload);
+  } else if (callback) {
+    callback(payload);
+  }
+}
+function handleMonth(n) {
+  const months = [
+    "\u042F\u043D\u0432\u0430\u0440\u044F",
+    "\u0424\u0435\u0432\u0440\u0430\u043B\u044F",
+    "\u041C\u0430\u0440\u0442\u0430",
+    "\u0410\u043F\u0440\u0435\u043B\u044F",
+    "\u041C\u0430\u044F",
+    "\u0418\u044E\u043D\u044F",
+    "\u0418\u044E\u043B\u044F",
+    "\u0410\u0432\u0433\u0443\u0441\u0442\u0430",
+    "\u0421\u0435\u043D\u0442\u044F\u0431\u0440\u044F",
+    "\u041E\u043A\u0442\u044F\u0431\u0440\u044F",
+    "\u041D\u043E\u044F\u0431\u0440\u044F",
+    "\u0414\u0435\u043A\u0430\u0431\u0440\u044F"
+  ];
+  return months[n];
+}
+function toOrdinal(n) {
+  const ordinalNumbers = ["zero", "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth"];
+  return ordinalNumbers[n];
+}
+const messages = {
+  orderingError: {
+    name: "orderingError",
+    type: "error",
+    html: `\u041F\u0440\u043E\u0438\u0437\u043E\u0448\u043B\u0430 \u043E\u0448\u0438\u0431\u043A\u0430 \u043F\u0440\u0438 \u043E\u0444\u043E\u0440\u043C\u043B\u0435\u043D\u0438\u0438 \u0437\u0430\u043A\u0430\u0437\u0430. \u041F\u043E\u043F\u0440\u043E\u0431\u0443\u0439\u0442\u0435
+    \u0441\u043D\u043E\u0432\u0430`
+  },
+  notSelectPaymentMethod: {
+    name: "notSelectPaymentMethod",
+    type: "error",
+    html: "\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u043C\u0435\u0442\u043E\u0434 \u043E\u043F\u043B\u0430\u0442\u044B"
+  },
+  notSelectProductSize: {
+    name: "notSelectProductSize",
+    type: "error",
+    html: "\u041D\u0435\u043E\u0431\u0445\u043E\u0434\u0438\u043C\u043E \u0432\u044B\u0431\u0440\u0430\u0442\u044C \u0440\u0430\u0437\u043C\u0435\u0440."
+  },
+  allError: {
+    name: "allError",
+    type: "error",
+    html: "\u041F\u0440\u043E\u0438\u0437\u043E\u0448\u043B\u0430 \u043E\u0448\u0438\u0431\u043A\u0430 \u043F\u0440\u0438 \u0432\u044B\u043F\u043E\u043B\u043D\u0435\u043D\u0438\u0438 \u043E\u043F\u0435\u0440\u0430\u0446\u0438\u0438"
+  },
+  productAddedToWishlist: {
+    name: "productAddedToWishlist",
+    type: "success",
+    html: "\u0422\u043E\u0432\u0430\u0440 \u0434\u043E\u0431\u0430\u0432\u043B\u0435\u043D \u0432 \u0412\u0430\u0448 \u0441\u043F\u0438\u0441\u043E\u043A \u0436\u0435\u043B\u0430\u043D\u0438\u0439."
+  },
+  currentPaymentURLNotSet: {
+    name: "currentPaymentURLNotSet",
+    type: "error",
+    html: "\u0421\u0441\u044B\u043B\u043A\u0430 \u043D\u0430 \u0441\u0442\u0440\u0430\u043D\u0438\u0446\u0443 \u043E\u043F\u043B\u0430\u0442\u044B \u043D\u0435 \u0431\u044B\u043B\u0430 \u043F\u043E\u043B\u0443\u0447\u0435\u043D\u0430."
+  },
+  productAddedToCart: {
+    name: "productAddedToCart",
+    type: "success",
+    html: "\u0422\u043E\u0432\u0430\u0440 \u0434\u043E\u0431\u0430\u0432\u043B\u0435\u043D \u0432 \u043A\u043E\u0440\u0437\u0438\u043D\u0443."
+  }
+};
+const common = {
+  namespaced: true,
+  state: () => ({
+    settings: {},
+    scrollY: null,
+    scrollFlag: true,
+    browserReady: false,
+    windowWidth: null,
+    breakpoint: "",
+    progressLoad: {
+      visible: false,
+      percent: 0
+    },
+    progress: [],
+    message: null,
+    openings: {
+      basic: {},
+      revealing: {},
+      popup: {},
+      catalogRevealing: {},
+      spoiler: {}
+    }
+  }),
+  getters: {},
+  mutations: {
+    addOpening(state2, item) {
+      if (has(state2.openings[item.type], item.name)) {
+        return;
+      }
+      const element = {
+        name: item.name,
+        active: item.active !== void 0 ? item.active : false,
+        default: item.default !== void 0 ? item.default : true
+      };
+      state2.openings[item.type][element.name] = element;
+    },
+    setRevealing(state2, { name, value = null, prop = "active" }) {
+      const type = "revealing";
+      togglerOpening(name, prop, value, state2, type);
+    },
+    setPopup(state2, { name, value = null, prop = "active" }) {
+      const type = "popup";
+      togglerOpening(name, prop, value, state2, type);
+    },
+    setCatalogRevealing(state2, { name, value = null, prop = "active" }) {
+      const type = "catalogRevealing";
+      togglerOpening(name, prop, value, state2, type);
+    },
+    setSpoiler(state2, { name, value = null, prop = "active" }) {
+      const type = "spoiler";
+      togglerOpening(name, prop, value, state2, type);
+    },
+    setBasic(state2, { name, value = null, prop = "active" }) {
+      const type = "basic";
+      togglerOpening(name, prop, value, state2, type);
+    },
+    setAllOpeningTypeItems(state2, { type = null, value = false, prop = "active" }) {
+      const items = type !== null ? state2.openings[type] : state2.openings;
+      for (const key in items) {
+        if (has(items, key)) {
+          if (key === "basic")
+            continue;
+          const item = items[key];
+          if (type !== null) {
+            item[prop] = value;
+          } else {
+            for (const nestedKey in item) {
+              if (has(item, nestedKey)) {
+                const element = item[nestedKey];
+                element[prop] = value;
+              }
+            }
+          }
+        }
+      }
+    },
+    setMessage(state2, value) {
+      state2.message = value;
+    },
+    setScrollFlag(state2, { value, toggle = false }) {
+      state2.scrollFlag = toggle ? !value : value;
+    },
+    setWindowWidth(state2, value) {
+      state2.windowWidth = value;
+    },
+    setBreakpoint(state2, value) {
+      state2.breakpoint = value;
+    },
+    setScrollY(state2, value) {
+      state2.scrollY = value;
+    },
+    setProgressLoad(state2, value) {
+      state2.progressLoad = value;
+    },
+    setProgress(state2, value) {
+      state2.progress.push(value);
+    },
+    setBrowserReady(state2, value) {
+      state2.browserReady = value;
+    }
+  },
+  actions: {
+    updateMessage({ commit }, name) {
+      commit("setMessage", messages[name]);
+      setTimeout(() => {
+        commit("setMessage", null);
+      }, 4500);
+    },
+    updateAllOpeningTypeItems({
+      commit
+    }, { type = null, value = false, prop = "active" }) {
+      const options = { type, value, prop };
+      commit("setAllOpeningTypeItems", options);
+      if (options.value === false && options.prop === "active") {
+        commit("setScrollFlag", { value: true });
+      }
+    }
+  }
+};
+const instance$j = __INST__.state.menus.returned;
+const menus = {
+  namespaced: true,
+  state: () => ({ settings: {}, items: instance$j }),
+  getters: {
+    menu: (state2) => ({ name }) => state2.menus.items[name]
+  }
+};
+const ProductPricesNode_vue_vue_type_style_index_0_lang = "";
+const _sfc_main$T = {
   props: {
     pricesObject: Object,
     customOptions: {
@@ -24889,7 +25748,7 @@ const _sfc_main$V = {
     }
   }
 };
-function _sfc_ssrRender$V(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$T(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   var _a, _b;
   _push(`<div${ssrRenderAttrs(mergeProps({ class: "product-prices" }, _attrs))}>`);
   if ($options.haveSale && $props.customOptions.percentSale) {
@@ -24917,15 +25776,15 @@ function _sfc_ssrRender$V(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
   }
   _push(`</div></div></div>`);
 }
-const _sfc_setup$V = _sfc_main$V.setup;
-_sfc_main$V.setup = (props, ctx) => {
+const _sfc_setup$T = _sfc_main$T.setup;
+_sfc_main$T.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/product/ProductPricesNode.vue");
-  return _sfc_setup$V ? _sfc_setup$V(props, ctx) : void 0;
+  return _sfc_setup$T ? _sfc_setup$T(props, ctx) : void 0;
 };
-const ProductPricesNode = /* @__PURE__ */ _export_sfc(_sfc_main$V, [["ssrRender", _sfc_ssrRender$V]]);
+const ProductPricesNode = /* @__PURE__ */ _export_sfc(_sfc_main$T, [["ssrRender", _sfc_ssrRender$T]]);
 const ButtonWishlistNode_vue_vue_type_style_index_0_scoped_0cf77e9e_lang = "";
-const _sfc_main$U = {
+const _sfc_main$S = {
   props: {
     resolver: Object
   },
@@ -24936,22 +25795,22 @@ const _sfc_main$U = {
     };
   }
 };
-function _sfc_ssrRender$U(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$S(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   const _component_ButtonNode = resolveComponent("ButtonNode");
   _push(ssrRenderComponent(_component_ButtonNode, mergeProps({
     resolver: $props.resolver,
     class: $setup.productContanedInWishlist ? "icon-wishlist-fill" : "icon-wishlist"
   }, _attrs), null, _parent));
 }
-const _sfc_setup$U = _sfc_main$U.setup;
-_sfc_main$U.setup = (props, ctx) => {
+const _sfc_setup$S = _sfc_main$S.setup;
+_sfc_main$S.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/product/ButtonWishlistNode.vue");
-  return _sfc_setup$U ? _sfc_setup$U(props, ctx) : void 0;
+  return _sfc_setup$S ? _sfc_setup$S(props, ctx) : void 0;
 };
-const ButtonWishlistNode = /* @__PURE__ */ _export_sfc(_sfc_main$U, [["ssrRender", _sfc_ssrRender$U], ["__scopeId", "data-v-0cf77e9e"]]);
+const ButtonWishlistNode = /* @__PURE__ */ _export_sfc(_sfc_main$S, [["ssrRender", _sfc_ssrRender$S], ["__scopeId", "data-v-0cf77e9e"]]);
 const ProductNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$T = {
+const _sfc_main$R = {
   components: {
     ProductPricesNode,
     ButtonWishlistNode
@@ -25002,7 +25861,7 @@ const _sfc_main$T = {
     ...mapMutations({}),
     ...mapActions({
       updateWishlist: "wishlist/updateWishlist",
-      routeToSingle: "products/routeToSingle"
+      routeToSingleProduct: "products/routeToSingleProduct"
     }),
     colorsRGB() {
       if (isEmpty(this.product))
@@ -25043,7 +25902,7 @@ const _sfc_main$T = {
     }
   }
 };
-function _sfc_ssrRender$T(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$R(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   const _component_PreloadWrapNode = resolveComponent("PreloadWrapNode");
   const _component_ProductPricesNode = resolveComponent("ProductPricesNode");
   const _component_ButtonWishlistNode = resolveComponent("ButtonWishlistNode");
@@ -25093,7 +25952,7 @@ function _sfc_ssrRender$T(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
             createVNode("div", { class: "product__body" }, [
               createVNode("div", {
                 class: "product__image",
-                onClick: ($event) => _ctx.routeToSingle($props.product)
+                onClick: ($event) => _ctx.routeToSingleProduct($props.product)
               }, [
                 ((_e = $props.product.images) == null ? void 0 : _e[3]) ? (openBlock(), createBlock("img", {
                   key: 0,
@@ -25110,7 +25969,7 @@ function _sfc_ssrRender$T(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
                 createVNode("div", { class: "product__brand" }, toDisplayString($options.brand(1)), 1),
                 createVNode("h3", {
                   class: "product__title",
-                  onClick: ($event) => _ctx.routeToSingle($props.product)
+                  onClick: ($event) => _ctx.routeToSingleProduct($props.product)
                 }, [
                   createVNode("button", null, toDisplayString($props.product.name), 1)
                 ], 8, ["onClick"]),
@@ -25148,32 +26007,32 @@ function _sfc_ssrRender$T(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
     _: 1
   }, _parent));
 }
-const _sfc_setup$T = _sfc_main$T.setup;
-_sfc_main$T.setup = (props, ctx) => {
+const _sfc_setup$R = _sfc_main$R.setup;
+_sfc_main$R.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/ProductNode.vue");
-  return _sfc_setup$T ? _sfc_setup$T(props, ctx) : void 0;
+  return _sfc_setup$R ? _sfc_setup$R(props, ctx) : void 0;
 };
-const ProductNode = /* @__PURE__ */ _export_sfc(_sfc_main$T, [["ssrRender", _sfc_ssrRender$T]]);
+const ProductNode = /* @__PURE__ */ _export_sfc(_sfc_main$R, [["ssrRender", _sfc_ssrRender$R]]);
 const ArrowsSliderNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$S = {
+const _sfc_main$Q = {
   props: {
     slug: String
   }
 };
-function _sfc_ssrRender$S(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$Q(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   _push(`<div${ssrRenderAttrs(mergeProps({ class: "slider-arrows" }, _attrs))}><div class="${ssrRenderClass(`slider-arrows__arrow slider-arrows__arrow_prev ${$props.slug}__arrow_prev icon-arrow`)}"></div><div class="${ssrRenderClass(`slider-arrows__arrow slider-arrows__arrow_next ${$props.slug}__arrow_next icon-arrow`)}"></div></div>`);
 }
-const _sfc_setup$S = _sfc_main$S.setup;
-_sfc_main$S.setup = (props, ctx) => {
+const _sfc_setup$Q = _sfc_main$Q.setup;
+_sfc_main$Q.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/sliders/ArrowsSliderNode.vue");
-  return _sfc_setup$S ? _sfc_setup$S(props, ctx) : void 0;
+  return _sfc_setup$Q ? _sfc_setup$Q(props, ctx) : void 0;
 };
-const ArrowsSliderNode = /* @__PURE__ */ _export_sfc(_sfc_main$S, [["ssrRender", _sfc_ssrRender$S]]);
+const ArrowsSliderNode = /* @__PURE__ */ _export_sfc(_sfc_main$Q, [["ssrRender", _sfc_ssrRender$Q]]);
 const swiper_min = "";
 const SliderProductsNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$R = {
+const _sfc_main$P = {
   components: {
     Swiper,
     SwiperSlide,
@@ -25226,7 +26085,7 @@ const _sfc_main$R = {
     }
   }
 };
-function _sfc_ssrRender$R(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$P(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   const _component_ArrowsSliderNode = resolveComponent("ArrowsSliderNode");
   const _component_Swiper = resolveComponent("Swiper");
   const _component_SwiperSlide = resolveComponent("SwiperSlide");
@@ -25290,15 +26149,15 @@ function _sfc_ssrRender$R(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
   }, _parent));
   _push(`</div>`);
 }
-const _sfc_setup$R = _sfc_main$R.setup;
-_sfc_main$R.setup = (props, ctx) => {
+const _sfc_setup$P = _sfc_main$P.setup;
+_sfc_main$P.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/sliders/SliderProductsNode.vue");
-  return _sfc_setup$R ? _sfc_setup$R(props, ctx) : void 0;
+  return _sfc_setup$P ? _sfc_setup$P(props, ctx) : void 0;
 };
-const SliderProductsNode = /* @__PURE__ */ _export_sfc(_sfc_main$R, [["ssrRender", _sfc_ssrRender$R]]);
+const SliderProductsNode = /* @__PURE__ */ _export_sfc(_sfc_main$P, [["ssrRender", _sfc_ssrRender$P]]);
 const SliderProductsSectionNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$Q = {
+const _sfc_main$O = {
   components: {
     SliderProductsNode
   },
@@ -25310,8 +26169,9 @@ const _sfc_main$Q = {
     slug: String
   },
   setup() {
+    const store2 = useStore();
     return {
-      routeToCategory
+      routeToSingleProductCategory: (value) => store2.dispatch("productsCategories/routeToSingleProductCategory", value)
     };
   },
   computed: {
@@ -25345,16 +26205,9 @@ const _sfc_main$Q = {
         id: this.productsCategoryId
       });
     }
-  },
-  created() {
-  },
-  methods: {
-    ...mapActions({
-      getItems: "getItems"
-    })
   }
 };
-function _sfc_ssrRender$Q(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$O(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   const _component_ContainerNode = resolveComponent("ContainerNode");
   const _component_SliderProductsNode = resolveComponent("SliderProductsNode");
   _push(`<section${ssrRenderAttrs(mergeProps({ class: "slider-products-section" }, _attrs))}>`);
@@ -25374,7 +26227,7 @@ function _sfc_ssrRender$Q(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
           createVNode("div", { class: "slider-products-section__body" }, [
             createVNode("h2", { class: "slider-products-section__title" }, [
               createVNode("button", {
-                onClick: ($event) => $setup.routeToCategory($options.productsCategory)
+                onClick: ($event) => $setup.routeToSingleProductCategory($options.productsCategory)
               }, toDisplayString($props.title), 9, ["onClick"])
             ]),
             createVNode(_component_SliderProductsNode, {
@@ -25391,18 +26244,18 @@ function _sfc_ssrRender$Q(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
   }, _parent));
   _push(`</section>`);
 }
-const _sfc_setup$Q = _sfc_main$Q.setup;
-_sfc_main$Q.setup = (props, ctx) => {
+const _sfc_setup$O = _sfc_main$O.setup;
+_sfc_main$O.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/sliders/SliderProductsSectionNode.vue");
-  return _sfc_setup$Q ? _sfc_setup$Q(props, ctx) : void 0;
+  return _sfc_setup$O ? _sfc_setup$O(props, ctx) : void 0;
 };
-const SliderProductsSectionNode = /* @__PURE__ */ _export_sfc(_sfc_main$Q, [["ssrRender", _sfc_ssrRender$Q]]);
+const SliderProductsSectionNode = /* @__PURE__ */ _export_sfc(_sfc_main$O, [["ssrRender", _sfc_ssrRender$O]]);
 const navigation_min = "";
 const pagination_min = "";
 const autoplay_min = "";
 const SliderBannersNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$P = {
+const _sfc_main$N = {
   components: {
     Swiper,
     SwiperSlide,
@@ -25418,13 +26271,13 @@ const _sfc_main$P = {
     }
   },
   setup() {
-    const onSwiper = () => {
-    };
-    const onSlideChange = () => {
+    const loaded = ref(false);
+    const onSwiper = (swiper) => {
+      loaded.value = true;
     };
     return {
+      loaded,
       onSwiper,
-      onSlideChange,
       modules: [Navigation, Pagination, Autoplay, FreeMode]
     };
   },
@@ -25454,12 +26307,7 @@ const _sfc_main$P = {
           return approved;
         }
       );
-    },
-    mediaBanners() {
-      return this.itemsInclude(this.mediaRequest, this.mediaIds());
     }
-  },
-  created() {
   },
   methods: {
     ...mapActions({
@@ -25469,270 +26317,324 @@ const _sfc_main$P = {
       SET_INCLUDE: "SET_INCLUDE",
       setBannerCategoriesIds: "banners/setBannerCategoriesIds"
     }),
-    async getBanners() {
-      this.setBannerCategoriesIds(this.bannerCategoryId);
-      const banners2 = await this.getItems({
-        basedRequest: this.bannersRequest
-      });
-      if (isEmpty(banners2.response))
-        return;
-      this.SET_INCLUDE({
-        type: this.mediaRequest.type,
-        value: this.mediaIds()
-      });
-    },
     bannerOneMedia(value) {
-      let item;
-      {
-        item = this.singleById({ type: this.mediaRequest.type, id: value });
-      }
+      const item = this.singleById({ type: this.mediaRequest.type, id: value });
       return item.guid.rendered || "";
-    },
-    bannersIds() {
-      const request = this.requestByParam(this.bannersRequest, {
-        param: "banner_categories",
-        value: this.bannerCategoryId
-      });
-      return request == null ? void 0 : request.data;
-    },
-    mediaIds() {
-      return this.mapItemsByKey(this.bannersRequest, "featured_media");
     }
   }
 };
-function _sfc_ssrRender$P(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$N(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  const _component_PreloadWrapNode = resolveComponent("PreloadWrapNode");
   const _component_ContainerNode = resolveComponent("ContainerNode");
   const _component_ArrowsSliderNode = resolveComponent("ArrowsSliderNode");
   const _component_Swiper = resolveComponent("Swiper");
   const _component_SwiperSlide = resolveComponent("SwiperSlide");
-  const _component_PreloadWrapNode = resolveComponent("PreloadWrapNode");
-  _push(`<section${ssrRenderAttrs(mergeProps({
-    class: ["slider-banners", _ctx.$attrs.class]
-  }, _attrs))}>`);
-  _push(ssrRenderComponent(_component_ContainerNode, { containerStylesOff: $props.containerStylesOff }, {
+  _push(ssrRenderComponent(_component_PreloadWrapNode, mergeProps({
+    targetPreloadElement: !$setup.loaded
+  }, _attrs), {
     default: withCtx((_, _push2, _parent2, _scopeId) => {
-      var _a, _b;
       if (_push2) {
-        _push2(`<div class="slider-banners__body"${_scopeId}><div class="slider-banners__items"${_scopeId}>`);
-        ssrRenderSlot(_ctx.$slots, "banner-category-name", {}, null, _push2, _parent2, _scopeId);
-        _push2(ssrRenderComponent(_component_ArrowsSliderNode, {
-          style: ((_a = $options.banners) == null ? void 0 : _a.length) !== 0 ? null : { display: "none" },
-          slug: $props.slug
-        }, null, _parent2, _scopeId));
-        _push2(`</div>`);
-        _push2(ssrRenderComponent(_component_Swiper, mergeProps(_ctx.$attrs, {
-          modules: $setup.modules,
-          loop: true,
-          navigation: {
-            prevEl: `.${$props.slug}__arrow_prev`,
-            nextEl: `.${$props.slug}__arrow_next`
-          },
-          freeMode: {
-            enabled: true,
-            sticky: true
-          },
-          onSwiper: $setup.onSwiper,
-          onSlideChange: $setup.onSlideChange
-        }), {
+        _push2(`<section class="${ssrRenderClass([_ctx.$attrs.class, "slider-banners"])}"${_scopeId}>`);
+        _push2(ssrRenderComponent(_component_ContainerNode, { containerStylesOff: $props.containerStylesOff }, {
           default: withCtx((_2, _push3, _parent3, _scopeId2) => {
+            var _a, _b;
             if (_push3) {
-              _push3(`<!--[-->`);
-              ssrRenderList($options.banners, (banner) => {
-                _push3(ssrRenderComponent(_component_SwiperSlide, {
-                  key: banner.id,
-                  onClick: ($event) => _ctx.$router.push("/blog-page")
-                }, {
-                  default: withCtx((_3, _push4, _parent4, _scopeId3) => {
-                    if (_push4) {
-                      _push4(ssrRenderComponent(_component_PreloadWrapNode, {
-                        targetPreloadElement: $options.bannerOneMedia(banner.featured_media)
+              _push3(`<div class="slider-banners__body"${_scopeId2}><div class="slider-banners__items"${_scopeId2}>`);
+              ssrRenderSlot(_ctx.$slots, "banner-category-name", {}, null, _push3, _parent3, _scopeId2);
+              _push3(ssrRenderComponent(_component_ArrowsSliderNode, {
+                style: ((_a = $options.banners) == null ? void 0 : _a.length) !== 0 ? null : { display: "none" },
+                slug: $props.slug
+              }, null, _parent3, _scopeId2));
+              _push3(`</div>`);
+              _push3(ssrRenderComponent(_component_Swiper, mergeProps(_ctx.$attrs, {
+                modules: $setup.modules,
+                loop: true,
+                navigation: {
+                  prevEl: `.${$props.slug}__arrow_prev`,
+                  nextEl: `.${$props.slug}__arrow_next`
+                },
+                freeMode: {
+                  enabled: true,
+                  sticky: true
+                },
+                onSwiper: $setup.onSwiper
+              }), {
+                default: withCtx((_3, _push4, _parent4, _scopeId3) => {
+                  if (_push4) {
+                    _push4(`<!--[-->`);
+                    ssrRenderList($options.banners, (banner) => {
+                      _push4(ssrRenderComponent(_component_SwiperSlide, {
+                        key: banner.id,
+                        onClick: ($event) => _ctx.$router.push("/")
                       }, {
                         default: withCtx((_4, _push5, _parent5, _scopeId4) => {
                           if (_push5) {
-                            _push5(`<div class="slider-banners__image"${_scopeId4}><picture${_scopeId4}><source srcset="" type="image/webp"${_scopeId4}><source srcset="" type="image/jpeg"${_scopeId4}><img${ssrRenderAttr("src", $options.bannerOneMedia(banner.featured_media))} alt=""${_scopeId4}></picture></div>`);
-                            ssrRenderSlot(_ctx.$slots, "banner-title", { banner }, null, _push5, _parent5, _scopeId4);
+                            _push5(ssrRenderComponent(_component_PreloadWrapNode, {
+                              targetPreloadElement: $options.bannerOneMedia(banner.featured_media)
+                            }, {
+                              default: withCtx((_5, _push6, _parent6, _scopeId5) => {
+                                if (_push6) {
+                                  _push6(`<div class="slider-banners__image"${_scopeId5}><picture${_scopeId5}><source srcset="" type="image/webp"${_scopeId5}><source srcset="" type="image/jpeg"${_scopeId5}><img${ssrRenderAttr("src", $options.bannerOneMedia(banner.featured_media))} alt=""${_scopeId5}></picture></div>`);
+                                  ssrRenderSlot(_ctx.$slots, "banner-title", { banner }, null, _push6, _parent6, _scopeId5);
+                                } else {
+                                  return [
+                                    createVNode("div", { class: "slider-banners__image" }, [
+                                      createVNode("picture", null, [
+                                        createVNode("source", {
+                                          srcset: "",
+                                          type: "image/webp"
+                                        }),
+                                        createVNode("source", {
+                                          srcset: "",
+                                          type: "image/jpeg"
+                                        }),
+                                        createVNode("img", {
+                                          src: $options.bannerOneMedia(banner.featured_media),
+                                          alt: ""
+                                        }, null, 8, ["src"])
+                                      ])
+                                    ]),
+                                    renderSlot(_ctx.$slots, "banner-title", { banner })
+                                  ];
+                                }
+                              }),
+                              _: 2
+                            }, _parent5, _scopeId4));
                           } else {
                             return [
-                              createVNode("div", { class: "slider-banners__image" }, [
-                                createVNode("picture", null, [
-                                  createVNode("source", {
-                                    srcset: "",
-                                    type: "image/webp"
-                                  }),
-                                  createVNode("source", {
-                                    srcset: "",
-                                    type: "image/jpeg"
-                                  }),
-                                  createVNode("img", {
-                                    src: $options.bannerOneMedia(banner.featured_media),
-                                    alt: ""
-                                  }, null, 8, ["src"])
-                                ])
-                              ]),
-                              renderSlot(_ctx.$slots, "banner-title", { banner })
+                              createVNode(_component_PreloadWrapNode, {
+                                targetPreloadElement: $options.bannerOneMedia(banner.featured_media)
+                              }, {
+                                default: withCtx(() => [
+                                  createVNode("div", { class: "slider-banners__image" }, [
+                                    createVNode("picture", null, [
+                                      createVNode("source", {
+                                        srcset: "",
+                                        type: "image/webp"
+                                      }),
+                                      createVNode("source", {
+                                        srcset: "",
+                                        type: "image/jpeg"
+                                      }),
+                                      createVNode("img", {
+                                        src: $options.bannerOneMedia(banner.featured_media),
+                                        alt: ""
+                                      }, null, 8, ["src"])
+                                    ])
+                                  ]),
+                                  renderSlot(_ctx.$slots, "banner-title", { banner })
+                                ]),
+                                _: 2
+                              }, 1032, ["targetPreloadElement"])
                             ];
                           }
                         }),
                         _: 2
                       }, _parent4, _scopeId3));
-                    } else {
-                      return [
-                        createVNode(_component_PreloadWrapNode, {
-                          targetPreloadElement: $options.bannerOneMedia(banner.featured_media)
+                    });
+                    _push4(`<!--]-->`);
+                  } else {
+                    return [
+                      (openBlock(true), createBlock(Fragment, null, renderList($options.banners, (banner) => {
+                        return openBlock(), createBlock(_component_SwiperSlide, {
+                          key: banner.id,
+                          onClick: ($event) => _ctx.$router.push("/")
                         }, {
                           default: withCtx(() => [
-                            createVNode("div", { class: "slider-banners__image" }, [
-                              createVNode("picture", null, [
-                                createVNode("source", {
-                                  srcset: "",
-                                  type: "image/webp"
-                                }),
-                                createVNode("source", {
-                                  srcset: "",
-                                  type: "image/jpeg"
-                                }),
-                                createVNode("img", {
-                                  src: $options.bannerOneMedia(banner.featured_media),
-                                  alt: ""
-                                }, null, 8, ["src"])
-                              ])
-                            ]),
-                            renderSlot(_ctx.$slots, "banner-title", { banner })
+                            createVNode(_component_PreloadWrapNode, {
+                              targetPreloadElement: $options.bannerOneMedia(banner.featured_media)
+                            }, {
+                              default: withCtx(() => [
+                                createVNode("div", { class: "slider-banners__image" }, [
+                                  createVNode("picture", null, [
+                                    createVNode("source", {
+                                      srcset: "",
+                                      type: "image/webp"
+                                    }),
+                                    createVNode("source", {
+                                      srcset: "",
+                                      type: "image/jpeg"
+                                    }),
+                                    createVNode("img", {
+                                      src: $options.bannerOneMedia(banner.featured_media),
+                                      alt: ""
+                                    }, null, 8, ["src"])
+                                  ])
+                                ]),
+                                renderSlot(_ctx.$slots, "banner-title", { banner })
+                              ]),
+                              _: 2
+                            }, 1032, ["targetPreloadElement"])
                           ]),
                           _: 2
-                        }, 1032, ["targetPreloadElement"])
-                      ];
-                    }
-                  }),
-                  _: 2
-                }, _parent3, _scopeId2));
-              });
-              _push3(`<!--]-->`);
+                        }, 1032, ["onClick"]);
+                      }), 128))
+                    ];
+                  }
+                }),
+                _: 3
+              }, _parent3, _scopeId2));
+              _push3(`</div>`);
             } else {
               return [
-                (openBlock(true), createBlock(Fragment, null, renderList($options.banners, (banner) => {
-                  return openBlock(), createBlock(_component_SwiperSlide, {
-                    key: banner.id,
-                    onClick: ($event) => _ctx.$router.push("/blog-page")
-                  }, {
+                createVNode("div", { class: "slider-banners__body" }, [
+                  createVNode("div", { class: "slider-banners__items" }, [
+                    renderSlot(_ctx.$slots, "banner-category-name"),
+                    withDirectives(createVNode(_component_ArrowsSliderNode, { slug: $props.slug }, null, 8, ["slug"]), [
+                      [vShow, ((_b = $options.banners) == null ? void 0 : _b.length) !== 0]
+                    ])
+                  ]),
+                  createVNode(_component_Swiper, mergeProps(_ctx.$attrs, {
+                    modules: $setup.modules,
+                    loop: true,
+                    navigation: {
+                      prevEl: `.${$props.slug}__arrow_prev`,
+                      nextEl: `.${$props.slug}__arrow_next`
+                    },
+                    freeMode: {
+                      enabled: true,
+                      sticky: true
+                    },
+                    onSwiper: $setup.onSwiper
+                  }), {
                     default: withCtx(() => [
-                      createVNode(_component_PreloadWrapNode, {
-                        targetPreloadElement: $options.bannerOneMedia(banner.featured_media)
-                      }, {
-                        default: withCtx(() => [
-                          createVNode("div", { class: "slider-banners__image" }, [
-                            createVNode("picture", null, [
-                              createVNode("source", {
-                                srcset: "",
-                                type: "image/webp"
-                              }),
-                              createVNode("source", {
-                                srcset: "",
-                                type: "image/jpeg"
-                              }),
-                              createVNode("img", {
-                                src: $options.bannerOneMedia(banner.featured_media),
-                                alt: ""
-                              }, null, 8, ["src"])
-                            ])
+                      (openBlock(true), createBlock(Fragment, null, renderList($options.banners, (banner) => {
+                        return openBlock(), createBlock(_component_SwiperSlide, {
+                          key: banner.id,
+                          onClick: ($event) => _ctx.$router.push("/")
+                        }, {
+                          default: withCtx(() => [
+                            createVNode(_component_PreloadWrapNode, {
+                              targetPreloadElement: $options.bannerOneMedia(banner.featured_media)
+                            }, {
+                              default: withCtx(() => [
+                                createVNode("div", { class: "slider-banners__image" }, [
+                                  createVNode("picture", null, [
+                                    createVNode("source", {
+                                      srcset: "",
+                                      type: "image/webp"
+                                    }),
+                                    createVNode("source", {
+                                      srcset: "",
+                                      type: "image/jpeg"
+                                    }),
+                                    createVNode("img", {
+                                      src: $options.bannerOneMedia(banner.featured_media),
+                                      alt: ""
+                                    }, null, 8, ["src"])
+                                  ])
+                                ]),
+                                renderSlot(_ctx.$slots, "banner-title", { banner })
+                              ]),
+                              _: 2
+                            }, 1032, ["targetPreloadElement"])
                           ]),
-                          renderSlot(_ctx.$slots, "banner-title", { banner })
-                        ]),
-                        _: 2
-                      }, 1032, ["targetPreloadElement"])
+                          _: 2
+                        }, 1032, ["onClick"]);
+                      }), 128))
                     ]),
-                    _: 2
-                  }, 1032, ["onClick"]);
-                }), 128))
+                    _: 3
+                  }, 16, ["modules", "navigation", "onSwiper"])
+                ])
               ];
             }
           }),
           _: 3
         }, _parent2, _scopeId));
-        _push2(`</div>`);
+        _push2(`</section>`);
       } else {
         return [
-          createVNode("div", { class: "slider-banners__body" }, [
-            createVNode("div", { class: "slider-banners__items" }, [
-              renderSlot(_ctx.$slots, "banner-category-name"),
-              withDirectives(createVNode(_component_ArrowsSliderNode, { slug: $props.slug }, null, 8, ["slug"]), [
-                [vShow, ((_b = $options.banners) == null ? void 0 : _b.length) !== 0]
-              ])
-            ]),
-            createVNode(_component_Swiper, mergeProps(_ctx.$attrs, {
-              modules: $setup.modules,
-              loop: true,
-              navigation: {
-                prevEl: `.${$props.slug}__arrow_prev`,
-                nextEl: `.${$props.slug}__arrow_next`
-              },
-              freeMode: {
-                enabled: true,
-                sticky: true
-              },
-              onSwiper: $setup.onSwiper,
-              onSlideChange: $setup.onSlideChange
-            }), {
-              default: withCtx(() => [
-                (openBlock(true), createBlock(Fragment, null, renderList($options.banners, (banner) => {
-                  return openBlock(), createBlock(_component_SwiperSlide, {
-                    key: banner.id,
-                    onClick: ($event) => _ctx.$router.push("/blog-page")
-                  }, {
-                    default: withCtx(() => [
-                      createVNode(_component_PreloadWrapNode, {
-                        targetPreloadElement: $options.bannerOneMedia(banner.featured_media)
-                      }, {
-                        default: withCtx(() => [
-                          createVNode("div", { class: "slider-banners__image" }, [
-                            createVNode("picture", null, [
-                              createVNode("source", {
-                                srcset: "",
-                                type: "image/webp"
-                              }),
-                              createVNode("source", {
-                                srcset: "",
-                                type: "image/jpeg"
-                              }),
-                              createVNode("img", {
-                                src: $options.bannerOneMedia(banner.featured_media),
-                                alt: ""
-                              }, null, 8, ["src"])
-                            ])
-                          ]),
-                          renderSlot(_ctx.$slots, "banner-title", { banner })
-                        ]),
-                        _: 2
-                      }, 1032, ["targetPreloadElement"])
+          createVNode("section", {
+            class: ["slider-banners", _ctx.$attrs.class]
+          }, [
+            createVNode(_component_ContainerNode, { containerStylesOff: $props.containerStylesOff }, {
+              default: withCtx(() => {
+                var _a;
+                return [
+                  createVNode("div", { class: "slider-banners__body" }, [
+                    createVNode("div", { class: "slider-banners__items" }, [
+                      renderSlot(_ctx.$slots, "banner-category-name"),
+                      withDirectives(createVNode(_component_ArrowsSliderNode, { slug: $props.slug }, null, 8, ["slug"]), [
+                        [vShow, ((_a = $options.banners) == null ? void 0 : _a.length) !== 0]
+                      ])
                     ]),
-                    _: 2
-                  }, 1032, ["onClick"]);
-                }), 128))
-              ]),
+                    createVNode(_component_Swiper, mergeProps(_ctx.$attrs, {
+                      modules: $setup.modules,
+                      loop: true,
+                      navigation: {
+                        prevEl: `.${$props.slug}__arrow_prev`,
+                        nextEl: `.${$props.slug}__arrow_next`
+                      },
+                      freeMode: {
+                        enabled: true,
+                        sticky: true
+                      },
+                      onSwiper: $setup.onSwiper
+                    }), {
+                      default: withCtx(() => [
+                        (openBlock(true), createBlock(Fragment, null, renderList($options.banners, (banner) => {
+                          return openBlock(), createBlock(_component_SwiperSlide, {
+                            key: banner.id,
+                            onClick: ($event) => _ctx.$router.push("/")
+                          }, {
+                            default: withCtx(() => [
+                              createVNode(_component_PreloadWrapNode, {
+                                targetPreloadElement: $options.bannerOneMedia(banner.featured_media)
+                              }, {
+                                default: withCtx(() => [
+                                  createVNode("div", { class: "slider-banners__image" }, [
+                                    createVNode("picture", null, [
+                                      createVNode("source", {
+                                        srcset: "",
+                                        type: "image/webp"
+                                      }),
+                                      createVNode("source", {
+                                        srcset: "",
+                                        type: "image/jpeg"
+                                      }),
+                                      createVNode("img", {
+                                        src: $options.bannerOneMedia(banner.featured_media),
+                                        alt: ""
+                                      }, null, 8, ["src"])
+                                    ])
+                                  ]),
+                                  renderSlot(_ctx.$slots, "banner-title", { banner })
+                                ]),
+                                _: 2
+                              }, 1032, ["targetPreloadElement"])
+                            ]),
+                            _: 2
+                          }, 1032, ["onClick"]);
+                        }), 128))
+                      ]),
+                      _: 3
+                    }, 16, ["modules", "navigation", "onSwiper"])
+                  ])
+                ];
+              }),
               _: 3
-            }, 16, ["modules", "navigation", "onSwiper", "onSlideChange"])
-          ])
+            }, 8, ["containerStylesOff"])
+          ], 2)
         ];
       }
     }),
     _: 3
   }, _parent));
-  _push(`</section>`);
 }
-const _sfc_setup$P = _sfc_main$P.setup;
-_sfc_main$P.setup = (props, ctx) => {
+const _sfc_setup$N = _sfc_main$N.setup;
+_sfc_main$N.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/sliders/SliderBannersNode.vue");
-  return _sfc_setup$P ? _sfc_setup$P(props, ctx) : void 0;
+  return _sfc_setup$N ? _sfc_setup$N(props, ctx) : void 0;
 };
-const SliderBannersNode = /* @__PURE__ */ _export_sfc(_sfc_main$P, [["ssrRender", _sfc_ssrRender$P]]);
+const SliderBannersNode = /* @__PURE__ */ _export_sfc(_sfc_main$N, [["ssrRender", _sfc_ssrRender$N]]);
 const SliderBannersFashionBlogNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$O = {
+const _sfc_main$M = {
   components: {
     SliderBannersNode
   }
 };
-function _sfc_ssrRender$O(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$M(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   const _component_SliderBannersNode = resolveComponent("SliderBannersNode");
   _push(ssrRenderComponent(_component_SliderBannersNode, mergeProps({
     class: "slider-banners-fashion-blog",
@@ -25752,12 +26654,12 @@ function _sfc_ssrRender$O(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
   }, _attrs), {
     "banner-category-name": withCtx((_, _push2, _parent2, _scopeId) => {
       if (_push2) {
-        _push2(`<div class="slider-banners-fashion-blog__title"${_scopeId}> Fashion-\u0431\u043B\u043E\u0433 </div>`);
+        _push2(`<h2 class="slider-banners-fashion-blog__title"${_scopeId}> Fashion-\u0431\u043B\u043E\u0433 </h2>`);
       } else {
         return [
-          createVNode("div", {
+          createVNode("h2", {
             class: "slider-banners-fashion-blog__title",
-            onClick: ($event) => _ctx.$router.push("/blog-page")
+            onClick: ($event) => _ctx.$router.push("/")
           }, " Fashion-\u0431\u043B\u043E\u0433 ", 8, ["onClick"])
         ];
       }
@@ -25769,7 +26671,7 @@ function _sfc_ssrRender$O(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
         return [
           createVNode("div", {
             class: "slider-banners-fashion-blog__banner-title",
-            onClick: ($event) => _ctx.$router.push("/blog-page")
+            onClick: ($event) => _ctx.$router.push("/")
           }, toDisplayString(bannerTitleProps.banner.title.rendered), 9, ["onClick"])
         ];
       }
@@ -25777,44 +26679,50 @@ function _sfc_ssrRender$O(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
     _: 1
   }, _parent));
 }
-const _sfc_setup$O = _sfc_main$O.setup;
-_sfc_main$O.setup = (props, ctx) => {
+const _sfc_setup$M = _sfc_main$M.setup;
+_sfc_main$M.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/sliders/SliderBannersFashionBlogNode.vue");
-  return _sfc_setup$O ? _sfc_setup$O(props, ctx) : void 0;
+  return _sfc_setup$M ? _sfc_setup$M(props, ctx) : void 0;
 };
-const SliderBannersFashionBlogNode = /* @__PURE__ */ _export_sfc(_sfc_main$O, [["ssrRender", _sfc_ssrRender$O]]);
+const SliderBannersFashionBlogNode = /* @__PURE__ */ _export_sfc(_sfc_main$M, [["ssrRender", _sfc_ssrRender$M]]);
 const PageContentNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$N = {
-  components: {},
+const _sfc_main$L = {
   props: {
-    page: Object
+    page: [String, Object]
+  },
+  setup(props) {
+    const store2 = useStore();
+    const handledPage = store2.getters.universalItem({ type: store2.state.pages.basedRequest.type, value: props.page });
+    return {
+      handledPage
+    };
   }
 };
-function _sfc_ssrRender$N(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$L(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   const _component_ContainerNode = resolveComponent("ContainerNode");
   _push(`<section${ssrRenderAttrs(mergeProps({ class: "page-content" }, _attrs))}>`);
   _push(ssrRenderComponent(_component_ContainerNode, null, {
     default: withCtx((_, _push2, _parent2, _scopeId) => {
       if (_push2) {
-        if ($props.page) {
-          _push2(`<div class="page-content__body"${_scopeId}><h3 class="page-content__title"${_scopeId}>${$props.page.title.rendered}</h3><div class="page-content__content"${_scopeId}>${$props.page.content.rendered}</div></div>`);
+        if ($setup.handledPage) {
+          _push2(`<div class="page-content__body"${_scopeId}><h3 class="page-content__title"${_scopeId}>${$setup.handledPage.title.rendered}</h3><div class="page-content__content"${_scopeId}>${$setup.handledPage.content.rendered}</div></div>`);
         } else {
           _push2(`<!---->`);
         }
       } else {
         return [
-          $props.page ? (openBlock(), createBlock("div", {
+          $setup.handledPage ? (openBlock(), createBlock("div", {
             key: 0,
             class: "page-content__body"
           }, [
             createVNode("h3", {
               class: "page-content__title",
-              innerHTML: $props.page.title.rendered
+              innerHTML: $setup.handledPage.title.rendered
             }, null, 8, ["innerHTML"]),
             createVNode("div", {
               class: "page-content__content",
-              innerHTML: $props.page.content.rendered
+              innerHTML: $setup.handledPage.content.rendered
             }, null, 8, ["innerHTML"])
           ])) : createCommentVNode("", true)
         ];
@@ -25824,15 +26732,15 @@ function _sfc_ssrRender$N(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
   }, _parent));
   _push(`</section>`);
 }
-const _sfc_setup$N = _sfc_main$N.setup;
-_sfc_main$N.setup = (props, ctx) => {
+const _sfc_setup$L = _sfc_main$L.setup;
+_sfc_main$L.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/PageContentNode.vue");
-  return _sfc_setup$N ? _sfc_setup$N(props, ctx) : void 0;
+  return _sfc_setup$L ? _sfc_setup$L(props, ctx) : void 0;
 };
-const PageContentNode = /* @__PURE__ */ _export_sfc(_sfc_main$N, [["ssrRender", _sfc_ssrRender$N]]);
+const PageContentNode = /* @__PURE__ */ _export_sfc(_sfc_main$L, [["ssrRender", _sfc_ssrRender$L]]);
 const DistributionNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$M = {
+const _sfc_main$K = {
   data() {
     return {
       email: "",
@@ -25841,7 +26749,7 @@ const _sfc_main$M = {
     };
   }
 };
-function _sfc_ssrRender$M(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$K(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   const _component_ContainerNode = resolveComponent("ContainerNode");
   const _component_InputNode = resolveComponent("InputNode");
   const _component_InputCheckboxNode = resolveComponent("InputCheckboxNode");
@@ -25940,27 +26848,21 @@ function _sfc_ssrRender$M(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
   }, _parent));
   _push(`</section>`);
 }
-const _sfc_setup$M = _sfc_main$M.setup;
-_sfc_main$M.setup = (props, ctx) => {
+const _sfc_setup$K = _sfc_main$K.setup;
+_sfc_main$K.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/DistributionNode.vue");
-  return _sfc_setup$M ? _sfc_setup$M(props, ctx) : void 0;
+  return _sfc_setup$K ? _sfc_setup$K(props, ctx) : void 0;
 };
-const DistributionNode = /* @__PURE__ */ _export_sfc(_sfc_main$M, [["ssrRender", _sfc_ssrRender$M]]);
+const DistributionNode = /* @__PURE__ */ _export_sfc(_sfc_main$K, [["ssrRender", _sfc_ssrRender$K]]);
 const HomePage_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$L = {
+const _sfc_main$J = {
   components: {
     SliderProductsSectionNode,
     SliderBannersNode,
     SliderBannersFashionBlogNode,
     PageContentNode,
     DistributionNode
-  },
-  props: {
-    slug: {
-      type: String,
-      required: true
-    }
   },
   computed: {
     ...mapGetters({
@@ -25969,13 +26871,7 @@ const _sfc_main$L = {
     ...mapState({
       pagesRequest: (state2) => state2.pages.basedRequest,
       windowWidth: (state2) => state2.common.windowWidth
-    }),
-    templatePage() {
-      return this.singleBySlug({ type: this.pagesRequest.type, slug: this.slug });
-    }
-  },
-  created() {
-    this.getTemplatePage();
+    })
   },
   methods: {
     ...mapMutations({
@@ -25984,16 +26880,10 @@ const _sfc_main$L = {
     ...mapActions({
       getSingleBySlug: "getSingleBySlug",
       updateDocTitle: "updateDocTitle"
-    }),
-    async getTemplatePage() {
-      await this.getSingleBySlug({
-        basedRequest: this.pagesRequest,
-        params: { slug: this.slug }
-      });
-    }
+    })
   }
 };
-function _sfc_ssrRender$L(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$J(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   const _component_MainPageNode = resolveComponent("MainPageNode");
   const _component_SliderBannersNode = resolveComponent("SliderBannersNode");
   const _component_SliderProductsSectionNode = resolveComponent("SliderProductsSectionNode");
@@ -26011,7 +26901,6 @@ function _sfc_ssrRender$L(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
           bannerCategoryId: 68,
           containerStylesOff: _ctx.windowWidth < 1024 ? true : false,
           slug: "slider-banners-main",
-          autoplay: { delay: 5e4, disableOnInteraction: false },
           pagination: "",
           "slides-per-view": 1
         }, {
@@ -26022,7 +26911,7 @@ function _sfc_ssrRender$L(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
               return [
                 createVNode("div", {
                   class: "slider-banners-main__title",
-                  onClick: ($event) => _ctx.$router.push("/blog-page")
+                  onClick: ($event) => _ctx.$router.push("/")
                 }, toDisplayString(bannerTitleProps.banner.title.rendered), 9, ["onClick"])
               ];
             }
@@ -26041,8 +26930,8 @@ function _sfc_ssrRender$L(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
         }, null, _parent2, _scopeId));
         _push2(ssrRenderComponent(_component_SliderBannersFashionBlogNode, null, null, _parent2, _scopeId));
         _push2(ssrRenderComponent(_component_DistributionNode, null, null, _parent2, _scopeId));
-        if ($options.templatePage) {
-          _push2(ssrRenderComponent(_component_PageContentNode, { page: $options.templatePage }, null, _parent2, _scopeId));
+        if (_ctx.templatePage) {
+          _push2(ssrRenderComponent(_component_PageContentNode, { page: _ctx.templatePage }, null, _parent2, _scopeId));
         } else {
           _push2(`<!---->`);
         }
@@ -26053,14 +26942,13 @@ function _sfc_ssrRender$L(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
             bannerCategoryId: 68,
             containerStylesOff: _ctx.windowWidth < 1024 ? true : false,
             slug: "slider-banners-main",
-            autoplay: { delay: 5e4, disableOnInteraction: false },
             pagination: "",
             "slides-per-view": 1
           }, {
             "banner-title": withCtx((bannerTitleProps) => [
               createVNode("div", {
                 class: "slider-banners-main__title",
-                onClick: ($event) => _ctx.$router.push("/blog-page")
+                onClick: ($event) => _ctx.$router.push("/")
               }, toDisplayString(bannerTitleProps.banner.title.rendered), 9, ["onClick"])
             ]),
             _: 1
@@ -26077,1535 +26965,36 @@ function _sfc_ssrRender$L(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
           }),
           createVNode(_component_SliderBannersFashionBlogNode),
           createVNode(_component_DistributionNode),
-          $options.templatePage ? (openBlock(), createBlock(_component_PageContentNode, {
+          _ctx.templatePage ? (openBlock(), createBlock(_component_PageContentNode, {
             key: 0,
-            page: $options.templatePage
+            page: _ctx.templatePage
           }, null, 8, ["page"])) : createCommentVNode("", true)
         ];
       }
     }),
     _: 1
   }, _parent));
-}
-const _sfc_setup$L = _sfc_main$L.setup;
-_sfc_main$L.setup = (props, ctx) => {
-  const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/pages/common/HomePage.vue");
-  return _sfc_setup$L ? _sfc_setup$L(props, ctx) : void 0;
-};
-const HomePage = /* @__PURE__ */ _export_sfc(_sfc_main$L, [["ssrRender", _sfc_ssrRender$L]]);
-const vueSliderComponent = "";
-const _default = "";
-const FilterPrices_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$K = {
-  components: {
-    VueSlider
-  },
-  computed: {
-    ...mapGetters({}),
-    ...mapState({
-      minCost: (state2) => state2.filter.minCost,
-      maxCost: (state2) => state2.filter.maxCost,
-      min_price: (state2) => state2.filter.params.min_price,
-      max_price: (state2) => state2.filter.params.max_price,
-      productsRequest: (state2) => state2.products.basedRequest
-    }),
-    minPrice: {
-      get() {
-        return this.min_price;
-      },
-      set(value) {
-        this.setMinPrice(value);
-      }
-    },
-    maxPrice: {
-      get() {
-        return this.max_price;
-      },
-      set(value) {
-        this.setMaxPrice(value);
-      }
-    },
-    pointValues() {
-      return [this.min_price, this.max_price];
-    }
-  },
-  created() {
-  },
-  methods: {
-    ...mapMutations({
-      setMinCost: "filter/setMinCost",
-      setMaxCost: "filter/setMaxCost",
-      setMaxPrice: "filter/setMaxPrice",
-      setMinPrice: "filter/setMinPrice"
-    }),
-    ...mapActions({}),
-    updatePrices(newValue) {
-      this.setMinPrice(newValue[0]);
-      this.setMaxPrice(newValue[1]);
-    }
-  }
-};
-function _sfc_ssrRender$K(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
-  const _component_InputNode = resolveComponent("InputNode");
-  const _component_VueSlider = resolveComponent("VueSlider");
-  _push(`<div${ssrRenderAttrs(mergeProps({ class: "filter-prices" }, _attrs))}><div class="filter-prices__inputes">`);
-  _push(ssrRenderComponent(_component_InputNode, {
-    modelValue: $options.minPrice,
-    "onUpdate:modelValue": ($event) => $options.minPrice = $event,
-    modelModifiers: { number: true },
-    inputmode: "numeric"
-  }, {
-    before: withCtx((_, _push2, _parent2, _scopeId) => {
-      if (_push2) {
-        _push2(`<span${_scopeId}>\u041E\u0442:</span>`);
-      } else {
-        return [
-          createVNode("span", null, "\u041E\u0442:")
-        ];
-      }
-    }),
-    after: withCtx((_, _push2, _parent2, _scopeId) => {
-      if (_push2) {
-        _push2(`<span${_scopeId}>\u0440\u0443\u0431</span>`);
-      } else {
-        return [
-          createVNode("span", null, "\u0440\u0443\u0431")
-        ];
-      }
-    }),
-    _: 1
-  }, _parent));
-  _push(ssrRenderComponent(_component_InputNode, {
-    modelValue: $options.maxPrice,
-    "onUpdate:modelValue": ($event) => $options.maxPrice = $event,
-    modelModifiers: { number: true },
-    inputmode: "numeric"
-  }, {
-    before: withCtx((_, _push2, _parent2, _scopeId) => {
-      if (_push2) {
-        _push2(`<span${_scopeId}>\u0414\u043E:</span>`);
-      } else {
-        return [
-          createVNode("span", null, "\u0414\u043E:")
-        ];
-      }
-    }),
-    after: withCtx((_, _push2, _parent2, _scopeId) => {
-      if (_push2) {
-        _push2(`<span${_scopeId}>\u0440\u0443\u0431</span>`);
-      } else {
-        return [
-          createVNode("span", null, "\u0440\u0443\u0431")
-        ];
-      }
-    }),
-    _: 1
-  }, _parent));
-  _push(`</div>`);
-  _push(ssrRenderComponent(_component_VueSlider, {
-    modelValue: $options.pointValues,
-    min: _ctx.minCost,
-    max: _ctx.maxCost,
-    "enable-cross": false,
-    "onUpdate:modelValue": $options.updatePrices
-  }, null, _parent));
-  _push(`</div>`);
-}
-const _sfc_setup$K = _sfc_main$K.setup;
-_sfc_main$K.setup = (props, ctx) => {
-  const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/filter/FilterPrices.vue");
-  return _sfc_setup$K ? _sfc_setup$K(props, ctx) : void 0;
-};
-const FilterPrices = /* @__PURE__ */ _export_sfc(_sfc_main$K, [["ssrRender", _sfc_ssrRender$K]]);
-const CatalogRevealingNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$J = {
-  props: {
-    item: Object,
-    bodyLoaded: {
-      type: Boolean,
-      default: false
-    }
-  },
-  emmits: ["apply", "setDefault"],
-  setup(props) {
-    const item = { ...{ type: "catalogRevealing" }, ...props.item };
-    const { element } = useOpening(item);
-    return { element };
-  },
-  computed: {
-    ...mapGetters({}),
-    ...mapState({})
-  },
-  methods: {
-    ...mapMutations({
-      setCatalogRevealing: "common/setCatalogRevealing"
-    }),
-    ...mapActions({
-      updateAllOpeningTypeItems: "common/updateAllOpeningTypeItems"
-    }),
-    apply() {
-      this.updateAllOpeningTypeItems({ type: "catalogRevealing" });
-      return this.$emit("apply");
-    },
-    setDefault() {
-      this.$emit("setDefault");
-    }
-  }
-};
-function _sfc_ssrRender$J(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
-  const _component_ButtonNode = resolveComponent("ButtonNode");
-  _push(`<div${ssrRenderAttrs(mergeProps({
-    class: ["catalog-revealing", $setup.element.active ? "catalog-revealing_active" : ""]
-  }, _attrs))}><div class="catalog-revealing__actions">`);
-  _push(ssrRenderComponent(_component_ButtonNode, {
-    class: ["catalog-revealing__button catalog-revealing__button_main", $setup.element.default ? "catalog-revealing__button_main_default" : ""],
-    onClick: ($event) => _ctx.setCatalogRevealing({ name: $props.item.name })
-  }, {
-    default: withCtx((_, _push2, _parent2, _scopeId) => {
-      if (_push2) {
-        _push2(`<span class="catalog-revealing__close icon-plus"${_scopeId}></span><span class="catalog-revealing__title"${_scopeId}>`);
-        ssrRenderSlot(_ctx.$slots, "title", {}, null, _push2, _parent2, _scopeId);
-        _push2(`</span><span class="catalog-revealing__arrow icon-arrow"${_scopeId}></span>`);
-      } else {
-        return [
-          createVNode("span", {
-            class: "catalog-revealing__close icon-plus",
-            onClick: $options.setDefault
-          }, null, 8, ["onClick"]),
-          createVNode("span", { class: "catalog-revealing__title" }, [
-            renderSlot(_ctx.$slots, "title")
-          ]),
-          createVNode("span", { class: "catalog-revealing__arrow icon-arrow" })
-        ];
-      }
-    }),
-    _: 3
-  }, _parent));
-  _push(`</div><div style="${ssrRenderStyle($setup.element.active ? null : { display: "none" })}" class="catalog-revealing__body"><div class="catalog-revealing__main">`);
-  ssrRenderSlot(_ctx.$slots, "main", {}, null, _push, _parent);
-  _push(`</div><div class="catalog-revealing__nested-actions">`);
-  _push(ssrRenderComponent(_component_ButtonNode, {
-    class: "catalog-revealing__button",
-    onClick: $options.setDefault
-  }, {
-    default: withCtx((_, _push2, _parent2, _scopeId) => {
-      if (_push2) {
-        _push2(`\u041E\u0447\u0438\u0441\u0442\u0438\u0442\u044C`);
-      } else {
-        return [
-          createTextVNode("\u041E\u0447\u0438\u0441\u0442\u0438\u0442\u044C")
-        ];
-      }
-    }),
-    _: 1
-  }, _parent));
-  _push(ssrRenderComponent(_component_ButtonNode, {
-    class: "catalog-revealing__button",
-    "button-style": "dark",
-    onClick: $options.apply
-  }, {
-    default: withCtx((_, _push2, _parent2, _scopeId) => {
-      if (_push2) {
-        _push2(`\u041F\u0440\u0438\u043C\u0435\u043D\u0438\u0442\u044C`);
-      } else {
-        return [
-          createTextVNode("\u041F\u0440\u0438\u043C\u0435\u043D\u0438\u0442\u044C")
-        ];
-      }
-    }),
-    _: 1
-  }, _parent));
-  _push(`</div></div></div>`);
 }
 const _sfc_setup$J = _sfc_main$J.setup;
 _sfc_main$J.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/CatalogRevealingNode.vue");
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/pages/common/HomePage.vue");
   return _sfc_setup$J ? _sfc_setup$J(props, ctx) : void 0;
 };
-const CatalogRevealingNode = /* @__PURE__ */ _export_sfc(_sfc_main$J, [["ssrRender", _sfc_ssrRender$J]]);
-const BasicNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$I = {
-  props: {
-    item: {
-      type: Object,
-      reqired: true
-    }
-  },
-  setup(props) {
-    const store2 = useStore();
-    const item = { ...{ type: "basic" }, ...props.item };
-    watch(props, (newProps) => {
-      store2.commit("common/setBasic", {
-        name: newProps.item.name,
-        value: newProps.item.default,
-        prop: "default"
-      });
-    });
-    const { element } = useOpening(item);
-    const openBasic = () => {
-      store2.commit("common/setBasic", {
-        name: element.name,
-        prop: "active"
-      });
-    };
-    return { element, openBasic };
-  }
-};
-function _sfc_ssrRender$I(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
-  if ($setup.element.default) {
-    _push(`<div${ssrRenderAttrs(mergeProps({
-      class: ["basic", {
-        basic_active: $setup.element.active,
-        basic_default: $setup.element.default
-      }]
-    }, _attrs))}>`);
-    ssrRenderSlot(_ctx.$slots, "default", {}, null, _push, _parent);
-    _push(`</div>`);
-  } else {
-    _push(`<!---->`);
-  }
-}
-const _sfc_setup$I = _sfc_main$I.setup;
-_sfc_main$I.setup = (props, ctx) => {
-  const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/BasicNode.vue");
-  return _sfc_setup$I ? _sfc_setup$I(props, ctx) : void 0;
-};
-const BasicNode = /* @__PURE__ */ _export_sfc(_sfc_main$I, [["ssrRender", _sfc_ssrRender$I]]);
-const TheFilterNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$H = {
-  components: {
-    FilterPrices,
-    CatalogRevealingNode,
-    BasicNode
-  },
-  emits: ["updateFilter"],
-  data() {
-    return {
-      onlineOnly: true,
-      applyValidate: true,
-      revealings: {
-        sorting: {},
-        prices: {}
-      },
-      filterBodyHeight: null
-    };
-  },
-  computed: {
-    ...mapGetters({
-      itemsBased: "itemsBased",
-      itemsMatchedByCallback: "itemsMatchedByCallback",
-      attributesSlugs: "productsAttributes/attributesSlugs"
-    }),
-    ...mapState({
-      browserReady: (state2) => state2.common.browserReady,
-      minCost: (state2) => state2.filter.minCost || 1e4,
-      maxCost: (state2) => state2.filter.maxCost || 1e6,
-      min_price: (state2) => state2.filter.params.min_price,
-      max_price: (state2) => state2.filter.params.max_price,
-      filterParams: (state2) => state2.filter.params,
-      productsBrandsRequest: (state2) => state2.productsTermsBrands.basedRequest,
-      productsColorsRequest: (state2) => state2.productsTermsColors.basedRequest,
-      productsMaterialsRequest: (state2) => state2.productsTermsMaterials.basedRequest,
-      productsSizesRequest: (state2) => state2.productsTermsSizes.basedRequest,
-      productsAttributesRequest: (state2) => state2.productsAttributes.basedRequest
-    }),
-    attributes() {
-      return this.itemsMatchedByCallback(
-        this.productsAttributesRequest,
-        { regExp: /^pa_yookassa_*./ },
-        (element, keys, params) => {
-          if (element.slug.match(params.regExp) === null) {
-            return true;
-          }
-          return false;
-        }
-      );
-    }
-  },
-  watch: {},
-  created() {
-  },
-  mounted() {
-    new Sticky(".filter__wrapper", {
-      marginTop: 40,
-      marginBottom: 100,
-      stickyFor: 1024,
-      stickyClass: "filter__wrapper_stuck",
-      stickyContainer: ".page-main"
-    });
-    this.filterBodyHeight = this.$refs.filterBody.offsetHeight;
-  },
-  methods: {
-    ...mapMutations({
-      setMaterials: "filter/setMaterials",
-      setBrands: "filter/setBrands",
-      setColors: "filter/setColors",
-      setSizes: "filter/setSizes",
-      setOrderAndOrderBy: "filter/setOrderAndOrderBy",
-      setAttributeTerms: "filter/setAttributeTerms",
-      setMaxPrice: "filter/setMaxPrice",
-      setMinPrice: "filter/setMinPrice",
-      unsetDefaultAttributeOptions: "filter/unsetDefaultAttributeOptions",
-      setDefaultPrices: "filter/setDefaultPrices",
-      setCatalogRevealing: "common/setCatalogRevealing",
-      setBasic: "common/setBasic"
-    }),
-    ...mapActions({
-      getItems: "getItems",
-      setDefaultFilter: "filter/setDefaultFilter",
-      updateAllOpeningTypeItems: "common/updateAllOpeningTypeItems"
-    }),
-    singleAttribute(attributeSlug) {
-      switch (attributeSlug) {
-        case "pa_brand":
-          return this.itemsBased(this.productsBrandsRequest);
-        case "pa_material":
-          return this.itemsBased(this.productsMaterialsRequest);
-        case "pa_tcvet":
-          return this.itemsBased(this.productsColorsRequest);
-        case "pa_razmer":
-          return this.itemsBased(this.productsSizesRequest);
-      }
-      return {};
-    },
-    filterParamsChecked(attrSlug, termID) {
-      const terms = this.filterParams[attrSlug].options;
-      const term = terms.find((i) => i.id === termID);
-      if (term)
-        return true;
-      return false;
-    },
-    filterCleanAndLoadDefault() {
-      this.setDefaultFilter();
-      this.updateAllOpeningTypeItems({ type: "catalogRevealing" });
-      this.updateAllOpeningTypeItems({
-        type: "catalogRevealing",
-        value: true,
-        prop: "default"
-      });
-      this.$emit("updateFilter");
-    },
-    updateCatalogRevealing({ type, value }) {
-      this.setAttributeTerms({ type, value });
-      const marker = isEmpty(this.filterParams[type].options);
-      this.setCatalogRevealing({
-        name: type,
-        value: marker,
-        prop: "default"
-      });
-    },
-    setDefaultAttribute(slug) {
-      this.setCatalogRevealing({
-        name: slug,
-        value: true,
-        prop: "default"
-      });
-      this.unsetDefaultAttributeOptions(slug);
-    }
-  }
-};
-function _sfc_ssrRender$H(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
-  const _component_ContainerNode = resolveComponent("ContainerNode");
-  const _component_BaseButtonNode = resolveComponent("BaseButtonNode");
-  const _component_BasicNode = resolveComponent("BasicNode");
-  const _component_CatalogRevealingNode = resolveComponent("CatalogRevealingNode");
-  const _component_FilterPrices = resolveComponent("FilterPrices");
-  const _component_InputCheckboxNode = resolveComponent("InputCheckboxNode");
-  const _component_ButtonNode = resolveComponent("ButtonNode");
-  _push(`<section${ssrRenderAttrs(mergeProps({ class: "filter" }, _attrs))}>`);
-  _push(ssrRenderComponent(_component_ContainerNode, null, {
-    default: withCtx((_, _push2, _parent2, _scopeId) => {
-      if (_push2) {
-        _push2(ssrRenderComponent(_component_BaseButtonNode, {
-          class: "filter__button filter__button_filter-show",
-          onClick: ($event) => _ctx.setBasic({ name: "filter" })
-        }, {
-          default: withCtx((_2, _push3, _parent3, _scopeId2) => {
-            if (_push3) {
-              _push3(`\u0424\u0438\u043B\u044C\u0442\u0440 \u0442\u043E\u0432\u0430\u0440\u043E\u0432`);
-            } else {
-              return [
-                createTextVNode("\u0424\u0438\u043B\u044C\u0442\u0440 \u0442\u043E\u0432\u0430\u0440\u043E\u0432")
-              ];
-            }
-          }),
-          _: 1
-        }, _parent2, _scopeId));
-        _push2(ssrRenderComponent(_component_BasicNode, {
-          item: { name: "filter", active: true },
-          onClick: () => {
-          }
-        }, {
-          default: withCtx((_2, _push3, _parent3, _scopeId2) => {
-            if (_push3) {
-              _push3(`<div class="filter__body" style="${ssrRenderStyle({ minHeight: $data.filterBodyHeight + "px" })}"${_scopeId2}><div class="filter__wrapper container"${_scopeId2}><ul class="filter__list"${_scopeId2}><li class="filter__item"${_scopeId2}>`);
-              _push3(ssrRenderComponent(_component_CatalogRevealingNode, {
-                item: { name: "catalogPrices" },
-                onApply: ($event) => _ctx.$emit("updateFilter"),
-                onSetDefault: _ctx.setDefaultPrices
-              }, {
-                title: withCtx((_3, _push4, _parent4, _scopeId3) => {
-                  if (_push4) {
-                    _push4(`\u0426\u0435\u043D\u0430`);
-                  } else {
-                    return [
-                      createTextVNode("\u0426\u0435\u043D\u0430")
-                    ];
-                  }
-                }),
-                main: withCtx((_3, _push4, _parent4, _scopeId3) => {
-                  if (_push4) {
-                    if (_ctx.browserReady) {
-                      _push4(ssrRenderComponent(_component_FilterPrices, null, null, _parent4, _scopeId3));
-                    } else {
-                      _push4(`<!---->`);
-                    }
-                  } else {
-                    return [
-                      _ctx.browserReady ? (openBlock(), createBlock(_component_FilterPrices, { key: 0 })) : createCommentVNode("", true)
-                    ];
-                  }
-                }),
-                _: 1
-              }, _parent3, _scopeId2));
-              _push3(`</li><!--[-->`);
-              ssrRenderList($options.attributes, (attr, index) => {
-                _push3(`<li class="filter__item"${_scopeId2}>`);
-                _push3(ssrRenderComponent(_component_CatalogRevealingNode, {
-                  item: { name: attr.slug },
-                  name: attr.slug,
-                  bodyLoaded: attr.slug ? true : false,
-                  onApply: ($event) => _ctx.$emit("updateFilter"),
-                  onSetDefault: ($event) => $options.setDefaultAttribute(attr.slug)
-                }, {
-                  title: withCtx((_3, _push4, _parent4, _scopeId3) => {
-                    if (_push4) {
-                      _push4(`${ssrInterpolate(attr.name)}`);
-                    } else {
-                      return [
-                        createTextVNode(toDisplayString(attr.name), 1)
-                      ];
-                    }
-                  }),
-                  main: withCtx((_3, _push4, _parent4, _scopeId3) => {
-                    if (_push4) {
-                      _push4(`<ul class="filter__sub-list"${_scopeId3}><!--[-->`);
-                      ssrRenderList($options.singleAttribute(attr.slug), ({ id, name }) => {
-                        _push4(`<li class="filter__sub-item"${_scopeId3}>`);
-                        _push4(ssrRenderComponent(_component_InputCheckboxNode, {
-                          modelValue: $options.filterParamsChecked(attr.slug, id),
-                          labelText: name,
-                          onInput: ($event) => $options.updateCatalogRevealing({
-                            type: attr.slug,
-                            value: { id, name }
-                          })
-                        }, null, _parent4, _scopeId3));
-                        _push4(`</li>`);
-                      });
-                      _push4(`<!--]--></ul>`);
-                    } else {
-                      return [
-                        createVNode("ul", { class: "filter__sub-list" }, [
-                          (openBlock(true), createBlock(Fragment, null, renderList($options.singleAttribute(attr.slug), ({ id, name }) => {
-                            return openBlock(), createBlock("li", {
-                              key: id,
-                              class: "filter__sub-item"
-                            }, [
-                              createVNode(_component_InputCheckboxNode, {
-                                modelValue: $options.filterParamsChecked(attr.slug, id),
-                                labelText: name,
-                                onInput: ($event) => $options.updateCatalogRevealing({
-                                  type: attr.slug,
-                                  value: { id, name }
-                                })
-                              }, null, 8, ["modelValue", "labelText", "onInput"])
-                            ]);
-                          }), 128))
-                        ])
-                      ];
-                    }
-                  }),
-                  _: 2
-                }, _parent3, _scopeId2));
-                _push3(`</li>`);
-              });
-              _push3(`<!--]--><li class="filter__item"${_scopeId2}>`);
-              _push3(ssrRenderComponent(_component_InputCheckboxNode, {
-                modelValue: $data.onlineOnly,
-                "onUpdate:modelValue": ($event) => $data.onlineOnly = $event,
-                labelText: "\u0414\u043E\u0441\u0442\u0443\u043F\u043D\u043E \u043E\u043D\u043B\u0430\u0439\u043D"
-              }, null, _parent3, _scopeId2));
-              _push3(`</li></ul>`);
-              _push3(ssrRenderComponent(_component_ButtonNode, {
-                class: "filter__button filter__button_clean",
-                onClick: $options.filterCleanAndLoadDefault
-              }, {
-                default: withCtx((_3, _push4, _parent4, _scopeId3) => {
-                  if (_push4) {
-                    _push4(`\u041E\u0447\u0438\u0441\u0442\u0438\u0442\u044C<span${_scopeId3}>\u0444\u0438\u043B\u044C\u0442\u0440\u044B</span>`);
-                  } else {
-                    return [
-                      createTextVNode("\u041E\u0447\u0438\u0441\u0442\u0438\u0442\u044C"),
-                      createVNode("span", null, "\u0444\u0438\u043B\u044C\u0442\u0440\u044B")
-                    ];
-                  }
-                }),
-                _: 1
-              }, _parent3, _scopeId2));
-              _push3(`</div></div>`);
-            } else {
-              return [
-                createVNode("div", {
-                  ref: "filterBody",
-                  class: "filter__body",
-                  style: { minHeight: $data.filterBodyHeight + "px" }
-                }, [
-                  createVNode("div", { class: "filter__wrapper container" }, [
-                    createVNode("ul", { class: "filter__list" }, [
-                      createVNode("li", { class: "filter__item" }, [
-                        createVNode(_component_CatalogRevealingNode, {
-                          item: { name: "catalogPrices" },
-                          onApply: ($event) => _ctx.$emit("updateFilter"),
-                          onSetDefault: _ctx.setDefaultPrices
-                        }, {
-                          title: withCtx(() => [
-                            createTextVNode("\u0426\u0435\u043D\u0430")
-                          ]),
-                          main: withCtx(() => [
-                            _ctx.browserReady ? (openBlock(), createBlock(_component_FilterPrices, { key: 0 })) : createCommentVNode("", true)
-                          ]),
-                          _: 1
-                        }, 8, ["onApply", "onSetDefault"])
-                      ]),
-                      (openBlock(true), createBlock(Fragment, null, renderList($options.attributes, (attr, index) => {
-                        return openBlock(), createBlock("li", {
-                          key: index,
-                          class: "filter__item"
-                        }, [
-                          createVNode(_component_CatalogRevealingNode, {
-                            item: { name: attr.slug },
-                            name: attr.slug,
-                            bodyLoaded: attr.slug ? true : false,
-                            onApply: ($event) => _ctx.$emit("updateFilter"),
-                            onSetDefault: ($event) => $options.setDefaultAttribute(attr.slug)
-                          }, {
-                            title: withCtx(() => [
-                              createTextVNode(toDisplayString(attr.name), 1)
-                            ]),
-                            main: withCtx(() => [
-                              createVNode("ul", { class: "filter__sub-list" }, [
-                                (openBlock(true), createBlock(Fragment, null, renderList($options.singleAttribute(attr.slug), ({ id, name }) => {
-                                  return openBlock(), createBlock("li", {
-                                    key: id,
-                                    class: "filter__sub-item"
-                                  }, [
-                                    createVNode(_component_InputCheckboxNode, {
-                                      modelValue: $options.filterParamsChecked(attr.slug, id),
-                                      labelText: name,
-                                      onInput: ($event) => $options.updateCatalogRevealing({
-                                        type: attr.slug,
-                                        value: { id, name }
-                                      })
-                                    }, null, 8, ["modelValue", "labelText", "onInput"])
-                                  ]);
-                                }), 128))
-                              ])
-                            ]),
-                            _: 2
-                          }, 1032, ["item", "name", "bodyLoaded", "onApply", "onSetDefault"])
-                        ]);
-                      }), 128)),
-                      createVNode("li", { class: "filter__item" }, [
-                        createVNode(_component_InputCheckboxNode, {
-                          modelValue: $data.onlineOnly,
-                          "onUpdate:modelValue": ($event) => $data.onlineOnly = $event,
-                          labelText: "\u0414\u043E\u0441\u0442\u0443\u043F\u043D\u043E \u043E\u043D\u043B\u0430\u0439\u043D"
-                        }, null, 8, ["modelValue", "onUpdate:modelValue"])
-                      ])
-                    ]),
-                    createVNode(_component_ButtonNode, {
-                      class: "filter__button filter__button_clean",
-                      onClick: withModifiers($options.filterCleanAndLoadDefault, ["stop"])
-                    }, {
-                      default: withCtx(() => [
-                        createTextVNode("\u041E\u0447\u0438\u0441\u0442\u0438\u0442\u044C"),
-                        createVNode("span", null, "\u0444\u0438\u043B\u044C\u0442\u0440\u044B")
-                      ]),
-                      _: 1
-                    }, 8, ["onClick"])
-                  ])
-                ], 4)
-              ];
-            }
-          }),
-          _: 1
-        }, _parent2, _scopeId));
-      } else {
-        return [
-          createVNode(_component_BaseButtonNode, {
-            class: "filter__button filter__button_filter-show",
-            onClick: withModifiers(($event) => _ctx.setBasic({ name: "filter" }), ["stop"])
-          }, {
-            default: withCtx(() => [
-              createTextVNode("\u0424\u0438\u043B\u044C\u0442\u0440 \u0442\u043E\u0432\u0430\u0440\u043E\u0432")
-            ]),
-            _: 1
-          }, 8, ["onClick"]),
-          createVNode(_component_BasicNode, {
-            item: { name: "filter", active: true },
-            onClick: withModifiers(() => {
-            }, ["stop"])
-          }, {
-            default: withCtx(() => [
-              createVNode("div", {
-                ref: "filterBody",
-                class: "filter__body",
-                style: { minHeight: $data.filterBodyHeight + "px" }
-              }, [
-                createVNode("div", { class: "filter__wrapper container" }, [
-                  createVNode("ul", { class: "filter__list" }, [
-                    createVNode("li", { class: "filter__item" }, [
-                      createVNode(_component_CatalogRevealingNode, {
-                        item: { name: "catalogPrices" },
-                        onApply: ($event) => _ctx.$emit("updateFilter"),
-                        onSetDefault: _ctx.setDefaultPrices
-                      }, {
-                        title: withCtx(() => [
-                          createTextVNode("\u0426\u0435\u043D\u0430")
-                        ]),
-                        main: withCtx(() => [
-                          _ctx.browserReady ? (openBlock(), createBlock(_component_FilterPrices, { key: 0 })) : createCommentVNode("", true)
-                        ]),
-                        _: 1
-                      }, 8, ["onApply", "onSetDefault"])
-                    ]),
-                    (openBlock(true), createBlock(Fragment, null, renderList($options.attributes, (attr, index) => {
-                      return openBlock(), createBlock("li", {
-                        key: index,
-                        class: "filter__item"
-                      }, [
-                        createVNode(_component_CatalogRevealingNode, {
-                          item: { name: attr.slug },
-                          name: attr.slug,
-                          bodyLoaded: attr.slug ? true : false,
-                          onApply: ($event) => _ctx.$emit("updateFilter"),
-                          onSetDefault: ($event) => $options.setDefaultAttribute(attr.slug)
-                        }, {
-                          title: withCtx(() => [
-                            createTextVNode(toDisplayString(attr.name), 1)
-                          ]),
-                          main: withCtx(() => [
-                            createVNode("ul", { class: "filter__sub-list" }, [
-                              (openBlock(true), createBlock(Fragment, null, renderList($options.singleAttribute(attr.slug), ({ id, name }) => {
-                                return openBlock(), createBlock("li", {
-                                  key: id,
-                                  class: "filter__sub-item"
-                                }, [
-                                  createVNode(_component_InputCheckboxNode, {
-                                    modelValue: $options.filterParamsChecked(attr.slug, id),
-                                    labelText: name,
-                                    onInput: ($event) => $options.updateCatalogRevealing({
-                                      type: attr.slug,
-                                      value: { id, name }
-                                    })
-                                  }, null, 8, ["modelValue", "labelText", "onInput"])
-                                ]);
-                              }), 128))
-                            ])
-                          ]),
-                          _: 2
-                        }, 1032, ["item", "name", "bodyLoaded", "onApply", "onSetDefault"])
-                      ]);
-                    }), 128)),
-                    createVNode("li", { class: "filter__item" }, [
-                      createVNode(_component_InputCheckboxNode, {
-                        modelValue: $data.onlineOnly,
-                        "onUpdate:modelValue": ($event) => $data.onlineOnly = $event,
-                        labelText: "\u0414\u043E\u0441\u0442\u0443\u043F\u043D\u043E \u043E\u043D\u043B\u0430\u0439\u043D"
-                      }, null, 8, ["modelValue", "onUpdate:modelValue"])
-                    ])
-                  ]),
-                  createVNode(_component_ButtonNode, {
-                    class: "filter__button filter__button_clean",
-                    onClick: withModifiers($options.filterCleanAndLoadDefault, ["stop"])
-                  }, {
-                    default: withCtx(() => [
-                      createTextVNode("\u041E\u0447\u0438\u0441\u0442\u0438\u0442\u044C"),
-                      createVNode("span", null, "\u0444\u0438\u043B\u044C\u0442\u0440\u044B")
-                    ]),
-                    _: 1
-                  }, 8, ["onClick"])
-                ])
-              ], 4)
-            ]),
-            _: 1
-          }, 8, ["onClick"])
-        ];
-      }
-    }),
-    _: 1
-  }, _parent));
-  _push(`</section>`);
-}
-const _sfc_setup$H = _sfc_main$H.setup;
-_sfc_main$H.setup = (props, ctx) => {
-  const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/TheFilterNode.vue");
-  return _sfc_setup$H ? _sfc_setup$H(props, ctx) : void 0;
-};
-const TheFilterNode = /* @__PURE__ */ _export_sfc(_sfc_main$H, [["ssrRender", _sfc_ssrRender$H]]);
-const TroubleNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$G = {
-  props: {
-    text: {
-      default: () => ["\u0414\u043B\u044F \u0441\u043B\u0435\u0434\u044E\u0449\u0435\u0433\u043E \u043F\u0443\u0442\u0438", " \u043D\u0435 \u0441\u0443\u0449\u0435\u0441\u0442\u0432\u0443\u0435\u0442 \u043C\u0430\u0440\u0448\u0440\u0443\u0442\u0430!"],
-      type: Array
-    }
-  },
-  data() {
-    return {
-      location: ""
-    };
-  },
-  computed: {
-    ...mapState({
-      browserReady: (state2) => state2.common.browserReady
-    })
-  },
-  watch: {
-    browserReady: {
-      handler(newValue) {
-        if (newValue) {
-          this.location = window.location.href;
-        }
-      },
-      immediate: true
-    }
-  }
-};
-function _sfc_ssrRender$G(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
-  const _component_BaseButtonNode = resolveComponent("BaseButtonNode");
-  _push(`<div${ssrRenderAttrs(mergeProps({ class: "trouble" }, _attrs))}><div class="trouble__text">${ssrInterpolate($props.text[0])}</div><div class="trouble__path">${ssrInterpolate($data.location)}</div><div class="trouble__text">${ssrInterpolate($props.text[1])}</div>`);
-  ssrRenderSlot(_ctx.$slots, "default", {}, () => {
-    _push(ssrRenderComponent(_component_BaseButtonNode, {
-      buttonStyle: "dark",
-      onClick: ($event) => _ctx.$router.push("/")
-    }, {
-      default: withCtx((_, _push2, _parent2, _scopeId) => {
-        if (_push2) {
-          _push2(`\u0412\u0435\u0440\u043D\u0443\u0442\u044C\u0441\u044F \u043D\u0430 \u0413\u043B\u0430\u0432\u043D\u0443\u044E`);
-        } else {
-          return [
-            createTextVNode("\u0412\u0435\u0440\u043D\u0443\u0442\u044C\u0441\u044F \u043D\u0430 \u0413\u043B\u0430\u0432\u043D\u0443\u044E")
-          ];
-        }
-      }),
-      _: 1
-    }, _parent));
-  }, _push, _parent);
-  _push(`</div>`);
-}
-const _sfc_setup$G = _sfc_main$G.setup;
-_sfc_main$G.setup = (props, ctx) => {
-  const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/TroubleNode.vue");
-  return _sfc_setup$G ? _sfc_setup$G(props, ctx) : void 0;
-};
-const TroubleNode = /* @__PURE__ */ _export_sfc(_sfc_main$G, [["ssrRender", _sfc_ssrRender$G]]);
-const CatalogProductsNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$F = {
-  components: {
-    ProductNode,
-    TroubleNode
-  },
-  data() {
-    return {
-      isEmpty
-    };
-  },
-  computed: {
-    ...mapGetters({
-      filtredProducts: "products/filtredProducts",
-      productsIds: "products/productsIds"
-    }),
-    ...mapState({
-      productRequest: (state2) => state2.products.basedRequest,
-      itemsPaginated: (state2) => state2.products.itemsPaginated
-    }),
-    products() {
-      return this.filtredProducts({ quantity: this.productRequest.per_page });
-    }
-  },
-  methods: {
-    ...mapMutations({
-      setExclude: "products/setExclude"
-    })
-  }
-};
-function _sfc_ssrRender$F(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
-  const _component_ProductNode = resolveComponent("ProductNode");
-  const _component_TroubleNode = resolveComponent("TroubleNode");
-  if (!$data.isEmpty($options.products)) {
-    _push(`<div${ssrRenderAttrs(mergeProps({ class: "catalog-products" }, _attrs))}><!--[-->`);
-    ssrRenderList($options.products, (product, index) => {
-      _push(ssrRenderComponent(_component_ProductNode, {
-        key: index,
-        product,
-        viewType: "catalog"
-      }, null, _parent));
-    });
-    _push(`<!--]--></div>`);
-  } else {
-    _push(ssrRenderComponent(_component_TroubleNode, mergeProps({ text: ["\u0414\u043B\u044F \u044D\u0442\u043E\u0439 \u043A\u0430\u0442\u0435\u0433\u043E\u0440\u0438\u0438 ", "\u0435\u0449\u0451 \u043D\u0435 \u0434\u043E\u0431\u0430\u0432\u043B\u0435\u043D\u043E \u0442\u043E\u0432\u0430\u0440\u043E\u0432!"] }, _attrs), null, _parent));
-  }
-}
-const _sfc_setup$F = _sfc_main$F.setup;
-_sfc_main$F.setup = (props, ctx) => {
-  const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/CatalogProductsNode.vue");
-  return _sfc_setup$F ? _sfc_setup$F(props, ctx) : void 0;
-};
-const CatalogProductsNode = /* @__PURE__ */ _export_sfc(_sfc_main$F, [["ssrRender", _sfc_ssrRender$F]]);
-const PaginationNode_vue_vue_type_style_index_0_scoped_21e3ac7d_lang = "";
-const _sfc_main$E = {
-  props: {
-    type: {
-      type: String,
-      reqired: true
-    }
-  },
-  computed: {
-    ...mapGetters({}),
-    ...mapState({
-      totalPages: (state2) => state2.products.totalPages,
-      currentPage: (state2) => state2.products.basedRequest.params.page
-    })
-  },
-  methods: {
-    ...mapMutations({}),
-    ...mapActions({
-      changePage: "products/changePage"
-    }),
-    async changePageLocal(page) {
-      this.$router.push(await this.changePage(page));
-    }
-  }
-};
-function _sfc_ssrRender$E(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
-  _push(`<div${ssrRenderAttrs(mergeProps({ class: "pagination" }, _attrs))} data-v-21e3ac7d><!--[-->`);
-  ssrRenderList(_ctx.totalPages, (page, index) => {
-    _push(`<button class="${ssrRenderClass(_ctx.currentPage == page ? "active" : "")}" data-v-21e3ac7d>${ssrInterpolate(page)}</button>`);
-  });
-  _push(`<!--]--></div>`);
-}
-const _sfc_setup$E = _sfc_main$E.setup;
-_sfc_main$E.setup = (props, ctx) => {
-  const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/PaginationNode.vue");
-  return _sfc_setup$E ? _sfc_setup$E(props, ctx) : void 0;
-};
-const PaginationNode = /* @__PURE__ */ _export_sfc(_sfc_main$E, [["ssrRender", _sfc_ssrRender$E], ["__scopeId", "data-v-21e3ac7d"]]);
-const SpoilerNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$D = {
-  props: {
-    item: {
-      type: Object,
-      reqired: true
-    }
-  },
-  setup(props) {
-    if (props.item.default === false)
-      return {};
-    const store2 = useStore();
-    const item = { ...{ type: "spoiler" }, ...props.item };
-    watch(props, (newProps) => {
-      store2.commit("common/setSpoiler", {
-        name: newProps.item.name,
-        value: newProps.item.default,
-        prop: "default"
-      });
-    });
-    const { element } = useOpening(item);
-    const openSpoiler = () => {
-      store2.commit("common/setSpoiler", {
-        name: element.name,
-        prop: "active"
-      });
-    };
-    return { element, openSpoiler };
-  }
-};
-function _sfc_ssrRender$D(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
-  if ($props.item.default) {
-    _push(`<div${ssrRenderAttrs(mergeProps({
-      class: ["spoiler", {
-        spoiler_active: $setup.element.active,
-        spoiler_default: $setup.element.default
-      }]
-    }, _attrs))}><div class="spoiler__button icon-arrow">`);
-    ssrRenderSlot(_ctx.$slots, "button", {}, null, _push, _parent);
-    _push(`</div><div class="spoiler__list">`);
-    ssrRenderSlot(_ctx.$slots, "list", {}, null, _push, _parent);
-    _push(`</div></div>`);
-  } else {
-    _push(`<!--[-->`);
-    ssrRenderSlot(_ctx.$slots, "button", {}, null, _push, _parent);
-    ssrRenderSlot(_ctx.$slots, "list", {}, null, _push, _parent);
-    _push(`<!--]-->`);
-  }
-}
-const _sfc_setup$D = _sfc_main$D.setup;
-_sfc_main$D.setup = (props, ctx) => {
-  const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/SpoilerNode.vue");
-  return _sfc_setup$D ? _sfc_setup$D(props, ctx) : void 0;
-};
-const SpoilerNode = /* @__PURE__ */ _export_sfc(_sfc_main$D, [["ssrRender", _sfc_ssrRender$D]]);
-const CategoriesNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$C = {
-  components: {
-    SpoilerNode
-  },
-  props: {
-    parentID: {
-      type: Number,
-      reqired: true,
-      default: 0
-    },
-    nestedLevel: {
-      type: Number,
-      default: 0
-    },
-    spoilerType: {
-      type: Boolean,
-      default: false
-    },
-    nodeType: {
-      default: "default"
-    }
-  },
-  setup() {
-    return {
-      routeToCategory
-    };
-  },
-  computed: {
-    ...mapState({
-      request: (state2) => state2.productsCategories.basedRequest,
-      spoilers: (state2) => state2.common.openings.spoiler
-    }),
-    ...mapGetters({
-      requestByParam: "requestByParam",
-      itemsMatchedOneProperty: "itemsMatchedOneProperty",
-      itemsBased: "itemsBased",
-      singleById: "singleById"
-    }),
-    productsCategories() {
-      const categories = this.itemsMatchedOneProperty(this.request, {
-        parent: this.parentID
-      });
-      if (this.parentID !== 0) {
-        categories.unshift(
-          this.singleById({ type: this.request.type, id: this.parentID })
-        );
-      }
-      return categories;
-    },
-    nestedStr() {
-      let nestedStr = "";
-      for (let index = 0; index < this.nestedLevel; index++) {
-        nestedStr += "sub-";
-      }
-      return nestedStr;
-    }
-  }
-};
-function _sfc_ssrRender$C(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
-  var _a, _b;
-  const _component_SpoilerNode = resolveComponent("SpoilerNode");
-  _push(`<div${ssrRenderAttrs(mergeProps({
-    class: ["categories", $props.nodeType]
-  }, _attrs))}>`);
-  if ($options.productsCategories && $options.productsCategories.length) {
-    _push(`<ul class="${ssrRenderClass(
-      ((_b = (_a = _ctx.spoilers) == null ? void 0 : _a.slug) == null ? void 0 : _b.active) && $props.spoilerType ? `categories__${$options.nestedStr}list categories__${$options.nestedStr}list_active` : `categories__${$options.nestedStr}list`
-    )}"><!--[-->`);
-    ssrRenderList($options.productsCategories, (productCategory) => {
-      _push(`<li class="${ssrRenderClass(`categories__${$options.nestedStr}item`)}">`);
-      _push(ssrRenderComponent(_component_SpoilerNode, {
-        item: {
-          name: productCategory.slug,
-          default: $props.spoilerType
-        }
-      }, {
-        button: withCtx((_, _push2, _parent2, _scopeId) => {
-          if (_push2) {
-            _push2(`<div class="${ssrRenderClass(`categories__${$options.nestedStr}button`)}"${_scopeId}>${ssrInterpolate(productCategory.id === $props.parentID ? "\u0412\u0421\u0415 \u0422\u041E\u0412\u0410\u0420\u042B" : productCategory.name)}</div>`);
-          } else {
-            return [
-              createVNode("div", {
-                class: `categories__${$options.nestedStr}button`
-              }, toDisplayString(productCategory.id === $props.parentID ? "\u0412\u0421\u0415 \u0422\u041E\u0412\u0410\u0420\u042B" : productCategory.name), 3)
-            ];
-          }
-        }),
-        list: withCtx((_, _push2, _parent2, _scopeId) => {
-          if (_push2) {
-            ssrRenderSlot(_ctx.$slots, "default", {
-              nestedLevel: $props.nestedLevel + 1,
-              parentID: productCategory.id
-            }, null, _push2, _parent2, _scopeId);
-          } else {
-            return [
-              renderSlot(_ctx.$slots, "default", {
-                nestedLevel: $props.nestedLevel + 1,
-                parentID: productCategory.id
-              })
-            ];
-          }
-        }),
-        _: 2
-      }, _parent));
-      _push(`</li>`);
-    });
-    _push(`<!--]--></ul>`);
-  } else {
-    _push(`<!---->`);
-  }
-  _push(`</div>`);
-}
-const _sfc_setup$C = _sfc_main$C.setup;
-_sfc_main$C.setup = (props, ctx) => {
-  const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/header/CategoriesNode.vue");
-  return _sfc_setup$C ? _sfc_setup$C(props, ctx) : void 0;
-};
-const CategoriesNode = /* @__PURE__ */ _export_sfc(_sfc_main$C, [["ssrRender", _sfc_ssrRender$C]]);
-const CatalogSidebarNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$B = {
-  components: {
-    SpoilerNode,
-    CategoriesNode
-  },
-  props: {
-    total: [String, Number]
-  },
-  setup() {
-    const store2 = useStore();
-    const wW = store2.state.common.windowWidth;
-    return {
-      wW,
-      routeToCategory
-    };
-  }
-};
-function _sfc_ssrRender$B(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
-  const _component_SpoilerNode = resolveComponent("SpoilerNode");
-  const _component_CategoriesNode = resolveComponent("CategoriesNode");
-  _push(`<section${ssrRenderAttrs(mergeProps({ class: "catalog-sidebar" }, _attrs))}>`);
-  _push(ssrRenderComponent(_component_SpoilerNode, {
-    item: {
-      name: "catalogSidebar",
-      default: $setup.wW < 1024
-    }
-  }, {
-    button: withCtx((_, _push2, _parent2, _scopeId) => {
-      if (_push2) {
-        _push2(`<div class="catalog-sidebar__title catalog-sidebar__title_main"${_scopeId}> \u041E\u0434\u0435\u0436\u0434\u0430 </div>`);
-      } else {
-        return [
-          createVNode("div", { class: "catalog-sidebar__title catalog-sidebar__title_main" }, " \u041E\u0434\u0435\u0436\u0434\u0430 ")
-        ];
-      }
-    }),
-    list: withCtx((_, _push2, _parent2, _scopeId) => {
-      if (_push2) {
-        _push2(ssrRenderComponent(_component_CategoriesNode, { nodeType: "sidebar" }, {
-          default: withCtx((slotProps, _push3, _parent3, _scopeId2) => {
-            if (_push3) {
-              _push3(ssrRenderComponent(_component_CategoriesNode, {
-                nodeType: "sidebar",
-                nestedLevel: slotProps.nestedLevel,
-                parentID: slotProps.parentID
-              }, null, _parent3, _scopeId2));
-            } else {
-              return [
-                createVNode(_component_CategoriesNode, {
-                  nodeType: "sidebar",
-                  nestedLevel: slotProps.nestedLevel,
-                  parentID: slotProps.parentID
-                }, null, 8, ["nestedLevel", "parentID"])
-              ];
-            }
-          }),
-          _: 1
-        }, _parent2, _scopeId));
-      } else {
-        return [
-          createVNode(_component_CategoriesNode, { nodeType: "sidebar" }, {
-            default: withCtx((slotProps) => [
-              createVNode(_component_CategoriesNode, {
-                nodeType: "sidebar",
-                nestedLevel: slotProps.nestedLevel,
-                parentID: slotProps.parentID
-              }, null, 8, ["nestedLevel", "parentID"])
-            ]),
-            _: 1
-          })
-        ];
-      }
-    }),
-    _: 1
-  }, _parent));
-  _push(`</section>`);
-}
-const _sfc_setup$B = _sfc_main$B.setup;
-_sfc_main$B.setup = (props, ctx) => {
-  const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/CatalogSidebarNode.vue");
-  return _sfc_setup$B ? _sfc_setup$B(props, ctx) : void 0;
-};
-const CatalogSidebarNode = /* @__PURE__ */ _export_sfc(_sfc_main$B, [["ssrRender", _sfc_ssrRender$B]]);
-const SingleSubCategoryPage_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$A = {
-  components: {
-    CatalogSidebarNode,
-    CatalogRevealingNode,
-    TheFilterNode,
-    CatalogProductsNode,
-    PaginationNode,
-    PageContentNode,
-    DistributionNode
-  },
-  props: {
-    params: {
-      mainCategorySlug: String,
-      categorySlug: String
-    },
-    query: Object
-  },
-  data() {
-    return {
-      initMarker: false
-    };
-  },
-  computed: {
-    ...mapGetters({
-      pageBySlug: "pages/pageBySlug",
-      singleBySlug: "singleBySlug",
-      total: "total",
-      requestByItemParam: "requestByItemParam",
-      filtredProducts: "products/filtredProducts"
-    }),
-    ...mapState({
-      productsSSGDefaultRequest: (state2) => state2.products.requests[0],
-      productsRequest: (state2) => state2.products.basedRequest,
-      productsCategoriesRequest: (state2) => state2.productsCategories.basedRequest,
-      totalProducts: (state2) => state2.products.total,
-      totalPages: (state2) => state2.products.totalPages,
-      page: (state2) => state2.products.basedRequest.params.page,
-      pagesRequest: (state2) => state2.pages.basedRequest,
-      sortOptions: (state2) => state2.filter.defaultValues.sort,
-      categoryId: (state2) => state2.filter.params.category,
-      orderAndOrderBy: (state2) => state2.filter.params.orderAndOrderBy
-    }),
-    category() {
-      return this.singleBySlug({
-        type: this.productsCategoriesRequest.type,
-        slug: this.params.categorySlug
-      });
-    },
-    mainCategory() {
-      return this.singleBySlug({
-        type: this.productsCategoriesRequest.type,
-        slug: this.params.mainCategorySlug
-      });
-    },
-    templatePage() {
-      return this.pageBySlug(this.params.categorySlug);
-    },
-    total() {
-      if (isEmpty(this.mainCategory))
-        return;
-      return this.mainCategory.count;
-    },
-    products() {
-      return this.filtredProducts({ quantity: 8 });
-    }
-  },
-  watch: {
-    async categoryId(newValue) {
-      if (newValue !== null && !this.initMarker) {
-        this.initCatalog();
-      }
-    },
-    page(newValue) {
-    }
-  },
-  created() {
-    this.setCategoryId(this.category.id);
-  },
-  beforeUpdate() {
-    this.initMarker = false;
-    this.setCategoryId(this.category.id);
-  },
-  methods: {
-    ...mapMutations({
-      setCategoryId: "filter/setCategoryId",
-      setTotalPages: "products/setTotalPages",
-      setTotal: "products/setTotal",
-      setPage: "filter/setPage",
-      setItemsPaginated: "products/setItemsPaginated",
-      SET_SINGLE_PARAM: "SET_SINGLE_PARAM",
-      setOrderAndOrderBy: "filter/setOrderAndOrderBy"
-    }),
-    ...mapActions({
-      getItems: "getItems",
-      updateRequestParams: "products/updateRequestParams",
-      filterAndPaginate: "products/filterAndPaginate",
-      changePage: "products/changePage",
-      validateValues: "filter/validateValues",
-      getSingleBySlug: "getSingleBySlug"
-    }),
-    async initCatalog() {
-      this.setPage(this.query.page ? this.query.page : 1);
-      this.updateRequestParams();
-      {
-        this.filterAndPaginate();
-      }
-      this.initMarker = true;
-    },
-    async updateFilter() {
-      this.$router.push(await this.changePage(1));
-      this.validateValues();
-      this.updateRequestParams();
-      this.filterAndPaginate();
-    },
-    async loadMoreProducts() {
-      const { request } = await this.getItems({
-        basedRequest: this.productsRequest
-      });
-      this.setItemsPaginated({
-        pageNumber: request.params.page,
-        value: request.data
-      });
-    },
-    getTemplatePage() {
-      this.getSingleBySlug({
-        basedRequest: this.pagesRequest,
-        params: { slug: this.params.categorySlug }
-      });
-    },
-    equalOptionSort(value) {
-      return isEqual(value, this.orderAndOrderBy);
-    }
-  }
-};
-function _sfc_ssrRender$A(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
-  const _component_MainPageNode = resolveComponent("MainPageNode");
-  const _component_TheFilterNode = resolveComponent("TheFilterNode");
-  const _component_ContainerNode = resolveComponent("ContainerNode");
-  const _component_CatalogSidebarNode = resolveComponent("CatalogSidebarNode");
-  const _component_CatalogRevealingNode = resolveComponent("CatalogRevealingNode");
-  const _component_InputRadioNode = resolveComponent("InputRadioNode");
-  const _component_CatalogProductsNode = resolveComponent("CatalogProductsNode");
-  const _component_PaginationNode = resolveComponent("PaginationNode");
-  const _component_DistributionNode = resolveComponent("DistributionNode");
-  const _component_PageContentNode = resolveComponent("PageContentNode");
-  _push(ssrRenderComponent(_component_MainPageNode, mergeProps({
-    templatePage: $options.templatePage,
-    navRaw: $options.category
-  }, _attrs), {
-    "page-main": withCtx((_, _push2, _parent2, _scopeId) => {
-      if (_push2) {
-        _push2(ssrRenderComponent(_component_TheFilterNode, { onUpdateFilter: $options.updateFilter }, null, _parent2, _scopeId));
-        _push2(ssrRenderComponent(_component_ContainerNode, null, {
-          default: withCtx((_2, _push3, _parent3, _scopeId2) => {
-            if (_push3) {
-              _push3(`<div class="catalog__body"${_scopeId2}><div class="catalog__main"${_scopeId2}>`);
-              _push3(ssrRenderComponent(_component_CatalogSidebarNode, { total: $options.total }, null, _parent3, _scopeId2));
-              _push3(`<div class="catalog__products"${_scopeId2}><div class="catalog__sorting"${_scopeId2}>`);
-              _push3(ssrRenderComponent(_component_CatalogRevealingNode, {
-                bodyLoaded: _ctx.sortOptions ? true : false,
-                item: { name: "catalogSorting" },
-                onApply: $options.updateFilter
-              }, {
-                title: withCtx((_3, _push4, _parent4, _scopeId3) => {
-                  if (_push4) {
-                    _push4(`\u0421\u043E\u0440\u0442\u0438\u0440\u043E\u0432\u043A\u0430`);
-                  } else {
-                    return [
-                      createTextVNode("\u0421\u043E\u0440\u0442\u0438\u0440\u043E\u0432\u043A\u0430")
-                    ];
-                  }
-                }),
-                main: withCtx((_3, _push4, _parent4, _scopeId3) => {
-                  if (_push4) {
-                    _push4(`<!--[-->`);
-                    ssrRenderList(_ctx.sortOptions, (option) => {
-                      _push4(ssrRenderComponent(_component_InputRadioNode, {
-                        key: option.id,
-                        modelValue: $options.equalOptionSort(option),
-                        labelText: option.name,
-                        checked: option.id === 0,
-                        name: "sort",
-                        disabled: option.id == 3 || option.id == 4 || option.id == 5,
-                        onInput: ($event) => _ctx.setOrderAndOrderBy(option)
-                      }, null, _parent4, _scopeId3));
-                    });
-                    _push4(`<!--]-->`);
-                  } else {
-                    return [
-                      (openBlock(true), createBlock(Fragment, null, renderList(_ctx.sortOptions, (option) => {
-                        return openBlock(), createBlock(_component_InputRadioNode, {
-                          key: option.id,
-                          modelValue: $options.equalOptionSort(option),
-                          labelText: option.name,
-                          checked: option.id === 0,
-                          name: "sort",
-                          disabled: option.id == 3 || option.id == 4 || option.id == 5,
-                          onInput: ($event) => _ctx.setOrderAndOrderBy(option)
-                        }, null, 8, ["modelValue", "labelText", "checked", "disabled", "onInput"]);
-                      }), 128))
-                    ];
-                  }
-                }),
-                _: 1
-              }, _parent3, _scopeId2));
-              _push3(`</div>`);
-              _push3(ssrRenderComponent(_component_CatalogProductsNode, { categoryId: _ctx.categoryId }, null, _parent3, _scopeId2));
-              _push3(ssrRenderComponent(_component_PaginationNode, {
-                type: _ctx.productsRequest.type
-              }, null, _parent3, _scopeId2));
-              _push3(`</div></div></div>`);
-              _push3(ssrRenderComponent(_component_DistributionNode, null, null, _parent3, _scopeId2));
-            } else {
-              return [
-                createVNode("div", { class: "catalog__body" }, [
-                  createVNode("div", { class: "catalog__main" }, [
-                    createVNode(_component_CatalogSidebarNode, { total: $options.total }, null, 8, ["total"]),
-                    createVNode("div", { class: "catalog__products" }, [
-                      createVNode("div", { class: "catalog__sorting" }, [
-                        createVNode(_component_CatalogRevealingNode, {
-                          bodyLoaded: _ctx.sortOptions ? true : false,
-                          item: { name: "catalogSorting" },
-                          onApply: $options.updateFilter
-                        }, {
-                          title: withCtx(() => [
-                            createTextVNode("\u0421\u043E\u0440\u0442\u0438\u0440\u043E\u0432\u043A\u0430")
-                          ]),
-                          main: withCtx(() => [
-                            (openBlock(true), createBlock(Fragment, null, renderList(_ctx.sortOptions, (option) => {
-                              return openBlock(), createBlock(_component_InputRadioNode, {
-                                key: option.id,
-                                modelValue: $options.equalOptionSort(option),
-                                labelText: option.name,
-                                checked: option.id === 0,
-                                name: "sort",
-                                disabled: option.id == 3 || option.id == 4 || option.id == 5,
-                                onInput: ($event) => _ctx.setOrderAndOrderBy(option)
-                              }, null, 8, ["modelValue", "labelText", "checked", "disabled", "onInput"]);
-                            }), 128))
-                          ]),
-                          _: 1
-                        }, 8, ["bodyLoaded", "onApply"])
-                      ]),
-                      createVNode(_component_CatalogProductsNode, { categoryId: _ctx.categoryId }, null, 8, ["categoryId"]),
-                      createVNode(_component_PaginationNode, {
-                        type: _ctx.productsRequest.type
-                      }, null, 8, ["type"])
-                    ])
-                  ])
-                ]),
-                createVNode(_component_DistributionNode)
-              ];
-            }
-          }),
-          _: 1
-        }, _parent2, _scopeId));
-        if ($options.templatePage) {
-          _push2(ssrRenderComponent(_component_PageContentNode, { page: $options.templatePage }, null, _parent2, _scopeId));
-        } else {
-          _push2(`<!---->`);
-        }
-      } else {
-        return [
-          createVNode(_component_TheFilterNode, { onUpdateFilter: $options.updateFilter }, null, 8, ["onUpdateFilter"]),
-          createVNode(_component_ContainerNode, null, {
-            default: withCtx(() => [
-              createVNode("div", { class: "catalog__body" }, [
-                createVNode("div", { class: "catalog__main" }, [
-                  createVNode(_component_CatalogSidebarNode, { total: $options.total }, null, 8, ["total"]),
-                  createVNode("div", { class: "catalog__products" }, [
-                    createVNode("div", { class: "catalog__sorting" }, [
-                      createVNode(_component_CatalogRevealingNode, {
-                        bodyLoaded: _ctx.sortOptions ? true : false,
-                        item: { name: "catalogSorting" },
-                        onApply: $options.updateFilter
-                      }, {
-                        title: withCtx(() => [
-                          createTextVNode("\u0421\u043E\u0440\u0442\u0438\u0440\u043E\u0432\u043A\u0430")
-                        ]),
-                        main: withCtx(() => [
-                          (openBlock(true), createBlock(Fragment, null, renderList(_ctx.sortOptions, (option) => {
-                            return openBlock(), createBlock(_component_InputRadioNode, {
-                              key: option.id,
-                              modelValue: $options.equalOptionSort(option),
-                              labelText: option.name,
-                              checked: option.id === 0,
-                              name: "sort",
-                              disabled: option.id == 3 || option.id == 4 || option.id == 5,
-                              onInput: ($event) => _ctx.setOrderAndOrderBy(option)
-                            }, null, 8, ["modelValue", "labelText", "checked", "disabled", "onInput"]);
-                          }), 128))
-                        ]),
-                        _: 1
-                      }, 8, ["bodyLoaded", "onApply"])
-                    ]),
-                    createVNode(_component_CatalogProductsNode, { categoryId: _ctx.categoryId }, null, 8, ["categoryId"]),
-                    createVNode(_component_PaginationNode, {
-                      type: _ctx.productsRequest.type
-                    }, null, 8, ["type"])
-                  ])
-                ])
-              ]),
-              createVNode(_component_DistributionNode)
-            ]),
-            _: 1
-          }),
-          $options.templatePage ? (openBlock(), createBlock(_component_PageContentNode, {
-            key: 0,
-            page: $options.templatePage
-          }, null, 8, ["page"])) : createCommentVNode("", true)
-        ];
-      }
-    }),
-    _: 1
-  }, _parent));
-}
-const _sfc_setup$A = _sfc_main$A.setup;
-_sfc_main$A.setup = (props, ctx) => {
-  const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/pages/common/SingleSubCategoryPage.vue");
-  return _sfc_setup$A ? _sfc_setup$A(props, ctx) : void 0;
-};
-const SingleSubCategoryPage = /* @__PURE__ */ _export_sfc(_sfc_main$A, [["ssrRender", _sfc_ssrRender$A]]);
+const HomePage = /* @__PURE__ */ _export_sfc(_sfc_main$J, [["ssrRender", _sfc_ssrRender$J]]);
 const CategoryGrid_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$z = {
+const _sfc_main$I = {
   components: {},
   props: {
-    productCategory: {
+    category: {
       reqired: true,
       type: Object
     }
   },
   setup() {
+    const store2 = useStore();
     return {
-      routeToCategory
+      routeToSingleProductCategory: (value) => store2.dispatch("productsCategories/routeToSingleProductCategory", value)
     };
   },
   computed: {
@@ -27617,12 +27006,12 @@ const _sfc_main$z = {
       singleBySlug: "singleBySlug"
     }),
     productsCategories() {
-      if (!this.productCategory)
+      if (!this.category)
         return [];
       return this.itemsMatchedByCallback(
         this.pCRequest,
         {
-          parent: this.productCategory.id
+          parent: this.category.id
         },
         (product, keys, params, items) => {
           let approved;
@@ -27641,7 +27030,7 @@ const _sfc_main$z = {
     }
   }
 };
-function _sfc_ssrRender$z(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$I(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   const _component_PreloadWrapNode = resolveComponent("PreloadWrapNode");
   _push(`<section${ssrRenderAttrs(mergeProps({ class: "category-grid" }, _attrs))}><div class="category-grid__body">`);
   if ($options.productsCategories.length === 0) {
@@ -27679,7 +27068,7 @@ function _sfc_ssrRender$z(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
           return [
             productSubCategory ? (openBlock(), createBlock("div", {
               key: 0,
-              onClick: ($event) => $setup.routeToCategory(productSubCategory)
+              onClick: ($event) => $setup.routeToSingleProductCategory(productSubCategory)
             }, [
               createVNode("div", { class: "category-grid__image" }, [
                 productSubCategory.image ? (openBlock(), createBlock("img", {
@@ -27702,239 +27091,444 @@ function _sfc_ssrRender$z(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
   });
   _push(`<!--]--></div></div></section>`);
 }
-const _sfc_setup$z = _sfc_main$z.setup;
-_sfc_main$z.setup = (props, ctx) => {
+const _sfc_setup$I = _sfc_main$I.setup;
+_sfc_main$I.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/CategoryGrid.vue");
-  return _sfc_setup$z ? _sfc_setup$z(props, ctx) : void 0;
+  return _sfc_setup$I ? _sfc_setup$I(props, ctx) : void 0;
 };
-const CategoryGrid = /* @__PURE__ */ _export_sfc(_sfc_main$z, [["ssrRender", _sfc_ssrRender$z]]);
-const SingleCategoryPage_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$y = {
+const CategoryGrid = /* @__PURE__ */ _export_sfc(_sfc_main$I, [["ssrRender", _sfc_ssrRender$I]]);
+function useCategory(props) {
+  const store2 = useStore();
+  const pCatsType = store2.state.productsCategories.basedRequest.type;
+  const pagesType = store2.state.pages.basedRequest.type;
+  const templatePage = ref({});
+  const category = ref({});
+  watch(props, () => {
+    let slug = "";
+    if (isArray(props.params.mainPath)) {
+      slug = last(props.params.mainPath);
+    } else {
+      slug = props.params.mainPath;
+    }
+    templatePage.value = store2.getters.singleBySlug({ type: pagesType, slug });
+    category.value = store2.getters.singleBySlug({ type: pCatsType, slug });
+  }, { immediate: true });
+  return {
+    templatePage,
+    category
+  };
+}
+const CategoryMainPage_vue_vue_type_style_index_0_lang = "";
+const _sfc_main$H = {
   components: {
-    CatalogSidebarNode,
     CategoryGrid,
     SliderProductsSectionNode,
-    SliderBannersNode,
-    TroubleNode
+    SliderBannersNode
   },
   props: {
-    params: {
-      mainCategorySlug: String
-    }
+    params: Object
   },
-  computed: {
-    ...mapState({
-      productsRequest: (state2) => state2.products.basedRequest,
-      pCRequest: (state2) => state2.productsCategories.basedRequest,
-      pagesRequest: (state2) => state2.pages.basedRequest
-    }),
-    ...mapGetters({
-      singleBySlug: "singleBySlug",
-      requestByItemParam: "requestByItemParam"
-    }),
-    productCategory() {
-      return this.singleBySlug({
-        type: this.pCRequest.type,
-        slug: this.params.mainCategorySlug
-      });
-    },
-    templatePage() {
-      return this.singleBySlug({
-        type: this.pagesRequest.type,
-        slug: this.params.mainCategorySlug
-      });
-    },
-    total() {
-      if (isEmpty(this.productCategory))
-        return;
-      return this.productCategory.count;
-    }
-  },
-  created() {
-  },
-  methods: {
-    ...mapMutations({
-      SET_SINGLE_PARAM: "SET_SINGLE_PARAM"
-    }),
-    ...mapActions({
-      getSingleBySlug: "getSingleBySlug"
-    }),
-    async getTemplatePage() {
-      this.getSingleBySlug({
-        basedRequest: this.pagesRequest,
-        params: { slug: this.params.mainCategorySlug }
-      });
-    },
-    async getProductCategory() {
-      if (isEmpty(this.productCategory)) {
-        await this.getSingleBySlug({
-          basedRequest: this.pCRequest,
-          params: { slug: this.params.mainCategorySlug }
-        });
-      }
-    }
+  setup(props) {
+    const { templatePage, category } = useCategory(props);
+    return {
+      templatePage,
+      category
+    };
   }
 };
-function _sfc_ssrRender$y(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
-  const _component_MainPageNode = resolveComponent("MainPageNode");
-  const _component_ContainerNode = resolveComponent("ContainerNode");
+function _sfc_ssrRender$H(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   const _component_SliderBannersNode = resolveComponent("SliderBannersNode");
   const _component_CategoryGrid = resolveComponent("CategoryGrid");
   const _component_SliderProductsSectionNode = resolveComponent("SliderProductsSectionNode");
+  _push(`<div${ssrRenderAttrs(mergeProps({ class: "single-category__sections" }, _attrs))}>`);
+  _push(ssrRenderComponent(_component_SliderBannersNode, {
+    class: "slider-banners-single-category",
+    bannerCategoryId: 68,
+    containerStylesOff: true,
+    slug: "slider-banners-main_single-category",
+    autoplay: { delay: 5e4, disableOnInteraction: false },
+    pagination: "",
+    "slides-per-view": 1
+  }, null, _parent));
+  _push(ssrRenderComponent(_component_CategoryGrid, { category: $setup.category }, null, _parent));
+  _push(ssrRenderComponent(_component_SliderProductsSectionNode, {
+    slug: "single-category-for-women",
+    title: "\u0414\u043B\u044F \u0436\u0435\u043D\u0449\u0438\u043D",
+    productsCategoryId: 20,
+    breakpoints: {
+      "320": {
+        slidesPerView: 2,
+        spaceBetween: 20
+      },
+      "768": {
+        slidesPerView: 3,
+        spaceBetween: 20
+      },
+      "1200": {
+        slidesPerView: 4,
+        spaceBetween: 30
+      }
+    }
+  }, null, _parent));
+  _push(`</div>`);
+}
+const _sfc_setup$H = _sfc_main$H.setup;
+_sfc_main$H.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/pages/common/category/CategoryMainPage.vue");
+  return _sfc_setup$H ? _sfc_setup$H(props, ctx) : void 0;
+};
+const CategoryMainPage = /* @__PURE__ */ _export_sfc(_sfc_main$H, [["ssrRender", _sfc_ssrRender$H]]);
+const CatalogProductsNode_vue_vue_type_style_index_0_lang = "";
+const _sfc_main$G = {
+  components: {
+    ProductNode,
+    TroubleNode
+  },
+  data() {
+    return {
+      isEmpty
+    };
+  },
+  computed: {
+    ...mapGetters({
+      filtredProducts: "products/filtredProducts",
+      productsIds: "products/productsIds"
+    }),
+    ...mapState({
+      productRequest: (state2) => state2.products.basedRequest,
+      itemsPaginated: (state2) => state2.products.itemsPaginated
+    }),
+    products() {
+      return this.filtredProducts({ quantity: this.productRequest.per_page });
+    }
+  },
+  methods: {
+    ...mapMutations({
+      setExclude: "products/setExclude"
+    })
+  }
+};
+function _sfc_ssrRender$G(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  const _component_ProductNode = resolveComponent("ProductNode");
   const _component_TroubleNode = resolveComponent("TroubleNode");
-  _push(ssrRenderComponent(_component_MainPageNode, mergeProps({
-    class: "single-category",
-    templatePage: $options.templatePage,
-    navRaw: $options.productCategory
-  }, _attrs), {
-    "page-main": withCtx((_, _push2, _parent2, _scopeId) => {
+  if (!$data.isEmpty($options.products)) {
+    _push(`<div${ssrRenderAttrs(mergeProps({ class: "catalog-products" }, _attrs))}><!--[-->`);
+    ssrRenderList($options.products, (product, index) => {
+      _push(ssrRenderComponent(_component_ProductNode, {
+        key: index,
+        product,
+        viewType: "catalog"
+      }, null, _parent));
+    });
+    _push(`<!--]--></div>`);
+  } else {
+    _push(ssrRenderComponent(_component_TroubleNode, mergeProps({ text: ["\u0414\u043B\u044F \u044D\u0442\u043E\u0439 \u043A\u0430\u0442\u0435\u0433\u043E\u0440\u0438\u0438 ", "\u0435\u0449\u0451 \u043D\u0435 \u0434\u043E\u0431\u0430\u0432\u043B\u0435\u043D\u043E \u0442\u043E\u0432\u0430\u0440\u043E\u0432!"] }, _attrs), null, _parent));
+  }
+}
+const _sfc_setup$G = _sfc_main$G.setup;
+_sfc_main$G.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/CatalogProductsNode.vue");
+  return _sfc_setup$G ? _sfc_setup$G(props, ctx) : void 0;
+};
+const CatalogProductsNode = /* @__PURE__ */ _export_sfc(_sfc_main$G, [["ssrRender", _sfc_ssrRender$G]]);
+const PaginationNode_vue_vue_type_style_index_0_scoped_21e3ac7d_lang = "";
+const _sfc_main$F = {
+  props: {
+    type: {
+      type: String,
+      reqired: true
+    }
+  },
+  computed: {
+    ...mapGetters({}),
+    ...mapState({
+      totalPages: (state2) => state2.products.totalPages,
+      currentPage: (state2) => state2.products.basedRequest.params.page
+    })
+  },
+  methods: {
+    ...mapMutations({}),
+    ...mapActions({
+      changePage: "products/changePage"
+    }),
+    async changePageLocal(page) {
+      this.$router.push(await this.changePage(page));
+    }
+  }
+};
+function _sfc_ssrRender$F(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  _push(`<div${ssrRenderAttrs(mergeProps({ class: "pagination" }, _attrs))} data-v-21e3ac7d><!--[-->`);
+  ssrRenderList(_ctx.totalPages, (page, index) => {
+    _push(`<button class="${ssrRenderClass(_ctx.currentPage == page ? "active" : "")}" data-v-21e3ac7d>${ssrInterpolate(page)}</button>`);
+  });
+  _push(`<!--]--></div>`);
+}
+const _sfc_setup$F = _sfc_main$F.setup;
+_sfc_main$F.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/PaginationNode.vue");
+  return _sfc_setup$F ? _sfc_setup$F(props, ctx) : void 0;
+};
+const PaginationNode = /* @__PURE__ */ _export_sfc(_sfc_main$F, [["ssrRender", _sfc_ssrRender$F], ["__scopeId", "data-v-21e3ac7d"]]);
+const CatalogRevealingNode_vue_vue_type_style_index_0_lang = "";
+const _sfc_main$E = {
+  props: {
+    item: Object,
+    bodyLoaded: {
+      type: Boolean,
+      default: false
+    }
+  },
+  emmits: [
+    "setDefault"
+  ],
+  setup(props, ctx) {
+    const store2 = useStore();
+    const item = { ...{ type: "catalogRevealing" }, ...props.item };
+    const { element } = useOpening(item);
+    const apply = () => {
+      store2.dispatch("common/updateAllOpeningTypeItems", { type: "catalogRevealing" });
+      store2.dispatch("filter/updateFilter");
+    };
+    return {
+      element,
+      apply,
+      setDefault: () => ctx.emit("setDefault"),
+      setCatalogRevealing: (value) => store2.commit("common/setCatalogRevealing", value)
+    };
+  }
+};
+function _sfc_ssrRender$E(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  const _component_ButtonNode = resolveComponent("ButtonNode");
+  _push(`<div${ssrRenderAttrs(mergeProps({
+    class: ["catalog-revealing", $setup.element.active ? "catalog-revealing_active" : ""]
+  }, _attrs))}><div class="catalog-revealing__actions">`);
+  _push(ssrRenderComponent(_component_ButtonNode, {
+    class: ["catalog-revealing__button catalog-revealing__button_main", $setup.element.default ? "catalog-revealing__button_main_default" : ""],
+    onClick: ($event) => $setup.setCatalogRevealing({ name: $props.item.name })
+  }, {
+    default: withCtx((_, _push2, _parent2, _scopeId) => {
       if (_push2) {
-        _push2(ssrRenderComponent(_component_ContainerNode, null, {
-          default: withCtx((_2, _push3, _parent3, _scopeId2) => {
-            if (_push3) {
-              if ($options.templatePage) {
-                _push3(`<div class="single-category__body"${_scopeId2}><div class="single-category__sections"${_scopeId2}>`);
-                _push3(ssrRenderComponent(_component_SliderBannersNode, {
-                  class: "slider-banners-single-category",
-                  bannerCategoryId: 68,
-                  containerStylesOff: true,
-                  slug: "slider-banners-main_single-category",
-                  autoplay: { delay: 5e4, disableOnInteraction: false },
-                  pagination: "",
-                  "slides-per-view": 1
-                }, null, _parent3, _scopeId2));
-                _push3(ssrRenderComponent(_component_CategoryGrid, { productCategory: $options.productCategory }, null, _parent3, _scopeId2));
-                _push3(ssrRenderComponent(_component_SliderProductsSectionNode, {
-                  slug: "single-category-for-women",
-                  title: "\u0414\u043B\u044F \u0436\u0435\u043D\u0449\u0438\u043D",
-                  productsCategoryId: 20,
-                  breakpoints: {
-                    "320": {
-                      slidesPerView: 2,
-                      spaceBetween: 20
-                    },
-                    "768": {
-                      slidesPerView: 3,
-                      spaceBetween: 20
-                    },
-                    "1200": {
-                      slidesPerView: 4,
-                      spaceBetween: 30
-                    }
-                  }
-                }, null, _parent3, _scopeId2));
-                _push3(`</div></div>`);
-              } else {
-                _push3(ssrRenderComponent(_component_TroubleNode, { text: ["\u0414\u043B\u044F \u043A\u0430\u0442\u0435\u0433\u043E\u0440\u0438\u0438 \u043F\u043E \u044D\u0442\u043E\u043C\u0443 \u043C\u0430\u0440\u0448\u0440\u0443\u0442\u0443", "\u0435\u0449\u0451 \u043D\u0435 \u0441\u043E\u0437\u0434\u0430\u043D\u0430 \u0441\u0442\u0440\u0430\u043D\u0438\u0446\u0430!"] }, null, _parent3, _scopeId2));
-              }
-            } else {
-              return [
-                $options.templatePage ? (openBlock(), createBlock("div", {
-                  key: 0,
-                  class: "single-category__body"
-                }, [
-                  createVNode("div", { class: "single-category__sections" }, [
-                    createVNode(_component_SliderBannersNode, {
-                      class: "slider-banners-single-category",
-                      bannerCategoryId: 68,
-                      containerStylesOff: true,
-                      slug: "slider-banners-main_single-category",
-                      autoplay: { delay: 5e4, disableOnInteraction: false },
-                      pagination: "",
-                      "slides-per-view": 1
-                    }),
-                    createVNode(_component_CategoryGrid, { productCategory: $options.productCategory }, null, 8, ["productCategory"]),
-                    createVNode(_component_SliderProductsSectionNode, {
-                      slug: "single-category-for-women",
-                      title: "\u0414\u043B\u044F \u0436\u0435\u043D\u0449\u0438\u043D",
-                      productsCategoryId: 20,
-                      breakpoints: {
-                        "320": {
-                          slidesPerView: 2,
-                          spaceBetween: 20
-                        },
-                        "768": {
-                          slidesPerView: 3,
-                          spaceBetween: 20
-                        },
-                        "1200": {
-                          slidesPerView: 4,
-                          spaceBetween: 30
-                        }
-                      }
-                    })
-                  ])
-                ])) : (openBlock(), createBlock(_component_TroubleNode, {
-                  key: 1,
-                  text: ["\u0414\u043B\u044F \u043A\u0430\u0442\u0435\u0433\u043E\u0440\u0438\u0438 \u043F\u043E \u044D\u0442\u043E\u043C\u0443 \u043C\u0430\u0440\u0448\u0440\u0443\u0442\u0443", "\u0435\u0449\u0451 \u043D\u0435 \u0441\u043E\u0437\u0434\u0430\u043D\u0430 \u0441\u0442\u0440\u0430\u043D\u0438\u0446\u0430!"]
-                }))
-              ];
-            }
-          }),
-          _: 1
-        }, _parent2, _scopeId));
+        _push2(`<span class="catalog-revealing__close icon-plus"${_scopeId}></span><span class="catalog-revealing__title"${_scopeId}>`);
+        ssrRenderSlot(_ctx.$slots, "title", {}, null, _push2, _parent2, _scopeId);
+        _push2(`</span><span class="catalog-revealing__arrow icon-arrow"${_scopeId}></span>`);
       } else {
         return [
-          createVNode(_component_ContainerNode, null, {
-            default: withCtx(() => [
-              $options.templatePage ? (openBlock(), createBlock("div", {
-                key: 0,
-                class: "single-category__body"
-              }, [
-                createVNode("div", { class: "single-category__sections" }, [
-                  createVNode(_component_SliderBannersNode, {
-                    class: "slider-banners-single-category",
-                    bannerCategoryId: 68,
-                    containerStylesOff: true,
-                    slug: "slider-banners-main_single-category",
-                    autoplay: { delay: 5e4, disableOnInteraction: false },
-                    pagination: "",
-                    "slides-per-view": 1
-                  }),
-                  createVNode(_component_CategoryGrid, { productCategory: $options.productCategory }, null, 8, ["productCategory"]),
-                  createVNode(_component_SliderProductsSectionNode, {
-                    slug: "single-category-for-women",
-                    title: "\u0414\u043B\u044F \u0436\u0435\u043D\u0449\u0438\u043D",
-                    productsCategoryId: 20,
-                    breakpoints: {
-                      "320": {
-                        slidesPerView: 2,
-                        spaceBetween: 20
-                      },
-                      "768": {
-                        slidesPerView: 3,
-                        spaceBetween: 20
-                      },
-                      "1200": {
-                        slidesPerView: 4,
-                        spaceBetween: 30
-                      }
-                    }
-                  })
-                ])
-              ])) : (openBlock(), createBlock(_component_TroubleNode, {
-                key: 1,
-                text: ["\u0414\u043B\u044F \u043A\u0430\u0442\u0435\u0433\u043E\u0440\u0438\u0438 \u043F\u043E \u044D\u0442\u043E\u043C\u0443 \u043C\u0430\u0440\u0448\u0440\u0443\u0442\u0443", "\u0435\u0449\u0451 \u043D\u0435 \u0441\u043E\u0437\u0434\u0430\u043D\u0430 \u0441\u0442\u0440\u0430\u043D\u0438\u0446\u0430!"]
-              }))
-            ]),
-            _: 1
-          })
+          createVNode("span", {
+            class: "catalog-revealing__close icon-plus",
+            onClick: $setup.setDefault
+          }, null, 8, ["onClick"]),
+          createVNode("span", { class: "catalog-revealing__title" }, [
+            renderSlot(_ctx.$slots, "title")
+          ]),
+          createVNode("span", { class: "catalog-revealing__arrow icon-arrow" })
+        ];
+      }
+    }),
+    _: 3
+  }, _parent));
+  _push(`</div><div style="${ssrRenderStyle($setup.element.active ? null : { display: "none" })}" class="catalog-revealing__body"><div class="catalog-revealing__main">`);
+  ssrRenderSlot(_ctx.$slots, "main", {}, null, _push, _parent);
+  _push(`</div><div class="catalog-revealing__nested-actions">`);
+  _push(ssrRenderComponent(_component_ButtonNode, {
+    class: "catalog-revealing__button",
+    onClick: $setup.setDefault
+  }, {
+    default: withCtx((_, _push2, _parent2, _scopeId) => {
+      if (_push2) {
+        _push2(`\u041E\u0447\u0438\u0441\u0442\u0438\u0442\u044C`);
+      } else {
+        return [
+          createTextVNode("\u041E\u0447\u0438\u0441\u0442\u0438\u0442\u044C")
         ];
       }
     }),
     _: 1
   }, _parent));
+  _push(ssrRenderComponent(_component_ButtonNode, {
+    class: "catalog-revealing__button",
+    "button-style": "dark",
+    onClick: $setup.apply
+  }, {
+    default: withCtx((_, _push2, _parent2, _scopeId) => {
+      if (_push2) {
+        _push2(`\u041F\u0440\u0438\u043C\u0435\u043D\u0438\u0442\u044C`);
+      } else {
+        return [
+          createTextVNode("\u041F\u0440\u0438\u043C\u0435\u043D\u0438\u0442\u044C")
+        ];
+      }
+    }),
+    _: 1
+  }, _parent));
+  _push(`</div></div></div>`);
 }
-const _sfc_setup$y = _sfc_main$y.setup;
-_sfc_main$y.setup = (props, ctx) => {
+const _sfc_setup$E = _sfc_main$E.setup;
+_sfc_main$E.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/pages/common/SingleCategoryPage.vue");
-  return _sfc_setup$y ? _sfc_setup$y(props, ctx) : void 0;
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/CatalogRevealingNode.vue");
+  return _sfc_setup$E ? _sfc_setup$E(props, ctx) : void 0;
 };
-const SingleCategoryPage = /* @__PURE__ */ _export_sfc(_sfc_main$y, [["ssrRender", _sfc_ssrRender$y]]);
+const CatalogRevealingNode = /* @__PURE__ */ _export_sfc(_sfc_main$E, [["ssrRender", _sfc_ssrRender$E]]);
+const CategorySubPage_vue_vue_type_style_index_0_lang = "";
+const _sfc_main$D = {
+  components: {
+    CatalogRevealingNode,
+    CatalogProductsNode,
+    PaginationNode
+  },
+  props: {
+    params: Object,
+    query: Object
+  },
+  setup(props) {
+    const { templatePage, category } = useCategory(props);
+    return {
+      templatePage,
+      category
+    };
+  },
+  data() {
+    return {
+      initialized: false
+    };
+  },
+  computed: {
+    ...mapGetters({
+      pageBySlug: "pages/pageBySlug",
+      singleBySlug: "singleBySlug",
+      requestByItemParam: "requestByItemParam",
+      filtredProducts: "products/filtredProducts"
+    }),
+    ...mapState({
+      productsSSGDefaultRequest: (state2) => state2.products.requests[0],
+      productsRequest: (state2) => state2.products.basedRequest,
+      productsCategoriesRequest: (state2) => state2.productsCategories.basedRequest,
+      totalProducts: (state2) => state2.products.total,
+      totalPages: (state2) => state2.products.totalPages,
+      page: (state2) => state2.products.basedRequest.params.page,
+      pagesRequest: (state2) => state2.pages.basedRequest,
+      sortOptions: (state2) => state2.filter.defaultValues.sort,
+      categoryId: (state2) => state2.filter.params.category,
+      orderAndOrderBy: (state2) => state2.filter.params.orderAndOrderBy
+    }),
+    products() {
+      return this.filtredProducts({ quantity: 8 });
+    }
+  },
+  watch: {
+    async categoryId(newValue) {
+      if (newValue !== null && !this.initialized) {
+        this.initCatalog();
+      }
+    }
+  },
+  created() {
+    this.setCategoryId(this.category.id);
+  },
+  beforeUpdate() {
+    this.initialized = false;
+    this.setCategoryId(this.category.id);
+  },
+  methods: {
+    ...mapMutations({
+      setCategoryId: "filter/setCategoryId",
+      setTotalPages: "products/setTotalPages",
+      setTotal: "products/setTotal",
+      setPage: "filter/setPage",
+      setItemsPaginated: "products/setItemsPaginated",
+      SET_SINGLE_PARAM: "SET_SINGLE_PARAM",
+      setOrderAndOrderBy: "filter/setOrderAndOrderBy"
+    }),
+    ...mapActions({
+      updateRequestParams: "products/updateRequestParams",
+      filterAndPaginate: "products/filterAndPaginate",
+      changePage: "products/changePage",
+      validateValues: "filter/validateValues",
+      updateFilter: "filter/updateFilter"
+    }),
+    async initCatalog() {
+      this.setPage(this.query.page ? this.query.page : 1);
+      this.updateRequestParams();
+      this.filterAndPaginate();
+      this.initialized = true;
+    },
+    equalOptionSort(value) {
+      return isEqual(value, this.orderAndOrderBy);
+    }
+  }
+};
+function _sfc_ssrRender$D(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  const _component_CatalogRevealingNode = resolveComponent("CatalogRevealingNode");
+  const _component_InputRadioNode = resolveComponent("InputRadioNode");
+  const _component_CatalogProductsNode = resolveComponent("CatalogProductsNode");
+  const _component_PaginationNode = resolveComponent("PaginationNode");
+  _push(`<div${ssrRenderAttrs(mergeProps({ class: "catalog__products" }, _attrs))}><div class="catalog__sorting">`);
+  _push(ssrRenderComponent(_component_CatalogRevealingNode, {
+    bodyLoaded: _ctx.sortOptions ? true : false,
+    item: { name: "catalogSorting" }
+  }, {
+    title: withCtx((_, _push2, _parent2, _scopeId) => {
+      if (_push2) {
+        _push2(`\u0421\u043E\u0440\u0442\u0438\u0440\u043E\u0432\u043A\u0430`);
+      } else {
+        return [
+          createTextVNode("\u0421\u043E\u0440\u0442\u0438\u0440\u043E\u0432\u043A\u0430")
+        ];
+      }
+    }),
+    main: withCtx((_, _push2, _parent2, _scopeId) => {
+      if (_push2) {
+        _push2(`<!--[-->`);
+        ssrRenderList(_ctx.sortOptions, (option) => {
+          _push2(ssrRenderComponent(_component_InputRadioNode, {
+            key: option.id,
+            modelValue: $options.equalOptionSort(option),
+            labelText: option.name,
+            checked: option.id === 0,
+            name: "sort",
+            disabled: option.id == 3 || option.id == 4 || option.id == 5,
+            onInput: ($event) => _ctx.setOrderAndOrderBy(option)
+          }, null, _parent2, _scopeId));
+        });
+        _push2(`<!--]-->`);
+      } else {
+        return [
+          (openBlock(true), createBlock(Fragment, null, renderList(_ctx.sortOptions, (option) => {
+            return openBlock(), createBlock(_component_InputRadioNode, {
+              key: option.id,
+              modelValue: $options.equalOptionSort(option),
+              labelText: option.name,
+              checked: option.id === 0,
+              name: "sort",
+              disabled: option.id == 3 || option.id == 4 || option.id == 5,
+              onInput: ($event) => _ctx.setOrderAndOrderBy(option)
+            }, null, 8, ["modelValue", "labelText", "checked", "disabled", "onInput"]);
+          }), 128))
+        ];
+      }
+    }),
+    _: 1
+  }, _parent));
+  _push(`</div>`);
+  _push(ssrRenderComponent(_component_CatalogProductsNode, { categoryId: _ctx.categoryId }, null, _parent));
+  _push(ssrRenderComponent(_component_PaginationNode, {
+    type: _ctx.productsRequest.type
+  }, null, _parent));
+  _push(`</div>`);
+}
+const _sfc_setup$D = _sfc_main$D.setup;
+_sfc_main$D.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/pages/common/category/CategorySubPage.vue");
+  return _sfc_setup$D ? _sfc_setup$D(props, ctx) : void 0;
+};
+const CategorySubPage = /* @__PURE__ */ _export_sfc(_sfc_main$D, [["ssrRender", _sfc_ssrRender$D]]);
 const SliderSingleNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$x = {
+const _sfc_main$C = {
   components: {
     Swiper,
     SwiperSlide
@@ -27971,7 +27565,7 @@ const _sfc_main$x = {
     ...mapMutations({})
   }
 };
-function _sfc_ssrRender$x(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$C(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   const _component_ContainerNode = resolveComponent("ContainerNode");
   const _component_Swiper = resolveComponent("Swiper");
   const _component_SwiperSlide = resolveComponent("SwiperSlide");
@@ -28301,16 +27895,16 @@ function _sfc_ssrRender$x(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
   }, _parent));
   _push(`</section>`);
 }
-const _sfc_setup$x = _sfc_main$x.setup;
-_sfc_main$x.setup = (props, ctx) => {
+const _sfc_setup$C = _sfc_main$C.setup;
+_sfc_main$C.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/sliders/SliderSingleNode.vue");
-  return _sfc_setup$x ? _sfc_setup$x(props, ctx) : void 0;
+  return _sfc_setup$C ? _sfc_setup$C(props, ctx) : void 0;
 };
-const SliderSingleNode = /* @__PURE__ */ _export_sfc(_sfc_main$x, [["ssrRender", _sfc_ssrRender$x]]);
+const SliderSingleNode = /* @__PURE__ */ _export_sfc(_sfc_main$C, [["ssrRender", _sfc_ssrRender$C]]);
 const SocialNetworksNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$w = {};
-function _sfc_ssrRender$w(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+const _sfc_main$B = {};
+function _sfc_ssrRender$B(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   const _component_ButtonNode = resolveComponent("ButtonNode");
   _push(`<div${ssrRenderAttrs(mergeProps({ class: "social-networks" }, _attrs))}>`);
   _push(ssrRenderComponent(_component_ButtonNode, { class: "social-networks__button icon icon-image_tg" }, null, _parent));
@@ -28318,15 +27912,15 @@ function _sfc_ssrRender$w(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
   _push(ssrRenderComponent(_component_ButtonNode, { class: "social-networks__button icon icon-image_ms" }, null, _parent));
   _push(`</div>`);
 }
-const _sfc_setup$w = _sfc_main$w.setup;
-_sfc_main$w.setup = (props, ctx) => {
+const _sfc_setup$B = _sfc_main$B.setup;
+_sfc_main$B.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/SocialNetworksNode.vue");
-  return _sfc_setup$w ? _sfc_setup$w(props, ctx) : void 0;
+  return _sfc_setup$B ? _sfc_setup$B(props, ctx) : void 0;
 };
-const SocialNetworksNode = /* @__PURE__ */ _export_sfc(_sfc_main$w, [["ssrRender", _sfc_ssrRender$w]]);
+const SocialNetworksNode = /* @__PURE__ */ _export_sfc(_sfc_main$B, [["ssrRender", _sfc_ssrRender$B]]);
 const SingleProductPage_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$v = {
+const _sfc_main$A = {
   components: {
     SliderBannersFashionBlogNode,
     SliderSingleNode,
@@ -28337,10 +27931,7 @@ const _sfc_main$v = {
     ButtonWishlistNode
   },
   props: {
-    params: {
-      productSlug: String
-    },
-    query: {}
+    params: Object
   },
   data() {
     return {
@@ -28383,7 +27974,7 @@ const _sfc_main$v = {
     product() {
       return this.singleBySlug({
         type: this.productsRequest.type,
-        slug: this.params.productSlug
+        slug: this.params.mainPath[this.params.mainPath.length - 1]
       });
     },
     wishlistPayload() {
@@ -28400,9 +27991,7 @@ const _sfc_main$v = {
     }
   },
   created() {
-    {
-      this.cartPayload.params.id = this.product.id;
-    }
+    this.cartPayload.params.id = this.product.id;
   },
   mounted() {
     new Sticky(".sidebar-single", {
@@ -28427,22 +28016,13 @@ const _sfc_main$v = {
         return null;
       return this.product.attributes.find((i) => i.id === attrId);
     },
-    async getProduct() {
-      if (isEmpty(this.product)) {
-        await this.getSingleBySlug({
-          basedRequest: this.productsRequest,
-          params: { slug: this.params.productSlug, per_page: 1 }
-        });
-      }
-      this.cartPayload.params.id = this.product.id;
-    },
     setVariation(attribute, value) {
       const settedValue = this.cartPayload.params.variations[0].value;
       this.cartPayload.params.variations[0].value = settedValue ? "" : value;
     }
   }
 };
-function _sfc_ssrRender$v(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$A(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   const _component_MainPageNode = resolveComponent("MainPageNode");
   const _component_ContainerNode = resolveComponent("ContainerNode");
   const _component_SliderSingleNode = resolveComponent("SliderSingleNode");
@@ -28453,10 +28033,7 @@ function _sfc_ssrRender$v(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
   const _component_SliderProductsSectionNode = resolveComponent("SliderProductsSectionNode");
   const _component_SliderBannersFashionBlogNode = resolveComponent("SliderBannersFashionBlogNode");
   const _component_DistributionNode = resolveComponent("DistributionNode");
-  _push(ssrRenderComponent(_component_MainPageNode, mergeProps({
-    navRaw: $options.product ? $options.product.categories[1] : void 0,
-    additionalTitle: $options.product ? $options.product.name : void 0
-  }, _attrs), {
+  _push(ssrRenderComponent(_component_MainPageNode, _attrs, {
     "page-main": withCtx((_, _push2, _parent2, _scopeId) => {
       if (_push2) {
         _push2(`<div class="single"${_scopeId}><div class="single__body"${_scopeId}><div class="single__main"${_scopeId}>`);
@@ -28803,32 +28380,503 @@ function _sfc_ssrRender$v(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
     _: 1
   }, _parent));
 }
+const _sfc_setup$A = _sfc_main$A.setup;
+_sfc_main$A.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/pages/common/SingleProductPage.vue");
+  return _sfc_setup$A ? _sfc_setup$A(props, ctx) : void 0;
+};
+const SingleProductPage = /* @__PURE__ */ _export_sfc(_sfc_main$A, [["ssrRender", _sfc_ssrRender$A]]);
+const SpoilerNode_vue_vue_type_style_index_0_lang = "";
+const _sfc_main$z = {
+  props: {
+    item: {
+      type: Object,
+      reqired: true
+    }
+  },
+  setup(props) {
+    if (props.item.default === false)
+      return {};
+    const store2 = useStore();
+    const item = ref({ ...{ type: "spoiler" }, ...props.item });
+    watch(props, (newProps) => {
+      store2.commit("common/setSpoiler", {
+        name: newProps.item.name,
+        value: newProps.item.default === void 0 ? true : newProps.item.default,
+        prop: "default"
+      });
+      store2.commit("common/setSpoiler", {
+        name: newProps.item.name,
+        value: newProps.item.active
+      });
+    });
+    const { element } = useOpening(item);
+    const openSpoiler = () => {
+      store2.commit("common/setSpoiler", {
+        name: element.value.name,
+        prop: "active"
+      });
+    };
+    return { element, openSpoiler };
+  }
+};
+function _sfc_ssrRender$z(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  var _a;
+  if ((_a = $setup.element) == null ? void 0 : _a.default) {
+    _push(`<div${ssrRenderAttrs(mergeProps({
+      class: ["spoiler", {
+        spoiler_active: $setup.element.active,
+        spoiler_default: $setup.element.default
+      }]
+    }, _attrs))}><div class="spoiler__button icon-arrow">`);
+    ssrRenderSlot(_ctx.$slots, "button", {}, null, _push, _parent);
+    _push(`</div><div class="spoiler__list">`);
+    ssrRenderSlot(_ctx.$slots, "list", {}, null, _push, _parent);
+    _push(`</div></div>`);
+  } else {
+    _push(`<!--[-->`);
+    ssrRenderSlot(_ctx.$slots, "button", {}, null, _push, _parent);
+    ssrRenderSlot(_ctx.$slots, "list", {}, null, _push, _parent);
+    _push(`<!--]-->`);
+  }
+}
+const _sfc_setup$z = _sfc_main$z.setup;
+_sfc_main$z.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/SpoilerNode.vue");
+  return _sfc_setup$z ? _sfc_setup$z(props, ctx) : void 0;
+};
+const SpoilerNode = /* @__PURE__ */ _export_sfc(_sfc_main$z, [["ssrRender", _sfc_ssrRender$z]]);
+const CategoriesNode_vue_vue_type_style_index_0_lang = "";
+const _sfc_main$y = {
+  components: {
+    SpoilerNode
+  },
+  props: {
+    parentID: {
+      type: Number,
+      reqired: true,
+      default: 0
+    },
+    nestedLevel: {
+      type: Number,
+      default: 0
+    },
+    spoilerType: {
+      type: Boolean,
+      default: false
+    },
+    activityCategory: {
+      default: null
+    }
+  },
+  setup(props) {
+    const store2 = useStore();
+    const ordinal = props.nestedLevel ? `${toOrdinal(props.nestedLevel)}-` : "";
+    const request = store2.state.productsCategories.basedRequest;
+    const categories = computed(() => {
+      const items = store2.getters.itemsMatchedOneProperty(request, {
+        parent: props.parentID
+      });
+      if (props.parentID !== 0 && props.activityCategory === null && !isEmpty(items)) {
+        const selfCategory = store2.getters.singleById({ type: request.type, id: props.parentID });
+        items[selfCategory.id] = selfCategory;
+      }
+      return items;
+    });
+    return {
+      isEmpty,
+      routeToSingleProductCategory: (value) => store2.dispatch("productsCategories/routeToSingleProductCategory", value),
+      ordinal,
+      categories,
+      subCategories: (value) => store2.getters.itemsMatchedOneProperty(request, {
+        parent: value
+      })
+    };
+  }
+};
+function _sfc_ssrRender$y(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  const _component_SpoilerNode = resolveComponent("SpoilerNode");
+  const _component_BaseLinkNode = resolveComponent("BaseLinkNode");
+  _push(`<div${ssrRenderAttrs(mergeProps({
+    class: ["categories", { default: !$props.activityCategory }]
+  }, _attrs))}>`);
+  if (!$setup.isEmpty($setup.categories)) {
+    _push(`<ul class="${ssrRenderClass(`categories__${$setup.ordinal}list`)}"><!--[-->`);
+    ssrRenderList($setup.categories, (category) => {
+      var _a, _b, _c;
+      _push(`<li class="${ssrRenderClass([
+        `categories__${$setup.ordinal}item`,
+        {
+          active: category.slug === ((_a = $props.activityCategory) == null ? void 0 : _a.slugs[$props.activityCategory.index]),
+          current: category.slug === ((_b = $props.activityCategory) == null ? void 0 : _b.slugs[$props.activityCategory.index]) && !((_c = $props.activityCategory) == null ? void 0 : _c.slugs[$props.activityCategory.index + 1])
+        }
+      ])}">`);
+      _push(ssrRenderComponent(_component_SpoilerNode, {
+        item: {
+          name: category.slug,
+          default: $props.spoilerType && !$setup.isEmpty($setup.subCategories(category.id))
+        }
+      }, {
+        button: withCtx((_, _push2, _parent2, _scopeId) => {
+          if (_push2) {
+            _push2(ssrRenderComponent(_component_BaseLinkNode, {
+              class: [`categories__${$setup.ordinal}button`]
+            }, {
+              default: withCtx((_2, _push3, _parent3, _scopeId2) => {
+                if (_push3) {
+                  _push3(`${ssrInterpolate(category.id === $props.parentID ? "\u0412\u0421\u0415 \u0422\u041E\u0412\u0410\u0420\u042B" : category.name)}`);
+                } else {
+                  return [
+                    createTextVNode(toDisplayString(category.id === $props.parentID ? "\u0412\u0421\u0415 \u0422\u041E\u0412\u0410\u0420\u042B" : category.name), 1)
+                  ];
+                }
+              }),
+              _: 2
+            }, _parent2, _scopeId));
+          } else {
+            return [
+              createVNode(_component_BaseLinkNode, {
+                class: [`categories__${$setup.ordinal}button`]
+              }, {
+                default: withCtx(() => [
+                  createTextVNode(toDisplayString(category.id === $props.parentID ? "\u0412\u0421\u0415 \u0422\u041E\u0412\u0410\u0420\u042B" : category.name), 1)
+                ]),
+                _: 2
+              }, 1032, ["class"])
+            ];
+          }
+        }),
+        list: withCtx((_, _push2, _parent2, _scopeId) => {
+          if (_push2) {
+            ssrRenderSlot(_ctx.$slots, "default", {
+              nestedLevel: $props.nestedLevel + 1,
+              parentID: category.id
+            }, null, _push2, _parent2, _scopeId);
+          } else {
+            return [
+              renderSlot(_ctx.$slots, "default", {
+                nestedLevel: $props.nestedLevel + 1,
+                parentID: category.id
+              })
+            ];
+          }
+        }),
+        _: 2
+      }, _parent));
+      _push(`</li>`);
+    });
+    _push(`<!--]--></ul>`);
+  } else {
+    _push(`<!---->`);
+  }
+  _push(`</div>`);
+}
+const _sfc_setup$y = _sfc_main$y.setup;
+_sfc_main$y.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/header/CategoriesNode.vue");
+  return _sfc_setup$y ? _sfc_setup$y(props, ctx) : void 0;
+};
+const CategoriesNode = /* @__PURE__ */ _export_sfc(_sfc_main$y, [["ssrRender", _sfc_ssrRender$y]]);
+const CatalogSidebarNode_vue_vue_type_style_index_0_lang = "";
+const _sfc_main$x = {
+  components: {
+    SpoilerNode,
+    CategoriesNode
+  },
+  setup() {
+    const store2 = useStore();
+    const route = useRoute();
+    const slugs = computed(() => getPathName(route.path, "array").items);
+    const wW = computed(() => store2.state.common.windowWidth);
+    return {
+      wW,
+      routeToSingleProductCategory: (value) => store2.dispatch("productsCategories/routeToSingleProductCategory", value),
+      slugs
+    };
+  }
+};
+function _sfc_ssrRender$x(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  const _component_SpoilerNode = resolveComponent("SpoilerNode");
+  const _component_BaseButtonNode = resolveComponent("BaseButtonNode");
+  const _component_CategoriesNode = resolveComponent("CategoriesNode");
+  _push(`<section${ssrRenderAttrs(mergeProps({ class: "catalog-sidebar" }, _attrs))}>`);
+  _push(ssrRenderComponent(_component_SpoilerNode, {
+    item: { name: "catalogSidebar", default: $setup.wW < 1024 }
+  }, {
+    button: withCtx((_, _push2, _parent2, _scopeId) => {
+      if (_push2) {
+        if ($setup.wW < 1024) {
+          _push2(ssrRenderComponent(_component_BaseButtonNode, null, {
+            default: withCtx((_2, _push3, _parent3, _scopeId2) => {
+              if (_push3) {
+                _push3(`\u041A\u0430\u0442\u0435\u0433\u043E\u0440\u0438\u0438 \u043E\u0434\u0435\u0436\u0434\u044B`);
+              } else {
+                return [
+                  createTextVNode("\u041A\u0430\u0442\u0435\u0433\u043E\u0440\u0438\u0438 \u043E\u0434\u0435\u0436\u0434\u044B")
+                ];
+              }
+            }),
+            _: 1
+          }, _parent2, _scopeId));
+        } else {
+          _push2(`<!---->`);
+        }
+      } else {
+        return [
+          $setup.wW < 1024 ? (openBlock(), createBlock(_component_BaseButtonNode, { key: 0 }, {
+            default: withCtx(() => [
+              createTextVNode("\u041A\u0430\u0442\u0435\u0433\u043E\u0440\u0438\u0438 \u043E\u0434\u0435\u0436\u0434\u044B")
+            ]),
+            _: 1
+          })) : createCommentVNode("", true)
+        ];
+      }
+    }),
+    list: withCtx((_, _push2, _parent2, _scopeId) => {
+      if (_push2) {
+        _push2(ssrRenderComponent(_component_CategoriesNode, {
+          activityCategory: { slugs: $setup.slugs, index: 0 }
+        }, {
+          default: withCtx((slotProps, _push3, _parent3, _scopeId2) => {
+            if (_push3) {
+              _push3(ssrRenderComponent(_component_CategoriesNode, {
+                nestedLevel: slotProps.nestedLevel,
+                parentID: slotProps.parentID,
+                activityCategory: { slugs: $setup.slugs, index: 1 }
+              }, {
+                default: withCtx((sP, _push4, _parent4, _scopeId3) => {
+                  if (_push4) {
+                    _push4(ssrRenderComponent(_component_CategoriesNode, {
+                      nestedLevel: sP.nestedLevel,
+                      parentID: sP.parentID,
+                      activityCategory: { slugs: $setup.slugs, index: 2 }
+                    }, null, _parent4, _scopeId3));
+                  } else {
+                    return [
+                      createVNode(_component_CategoriesNode, {
+                        nestedLevel: sP.nestedLevel,
+                        parentID: sP.parentID,
+                        activityCategory: { slugs: $setup.slugs, index: 2 }
+                      }, null, 8, ["nestedLevel", "parentID", "activityCategory"])
+                    ];
+                  }
+                }),
+                _: 2
+              }, _parent3, _scopeId2));
+            } else {
+              return [
+                createVNode(_component_CategoriesNode, {
+                  nestedLevel: slotProps.nestedLevel,
+                  parentID: slotProps.parentID,
+                  activityCategory: { slugs: $setup.slugs, index: 1 }
+                }, {
+                  default: withCtx((sP) => [
+                    createVNode(_component_CategoriesNode, {
+                      nestedLevel: sP.nestedLevel,
+                      parentID: sP.parentID,
+                      activityCategory: { slugs: $setup.slugs, index: 2 }
+                    }, null, 8, ["nestedLevel", "parentID", "activityCategory"])
+                  ]),
+                  _: 2
+                }, 1032, ["nestedLevel", "parentID", "activityCategory"])
+              ];
+            }
+          }),
+          _: 1
+        }, _parent2, _scopeId));
+      } else {
+        return [
+          createVNode(_component_CategoriesNode, {
+            activityCategory: { slugs: $setup.slugs, index: 0 }
+          }, {
+            default: withCtx((slotProps) => [
+              createVNode(_component_CategoriesNode, {
+                nestedLevel: slotProps.nestedLevel,
+                parentID: slotProps.parentID,
+                activityCategory: { slugs: $setup.slugs, index: 1 }
+              }, {
+                default: withCtx((sP) => [
+                  createVNode(_component_CategoriesNode, {
+                    nestedLevel: sP.nestedLevel,
+                    parentID: sP.parentID,
+                    activityCategory: { slugs: $setup.slugs, index: 2 }
+                  }, null, 8, ["nestedLevel", "parentID", "activityCategory"])
+                ]),
+                _: 2
+              }, 1032, ["nestedLevel", "parentID", "activityCategory"])
+            ]),
+            _: 1
+          }, 8, ["activityCategory"])
+        ];
+      }
+    }),
+    _: 1
+  }, _parent));
+  _push(`</section>`);
+}
+const _sfc_setup$x = _sfc_main$x.setup;
+_sfc_main$x.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/CatalogSidebarNode.vue");
+  return _sfc_setup$x ? _sfc_setup$x(props, ctx) : void 0;
+};
+const CatalogSidebarNode = /* @__PURE__ */ _export_sfc(_sfc_main$x, [["ssrRender", _sfc_ssrRender$x]]);
+const SingleCategoryPage_vue_vue_type_style_index_0_lang = "";
+const _sfc_main$w = {
+  components: {
+    CatalogSidebarNode,
+    DistributionNode
+  }
+};
+function _sfc_ssrRender$w(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  const _component_MainPageNode = resolveComponent("MainPageNode");
+  const _component_RouterView = resolveComponent("RouterView");
+  const _component_ContainerNode = resolveComponent("ContainerNode");
+  const _component_CatalogSidebarNode = resolveComponent("CatalogSidebarNode");
+  const _component_DistributionNode = resolveComponent("DistributionNode");
+  _push(ssrRenderComponent(_component_MainPageNode, mergeProps({ class: "single-category" }, _attrs), {
+    "page-main": withCtx((_, _push2, _parent2, _scopeId) => {
+      if (_push2) {
+        _push2(ssrRenderComponent(_component_RouterView, { name: "top" }, null, _parent2, _scopeId));
+        _push2(ssrRenderComponent(_component_ContainerNode, null, {
+          default: withCtx((_2, _push3, _parent3, _scopeId2) => {
+            if (_push3) {
+              _push3(`<div class="single-category__body"${_scopeId2}>`);
+              _push3(ssrRenderComponent(_component_CatalogSidebarNode, null, null, _parent3, _scopeId2));
+              _push3(ssrRenderComponent(_component_RouterView, null, null, _parent3, _scopeId2));
+              _push3(`</div>`);
+              _push3(ssrRenderComponent(_component_DistributionNode, null, null, _parent3, _scopeId2));
+            } else {
+              return [
+                createVNode("div", { class: "single-category__body" }, [
+                  createVNode(_component_CatalogSidebarNode),
+                  createVNode(_component_RouterView)
+                ]),
+                createVNode(_component_DistributionNode)
+              ];
+            }
+          }),
+          _: 1
+        }, _parent2, _scopeId));
+        _push2(ssrRenderComponent(_component_RouterView, { name: "bot" }, null, _parent2, _scopeId));
+      } else {
+        return [
+          createVNode(_component_RouterView, { name: "top" }),
+          createVNode(_component_ContainerNode, null, {
+            default: withCtx(() => [
+              createVNode("div", { class: "single-category__body" }, [
+                createVNode(_component_CatalogSidebarNode),
+                createVNode(_component_RouterView)
+              ]),
+              createVNode(_component_DistributionNode)
+            ]),
+            _: 1
+          }),
+          createVNode(_component_RouterView, { name: "bot" })
+        ];
+      }
+    }),
+    _: 1
+  }, _parent));
+}
+const _sfc_setup$w = _sfc_main$w.setup;
+_sfc_main$w.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/pages/common/SingleCategoryPage.vue");
+  return _sfc_setup$w ? _sfc_setup$w(props, ctx) : void 0;
+};
+const SingleCategoryPage = /* @__PURE__ */ _export_sfc(_sfc_main$w, [["ssrRender", _sfc_ssrRender$w]]);
+const PageHeadTruncatedNode_vue_vue_type_style_index_0_lang = "";
+const _sfc_main$v = {
+  props: {
+    backLinkName: String,
+    handledPath: Object,
+    templatePage: {
+      type: Object,
+      default: null
+    },
+    setup(props) {
+      return {
+        last
+      };
+    }
+  }
+};
+function _sfc_ssrRender$v(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  const _component_ContainerNode = resolveComponent("ContainerNode");
+  _push(`<div${ssrRenderAttrs(mergeProps({ class: "page-head_truncated" }, _attrs))}>`);
+  _push(ssrRenderComponent(_component_ContainerNode, null, {
+    default: withCtx((_, _push2, _parent2, _scopeId) => {
+      var _a, _b;
+      if (_push2) {
+        _push2(`<div class="page-head_truncated__body"${_scopeId}><div class="page-head_truncated__row"${_scopeId}><button class="page-head_truncated__back icon-long_arrow"${_scopeId}>${ssrInterpolate($props.backLinkName)}</button></div><div class="page-head_truncated__row"${_scopeId}><div class="page-head_truncated__title"${_scopeId}>${ssrInterpolate((_a = $props.templatePage) == null ? void 0 : _a.title.rendered)}</div></div></div>`);
+      } else {
+        return [
+          createVNode("div", { class: "page-head_truncated__body" }, [
+            createVNode("div", { class: "page-head_truncated__row" }, [
+              createVNode("button", {
+                class: "page-head_truncated__back icon-long_arrow",
+                onClick: ($event) => _ctx.$router.back()
+              }, toDisplayString($props.backLinkName), 9, ["onClick"])
+            ]),
+            createVNode("div", { class: "page-head_truncated__row" }, [
+              createVNode("div", { class: "page-head_truncated__title" }, toDisplayString((_b = $props.templatePage) == null ? void 0 : _b.title.rendered), 1)
+            ])
+          ])
+        ];
+      }
+    }),
+    _: 1
+  }, _parent));
+  _push(`</div>`);
+}
 const _sfc_setup$v = _sfc_main$v.setup;
 _sfc_main$v.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/pages/common/SingleProductPage.vue");
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/structure/PageHeadTruncatedNode.vue");
   return _sfc_setup$v ? _sfc_setup$v(props, ctx) : void 0;
 };
-const SingleProductPage = /* @__PURE__ */ _export_sfc(_sfc_main$v, [["ssrRender", _sfc_ssrRender$v]]);
+const PageHeadTruncatedNode = /* @__PURE__ */ _export_sfc(_sfc_main$v, [["ssrRender", _sfc_ssrRender$v]]);
 const _sfc_main$u = {
   components: {
-    TroubleNode
+    PageHeadTruncatedNode
   }
 };
 function _sfc_ssrRender$u(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   const _component_MainPageNode = resolveComponent("MainPageNode");
+  const _component_PageHeadTruncatedNode = resolveComponent("PageHeadTruncatedNode");
   const _component_ContainerNode = resolveComponent("ContainerNode");
-  const _component_TroubleNode = resolveComponent("TroubleNode");
-  _push(ssrRenderComponent(_component_MainPageNode, mergeProps({ pageHeadNodeShow: false }, _attrs), {
+  const _component_RouterView = resolveComponent("RouterView");
+  _push(ssrRenderComponent(_component_MainPageNode, _attrs, {
+    "page-head": withCtx((pageHeadProps, _push2, _parent2, _scopeId) => {
+      if (_push2) {
+        _push2(ssrRenderComponent(_component_PageHeadTruncatedNode, {
+          templatePage: pageHeadProps.templatePage,
+          handledPath: pageHeadProps.handledPath,
+          backLinkName: "\u041D\u0430\u0437\u0430\u0434"
+        }, null, _parent2, _scopeId));
+      } else {
+        return [
+          createVNode(_component_PageHeadTruncatedNode, {
+            templatePage: pageHeadProps.templatePage,
+            handledPath: pageHeadProps.handledPath,
+            backLinkName: "\u041D\u0430\u0437\u0430\u0434"
+          }, null, 8, ["templatePage", "handledPath"])
+        ];
+      }
+    }),
     "page-main": withCtx((_, _push2, _parent2, _scopeId) => {
       if (_push2) {
         _push2(ssrRenderComponent(_component_ContainerNode, null, {
           default: withCtx((_2, _push3, _parent3, _scopeId2) => {
             if (_push3) {
-              _push3(ssrRenderComponent(_component_TroubleNode, { text: ["\u0414\u043B\u044F \u043A\u0430\u0442\u0435\u0433\u043E\u0440\u0438\u0438 \u043F\u043E \u044D\u0442\u043E\u043C\u0443 \u043C\u0430\u0440\u0448\u0440\u0443\u0442\u0443", "\u0435\u0449\u0451 \u043D\u0435 \u0441\u043E\u0437\u0434\u0430\u043D\u0430 \u0441\u0442\u0440\u0430\u043D\u0438\u0446\u0430!"] }, null, _parent3, _scopeId2));
+              _push3(ssrRenderComponent(_component_RouterView, null, null, _parent3, _scopeId2));
             } else {
               return [
-                createVNode(_component_TroubleNode, { text: ["\u0414\u043B\u044F \u043A\u0430\u0442\u0435\u0433\u043E\u0440\u0438\u0438 \u043F\u043E \u044D\u0442\u043E\u043C\u0443 \u043C\u0430\u0440\u0448\u0440\u0443\u0442\u0443", "\u0435\u0449\u0451 \u043D\u0435 \u0441\u043E\u0437\u0434\u0430\u043D\u0430 \u0441\u0442\u0440\u0430\u043D\u0438\u0446\u0430!"] })
+                createVNode(_component_RouterView)
               ];
             }
           }),
@@ -28838,7 +28886,7 @@ function _sfc_ssrRender$u(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
         return [
           createVNode(_component_ContainerNode, null, {
             default: withCtx(() => [
-              createVNode(_component_TroubleNode, { text: ["\u0414\u043B\u044F \u043A\u0430\u0442\u0435\u0433\u043E\u0440\u0438\u0438 \u043F\u043E \u044D\u0442\u043E\u043C\u0443 \u043C\u0430\u0440\u0448\u0440\u0443\u0442\u0443", "\u0435\u0449\u0451 \u043D\u0435 \u0441\u043E\u0437\u0434\u0430\u043D\u0430 \u0441\u0442\u0440\u0430\u043D\u0438\u0446\u0430!"] })
+              createVNode(_component_RouterView)
             ]),
             _: 1
           })
@@ -28851,10 +28899,10 @@ function _sfc_ssrRender$u(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
 const _sfc_setup$u = _sfc_main$u.setup;
 _sfc_main$u.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/pages/common/BlogPage.vue");
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/pages/private/OrderingPage.vue");
   return _sfc_setup$u ? _sfc_setup$u(props, ctx) : void 0;
 };
-const BlogPage = /* @__PURE__ */ _export_sfc(_sfc_main$u, [["ssrRender", _sfc_ssrRender$u]]);
+const OrderingPage = /* @__PURE__ */ _export_sfc(_sfc_main$u, [["ssrRender", _sfc_ssrRender$u]]);
 const CartItemNode_vue_vue_type_style_index_0_lang = "";
 const _sfc_main$t = {
   components: {
@@ -28885,7 +28933,7 @@ const _sfc_main$t = {
       paramsDecrease,
       routeBase: "cart/update-item",
       updateCart: (payload) => store2.dispatch("cart/updateCart", payload),
-      routeToSingle: (ident) => store2.dispatch("products/routeToSingle", ident)
+      routeToSingleProduct: (ident) => store2.dispatch("products/routeToSingleProduct", ident)
     };
   },
   computed: {
@@ -28977,49 +29025,8 @@ _sfc_main$t.setup = (props, ctx) => {
   return _sfc_setup$t ? _sfc_setup$t(props, ctx) : void 0;
 };
 const CartItemNode = /* @__PURE__ */ _export_sfc(_sfc_main$t, [["ssrRender", _sfc_ssrRender$t]]);
-const PageHeadTruncatedNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$s = {
-  props: {
-    backLinkName: String,
-    pageTitle: String
-  }
-};
-function _sfc_ssrRender$s(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
-  const _component_ContainerNode = resolveComponent("ContainerNode");
-  _push(`<div${ssrRenderAttrs(mergeProps({ class: "page-head_truncated" }, _attrs))}>`);
-  _push(ssrRenderComponent(_component_ContainerNode, null, {
-    default: withCtx((_, _push2, _parent2, _scopeId) => {
-      if (_push2) {
-        _push2(`<div class="page-head_truncated__body"${_scopeId}><div class="page-head_truncated__row"${_scopeId}><button class="page-head_truncated__back icon-long_arrow"${_scopeId}>${ssrInterpolate($props.backLinkName)}</button></div><div class="page-head_truncated__row"${_scopeId}><div class="page-head_truncated__title"${_scopeId}>${ssrInterpolate($props.pageTitle)}</div></div></div>`);
-      } else {
-        return [
-          createVNode("div", { class: "page-head_truncated__body" }, [
-            createVNode("div", { class: "page-head_truncated__row" }, [
-              createVNode("button", {
-                class: "page-head_truncated__back icon-long_arrow",
-                onClick: ($event) => _ctx.$router.back()
-              }, toDisplayString($props.backLinkName), 9, ["onClick"])
-            ]),
-            createVNode("div", { class: "page-head_truncated__row" }, [
-              createVNode("div", { class: "page-head_truncated__title" }, toDisplayString($props.pageTitle), 1)
-            ])
-          ])
-        ];
-      }
-    }),
-    _: 1
-  }, _parent));
-  _push(`</div>`);
-}
-const _sfc_setup$s = _sfc_main$s.setup;
-_sfc_main$s.setup = (props, ctx) => {
-  const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/structure/PageHeadTruncatedNode.vue");
-  return _sfc_setup$s ? _sfc_setup$s(props, ctx) : void 0;
-};
-const PageHeadTruncatedNode = /* @__PURE__ */ _export_sfc(_sfc_main$s, [["ssrRender", _sfc_ssrRender$s]]);
 const MiddleContentNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$r = {
+const _sfc_main$s = {
   setup() {
     const store2 = useStore();
     return {
@@ -29027,33 +29034,21 @@ const _sfc_main$r = {
     };
   }
 };
-function _sfc_ssrRender$r(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
-  const _component_PreloadWrapNode = resolveComponent("PreloadWrapNode");
+function _sfc_ssrRender$s(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   _push(`<div${ssrRenderAttrs(mergeProps({ class: "middle-content" }, _attrs))}><div class="middle-content__body"><ul class="middle-content__items">`);
   ssrRenderSlot(_ctx.$slots, "items", {}, null, _push, _parent);
   _push(`</ul><div class="middle-content__sidebar">`);
-  _push(ssrRenderComponent(_component_PreloadWrapNode, { targetPreloadElement: $setup.cartStore }, {
-    default: withCtx((_, _push2, _parent2, _scopeId) => {
-      if (_push2) {
-        ssrRenderSlot(_ctx.$slots, "sidebar", {}, null, _push2, _parent2, _scopeId);
-      } else {
-        return [
-          renderSlot(_ctx.$slots, "sidebar")
-        ];
-      }
-    }),
-    _: 3
-  }, _parent));
+  ssrRenderSlot(_ctx.$slots, "sidebar", {}, null, _push, _parent);
   _push(`</div></div></div>`);
 }
-const _sfc_setup$r = _sfc_main$r.setup;
-_sfc_main$r.setup = (props, ctx) => {
+const _sfc_setup$s = _sfc_main$s.setup;
+_sfc_main$s.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/ordering/MiddleContentNode.vue");
-  return _sfc_setup$r ? _sfc_setup$r(props, ctx) : void 0;
+  return _sfc_setup$s ? _sfc_setup$s(props, ctx) : void 0;
 };
-const MiddleContentNode = /* @__PURE__ */ _export_sfc(_sfc_main$r, [["ssrRender", _sfc_ssrRender$r]]);
-const _sfc_main$q = {
+const MiddleContentNode = /* @__PURE__ */ _export_sfc(_sfc_main$s, [["ssrRender", _sfc_ssrRender$s]]);
+const _sfc_main$r = {
   inheritAttrs: false,
   props: {
     quantityPreloadElements: Number,
@@ -29070,7 +29065,7 @@ const _sfc_main$q = {
     }
   }
 };
-function _sfc_ssrRender$q(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$r(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   const _component_PreloadWrapNode = resolveComponent("PreloadWrapNode");
   _push(`<div${ssrRenderAttrs(mergeProps({ class: "preload-container" }, _attrs))}>`);
   if ($options.iterableHandled) {
@@ -29093,18 +29088,17 @@ function _sfc_ssrRender$q(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
   });
   _push(`<!--]--></div></div>`);
 }
-const _sfc_setup$q = _sfc_main$q.setup;
-_sfc_main$q.setup = (props, ctx) => {
+const _sfc_setup$r = _sfc_main$r.setup;
+_sfc_main$r.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/structure/PreloadWrapContainerNode.vue");
-  return _sfc_setup$q ? _sfc_setup$q(props, ctx) : void 0;
+  return _sfc_setup$r ? _sfc_setup$r(props, ctx) : void 0;
 };
-const PreloadWrapContainerNode = /* @__PURE__ */ _export_sfc(_sfc_main$q, [["ssrRender", _sfc_ssrRender$q]]);
-const CartPage_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$p = {
+const PreloadWrapContainerNode = /* @__PURE__ */ _export_sfc(_sfc_main$r, [["ssrRender", _sfc_ssrRender$r]]);
+const OrderingCartPage_vue_vue_type_style_index_0_lang = "";
+const _sfc_main$q = {
   components: {
     CartItemNode,
-    PageHeadTruncatedNode,
     MiddleContentNode,
     PreloadWrapContainerNode
   },
@@ -29114,9 +29108,7 @@ const _sfc_main$p = {
     };
   },
   computed: {
-    ...mapGetters({
-      itemsBased: "itemsBased"
-    }),
+    ...mapGetters({}),
     ...mapState({
       userAuth: (state2) => state2.auth.userAuth,
       productsRequest: (state2) => state2.products.basedRequest,
@@ -29124,568 +29116,293 @@ const _sfc_main$p = {
       cartStore: (state2) => state2.cart.store
     })
   },
-  watch: {
-    cartItems: {
-      handler(cartItems) {
-      },
-      immediate: true
-    }
-  },
   methods: {
     ...mapMutations({
       setValue: "setValue",
       setPopup: "common/setPopup"
-    }),
-    ...mapActions({
-      getItems: "getItems"
     }),
     toCheckout() {
       if (this.userAuth === false) {
         this.setPopup({ name: "login" });
         return;
       }
-      this.$router.push({ name: "Checkout" });
+      this.$router.push({ name: "OrderingCheckout" });
     }
   }
 };
-function _sfc_ssrRender$p(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
-  const _component_MainPageNode = resolveComponent("MainPageNode");
-  const _component_PageHeadTruncatedNode = resolveComponent("PageHeadTruncatedNode");
-  const _component_ContainerNode = resolveComponent("ContainerNode");
+function _sfc_ssrRender$q(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  var _a;
   const _component_MiddleContentNode = resolveComponent("MiddleContentNode");
   const _component_PreloadWrapContainerNode = resolveComponent("PreloadWrapContainerNode");
   const _component_CartItemNode = resolveComponent("CartItemNode");
   const _component_InputNode = resolveComponent("InputNode");
   const _component_ButtonNode = resolveComponent("ButtonNode");
-  _push(ssrRenderComponent(_component_MainPageNode, _attrs, {
-    "page-head": withCtx((_, _push2, _parent2, _scopeId) => {
-      if (_push2) {
-        _push2(ssrRenderComponent(_component_PageHeadTruncatedNode, {
-          backLinkName: "\u041D\u0430 \u0433\u043B\u0430\u0432\u043D\u0443\u044E",
-          pageTitle: "\u041A\u043E\u0440\u0437\u0438\u043D\u0430"
-        }, null, _parent2, _scopeId));
-      } else {
-        return [
-          createVNode(_component_PageHeadTruncatedNode, {
-            backLinkName: "\u041D\u0430 \u0433\u043B\u0430\u0432\u043D\u0443\u044E",
-            pageTitle: "\u041A\u043E\u0440\u0437\u0438\u043D\u0430"
-          })
-        ];
-      }
-    }),
-    "page-main": withCtx((_, _push2, _parent2, _scopeId) => {
-      if (_push2) {
-        _push2(ssrRenderComponent(_component_ContainerNode, null, {
-          default: withCtx((_2, _push3, _parent3, _scopeId2) => {
-            var _a, _b;
-            if (_push3) {
-              _push3(`<div class="cart"${_scopeId2}><div class="cart__body"${_scopeId2}>`);
-              if (((_a = _ctx.cartItems) == null ? void 0 : _a.length) || Object.keys(_ctx.cartStore).length === 0) {
-                _push3(ssrRenderComponent(_component_MiddleContentNode, null, {
-                  items: withCtx((_3, _push4, _parent4, _scopeId3) => {
-                    if (_push4) {
-                      _push4(ssrRenderComponent(_component_PreloadWrapContainerNode, {
-                        class: "cart__item",
-                        quantityPreloadElements: 4,
-                        iterable: _ctx.cartItems
-                      }, {
-                        default: withCtx((slotProps, _push5, _parent5, _scopeId4) => {
-                          if (_push5) {
-                            _push5(ssrRenderComponent(_component_CartItemNode, {
-                              cartItem: slotProps.item
-                            }, null, _parent5, _scopeId4));
-                          } else {
-                            return [
-                              createVNode(_component_CartItemNode, {
-                                cartItem: slotProps.item
-                              }, null, 8, ["cartItem"])
-                            ];
-                          }
-                        }),
-                        _: 1
-                      }, _parent4, _scopeId3));
-                    } else {
-                      return [
-                        createVNode(_component_PreloadWrapContainerNode, {
-                          class: "cart__item",
-                          quantityPreloadElements: 4,
-                          iterable: _ctx.cartItems
-                        }, {
-                          default: withCtx((slotProps) => [
-                            createVNode(_component_CartItemNode, {
-                              cartItem: slotProps.item
-                            }, null, 8, ["cartItem"])
-                          ]),
-                          _: 1
-                        }, 8, ["iterable"])
-                      ];
-                    }
-                  }),
-                  sidebar: withCtx((_3, _push4, _parent4, _scopeId3) => {
-                    var _a2, _b2, _c, _d, _e, _f, _g, _h;
-                    if (_push4) {
-                      _push4(`<div class="middle-content__sidebar-inner"${_scopeId3}><div class="middle-content__block middle-content__block_promo"${_scopeId3}><div class="middle-content__key middle-content__key_medium"${_scopeId3}> \u041F\u0440\u043E\u043C\u043E\u043A\u043E\u0434 </div><div class="middle-content__item"${_scopeId3}>`);
-                      _push4(ssrRenderComponent(_component_InputNode, {
-                        modelValue: $data.promo,
-                        "onUpdate:modelValue": ($event) => $data.promo = $event,
-                        placeholder: "\u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u043F\u0440\u043E\u043C\u043E\u043A\u043E\u0434",
-                        class: "main"
-                      }, null, _parent4, _scopeId3));
-                      _push4(ssrRenderComponent(_component_ButtonNode, {
-                        buttonStyle: "green",
-                        disabled: !$data.promo
-                      }, {
-                        default: withCtx((_4, _push5, _parent5, _scopeId4) => {
-                          if (_push5) {
-                            _push5(`\u041F\u0440\u0438\u043C\u0435\u043D\u0438\u0442\u044C`);
-                          } else {
-                            return [
-                              createTextVNode("\u041F\u0440\u0438\u043C\u0435\u043D\u0438\u0442\u044C")
-                            ];
-                          }
-                        }),
-                        _: 1
-                      }, _parent4, _scopeId3));
-                      _push4(`</div></div><div class="middle-content__block"${_scopeId3}><div class="middle-content__item"${_scopeId3}><div class="middle-content__key"${_scopeId3}>\u0421\u043A\u0438\u0434\u043A\u0430</div><div class="middle-content__value"${_scopeId3}> - 0<span class="middle-content__currency"${_scopeId3}> \u20BD</span></div></div><div class="middle-content__item"${_scopeId3}><div class="middle-content__key"${_scopeId3}> \u0421\u043A\u0438\u0434\u043A\u0430 \u043F\u0440\u0438 \u043E\u043D\u043B\u0430\u0439\u043D \u043E\u043F\u043B\u0430\u0442\u0435 </div><div class="middle-content__value"${_scopeId3}> - 0<span class="middle-content__currency"${_scopeId3}> \u20BD</span></div></div><div class="middle-content__item"${_scopeId3}><div class="middle-content__key"${_scopeId3}> \u041A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u043E \u0442\u043E\u0432\u0430\u0440\u043E\u0432 </div><div class="middle-content__value icon-info"${_scopeId3}>${ssrInterpolate((_a2 = _ctx.cartStore.items) == null ? void 0 : _a2.length)} \u0448\u0442. </div></div></div><div class="middle-content__block"${_scopeId3}><div class="middle-content__item"${_scopeId3}><div class="middle-content__key middle-content__key_big"${_scopeId3}> \u0418\u0442\u043E\u0433\u043E </div><div class="middle-content__value middle-content__value_big"${_scopeId3}>${ssrInterpolate((_c = (_b2 = _ctx.cartStore) == null ? void 0 : _b2.totals) == null ? void 0 : _c.total_price)}<span class="middle-content__currency"${_scopeId3}> \u20BD</span></div></div><div class="middle-content__item"${_scopeId3}><div class="middle-content__key"${_scopeId3}> \u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C \u0431\u0435\u0437 \u0443\u0447\u0451\u0442\u0430 \u0441\u043A\u0438\u0434\u043E\u043A: </div><div class="middle-content__value"${_scopeId3}></div></div><div class="middle-content__item"${_scopeId3}><div class="middle-content__key"${_scopeId3}> \u0411\u0430\u043B\u043E\u0432 \u0431\u0443\u0434\u0435\u0442 \u043D\u0430\u0447\u0438\u0441\u043B\u0435\u043D\u043E: </div><div class="middle-content__value"${_scopeId3}></div></div>`);
-                      _push4(ssrRenderComponent(_component_ButtonNode, {
-                        class: "middle-content__button-submit",
-                        buttonStyle: "green",
-                        disabled: !((_d = _ctx.cartItems) == null ? void 0 : _d.length),
-                        onClick: $options.toCheckout
-                      }, {
-                        default: withCtx((_4, _push5, _parent5, _scopeId4) => {
-                          if (_push5) {
-                            _push5(`\u041F\u0435\u0440\u0435\u0439\u0442\u0438 \u043A \u043E\u0444\u043E\u0440\u043C\u043B\u0435\u043D\u0438\u044E `);
-                          } else {
-                            return [
-                              createTextVNode("\u041F\u0435\u0440\u0435\u0439\u0442\u0438 \u043A \u043E\u0444\u043E\u0440\u043C\u043B\u0435\u043D\u0438\u044E ")
-                            ];
-                          }
-                        }),
-                        _: 1
-                      }, _parent4, _scopeId3));
-                      _push4(`</div></div>`);
-                    } else {
-                      return [
-                        createVNode("div", { class: "middle-content__sidebar-inner" }, [
-                          createVNode("div", { class: "middle-content__block middle-content__block_promo" }, [
-                            createVNode("div", { class: "middle-content__key middle-content__key_medium" }, " \u041F\u0440\u043E\u043C\u043E\u043A\u043E\u0434 "),
-                            createVNode("div", { class: "middle-content__item" }, [
-                              createVNode(_component_InputNode, {
-                                modelValue: $data.promo,
-                                "onUpdate:modelValue": ($event) => $data.promo = $event,
-                                placeholder: "\u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u043F\u0440\u043E\u043C\u043E\u043A\u043E\u0434",
-                                class: "main"
-                              }, null, 8, ["modelValue", "onUpdate:modelValue"]),
-                              createVNode(_component_ButtonNode, {
-                                buttonStyle: "green",
-                                disabled: !$data.promo
-                              }, {
-                                default: withCtx(() => [
-                                  createTextVNode("\u041F\u0440\u0438\u043C\u0435\u043D\u0438\u0442\u044C")
-                                ]),
-                                _: 1
-                              }, 8, ["disabled"])
-                            ])
-                          ]),
-                          createVNode("div", { class: "middle-content__block" }, [
-                            createVNode("div", { class: "middle-content__item" }, [
-                              createVNode("div", { class: "middle-content__key" }, "\u0421\u043A\u0438\u0434\u043A\u0430"),
-                              createVNode("div", { class: "middle-content__value" }, [
-                                createTextVNode(" - 0"),
-                                createVNode("span", { class: "middle-content__currency" }, " \u20BD")
-                              ])
-                            ]),
-                            createVNode("div", { class: "middle-content__item" }, [
-                              createVNode("div", { class: "middle-content__key" }, " \u0421\u043A\u0438\u0434\u043A\u0430 \u043F\u0440\u0438 \u043E\u043D\u043B\u0430\u0439\u043D \u043E\u043F\u043B\u0430\u0442\u0435 "),
-                              createVNode("div", { class: "middle-content__value" }, [
-                                createTextVNode(" - 0"),
-                                createVNode("span", { class: "middle-content__currency" }, " \u20BD")
-                              ])
-                            ]),
-                            createVNode("div", { class: "middle-content__item" }, [
-                              createVNode("div", { class: "middle-content__key" }, " \u041A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u043E \u0442\u043E\u0432\u0430\u0440\u043E\u0432 "),
-                              createVNode("div", { class: "middle-content__value icon-info" }, toDisplayString((_e = _ctx.cartStore.items) == null ? void 0 : _e.length) + " \u0448\u0442. ", 1)
-                            ])
-                          ]),
-                          createVNode("div", { class: "middle-content__block" }, [
-                            createVNode("div", { class: "middle-content__item" }, [
-                              createVNode("div", { class: "middle-content__key middle-content__key_big" }, " \u0418\u0442\u043E\u0433\u043E "),
-                              createVNode("div", { class: "middle-content__value middle-content__value_big" }, [
-                                createTextVNode(toDisplayString((_g = (_f = _ctx.cartStore) == null ? void 0 : _f.totals) == null ? void 0 : _g.total_price), 1),
-                                createVNode("span", { class: "middle-content__currency" }, " \u20BD")
-                              ])
-                            ]),
-                            createVNode("div", { class: "middle-content__item" }, [
-                              createVNode("div", { class: "middle-content__key" }, " \u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C \u0431\u0435\u0437 \u0443\u0447\u0451\u0442\u0430 \u0441\u043A\u0438\u0434\u043E\u043A: "),
-                              createVNode("div", { class: "middle-content__value" })
-                            ]),
-                            createVNode("div", { class: "middle-content__item" }, [
-                              createVNode("div", { class: "middle-content__key" }, " \u0411\u0430\u043B\u043E\u0432 \u0431\u0443\u0434\u0435\u0442 \u043D\u0430\u0447\u0438\u0441\u043B\u0435\u043D\u043E: "),
-                              createVNode("div", { class: "middle-content__value" })
-                            ]),
-                            createVNode(_component_ButtonNode, {
-                              class: "middle-content__button-submit",
-                              buttonStyle: "green",
-                              disabled: !((_h = _ctx.cartItems) == null ? void 0 : _h.length),
-                              onClick: withModifiers($options.toCheckout, ["stop"])
-                            }, {
-                              default: withCtx(() => [
-                                createTextVNode("\u041F\u0435\u0440\u0435\u0439\u0442\u0438 \u043A \u043E\u0444\u043E\u0440\u043C\u043B\u0435\u043D\u0438\u044E ")
-                              ]),
-                              _: 1
-                            }, 8, ["disabled", "onClick"])
-                          ])
-                        ])
-                      ];
-                    }
-                  }),
-                  _: 1
-                }, _parent3, _scopeId2));
+  _push(`<div${ssrRenderAttrs(mergeProps({ class: "cart" }, _attrs))}><div class="cart__body">`);
+  if (((_a = _ctx.cartItems) == null ? void 0 : _a.length) || Object.keys(_ctx.cartStore).length === 0) {
+    _push(ssrRenderComponent(_component_MiddleContentNode, null, {
+      items: withCtx((_, _push2, _parent2, _scopeId) => {
+        if (_push2) {
+          _push2(ssrRenderComponent(_component_PreloadWrapContainerNode, {
+            class: "cart__item",
+            quantityPreloadElements: 4,
+            iterable: _ctx.cartItems
+          }, {
+            default: withCtx((slotProps, _push3, _parent3, _scopeId2) => {
+              if (_push3) {
+                _push3(ssrRenderComponent(_component_CartItemNode, {
+                  cartItem: slotProps.item
+                }, null, _parent3, _scopeId2));
               } else {
-                _push3(`<div${_scopeId2}>\u0421\u0435\u0439\u0447\u0430\u0441 \u0432\u0430\u0448\u0430 \u043A\u043E\u0440\u0437\u0438\u043D\u0430 \u043F\u0443\u0441\u0442\u0430. \u041F\u043E\u043F\u043E\u043B\u043D\u0438\u0442\u0435 \u0436\u0435 \u0435\u0451!</div>`);
+                return [
+                  createVNode(_component_CartItemNode, {
+                    cartItem: slotProps.item
+                  }, null, 8, ["cartItem"])
+                ];
               }
-              _push3(`</div></div>`);
-            } else {
-              return [
-                createVNode("div", { class: "cart" }, [
-                  createVNode("div", { class: "cart__body" }, [
-                    ((_b = _ctx.cartItems) == null ? void 0 : _b.length) || Object.keys(_ctx.cartStore).length === 0 ? (openBlock(), createBlock(_component_MiddleContentNode, { key: 0 }, {
-                      items: withCtx(() => [
-                        createVNode(_component_PreloadWrapContainerNode, {
-                          class: "cart__item",
-                          quantityPreloadElements: 4,
-                          iterable: _ctx.cartItems
-                        }, {
-                          default: withCtx((slotProps) => [
-                            createVNode(_component_CartItemNode, {
-                              cartItem: slotProps.item
-                            }, null, 8, ["cartItem"])
-                          ]),
-                          _: 1
-                        }, 8, ["iterable"])
-                      ]),
-                      sidebar: withCtx(() => {
-                        var _a2, _b2, _c, _d;
-                        return [
-                          createVNode("div", { class: "middle-content__sidebar-inner" }, [
-                            createVNode("div", { class: "middle-content__block middle-content__block_promo" }, [
-                              createVNode("div", { class: "middle-content__key middle-content__key_medium" }, " \u041F\u0440\u043E\u043C\u043E\u043A\u043E\u0434 "),
-                              createVNode("div", { class: "middle-content__item" }, [
-                                createVNode(_component_InputNode, {
-                                  modelValue: $data.promo,
-                                  "onUpdate:modelValue": ($event) => $data.promo = $event,
-                                  placeholder: "\u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u043F\u0440\u043E\u043C\u043E\u043A\u043E\u0434",
-                                  class: "main"
-                                }, null, 8, ["modelValue", "onUpdate:modelValue"]),
-                                createVNode(_component_ButtonNode, {
-                                  buttonStyle: "green",
-                                  disabled: !$data.promo
-                                }, {
-                                  default: withCtx(() => [
-                                    createTextVNode("\u041F\u0440\u0438\u043C\u0435\u043D\u0438\u0442\u044C")
-                                  ]),
-                                  _: 1
-                                }, 8, ["disabled"])
-                              ])
-                            ]),
-                            createVNode("div", { class: "middle-content__block" }, [
-                              createVNode("div", { class: "middle-content__item" }, [
-                                createVNode("div", { class: "middle-content__key" }, "\u0421\u043A\u0438\u0434\u043A\u0430"),
-                                createVNode("div", { class: "middle-content__value" }, [
-                                  createTextVNode(" - 0"),
-                                  createVNode("span", { class: "middle-content__currency" }, " \u20BD")
-                                ])
-                              ]),
-                              createVNode("div", { class: "middle-content__item" }, [
-                                createVNode("div", { class: "middle-content__key" }, " \u0421\u043A\u0438\u0434\u043A\u0430 \u043F\u0440\u0438 \u043E\u043D\u043B\u0430\u0439\u043D \u043E\u043F\u043B\u0430\u0442\u0435 "),
-                                createVNode("div", { class: "middle-content__value" }, [
-                                  createTextVNode(" - 0"),
-                                  createVNode("span", { class: "middle-content__currency" }, " \u20BD")
-                                ])
-                              ]),
-                              createVNode("div", { class: "middle-content__item" }, [
-                                createVNode("div", { class: "middle-content__key" }, " \u041A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u043E \u0442\u043E\u0432\u0430\u0440\u043E\u0432 "),
-                                createVNode("div", { class: "middle-content__value icon-info" }, toDisplayString((_a2 = _ctx.cartStore.items) == null ? void 0 : _a2.length) + " \u0448\u0442. ", 1)
-                              ])
-                            ]),
-                            createVNode("div", { class: "middle-content__block" }, [
-                              createVNode("div", { class: "middle-content__item" }, [
-                                createVNode("div", { class: "middle-content__key middle-content__key_big" }, " \u0418\u0442\u043E\u0433\u043E "),
-                                createVNode("div", { class: "middle-content__value middle-content__value_big" }, [
-                                  createTextVNode(toDisplayString((_c = (_b2 = _ctx.cartStore) == null ? void 0 : _b2.totals) == null ? void 0 : _c.total_price), 1),
-                                  createVNode("span", { class: "middle-content__currency" }, " \u20BD")
-                                ])
-                              ]),
-                              createVNode("div", { class: "middle-content__item" }, [
-                                createVNode("div", { class: "middle-content__key" }, " \u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C \u0431\u0435\u0437 \u0443\u0447\u0451\u0442\u0430 \u0441\u043A\u0438\u0434\u043E\u043A: "),
-                                createVNode("div", { class: "middle-content__value" })
-                              ]),
-                              createVNode("div", { class: "middle-content__item" }, [
-                                createVNode("div", { class: "middle-content__key" }, " \u0411\u0430\u043B\u043E\u0432 \u0431\u0443\u0434\u0435\u0442 \u043D\u0430\u0447\u0438\u0441\u043B\u0435\u043D\u043E: "),
-                                createVNode("div", { class: "middle-content__value" })
-                              ]),
-                              createVNode(_component_ButtonNode, {
-                                class: "middle-content__button-submit",
-                                buttonStyle: "green",
-                                disabled: !((_d = _ctx.cartItems) == null ? void 0 : _d.length),
-                                onClick: withModifiers($options.toCheckout, ["stop"])
-                              }, {
-                                default: withCtx(() => [
-                                  createTextVNode("\u041F\u0435\u0440\u0435\u0439\u0442\u0438 \u043A \u043E\u0444\u043E\u0440\u043C\u043B\u0435\u043D\u0438\u044E ")
-                                ]),
-                                _: 1
-                              }, 8, ["disabled", "onClick"])
-                            ])
-                          ])
-                        ];
-                      }),
-                      _: 1
-                    })) : (openBlock(), createBlock("div", { key: 1 }, "\u0421\u0435\u0439\u0447\u0430\u0441 \u0432\u0430\u0448\u0430 \u043A\u043E\u0440\u0437\u0438\u043D\u0430 \u043F\u0443\u0441\u0442\u0430. \u041F\u043E\u043F\u043E\u043B\u043D\u0438\u0442\u0435 \u0436\u0435 \u0435\u0451!"))
-                  ])
-                ])
-              ];
-            }
-          }),
-          _: 1
-        }, _parent2, _scopeId));
-      } else {
-        return [
-          createVNode(_component_ContainerNode, null, {
-            default: withCtx(() => {
-              var _a;
-              return [
-                createVNode("div", { class: "cart" }, [
-                  createVNode("div", { class: "cart__body" }, [
-                    ((_a = _ctx.cartItems) == null ? void 0 : _a.length) || Object.keys(_ctx.cartStore).length === 0 ? (openBlock(), createBlock(_component_MiddleContentNode, { key: 0 }, {
-                      items: withCtx(() => [
-                        createVNode(_component_PreloadWrapContainerNode, {
-                          class: "cart__item",
-                          quantityPreloadElements: 4,
-                          iterable: _ctx.cartItems
-                        }, {
-                          default: withCtx((slotProps) => [
-                            createVNode(_component_CartItemNode, {
-                              cartItem: slotProps.item
-                            }, null, 8, ["cartItem"])
-                          ]),
-                          _: 1
-                        }, 8, ["iterable"])
-                      ]),
-                      sidebar: withCtx(() => {
-                        var _a2, _b, _c, _d;
-                        return [
-                          createVNode("div", { class: "middle-content__sidebar-inner" }, [
-                            createVNode("div", { class: "middle-content__block middle-content__block_promo" }, [
-                              createVNode("div", { class: "middle-content__key middle-content__key_medium" }, " \u041F\u0440\u043E\u043C\u043E\u043A\u043E\u0434 "),
-                              createVNode("div", { class: "middle-content__item" }, [
-                                createVNode(_component_InputNode, {
-                                  modelValue: $data.promo,
-                                  "onUpdate:modelValue": ($event) => $data.promo = $event,
-                                  placeholder: "\u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u043F\u0440\u043E\u043C\u043E\u043A\u043E\u0434",
-                                  class: "main"
-                                }, null, 8, ["modelValue", "onUpdate:modelValue"]),
-                                createVNode(_component_ButtonNode, {
-                                  buttonStyle: "green",
-                                  disabled: !$data.promo
-                                }, {
-                                  default: withCtx(() => [
-                                    createTextVNode("\u041F\u0440\u0438\u043C\u0435\u043D\u0438\u0442\u044C")
-                                  ]),
-                                  _: 1
-                                }, 8, ["disabled"])
-                              ])
-                            ]),
-                            createVNode("div", { class: "middle-content__block" }, [
-                              createVNode("div", { class: "middle-content__item" }, [
-                                createVNode("div", { class: "middle-content__key" }, "\u0421\u043A\u0438\u0434\u043A\u0430"),
-                                createVNode("div", { class: "middle-content__value" }, [
-                                  createTextVNode(" - 0"),
-                                  createVNode("span", { class: "middle-content__currency" }, " \u20BD")
-                                ])
-                              ]),
-                              createVNode("div", { class: "middle-content__item" }, [
-                                createVNode("div", { class: "middle-content__key" }, " \u0421\u043A\u0438\u0434\u043A\u0430 \u043F\u0440\u0438 \u043E\u043D\u043B\u0430\u0439\u043D \u043E\u043F\u043B\u0430\u0442\u0435 "),
-                                createVNode("div", { class: "middle-content__value" }, [
-                                  createTextVNode(" - 0"),
-                                  createVNode("span", { class: "middle-content__currency" }, " \u20BD")
-                                ])
-                              ]),
-                              createVNode("div", { class: "middle-content__item" }, [
-                                createVNode("div", { class: "middle-content__key" }, " \u041A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u043E \u0442\u043E\u0432\u0430\u0440\u043E\u0432 "),
-                                createVNode("div", { class: "middle-content__value icon-info" }, toDisplayString((_a2 = _ctx.cartStore.items) == null ? void 0 : _a2.length) + " \u0448\u0442. ", 1)
-                              ])
-                            ]),
-                            createVNode("div", { class: "middle-content__block" }, [
-                              createVNode("div", { class: "middle-content__item" }, [
-                                createVNode("div", { class: "middle-content__key middle-content__key_big" }, " \u0418\u0442\u043E\u0433\u043E "),
-                                createVNode("div", { class: "middle-content__value middle-content__value_big" }, [
-                                  createTextVNode(toDisplayString((_c = (_b = _ctx.cartStore) == null ? void 0 : _b.totals) == null ? void 0 : _c.total_price), 1),
-                                  createVNode("span", { class: "middle-content__currency" }, " \u20BD")
-                                ])
-                              ]),
-                              createVNode("div", { class: "middle-content__item" }, [
-                                createVNode("div", { class: "middle-content__key" }, " \u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C \u0431\u0435\u0437 \u0443\u0447\u0451\u0442\u0430 \u0441\u043A\u0438\u0434\u043E\u043A: "),
-                                createVNode("div", { class: "middle-content__value" })
-                              ]),
-                              createVNode("div", { class: "middle-content__item" }, [
-                                createVNode("div", { class: "middle-content__key" }, " \u0411\u0430\u043B\u043E\u0432 \u0431\u0443\u0434\u0435\u0442 \u043D\u0430\u0447\u0438\u0441\u043B\u0435\u043D\u043E: "),
-                                createVNode("div", { class: "middle-content__value" })
-                              ]),
-                              createVNode(_component_ButtonNode, {
-                                class: "middle-content__button-submit",
-                                buttonStyle: "green",
-                                disabled: !((_d = _ctx.cartItems) == null ? void 0 : _d.length),
-                                onClick: withModifiers($options.toCheckout, ["stop"])
-                              }, {
-                                default: withCtx(() => [
-                                  createTextVNode("\u041F\u0435\u0440\u0435\u0439\u0442\u0438 \u043A \u043E\u0444\u043E\u0440\u043C\u043B\u0435\u043D\u0438\u044E ")
-                                ]),
-                                _: 1
-                              }, 8, ["disabled", "onClick"])
-                            ])
-                          ])
-                        ];
-                      }),
-                      _: 1
-                    })) : (openBlock(), createBlock("div", { key: 1 }, "\u0421\u0435\u0439\u0447\u0430\u0441 \u0432\u0430\u0448\u0430 \u043A\u043E\u0440\u0437\u0438\u043D\u0430 \u043F\u0443\u0441\u0442\u0430. \u041F\u043E\u043F\u043E\u043B\u043D\u0438\u0442\u0435 \u0436\u0435 \u0435\u0451!"))
-                  ])
-                ])
-              ];
             }),
             _: 1
-          })
-        ];
-      }
-    }),
-    _: 1
-  }, _parent));
+          }, _parent2, _scopeId));
+        } else {
+          return [
+            createVNode(_component_PreloadWrapContainerNode, {
+              class: "cart__item",
+              quantityPreloadElements: 4,
+              iterable: _ctx.cartItems
+            }, {
+              default: withCtx((slotProps) => [
+                createVNode(_component_CartItemNode, {
+                  cartItem: slotProps.item
+                }, null, 8, ["cartItem"])
+              ]),
+              _: 1
+            }, 8, ["iterable"])
+          ];
+        }
+      }),
+      sidebar: withCtx((_, _push2, _parent2, _scopeId) => {
+        var _a2, _b, _c, _d, _e, _f, _g, _h;
+        if (_push2) {
+          _push2(`<div class="middle-content__sidebar-inner"${_scopeId}><div class="middle-content__block middle-content__block_promo"${_scopeId}><div class="middle-content__key middle-content__key_medium"${_scopeId}> \u041F\u0440\u043E\u043C\u043E\u043A\u043E\u0434 </div><div class="middle-content__item"${_scopeId}>`);
+          _push2(ssrRenderComponent(_component_InputNode, {
+            modelValue: $data.promo,
+            "onUpdate:modelValue": ($event) => $data.promo = $event,
+            placeholder: "\u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u043F\u0440\u043E\u043C\u043E\u043A\u043E\u0434",
+            class: "main"
+          }, null, _parent2, _scopeId));
+          _push2(ssrRenderComponent(_component_ButtonNode, {
+            buttonStyle: "green",
+            disabled: !$data.promo
+          }, {
+            default: withCtx((_2, _push3, _parent3, _scopeId2) => {
+              if (_push3) {
+                _push3(`\u041F\u0440\u0438\u043C\u0435\u043D\u0438\u0442\u044C`);
+              } else {
+                return [
+                  createTextVNode("\u041F\u0440\u0438\u043C\u0435\u043D\u0438\u0442\u044C")
+                ];
+              }
+            }),
+            _: 1
+          }, _parent2, _scopeId));
+          _push2(`</div></div><div class="middle-content__block"${_scopeId}><div class="middle-content__item"${_scopeId}><div class="middle-content__key"${_scopeId}>\u0421\u043A\u0438\u0434\u043A\u0430</div><div class="middle-content__value"${_scopeId}> - 1456<span class="middle-content__currency"${_scopeId}> \u20BD</span></div></div><div class="middle-content__item"${_scopeId}><div class="middle-content__key"${_scopeId}> \u0421\u043A\u0438\u0434\u043A\u0430 \u043F\u0440\u0438 \u043E\u043D\u043B\u0430\u0439\u043D \u043E\u043F\u043B\u0430\u0442\u0435 </div><div class="middle-content__value"${_scopeId}> - 758<span class="middle-content__currency"${_scopeId}> \u20BD</span></div></div><div class="middle-content__item"${_scopeId}><div class="middle-content__key"${_scopeId}> \u041A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u043E \u0442\u043E\u0432\u0430\u0440\u043E\u0432 </div><div class="middle-content__value icon-info"${_scopeId}>${ssrInterpolate((_a2 = _ctx.cartStore.items) == null ? void 0 : _a2.length)} \u0448\u0442. </div></div></div><div class="middle-content__block"${_scopeId}><div class="middle-content__item"${_scopeId}><div class="middle-content__key middle-content__key_big"${_scopeId}> \u0418\u0442\u043E\u0433\u043E </div><div class="middle-content__value middle-content__value_big"${_scopeId}>${ssrInterpolate((_c = (_b = _ctx.cartStore) == null ? void 0 : _b.totals) == null ? void 0 : _c.total_price)}<span class="middle-content__currency"${_scopeId}> \u20BD</span></div></div>`);
+          _push2(ssrRenderComponent(_component_ButtonNode, {
+            class: "middle-content__button-submit",
+            buttonStyle: "green",
+            disabled: !((_d = _ctx.cartItems) == null ? void 0 : _d.length),
+            onClick: $options.toCheckout
+          }, {
+            default: withCtx((_2, _push3, _parent3, _scopeId2) => {
+              if (_push3) {
+                _push3(`\u041F\u0435\u0440\u0435\u0439\u0442\u0438 \u043A \u043E\u0444\u043E\u0440\u043C\u043B\u0435\u043D\u0438\u044E `);
+              } else {
+                return [
+                  createTextVNode("\u041F\u0435\u0440\u0435\u0439\u0442\u0438 \u043A \u043E\u0444\u043E\u0440\u043C\u043B\u0435\u043D\u0438\u044E ")
+                ];
+              }
+            }),
+            _: 1
+          }, _parent2, _scopeId));
+          _push2(`</div></div>`);
+        } else {
+          return [
+            createVNode("div", { class: "middle-content__sidebar-inner" }, [
+              createVNode("div", { class: "middle-content__block middle-content__block_promo" }, [
+                createVNode("div", { class: "middle-content__key middle-content__key_medium" }, " \u041F\u0440\u043E\u043C\u043E\u043A\u043E\u0434 "),
+                createVNode("div", { class: "middle-content__item" }, [
+                  createVNode(_component_InputNode, {
+                    modelValue: $data.promo,
+                    "onUpdate:modelValue": ($event) => $data.promo = $event,
+                    placeholder: "\u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u043F\u0440\u043E\u043C\u043E\u043A\u043E\u0434",
+                    class: "main"
+                  }, null, 8, ["modelValue", "onUpdate:modelValue"]),
+                  createVNode(_component_ButtonNode, {
+                    buttonStyle: "green",
+                    disabled: !$data.promo
+                  }, {
+                    default: withCtx(() => [
+                      createTextVNode("\u041F\u0440\u0438\u043C\u0435\u043D\u0438\u0442\u044C")
+                    ]),
+                    _: 1
+                  }, 8, ["disabled"])
+                ])
+              ]),
+              createVNode("div", { class: "middle-content__block" }, [
+                createVNode("div", { class: "middle-content__item" }, [
+                  createVNode("div", { class: "middle-content__key" }, "\u0421\u043A\u0438\u0434\u043A\u0430"),
+                  createVNode("div", { class: "middle-content__value" }, [
+                    createTextVNode(" - 1456"),
+                    createVNode("span", { class: "middle-content__currency" }, " \u20BD")
+                  ])
+                ]),
+                createVNode("div", { class: "middle-content__item" }, [
+                  createVNode("div", { class: "middle-content__key" }, " \u0421\u043A\u0438\u0434\u043A\u0430 \u043F\u0440\u0438 \u043E\u043D\u043B\u0430\u0439\u043D \u043E\u043F\u043B\u0430\u0442\u0435 "),
+                  createVNode("div", { class: "middle-content__value" }, [
+                    createTextVNode(" - 758"),
+                    createVNode("span", { class: "middle-content__currency" }, " \u20BD")
+                  ])
+                ]),
+                createVNode("div", { class: "middle-content__item" }, [
+                  createVNode("div", { class: "middle-content__key" }, " \u041A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u043E \u0442\u043E\u0432\u0430\u0440\u043E\u0432 "),
+                  createVNode("div", { class: "middle-content__value icon-info" }, toDisplayString((_e = _ctx.cartStore.items) == null ? void 0 : _e.length) + " \u0448\u0442. ", 1)
+                ])
+              ]),
+              createVNode("div", { class: "middle-content__block" }, [
+                createVNode("div", { class: "middle-content__item" }, [
+                  createVNode("div", { class: "middle-content__key middle-content__key_big" }, " \u0418\u0442\u043E\u0433\u043E "),
+                  createVNode("div", { class: "middle-content__value middle-content__value_big" }, [
+                    createTextVNode(toDisplayString((_g = (_f = _ctx.cartStore) == null ? void 0 : _f.totals) == null ? void 0 : _g.total_price), 1),
+                    createVNode("span", { class: "middle-content__currency" }, " \u20BD")
+                  ])
+                ]),
+                createVNode(_component_ButtonNode, {
+                  class: "middle-content__button-submit",
+                  buttonStyle: "green",
+                  disabled: !((_h = _ctx.cartItems) == null ? void 0 : _h.length),
+                  onClick: withModifiers($options.toCheckout, ["stop"])
+                }, {
+                  default: withCtx(() => [
+                    createTextVNode("\u041F\u0435\u0440\u0435\u0439\u0442\u0438 \u043A \u043E\u0444\u043E\u0440\u043C\u043B\u0435\u043D\u0438\u044E ")
+                  ]),
+                  _: 1
+                }, 8, ["disabled", "onClick"])
+              ])
+            ])
+          ];
+        }
+      }),
+      _: 1
+    }, _parent));
+  } else {
+    _push(`<div>\u0421\u0435\u0439\u0447\u0430\u0441 \u0432\u0430\u0448\u0430 \u043A\u043E\u0440\u0437\u0438\u043D\u0430 \u043F\u0443\u0441\u0442\u0430. \u041F\u043E\u043F\u043E\u043B\u043D\u0438\u0442\u0435 \u0436\u0435 \u0435\u0451!</div>`);
+  }
+  _push(`</div></div>`);
 }
-const _sfc_setup$p = _sfc_main$p.setup;
-_sfc_main$p.setup = (props, ctx) => {
+const _sfc_setup$q = _sfc_main$q.setup;
+_sfc_main$q.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/pages/private/CartPage.vue");
-  return _sfc_setup$p ? _sfc_setup$p(props, ctx) : void 0;
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/pages/private/ordering/OrderingCartPage.vue");
+  return _sfc_setup$q ? _sfc_setup$q(props, ctx) : void 0;
 };
-const CartPage = /* @__PURE__ */ _export_sfc(_sfc_main$p, [["ssrRender", _sfc_ssrRender$p]]);
-const _sfc_main$o = {
+const OrderingCartPage = /* @__PURE__ */ _export_sfc(_sfc_main$q, [["ssrRender", _sfc_ssrRender$q]]);
+const _sfc_main$p = {
   components: {},
   setup() {
-    const store2 = useStore();
-    const currentPaymentURL = store2.state.auth.currentURLPayment;
+    const { state: state2, dispatch, commit } = useStore();
+    const currentPaymentURL = state2.auth.currentURLPayment;
     function openPaymentPage() {
       if (currentPaymentURL) {
         window.open(currentPaymentURL);
       } else {
-        store2.dispatch("common/updateMessage", "currentPaymentURLNotSet");
+        dispatch("common/updateMessage", "currentPaymentURLNotSet");
       }
     }
+    onBeforeRouteLeave(() => {
+      commit("checkout/setDraftOrder");
+    });
     return {
-      openPaymentPage
+      openPaymentPage,
+      draftOrder: computed(() => state2.checkout.draftOrder)
     };
   }
 };
-function _sfc_ssrRender$o(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
-  const _component_MainPageNode = resolveComponent("MainPageNode");
-  const _component_PageHeadTruncatedNode = resolveComponent("PageHeadTruncatedNode");
-  const _component_ContainerNode = resolveComponent("ContainerNode");
+function _sfc_ssrRender$p(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   const _component_ButtonNode = resolveComponent("ButtonNode");
-  _push(ssrRenderComponent(_component_MainPageNode, _attrs, {
-    "page-head": withCtx((_, _push2, _parent2, _scopeId) => {
+  const _component_BaseButtonNode = resolveComponent("BaseButtonNode");
+  _push(`<div${ssrRenderAttrs(mergeProps({ class: "payment" }, _attrs))}><div class="payment__body">`);
+  if ($setup.draftOrder.payment_method === "cod") {
+    _push(`<div class="payment__block"> \u0421 \u0434\u0435\u0442\u0430\u043B\u044F\u043C\u0438 \u0432\u044B \u043C\u043E\u0436\u0435\u0442\u0435 \u043E\u0437\u043D\u0430\u043A\u043E\u043C\u0438\u0442\u044C\u0441\u044F \u0432 \u041B\u0438\u0447\u043D\u043E\u043C \u041A\u0430\u0431\u0438\u043D\u0435\u0442\u0435. </div>`);
+  } else {
+    _push(`<div class="payment__block"> \u0414\u043B\u044F \u043E\u043F\u043B\u0430\u0442\u044B \u043F\u0435\u0440\u0435\u0439\u0434\u0438\u0442\u0435 \u043F\u043E \u0441\u0441\u044B\u043B\u043A\u0435. `);
+    _push(ssrRenderComponent(_component_ButtonNode, { onClick: $setup.openPaymentPage }, {
+      default: withCtx((_, _push2, _parent2, _scopeId) => {
+        if (_push2) {
+          _push2(`\u041E\u043F\u043B\u0430\u0442\u0438\u0442\u044C \u0441\u0435\u0439\u0447\u0430\u0441`);
+        } else {
+          return [
+            createTextVNode("\u041E\u043F\u043B\u0430\u0442\u0438\u0442\u044C \u0441\u0435\u0439\u0447\u0430\u0441")
+          ];
+        }
+      }),
+      _: 1
+    }, _parent));
+    _push(`</div>`);
+  }
+  _push(ssrRenderComponent(_component_BaseButtonNode, {
+    onClick: ($event) => _ctx.$router.push("/")
+  }, {
+    default: withCtx((_, _push2, _parent2, _scopeId) => {
       if (_push2) {
-        _push2(ssrRenderComponent(_component_PageHeadTruncatedNode, { pageTitle: "\u041E\u043F\u043B\u0430\u0442\u0430" }, null, _parent2, _scopeId));
+        _push2(`\u041D\u0430 \u0433\u043B\u0430\u0432\u043D\u0443\u044E`);
       } else {
         return [
-          createVNode(_component_PageHeadTruncatedNode, { pageTitle: "\u041E\u043F\u043B\u0430\u0442\u0430" })
-        ];
-      }
-    }),
-    "page-main": withCtx((_, _push2, _parent2, _scopeId) => {
-      if (_push2) {
-        _push2(ssrRenderComponent(_component_ContainerNode, null, {
-          default: withCtx((_2, _push3, _parent3, _scopeId2) => {
-            if (_push3) {
-              _push3(`<div class="payment"${_scopeId2}>`);
-              _push3(ssrRenderComponent(_component_ButtonNode, { onClick: $setup.openPaymentPage }, {
-                default: withCtx((_3, _push4, _parent4, _scopeId3) => {
-                  if (_push4) {
-                    _push4(`\u041E\u043F\u043B\u0430\u0442\u0438\u0442\u044C \u0441\u0435\u0439\u0447\u0430\u0441`);
-                  } else {
-                    return [
-                      createTextVNode("\u041E\u043F\u043B\u0430\u0442\u0438\u0442\u044C \u0441\u0435\u0439\u0447\u0430\u0441")
-                    ];
-                  }
-                }),
-                _: 1
-              }, _parent3, _scopeId2));
-              _push3(`</div>`);
-            } else {
-              return [
-                createVNode("div", { class: "payment" }, [
-                  createVNode(_component_ButtonNode, { onClick: $setup.openPaymentPage }, {
-                    default: withCtx(() => [
-                      createTextVNode("\u041E\u043F\u043B\u0430\u0442\u0438\u0442\u044C \u0441\u0435\u0439\u0447\u0430\u0441")
-                    ]),
-                    _: 1
-                  }, 8, ["onClick"])
-                ])
-              ];
-            }
-          }),
-          _: 1
-        }, _parent2, _scopeId));
-      } else {
-        return [
-          createVNode(_component_ContainerNode, null, {
-            default: withCtx(() => [
-              createVNode("div", { class: "payment" }, [
-                createVNode(_component_ButtonNode, { onClick: $setup.openPaymentPage }, {
-                  default: withCtx(() => [
-                    createTextVNode("\u041E\u043F\u043B\u0430\u0442\u0438\u0442\u044C \u0441\u0435\u0439\u0447\u0430\u0441")
-                  ]),
-                  _: 1
-                }, 8, ["onClick"])
-              ])
-            ]),
-            _: 1
-          })
+          createTextVNode("\u041D\u0430 \u0433\u043B\u0430\u0432\u043D\u0443\u044E")
         ];
       }
     }),
     _: 1
   }, _parent));
+  _push(`</div></div>`);
 }
-const _sfc_setup$o = _sfc_main$o.setup;
-_sfc_main$o.setup = (props, ctx) => {
+const _sfc_setup$p = _sfc_main$p.setup;
+_sfc_main$p.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/pages/private/PaymentPage.vue");
-  return _sfc_setup$o ? _sfc_setup$o(props, ctx) : void 0;
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/pages/private/ordering/OrderingPaymentPage.vue");
+  return _sfc_setup$p ? _sfc_setup$p(props, ctx) : void 0;
 };
-const PaymentPage = /* @__PURE__ */ _export_sfc(_sfc_main$o, [["ssrRender", _sfc_ssrRender$o]]);
+const OrderingPaymentPage = /* @__PURE__ */ _export_sfc(_sfc_main$p, [["ssrRender", _sfc_ssrRender$p]]);
 const CheckoutBlockNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$n = {
+const _sfc_main$o = {
   props: {
     title: String,
     value: String,
     icon: String,
+    clickAction: {
+      type: Function
+    },
     popupName: String
   },
-  computed: {
-    ...mapState({})
-  },
-  methods: {
-    ...mapMutations({
-      setPopup: "common/setPopup"
-    })
+  setup(props) {
+    const { commit } = useStore();
+    const clickActionHandled = () => {
+      if (props.popupName && !props.clickAction) {
+        commit("common/setPopup", { name: props.popupName });
+      } else {
+        props.clickAction();
+      }
+    };
+    return {
+      clickActionHandled
+    };
   }
 };
-function _sfc_ssrRender$n(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$o(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   const _component_PopupNode = resolveComponent("PopupNode");
-  _push(`<div${ssrRenderAttrs(mergeProps({ class: "checkout__block checkout-block" }, _attrs))}><div class="checkout-block__body"><div class="${ssrRenderClass(["icon-" + $props.icon, "checkout-block__icon"])}"></div><div class="checkout-block__content"><div class="checkout-block__key">${ssrInterpolate($props.title)}</div><div class="checkout-block__value">${ssrInterpolate($props.value)}</div></div><div class="checkout-block__edit-icon icon-edit"></div><div class="checkout-block__main">`);
+  _push(`<div${ssrRenderAttrs(mergeProps({ class: "checkout__block checkout-block" }, _attrs))}><div class="checkout-block__body"><div class="checkout-block__top"><div class="${ssrRenderClass(["icon-" + $props.icon, "checkout-block__icon"])}"></div><div class="checkout-block__content"><div class="checkout-block__key">${ssrInterpolate($props.title)}</div><div class="checkout-block__value">${ssrInterpolate($props.value)}</div></div><div class="checkout-block__edit-icon icon-arrow"></div></div><div class="checkout-block__main">`);
   ssrRenderSlot(_ctx.$slots, "main", {}, null, _push, _parent);
   _push(`</div>`);
   if ($props.popupName) {
     _push(ssrRenderComponent(_component_PopupNode, {
+      showCloseBtn: true,
       item: { name: $props.popupName }
     }, {
       default: withCtx((_, _push2, _parent2, _scopeId) => {
@@ -29704,728 +29421,257 @@ function _sfc_ssrRender$n(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
   }
   _push(`</div></div>`);
 }
-const _sfc_setup$n = _sfc_main$n.setup;
-_sfc_main$n.setup = (props, ctx) => {
+const _sfc_setup$o = _sfc_main$o.setup;
+_sfc_main$o.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/ordering/CheckoutBlockNode.vue");
-  return _sfc_setup$n ? _sfc_setup$n(props, ctx) : void 0;
+  return _sfc_setup$o ? _sfc_setup$o(props, ctx) : void 0;
 };
-const CheckoutBlockNode = /* @__PURE__ */ _export_sfc(_sfc_main$n, [["ssrRender", _sfc_ssrRender$n]]);
-const CheckoutPage_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$m = {
+const CheckoutBlockNode = /* @__PURE__ */ _export_sfc(_sfc_main$o, [["ssrRender", _sfc_ssrRender$o]]);
+const OrderingCheckoutPage_vue_vue_type_style_index_0_lang = "";
+const _sfc_main$n = {
   components: {
     PreloadWrapContainerNode,
-    PageHeadTruncatedNode,
     MiddleContentNode,
     CheckoutBlockNode
   },
-  data() {
-    return {
-      draftOrderLoaded: false,
-      draftOrder: {}
-    };
-  },
-  computed: {
-    ...mapGetters({}),
-    ...mapState({
-      userAuth: (state2) => state2.auth.userAuth,
-      cartItems: (state2) => state2.cart.store.items,
-      cartStore: (state2) => state2.cart.store,
-      checkoutRequest: (state2) => state2.checkout.basedRequest,
-      paymentGatewaysItems: (state2) => state2.paymentGateways.items
-    })
-  },
-  watch: {
-    cartStore: {
-      handler(newValue) {
-        if (!isEmpty(newValue) && isEmpty(this.draftOrder)) {
-          this.getCheckout();
-        }
-      },
-      immediate: true
-    }
-  },
-  methods: {
-    ...mapMutations({
-      setValue: "setValue",
-      updateRev: "common/updateRev",
-      setCurrentURLPayment: "auth/setCurrentURLPayment"
-    }),
-    ...mapActions({
-      mainFetchRequest: "mainFetchRequest",
-      updateMessage: "common/updateMessage",
-      getCart: "cart/getCart"
-    }),
-    getCheckout() {
-      this.mainFetchRequest({
-        basedRequest: this.checkoutRequest,
-        method: "get",
-        data: {},
-        config: { headers: getNonceToken() }
-      }).then(
-        (result) => {
-          var _a;
-          if ((_a = result == null ? void 0 : result.response) == null ? void 0 : _a.data) {
-            this.draftOrderLoaded = true;
-            this.draftOrder = result.data;
-          }
-        },
-        (error) => {
-          throw error;
-        }
-      );
-    },
-    postCheckout() {
-      if (!this.draftOrder.payment_method) {
-        this.updateMessage("notSelectPaymentMethod");
-        return;
+  setup() {
+    const { state: state2, dispatch, commit } = useStore();
+    const cartStore = computed(() => state2.cart.store);
+    const draftOrder = computed(() => state2.checkout.draftOrder);
+    const paymentGatewaysItems = computed(() => state2.paymentGateways.items);
+    watch(cartStore, (newValue) => {
+      if (!isEmpty(newValue) && isEmpty(state2.checkout.draftOrder)) {
+        dispatch("checkout/getCheckout");
       }
-      this.mainFetchRequest({
-        basedRequest: this.checkoutRequest,
-        method: "post",
-        data: this.draftOrder,
-        config: { headers: getNonceToken() }
-      }).then(
-        (result) => {
-          this.setCurrentURLPayment(
-            result.response.data.payment_result.redirect_url
-          );
-          this.$router.push({ name: "Payment" });
-          this.getCart();
-        },
-        (error) => {
-          this.updateMessage("orderingError");
-          throw error;
-        }
-      );
-    },
-    changePaymentMethod(id) {
-      this.draftOrder.payment_method = id;
-    }
+    }, { immediate: true });
+    return {
+      isEmpty,
+      cartStore,
+      draftOrder,
+      paymentGatewaysItems,
+      postCheckout: () => dispatch("checkout/postCheckout"),
+      changePaymentMethod: (value) => commit("checkout/changePaymentMethod", value),
+      currentPaymentGatewayTitle: computed(() => {
+        var _a, _b;
+        return (_b = paymentGatewaysItems.value[(_a = draftOrder.value) == null ? void 0 : _a.payment_method]) == null ? void 0 : _b.method_title;
+      })
+    };
   }
 };
-function _sfc_ssrRender$m(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
-  const _component_MainPageNode = resolveComponent("MainPageNode");
-  const _component_PageHeadTruncatedNode = resolveComponent("PageHeadTruncatedNode");
-  const _component_ContainerNode = resolveComponent("ContainerNode");
+function _sfc_ssrRender$n(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   const _component_MiddleContentNode = resolveComponent("MiddleContentNode");
   const _component_PreloadWrapNode = resolveComponent("PreloadWrapNode");
   const _component_CheckoutBlockNode = resolveComponent("CheckoutBlockNode");
   const _component_PreloadWrapContainerNode = resolveComponent("PreloadWrapContainerNode");
   const _component_InputRadioNode = resolveComponent("InputRadioNode");
   const _component_ButtonNode = resolveComponent("ButtonNode");
-  _push(ssrRenderComponent(_component_MainPageNode, _attrs, {
-    "page-head": withCtx((_, _push2, _parent2, _scopeId) => {
+  _push(`<div${ssrRenderAttrs(mergeProps({ class: "checkout" }, _attrs))}><div class="checkout__body">`);
+  _push(ssrRenderComponent(_component_MiddleContentNode, null, {
+    items: withCtx((_, _push2, _parent2, _scopeId) => {
       if (_push2) {
-        _push2(ssrRenderComponent(_component_PageHeadTruncatedNode, {
-          backLinkName: "\u041A\u043E\u0440\u0437\u0438\u043D\u0430",
-          pageTitle: "\u041E\u0444\u043E\u0440\u043C\u043B\u0435\u043D\u0438\u0435 \u0437\u0430\u043A\u0430\u0437\u0430"
-        }, null, _parent2, _scopeId));
-      } else {
-        return [
-          createVNode(_component_PageHeadTruncatedNode, {
-            backLinkName: "\u041A\u043E\u0440\u0437\u0438\u043D\u0430",
-            pageTitle: "\u041E\u0444\u043E\u0440\u043C\u043B\u0435\u043D\u0438\u0435 \u0437\u0430\u043A\u0430\u0437\u0430"
-          })
-        ];
-      }
-    }),
-    "page-main": withCtx((_, _push2, _parent2, _scopeId) => {
-      if (_push2) {
-        _push2(ssrRenderComponent(_component_ContainerNode, null, {
+        _push2(ssrRenderComponent(_component_PreloadWrapNode, {
+          targetPreloadElement: $setup.isEmpty($setup.draftOrder)
+        }, {
           default: withCtx((_2, _push3, _parent3, _scopeId2) => {
+            var _a, _b, _c, _d;
             if (_push3) {
-              _push3(`<div class="checkout"${_scopeId2}><div class="checkout__body"${_scopeId2}>`);
-              _push3(ssrRenderComponent(_component_MiddleContentNode, null, {
-                items: withCtx((_3, _push4, _parent4, _scopeId3) => {
+              _push3(ssrRenderComponent(_component_CheckoutBlockNode, {
+                title: "\u041A\u043E\u0440\u0437\u0438\u043D\u0430",
+                class: "checkout-block_cart",
+                value: `${(_b = (_a = $setup.cartStore) == null ? void 0 : _a.items) == null ? void 0 : _b.length} \u0435\u0434. \u0442\u043E\u0432\u0430\u0440\u0430`,
+                clickAction: () => {
+                  _ctx.$router.push({ name: "OrderingCart" });
+                },
+                icon: "cart"
+              }, {
+                main: withCtx((_3, _push4, _parent4, _scopeId3) => {
                   if (_push4) {
-                    _push4(ssrRenderComponent(_component_PreloadWrapNode, { targetPreloadElement: $data.draftOrderLoaded }, {
-                      default: withCtx((_4, _push5, _parent5, _scopeId4) => {
-                        if (_push5) {
-                          _push5(ssrRenderComponent(_component_CheckoutBlockNode, {
-                            title: "\u041A\u043E\u0440\u0437\u0438\u043D\u0430",
-                            value: "",
-                            icon: "cart"
-                          }, {
-                            main: withCtx((_5, _push6, _parent6, _scopeId5) => {
-                              if (_push6) {
-                                _push6(`<ul class="checkout-block__products"${_scopeId5}>`);
-                                _push6(ssrRenderComponent(_component_PreloadWrapContainerNode, {
-                                  class: "cart__item",
-                                  quantityPreloadElements: 4,
-                                  iterable: _ctx.cartItems
-                                }, {
-                                  default: withCtx((slotProps, _push7, _parent7, _scopeId6) => {
-                                    if (_push7) {
-                                      _push7(`<div class="order-item"${_scopeId6}><div class="order-item__image"${_scopeId6}><picture${_scopeId6}><source srcset="" type="image/webp"${_scopeId6}><source srcset="" type="image/jpeg"${_scopeId6}><img${ssrRenderAttr("src", slotProps.item.images[0].src)} alt=""${_scopeId6}></picture></div></div>`);
-                                    } else {
-                                      return [
-                                        createVNode("div", { class: "order-item" }, [
-                                          createVNode("div", { class: "order-item__image" }, [
-                                            createVNode("picture", null, [
-                                              createVNode("source", {
-                                                srcset: "",
-                                                type: "image/webp"
-                                              }),
-                                              createVNode("source", {
-                                                srcset: "",
-                                                type: "image/jpeg"
-                                              }),
-                                              createVNode("img", {
-                                                src: slotProps.item.images[0].src,
-                                                alt: ""
-                                              }, null, 8, ["src"])
-                                            ])
-                                          ])
-                                        ])
-                                      ];
-                                    }
-                                  }),
-                                  _: 1
-                                }, _parent6, _scopeId5));
-                                _push6(`</ul>`);
-                              } else {
-                                return [
-                                  createVNode("ul", { class: "checkout-block__products" }, [
-                                    createVNode(_component_PreloadWrapContainerNode, {
-                                      class: "cart__item",
-                                      quantityPreloadElements: 4,
-                                      iterable: _ctx.cartItems
-                                    }, {
-                                      default: withCtx((slotProps) => [
-                                        createVNode("div", { class: "order-item" }, [
-                                          createVNode("div", { class: "order-item__image" }, [
-                                            createVNode("picture", null, [
-                                              createVNode("source", {
-                                                srcset: "",
-                                                type: "image/webp"
-                                              }),
-                                              createVNode("source", {
-                                                srcset: "",
-                                                type: "image/jpeg"
-                                              }),
-                                              createVNode("img", {
-                                                src: slotProps.item.images[0].src,
-                                                alt: ""
-                                              }, null, 8, ["src"])
-                                            ])
-                                          ])
-                                        ])
-                                      ]),
-                                      _: 1
-                                    }, 8, ["iterable"])
-                                  ])
-                                ];
-                              }
-                            }),
-                            _: 1
-                          }, _parent5, _scopeId4));
-                        } else {
-                          return [
-                            createVNode(_component_CheckoutBlockNode, {
-                              title: "\u041A\u043E\u0440\u0437\u0438\u043D\u0430",
-                              value: "",
-                              icon: "cart"
-                            }, {
-                              main: withCtx(() => [
-                                createVNode("ul", { class: "checkout-block__products" }, [
-                                  createVNode(_component_PreloadWrapContainerNode, {
-                                    class: "cart__item",
-                                    quantityPreloadElements: 4,
-                                    iterable: _ctx.cartItems
-                                  }, {
-                                    default: withCtx((slotProps) => [
-                                      createVNode("div", { class: "order-item" }, [
-                                        createVNode("div", { class: "order-item__image" }, [
-                                          createVNode("picture", null, [
-                                            createVNode("source", {
-                                              srcset: "",
-                                              type: "image/webp"
-                                            }),
-                                            createVNode("source", {
-                                              srcset: "",
-                                              type: "image/jpeg"
-                                            }),
-                                            createVNode("img", {
-                                              src: slotProps.item.images[0].src,
-                                              alt: ""
-                                            }, null, 8, ["src"])
-                                          ])
-                                        ])
-                                      ])
-                                    ]),
-                                    _: 1
-                                  }, 8, ["iterable"])
-                                ])
-                              ]),
-                              _: 1
-                            })
-                          ];
-                        }
-                      }),
-                      _: 1
-                    }, _parent4, _scopeId3));
-                    _push4(ssrRenderComponent(_component_PreloadWrapNode, { targetPreloadElement: $data.draftOrderLoaded }, {
-                      default: withCtx((_4, _push5, _parent5, _scopeId4) => {
-                        if (_push5) {
-                          _push5(ssrRenderComponent(_component_CheckoutBlockNode, {
-                            title: "\u041A\u043E\u043D\u0442\u0430\u043A\u0442\u044B \u043F\u043E\u043B\u0443\u0447\u0430\u0442\u0435\u043B\u044F",
-                            value: "",
-                            icon: "profile",
-                            popupName: "checkoutContacts"
-                          }, {
-                            popup: withCtx((_5, _push6, _parent6, _scopeId5) => {
-                              if (_push6)
-                                ;
-                              else {
-                                return [];
-                              }
-                            }),
-                            _: 1
-                          }, _parent5, _scopeId4));
-                        } else {
-                          return [
-                            createVNode(_component_CheckoutBlockNode, {
-                              title: "\u041A\u043E\u043D\u0442\u0430\u043A\u0442\u044B \u043F\u043E\u043B\u0443\u0447\u0430\u0442\u0435\u043B\u044F",
-                              value: "",
-                              icon: "profile",
-                              popupName: "checkoutContacts"
-                            }, {
-                              popup: withCtx(() => []),
-                              _: 1
-                            })
-                          ];
-                        }
-                      }),
-                      _: 1
-                    }, _parent4, _scopeId3));
-                    _push4(ssrRenderComponent(_component_PreloadWrapNode, { targetPreloadElement: $data.draftOrderLoaded }, {
-                      default: withCtx((_4, _push5, _parent5, _scopeId4) => {
-                        if (_push5) {
-                          _push5(ssrRenderComponent(_component_CheckoutBlockNode, {
-                            title: "\u0414\u043E\u0441\u0442\u0430\u0432\u043A\u0430",
-                            value: "\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u0443\u0434\u043E\u0431\u043D\u044B\u0439 \u0432\u0430\u0440\u0438\u0430\u043D\u0442 \u0434\u043E\u0441\u0442\u0430\u0432\u043A\u0438",
-                            icon: "delivery",
-                            popupName: "checkoutDelivery"
-                          }, {
-                            popup: withCtx((_5, _push6, _parent6, _scopeId5) => {
-                              if (_push6)
-                                ;
-                              else {
-                                return [];
-                              }
-                            }),
-                            _: 1
-                          }, _parent5, _scopeId4));
-                        } else {
-                          return [
-                            createVNode(_component_CheckoutBlockNode, {
-                              title: "\u0414\u043E\u0441\u0442\u0430\u0432\u043A\u0430",
-                              value: "\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u0443\u0434\u043E\u0431\u043D\u044B\u0439 \u0432\u0430\u0440\u0438\u0430\u043D\u0442 \u0434\u043E\u0441\u0442\u0430\u0432\u043A\u0438",
-                              icon: "delivery",
-                              popupName: "checkoutDelivery"
-                            }, {
-                              popup: withCtx(() => []),
-                              _: 1
-                            })
-                          ];
-                        }
-                      }),
-                      _: 1
-                    }, _parent4, _scopeId3));
-                    _push4(ssrRenderComponent(_component_PreloadWrapNode, { targetPreloadElement: $data.draftOrderLoaded }, {
-                      default: withCtx((_4, _push5, _parent5, _scopeId4) => {
-                        if (_push5) {
-                          _push5(ssrRenderComponent(_component_CheckoutBlockNode, {
-                            title: "\u041E\u043F\u043B\u0430\u0442\u0430",
-                            value: "\u041E\u043D\u043B\u0430\u0439\u043D \u043E\u043F\u043B\u0430\u0442\u0430 \u043A\u0430\u0440\u0442\u043E\u0439 (\u0441\u043A\u0438\u0434\u043A\u0430 5%)",
-                            icon: "cash",
-                            popupName: "checkoutPayment"
-                          }, {
-                            popup: withCtx((_5, _push6, _parent6, _scopeId5) => {
-                              if (_push6) {
-                                _push6(`<!--[-->`);
-                                ssrRenderList(_ctx.paymentGatewaysItems, (item, index) => {
-                                  _push6(ssrRenderComponent(_component_InputRadioNode, {
-                                    key: index,
-                                    modelValue: $data.draftOrder.payment_method === item.id,
-                                    labelText: item.method_title,
-                                    name: "paymentGateway",
-                                    disabled: !item.enabled,
-                                    onInput: ($event) => $options.changePaymentMethod(item.id)
-                                  }, null, _parent6, _scopeId5));
-                                });
-                                _push6(`<!--]-->`);
-                              } else {
-                                return [
-                                  (openBlock(true), createBlock(Fragment, null, renderList(_ctx.paymentGatewaysItems, (item, index) => {
-                                    return openBlock(), createBlock(_component_InputRadioNode, {
-                                      key: index,
-                                      modelValue: $data.draftOrder.payment_method === item.id,
-                                      labelText: item.method_title,
-                                      name: "paymentGateway",
-                                      disabled: !item.enabled,
-                                      onInput: ($event) => $options.changePaymentMethod(item.id)
-                                    }, null, 8, ["modelValue", "labelText", "disabled", "onInput"]);
-                                  }), 128))
-                                ];
-                              }
-                            }),
-                            _: 1
-                          }, _parent5, _scopeId4));
-                        } else {
-                          return [
-                            createVNode(_component_CheckoutBlockNode, {
-                              title: "\u041E\u043F\u043B\u0430\u0442\u0430",
-                              value: "\u041E\u043D\u043B\u0430\u0439\u043D \u043E\u043F\u043B\u0430\u0442\u0430 \u043A\u0430\u0440\u0442\u043E\u0439 (\u0441\u043A\u0438\u0434\u043A\u0430 5%)",
-                              icon: "cash",
-                              popupName: "checkoutPayment"
-                            }, {
-                              popup: withCtx(() => [
-                                (openBlock(true), createBlock(Fragment, null, renderList(_ctx.paymentGatewaysItems, (item, index) => {
-                                  return openBlock(), createBlock(_component_InputRadioNode, {
-                                    key: index,
-                                    modelValue: $data.draftOrder.payment_method === item.id,
-                                    labelText: item.method_title,
-                                    name: "paymentGateway",
-                                    disabled: !item.enabled,
-                                    onInput: ($event) => $options.changePaymentMethod(item.id)
-                                  }, null, 8, ["modelValue", "labelText", "disabled", "onInput"]);
-                                }), 128))
-                              ]),
-                              _: 1
-                            })
-                          ];
-                        }
-                      }),
-                      _: 1
-                    }, _parent4, _scopeId3));
-                  } else {
-                    return [
-                      createVNode(_component_PreloadWrapNode, { targetPreloadElement: $data.draftOrderLoaded }, {
-                        default: withCtx(() => [
-                          createVNode(_component_CheckoutBlockNode, {
-                            title: "\u041A\u043E\u0440\u0437\u0438\u043D\u0430",
-                            value: "",
-                            icon: "cart"
-                          }, {
-                            main: withCtx(() => [
-                              createVNode("ul", { class: "checkout-block__products" }, [
-                                createVNode(_component_PreloadWrapContainerNode, {
-                                  class: "cart__item",
-                                  quantityPreloadElements: 4,
-                                  iterable: _ctx.cartItems
-                                }, {
-                                  default: withCtx((slotProps) => [
-                                    createVNode("div", { class: "order-item" }, [
-                                      createVNode("div", { class: "order-item__image" }, [
-                                        createVNode("picture", null, [
-                                          createVNode("source", {
-                                            srcset: "",
-                                            type: "image/webp"
-                                          }),
-                                          createVNode("source", {
-                                            srcset: "",
-                                            type: "image/jpeg"
-                                          }),
-                                          createVNode("img", {
-                                            src: slotProps.item.images[0].src,
-                                            alt: ""
-                                          }, null, 8, ["src"])
-                                        ])
-                                      ])
-                                    ])
-                                  ]),
-                                  _: 1
-                                }, 8, ["iterable"])
-                              ])
-                            ]),
-                            _: 1
-                          })
-                        ]),
-                        _: 1
-                      }, 8, ["targetPreloadElement"]),
-                      createVNode(_component_PreloadWrapNode, { targetPreloadElement: $data.draftOrderLoaded }, {
-                        default: withCtx(() => [
-                          createVNode(_component_CheckoutBlockNode, {
-                            title: "\u041A\u043E\u043D\u0442\u0430\u043A\u0442\u044B \u043F\u043E\u043B\u0443\u0447\u0430\u0442\u0435\u043B\u044F",
-                            value: "",
-                            icon: "profile",
-                            popupName: "checkoutContacts"
-                          }, {
-                            popup: withCtx(() => []),
-                            _: 1
-                          })
-                        ]),
-                        _: 1
-                      }, 8, ["targetPreloadElement"]),
-                      createVNode(_component_PreloadWrapNode, { targetPreloadElement: $data.draftOrderLoaded }, {
-                        default: withCtx(() => [
-                          createVNode(_component_CheckoutBlockNode, {
-                            title: "\u0414\u043E\u0441\u0442\u0430\u0432\u043A\u0430",
-                            value: "\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u0443\u0434\u043E\u0431\u043D\u044B\u0439 \u0432\u0430\u0440\u0438\u0430\u043D\u0442 \u0434\u043E\u0441\u0442\u0430\u0432\u043A\u0438",
-                            icon: "delivery",
-                            popupName: "checkoutDelivery"
-                          }, {
-                            popup: withCtx(() => []),
-                            _: 1
-                          })
-                        ]),
-                        _: 1
-                      }, 8, ["targetPreloadElement"]),
-                      createVNode(_component_PreloadWrapNode, { targetPreloadElement: $data.draftOrderLoaded }, {
-                        default: withCtx(() => [
-                          createVNode(_component_CheckoutBlockNode, {
-                            title: "\u041E\u043F\u043B\u0430\u0442\u0430",
-                            value: "\u041E\u043D\u043B\u0430\u0439\u043D \u043E\u043F\u043B\u0430\u0442\u0430 \u043A\u0430\u0440\u0442\u043E\u0439 (\u0441\u043A\u0438\u0434\u043A\u0430 5%)",
-                            icon: "cash",
-                            popupName: "checkoutPayment"
-                          }, {
-                            popup: withCtx(() => [
-                              (openBlock(true), createBlock(Fragment, null, renderList(_ctx.paymentGatewaysItems, (item, index) => {
-                                return openBlock(), createBlock(_component_InputRadioNode, {
-                                  key: index,
-                                  modelValue: $data.draftOrder.payment_method === item.id,
-                                  labelText: item.method_title,
-                                  name: "paymentGateway",
-                                  disabled: !item.enabled,
-                                  onInput: ($event) => $options.changePaymentMethod(item.id)
-                                }, null, 8, ["modelValue", "labelText", "disabled", "onInput"]);
-                              }), 128))
-                            ]),
-                            _: 1
-                          })
-                        ]),
-                        _: 1
-                      }, 8, ["targetPreloadElement"])
-                    ];
-                  }
-                }),
-                sidebar: withCtx((_3, _push4, _parent4, _scopeId3) => {
-                  var _a, _b, _c, _d, _e, _f;
-                  if (_push4) {
-                    _push4(`<div class="middle-content__sidebar-inner"${_scopeId3}><div class="middle-content__block"${_scopeId3}><div class="middle-content__item"${_scopeId3}><div class="middle-content__key"${_scopeId3}>\u0421\u043A\u0438\u0434\u043A\u0430</div><div class="middle-content__value"${_scopeId3}> - 0<span class="middle-content__currency"${_scopeId3}> \u20BD</span></div></div><div class="middle-content__item"${_scopeId3}><div class="middle-content__key"${_scopeId3}>\u041A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u043E \u0442\u043E\u0432\u0430\u0440\u043E\u0432</div><div class="middle-content__value icon-info"${_scopeId3}>${ssrInterpolate((_a = _ctx.cartStore.items) == null ? void 0 : _a.length)} \u0448\u0442. </div></div></div><div class="middle-content__block"${_scopeId3}><div class="middle-content__item"${_scopeId3}><div class="middle-content__key middle-content__key_big"${_scopeId3}> \u0418\u0442\u043E\u0433\u043E </div><div class="middle-content__value middle-content__value_big"${_scopeId3}>${ssrInterpolate((_c = (_b = _ctx.cartStore) == null ? void 0 : _b.totals) == null ? void 0 : _c.total_price)} <span class="middle-content__currency"${_scopeId3}> \u20BD</span></div></div><div class="middle-content__item"${_scopeId3}><div class="middle-content__key"${_scopeId3}> \u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C \u0431\u0435\u0437 \u0443\u0447\u0451\u0442\u0430 \u0441\u043A\u0438\u0434\u043E\u043A: </div><div class="middle-content__value"${_scopeId3}></div></div><div class="middle-content__item"${_scopeId3}><div class="middle-content__key"${_scopeId3}> \u0411\u0430\u043B\u043E\u0432 \u0431\u0443\u0434\u0435\u0442 \u043D\u0430\u0447\u0438\u0441\u043B\u0435\u043D\u043E: </div><div class="middle-content__value"${_scopeId3}></div></div>`);
-                    _push4(ssrRenderComponent(_component_ButtonNode, {
-                      class: "middle-content__button-submit",
-                      buttonStyle: "dark",
-                      onClick: $options.postCheckout
+                    _push4(`<ul class="checkout-block__products"${_scopeId3}>`);
+                    _push4(ssrRenderComponent(_component_PreloadWrapContainerNode, {
+                      class: "cart__item",
+                      quantityPreloadElements: 4,
+                      iterable: $setup.cartStore.items
                     }, {
-                      default: withCtx((_4, _push5, _parent5, _scopeId4) => {
+                      default: withCtx((slotProps, _push5, _parent5, _scopeId4) => {
                         if (_push5) {
-                          _push5(`\u0417\u0430\u043A\u0430\u0437\u0430\u0442\u044C `);
+                          _push5(`<div class="order-item"${_scopeId4}><div class="order-item__image"${_scopeId4}><picture${_scopeId4}><source srcset="" type="image/webp"${_scopeId4}><source srcset="" type="image/jpeg"${_scopeId4}><img${ssrRenderAttr("src", slotProps.item.images[0].src)} alt=""${_scopeId4}></picture></div></div>`);
                         } else {
                           return [
-                            createTextVNode("\u0417\u0430\u043A\u0430\u0437\u0430\u0442\u044C ")
+                            createVNode("div", { class: "order-item" }, [
+                              createVNode("div", { class: "order-item__image" }, [
+                                createVNode("picture", null, [
+                                  createVNode("source", {
+                                    srcset: "",
+                                    type: "image/webp"
+                                  }),
+                                  createVNode("source", {
+                                    srcset: "",
+                                    type: "image/jpeg"
+                                  }),
+                                  createVNode("img", {
+                                    src: slotProps.item.images[0].src,
+                                    alt: ""
+                                  }, null, 8, ["src"])
+                                ])
+                              ])
+                            ])
                           ];
                         }
                       }),
                       _: 1
                     }, _parent4, _scopeId3));
-                    _push4(`</div></div>`);
+                    _push4(`</ul>`);
                   } else {
                     return [
-                      createVNode("div", { class: "middle-content__sidebar-inner" }, [
-                        createVNode("div", { class: "middle-content__block" }, [
-                          createVNode("div", { class: "middle-content__item" }, [
-                            createVNode("div", { class: "middle-content__key" }, "\u0421\u043A\u0438\u0434\u043A\u0430"),
-                            createVNode("div", { class: "middle-content__value" }, [
-                              createTextVNode(" - 0"),
-                              createVNode("span", { class: "middle-content__currency" }, " \u20BD")
+                      createVNode("ul", { class: "checkout-block__products" }, [
+                        createVNode(_component_PreloadWrapContainerNode, {
+                          class: "cart__item",
+                          quantityPreloadElements: 4,
+                          iterable: $setup.cartStore.items
+                        }, {
+                          default: withCtx((slotProps) => [
+                            createVNode("div", { class: "order-item" }, [
+                              createVNode("div", { class: "order-item__image" }, [
+                                createVNode("picture", null, [
+                                  createVNode("source", {
+                                    srcset: "",
+                                    type: "image/webp"
+                                  }),
+                                  createVNode("source", {
+                                    srcset: "",
+                                    type: "image/jpeg"
+                                  }),
+                                  createVNode("img", {
+                                    src: slotProps.item.images[0].src,
+                                    alt: ""
+                                  }, null, 8, ["src"])
+                                ])
+                              ])
                             ])
                           ]),
-                          createVNode("div", { class: "middle-content__item" }, [
-                            createVNode("div", { class: "middle-content__key" }, "\u041A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u043E \u0442\u043E\u0432\u0430\u0440\u043E\u0432"),
-                            createVNode("div", { class: "middle-content__value icon-info" }, toDisplayString((_d = _ctx.cartStore.items) == null ? void 0 : _d.length) + " \u0448\u0442. ", 1)
-                          ])
-                        ]),
-                        createVNode("div", { class: "middle-content__block" }, [
-                          createVNode("div", { class: "middle-content__item" }, [
-                            createVNode("div", { class: "middle-content__key middle-content__key_big" }, " \u0418\u0442\u043E\u0433\u043E "),
-                            createVNode("div", { class: "middle-content__value middle-content__value_big" }, [
-                              createTextVNode(toDisplayString((_f = (_e = _ctx.cartStore) == null ? void 0 : _e.totals) == null ? void 0 : _f.total_price) + " ", 1),
-                              createVNode("span", { class: "middle-content__currency" }, " \u20BD")
-                            ])
-                          ]),
-                          createVNode("div", { class: "middle-content__item" }, [
-                            createVNode("div", { class: "middle-content__key" }, " \u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C \u0431\u0435\u0437 \u0443\u0447\u0451\u0442\u0430 \u0441\u043A\u0438\u0434\u043E\u043A: "),
-                            createVNode("div", { class: "middle-content__value" })
-                          ]),
-                          createVNode("div", { class: "middle-content__item" }, [
-                            createVNode("div", { class: "middle-content__key" }, " \u0411\u0430\u043B\u043E\u0432 \u0431\u0443\u0434\u0435\u0442 \u043D\u0430\u0447\u0438\u0441\u043B\u0435\u043D\u043E: "),
-                            createVNode("div", { class: "middle-content__value" })
-                          ]),
-                          createVNode(_component_ButtonNode, {
-                            class: "middle-content__button-submit",
-                            buttonStyle: "dark",
-                            onClick: $options.postCheckout
-                          }, {
-                            default: withCtx(() => [
-                              createTextVNode("\u0417\u0430\u043A\u0430\u0437\u0430\u0442\u044C ")
-                            ]),
-                            _: 1
-                          }, 8, ["onClick"])
-                        ])
+                          _: 1
+                        }, 8, ["iterable"])
                       ])
                     ];
                   }
                 }),
                 _: 1
               }, _parent3, _scopeId2));
-              _push3(`</div></div>`);
             } else {
               return [
-                createVNode("div", { class: "checkout" }, [
-                  createVNode("div", { class: "checkout__body" }, [
-                    createVNode(_component_MiddleContentNode, null, {
-                      items: withCtx(() => [
-                        createVNode(_component_PreloadWrapNode, { targetPreloadElement: $data.draftOrderLoaded }, {
-                          default: withCtx(() => [
-                            createVNode(_component_CheckoutBlockNode, {
-                              title: "\u041A\u043E\u0440\u0437\u0438\u043D\u0430",
-                              value: "",
-                              icon: "cart"
-                            }, {
-                              main: withCtx(() => [
-                                createVNode("ul", { class: "checkout-block__products" }, [
-                                  createVNode(_component_PreloadWrapContainerNode, {
-                                    class: "cart__item",
-                                    quantityPreloadElements: 4,
-                                    iterable: _ctx.cartItems
-                                  }, {
-                                    default: withCtx((slotProps) => [
-                                      createVNode("div", { class: "order-item" }, [
-                                        createVNode("div", { class: "order-item__image" }, [
-                                          createVNode("picture", null, [
-                                            createVNode("source", {
-                                              srcset: "",
-                                              type: "image/webp"
-                                            }),
-                                            createVNode("source", {
-                                              srcset: "",
-                                              type: "image/jpeg"
-                                            }),
-                                            createVNode("img", {
-                                              src: slotProps.item.images[0].src,
-                                              alt: ""
-                                            }, null, 8, ["src"])
-                                          ])
-                                        ])
-                                      ])
-                                    ]),
-                                    _: 1
-                                  }, 8, ["iterable"])
-                                ])
-                              ]),
-                              _: 1
-                            })
-                          ]),
-                          _: 1
-                        }, 8, ["targetPreloadElement"]),
-                        createVNode(_component_PreloadWrapNode, { targetPreloadElement: $data.draftOrderLoaded }, {
-                          default: withCtx(() => [
-                            createVNode(_component_CheckoutBlockNode, {
-                              title: "\u041A\u043E\u043D\u0442\u0430\u043A\u0442\u044B \u043F\u043E\u043B\u0443\u0447\u0430\u0442\u0435\u043B\u044F",
-                              value: "",
-                              icon: "profile",
-                              popupName: "checkoutContacts"
-                            }, {
-                              popup: withCtx(() => []),
-                              _: 1
-                            })
-                          ]),
-                          _: 1
-                        }, 8, ["targetPreloadElement"]),
-                        createVNode(_component_PreloadWrapNode, { targetPreloadElement: $data.draftOrderLoaded }, {
-                          default: withCtx(() => [
-                            createVNode(_component_CheckoutBlockNode, {
-                              title: "\u0414\u043E\u0441\u0442\u0430\u0432\u043A\u0430",
-                              value: "\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u0443\u0434\u043E\u0431\u043D\u044B\u0439 \u0432\u0430\u0440\u0438\u0430\u043D\u0442 \u0434\u043E\u0441\u0442\u0430\u0432\u043A\u0438",
-                              icon: "delivery",
-                              popupName: "checkoutDelivery"
-                            }, {
-                              popup: withCtx(() => []),
-                              _: 1
-                            })
-                          ]),
-                          _: 1
-                        }, 8, ["targetPreloadElement"]),
-                        createVNode(_component_PreloadWrapNode, { targetPreloadElement: $data.draftOrderLoaded }, {
-                          default: withCtx(() => [
-                            createVNode(_component_CheckoutBlockNode, {
-                              title: "\u041E\u043F\u043B\u0430\u0442\u0430",
-                              value: "\u041E\u043D\u043B\u0430\u0439\u043D \u043E\u043F\u043B\u0430\u0442\u0430 \u043A\u0430\u0440\u0442\u043E\u0439 (\u0441\u043A\u0438\u0434\u043A\u0430 5%)",
-                              icon: "cash",
-                              popupName: "checkoutPayment"
-                            }, {
-                              popup: withCtx(() => [
-                                (openBlock(true), createBlock(Fragment, null, renderList(_ctx.paymentGatewaysItems, (item, index) => {
-                                  return openBlock(), createBlock(_component_InputRadioNode, {
-                                    key: index,
-                                    modelValue: $data.draftOrder.payment_method === item.id,
-                                    labelText: item.method_title,
-                                    name: "paymentGateway",
-                                    disabled: !item.enabled,
-                                    onInput: ($event) => $options.changePaymentMethod(item.id)
-                                  }, null, 8, ["modelValue", "labelText", "disabled", "onInput"]);
-                                }), 128))
-                              ]),
-                              _: 1
-                            })
-                          ]),
-                          _: 1
-                        }, 8, ["targetPreloadElement"])
-                      ]),
-                      sidebar: withCtx(() => {
-                        var _a, _b, _c;
-                        return [
-                          createVNode("div", { class: "middle-content__sidebar-inner" }, [
-                            createVNode("div", { class: "middle-content__block" }, [
-                              createVNode("div", { class: "middle-content__item" }, [
-                                createVNode("div", { class: "middle-content__key" }, "\u0421\u043A\u0438\u0434\u043A\u0430"),
-                                createVNode("div", { class: "middle-content__value" }, [
-                                  createTextVNode(" - 0"),
-                                  createVNode("span", { class: "middle-content__currency" }, " \u20BD")
-                                ])
-                              ]),
-                              createVNode("div", { class: "middle-content__item" }, [
-                                createVNode("div", { class: "middle-content__key" }, "\u041A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u043E \u0442\u043E\u0432\u0430\u0440\u043E\u0432"),
-                                createVNode("div", { class: "middle-content__value icon-info" }, toDisplayString((_a = _ctx.cartStore.items) == null ? void 0 : _a.length) + " \u0448\u0442. ", 1)
+                createVNode(_component_CheckoutBlockNode, {
+                  title: "\u041A\u043E\u0440\u0437\u0438\u043D\u0430",
+                  class: "checkout-block_cart",
+                  value: `${(_d = (_c = $setup.cartStore) == null ? void 0 : _c.items) == null ? void 0 : _d.length} \u0435\u0434. \u0442\u043E\u0432\u0430\u0440\u0430`,
+                  clickAction: () => {
+                    _ctx.$router.push({ name: "OrderingCart" });
+                  },
+                  icon: "cart"
+                }, {
+                  main: withCtx(() => [
+                    createVNode("ul", { class: "checkout-block__products" }, [
+                      createVNode(_component_PreloadWrapContainerNode, {
+                        class: "cart__item",
+                        quantityPreloadElements: 4,
+                        iterable: $setup.cartStore.items
+                      }, {
+                        default: withCtx((slotProps) => [
+                          createVNode("div", { class: "order-item" }, [
+                            createVNode("div", { class: "order-item__image" }, [
+                              createVNode("picture", null, [
+                                createVNode("source", {
+                                  srcset: "",
+                                  type: "image/webp"
+                                }),
+                                createVNode("source", {
+                                  srcset: "",
+                                  type: "image/jpeg"
+                                }),
+                                createVNode("img", {
+                                  src: slotProps.item.images[0].src,
+                                  alt: ""
+                                }, null, 8, ["src"])
                               ])
-                            ]),
-                            createVNode("div", { class: "middle-content__block" }, [
-                              createVNode("div", { class: "middle-content__item" }, [
-                                createVNode("div", { class: "middle-content__key middle-content__key_big" }, " \u0418\u0442\u043E\u0433\u043E "),
-                                createVNode("div", { class: "middle-content__value middle-content__value_big" }, [
-                                  createTextVNode(toDisplayString((_c = (_b = _ctx.cartStore) == null ? void 0 : _b.totals) == null ? void 0 : _c.total_price) + " ", 1),
-                                  createVNode("span", { class: "middle-content__currency" }, " \u20BD")
-                                ])
-                              ]),
-                              createVNode("div", { class: "middle-content__item" }, [
-                                createVNode("div", { class: "middle-content__key" }, " \u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C \u0431\u0435\u0437 \u0443\u0447\u0451\u0442\u0430 \u0441\u043A\u0438\u0434\u043E\u043A: "),
-                                createVNode("div", { class: "middle-content__value" })
-                              ]),
-                              createVNode("div", { class: "middle-content__item" }, [
-                                createVNode("div", { class: "middle-content__key" }, " \u0411\u0430\u043B\u043E\u0432 \u0431\u0443\u0434\u0435\u0442 \u043D\u0430\u0447\u0438\u0441\u043B\u0435\u043D\u043E: "),
-                                createVNode("div", { class: "middle-content__value" })
-                              ]),
-                              createVNode(_component_ButtonNode, {
-                                class: "middle-content__button-submit",
-                                buttonStyle: "dark",
-                                onClick: $options.postCheckout
-                              }, {
-                                default: withCtx(() => [
-                                  createTextVNode("\u0417\u0430\u043A\u0430\u0437\u0430\u0442\u044C ")
-                                ]),
-                                _: 1
-                              }, 8, ["onClick"])
                             ])
                           ])
-                        ];
-                      }),
-                      _: 1
-                    })
-                  ])
-                ])
+                        ]),
+                        _: 1
+                      }, 8, ["iterable"])
+                    ])
+                  ]),
+                  _: 1
+                }, 8, ["value", "clickAction"])
+              ];
+            }
+          }),
+          _: 1
+        }, _parent2, _scopeId));
+        _push2(ssrRenderComponent(_component_PreloadWrapNode, {
+          targetPreloadElement: $setup.isEmpty($setup.draftOrder)
+        }, {
+          default: withCtx((_2, _push3, _parent3, _scopeId2) => {
+            var _a, _b;
+            if (_push3) {
+              _push3(ssrRenderComponent(_component_CheckoutBlockNode, {
+                title: "\u041E\u043F\u043B\u0430\u0442\u0430",
+                popupName: "checkoutPayment",
+                value: `${((_a = $setup.draftOrder) == null ? void 0 : _a.payment_method) ? $setup.currentPaymentGatewayTitle : "\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u0441\u043F\u043E\u0441\u043E\u0431 \u043E\u043F\u043B\u0430\u0442\u044B"}`,
+                icon: "cash"
+              }, {
+                popup: withCtx((_3, _push4, _parent4, _scopeId3) => {
+                  if (_push4) {
+                    _push4(`<!--[-->`);
+                    ssrRenderList($setup.paymentGatewaysItems, (item, index) => {
+                      _push4(ssrRenderComponent(_component_InputRadioNode, {
+                        key: index,
+                        modelValue: $setup.draftOrder.payment_method === item.id,
+                        labelText: item.method_title,
+                        name: "paymentGateway",
+                        disabled: !item.enabled,
+                        onInput: ($event) => $setup.changePaymentMethod(item.id)
+                      }, null, _parent4, _scopeId3));
+                    });
+                    _push4(`<!--]-->`);
+                  } else {
+                    return [
+                      (openBlock(true), createBlock(Fragment, null, renderList($setup.paymentGatewaysItems, (item, index) => {
+                        return openBlock(), createBlock(_component_InputRadioNode, {
+                          key: index,
+                          modelValue: $setup.draftOrder.payment_method === item.id,
+                          labelText: item.method_title,
+                          name: "paymentGateway",
+                          disabled: !item.enabled,
+                          onInput: ($event) => $setup.changePaymentMethod(item.id)
+                        }, null, 8, ["modelValue", "labelText", "disabled", "onInput"]);
+                      }), 128))
+                    ];
+                  }
+                }),
+                _: 1
+              }, _parent3, _scopeId2));
+            } else {
+              return [
+                createVNode(_component_CheckoutBlockNode, {
+                  title: "\u041E\u043F\u043B\u0430\u0442\u0430",
+                  popupName: "checkoutPayment",
+                  value: `${((_b = $setup.draftOrder) == null ? void 0 : _b.payment_method) ? $setup.currentPaymentGatewayTitle : "\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u0441\u043F\u043E\u0441\u043E\u0431 \u043E\u043F\u043B\u0430\u0442\u044B"}`,
+                  icon: "cash"
+                }, {
+                  popup: withCtx(() => [
+                    (openBlock(true), createBlock(Fragment, null, renderList($setup.paymentGatewaysItems, (item, index) => {
+                      return openBlock(), createBlock(_component_InputRadioNode, {
+                        key: index,
+                        modelValue: $setup.draftOrder.payment_method === item.id,
+                        labelText: item.method_title,
+                        name: "paymentGateway",
+                        disabled: !item.enabled,
+                        onInput: ($event) => $setup.changePaymentMethod(item.id)
+                      }, null, 8, ["modelValue", "labelText", "disabled", "onInput"]);
+                    }), 128))
+                  ]),
+                  _: 1
+                }, 8, ["value"])
               ];
             }
           }),
@@ -30433,177 +29679,156 @@ function _sfc_ssrRender$m(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
         }, _parent2, _scopeId));
       } else {
         return [
-          createVNode(_component_ContainerNode, null, {
-            default: withCtx(() => [
-              createVNode("div", { class: "checkout" }, [
-                createVNode("div", { class: "checkout__body" }, [
-                  createVNode(_component_MiddleContentNode, null, {
-                    items: withCtx(() => [
-                      createVNode(_component_PreloadWrapNode, { targetPreloadElement: $data.draftOrderLoaded }, {
-                        default: withCtx(() => [
-                          createVNode(_component_CheckoutBlockNode, {
-                            title: "\u041A\u043E\u0440\u0437\u0438\u043D\u0430",
-                            value: "",
-                            icon: "cart"
-                          }, {
-                            main: withCtx(() => [
-                              createVNode("ul", { class: "checkout-block__products" }, [
-                                createVNode(_component_PreloadWrapContainerNode, {
-                                  class: "cart__item",
-                                  quantityPreloadElements: 4,
-                                  iterable: _ctx.cartItems
-                                }, {
-                                  default: withCtx((slotProps) => [
-                                    createVNode("div", { class: "order-item" }, [
-                                      createVNode("div", { class: "order-item__image" }, [
-                                        createVNode("picture", null, [
-                                          createVNode("source", {
-                                            srcset: "",
-                                            type: "image/webp"
-                                          }),
-                                          createVNode("source", {
-                                            srcset: "",
-                                            type: "image/jpeg"
-                                          }),
-                                          createVNode("img", {
-                                            src: slotProps.item.images[0].src,
-                                            alt: ""
-                                          }, null, 8, ["src"])
-                                        ])
-                                      ])
-                                    ])
-                                  ]),
-                                  _: 1
-                                }, 8, ["iterable"])
+          createVNode(_component_PreloadWrapNode, {
+            targetPreloadElement: $setup.isEmpty($setup.draftOrder)
+          }, {
+            default: withCtx(() => {
+              var _a, _b;
+              return [
+                createVNode(_component_CheckoutBlockNode, {
+                  title: "\u041A\u043E\u0440\u0437\u0438\u043D\u0430",
+                  class: "checkout-block_cart",
+                  value: `${(_b = (_a = $setup.cartStore) == null ? void 0 : _a.items) == null ? void 0 : _b.length} \u0435\u0434. \u0442\u043E\u0432\u0430\u0440\u0430`,
+                  clickAction: () => {
+                    _ctx.$router.push({ name: "OrderingCart" });
+                  },
+                  icon: "cart"
+                }, {
+                  main: withCtx(() => [
+                    createVNode("ul", { class: "checkout-block__products" }, [
+                      createVNode(_component_PreloadWrapContainerNode, {
+                        class: "cart__item",
+                        quantityPreloadElements: 4,
+                        iterable: $setup.cartStore.items
+                      }, {
+                        default: withCtx((slotProps) => [
+                          createVNode("div", { class: "order-item" }, [
+                            createVNode("div", { class: "order-item__image" }, [
+                              createVNode("picture", null, [
+                                createVNode("source", {
+                                  srcset: "",
+                                  type: "image/webp"
+                                }),
+                                createVNode("source", {
+                                  srcset: "",
+                                  type: "image/jpeg"
+                                }),
+                                createVNode("img", {
+                                  src: slotProps.item.images[0].src,
+                                  alt: ""
+                                }, null, 8, ["src"])
                               ])
-                            ]),
-                            _: 1
-                          })
-                        ]),
-                        _: 1
-                      }, 8, ["targetPreloadElement"]),
-                      createVNode(_component_PreloadWrapNode, { targetPreloadElement: $data.draftOrderLoaded }, {
-                        default: withCtx(() => [
-                          createVNode(_component_CheckoutBlockNode, {
-                            title: "\u041A\u043E\u043D\u0442\u0430\u043A\u0442\u044B \u043F\u043E\u043B\u0443\u0447\u0430\u0442\u0435\u043B\u044F",
-                            value: "",
-                            icon: "profile",
-                            popupName: "checkoutContacts"
-                          }, {
-                            popup: withCtx(() => []),
-                            _: 1
-                          })
-                        ]),
-                        _: 1
-                      }, 8, ["targetPreloadElement"]),
-                      createVNode(_component_PreloadWrapNode, { targetPreloadElement: $data.draftOrderLoaded }, {
-                        default: withCtx(() => [
-                          createVNode(_component_CheckoutBlockNode, {
-                            title: "\u0414\u043E\u0441\u0442\u0430\u0432\u043A\u0430",
-                            value: "\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u0443\u0434\u043E\u0431\u043D\u044B\u0439 \u0432\u0430\u0440\u0438\u0430\u043D\u0442 \u0434\u043E\u0441\u0442\u0430\u0432\u043A\u0438",
-                            icon: "delivery",
-                            popupName: "checkoutDelivery"
-                          }, {
-                            popup: withCtx(() => []),
-                            _: 1
-                          })
-                        ]),
-                        _: 1
-                      }, 8, ["targetPreloadElement"]),
-                      createVNode(_component_PreloadWrapNode, { targetPreloadElement: $data.draftOrderLoaded }, {
-                        default: withCtx(() => [
-                          createVNode(_component_CheckoutBlockNode, {
-                            title: "\u041E\u043F\u043B\u0430\u0442\u0430",
-                            value: "\u041E\u043D\u043B\u0430\u0439\u043D \u043E\u043F\u043B\u0430\u0442\u0430 \u043A\u0430\u0440\u0442\u043E\u0439 (\u0441\u043A\u0438\u0434\u043A\u0430 5%)",
-                            icon: "cash",
-                            popupName: "checkoutPayment"
-                          }, {
-                            popup: withCtx(() => [
-                              (openBlock(true), createBlock(Fragment, null, renderList(_ctx.paymentGatewaysItems, (item, index) => {
-                                return openBlock(), createBlock(_component_InputRadioNode, {
-                                  key: index,
-                                  modelValue: $data.draftOrder.payment_method === item.id,
-                                  labelText: item.method_title,
-                                  name: "paymentGateway",
-                                  disabled: !item.enabled,
-                                  onInput: ($event) => $options.changePaymentMethod(item.id)
-                                }, null, 8, ["modelValue", "labelText", "disabled", "onInput"]);
-                              }), 128))
-                            ]),
-                            _: 1
-                          })
-                        ]),
-                        _: 1
-                      }, 8, ["targetPreloadElement"])
-                    ]),
-                    sidebar: withCtx(() => {
-                      var _a, _b, _c;
-                      return [
-                        createVNode("div", { class: "middle-content__sidebar-inner" }, [
-                          createVNode("div", { class: "middle-content__block" }, [
-                            createVNode("div", { class: "middle-content__item" }, [
-                              createVNode("div", { class: "middle-content__key" }, "\u0421\u043A\u0438\u0434\u043A\u0430"),
-                              createVNode("div", { class: "middle-content__value" }, [
-                                createTextVNode(" - 0"),
-                                createVNode("span", { class: "middle-content__currency" }, " \u20BD")
-                              ])
-                            ]),
-                            createVNode("div", { class: "middle-content__item" }, [
-                              createVNode("div", { class: "middle-content__key" }, "\u041A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u043E \u0442\u043E\u0432\u0430\u0440\u043E\u0432"),
-                              createVNode("div", { class: "middle-content__value icon-info" }, toDisplayString((_a = _ctx.cartStore.items) == null ? void 0 : _a.length) + " \u0448\u0442. ", 1)
                             ])
-                          ]),
-                          createVNode("div", { class: "middle-content__block" }, [
-                            createVNode("div", { class: "middle-content__item" }, [
-                              createVNode("div", { class: "middle-content__key middle-content__key_big" }, " \u0418\u0442\u043E\u0433\u043E "),
-                              createVNode("div", { class: "middle-content__value middle-content__value_big" }, [
-                                createTextVNode(toDisplayString((_c = (_b = _ctx.cartStore) == null ? void 0 : _b.totals) == null ? void 0 : _c.total_price) + " ", 1),
-                                createVNode("span", { class: "middle-content__currency" }, " \u20BD")
-                              ])
-                            ]),
-                            createVNode("div", { class: "middle-content__item" }, [
-                              createVNode("div", { class: "middle-content__key" }, " \u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C \u0431\u0435\u0437 \u0443\u0447\u0451\u0442\u0430 \u0441\u043A\u0438\u0434\u043E\u043A: "),
-                              createVNode("div", { class: "middle-content__value" })
-                            ]),
-                            createVNode("div", { class: "middle-content__item" }, [
-                              createVNode("div", { class: "middle-content__key" }, " \u0411\u0430\u043B\u043E\u0432 \u0431\u0443\u0434\u0435\u0442 \u043D\u0430\u0447\u0438\u0441\u043B\u0435\u043D\u043E: "),
-                              createVNode("div", { class: "middle-content__value" })
-                            ]),
-                            createVNode(_component_ButtonNode, {
-                              class: "middle-content__button-submit",
-                              buttonStyle: "dark",
-                              onClick: $options.postCheckout
-                            }, {
-                              default: withCtx(() => [
-                                createTextVNode("\u0417\u0430\u043A\u0430\u0437\u0430\u0442\u044C ")
-                              ]),
-                              _: 1
-                            }, 8, ["onClick"])
                           ])
-                        ])
-                      ];
-                    }),
-                    _: 1
-                  })
-                ])
+                        ]),
+                        _: 1
+                      }, 8, ["iterable"])
+                    ])
+                  ]),
+                  _: 1
+                }, 8, ["value", "clickAction"])
+              ];
+            }),
+            _: 1
+          }, 8, ["targetPreloadElement"]),
+          createVNode(_component_PreloadWrapNode, {
+            targetPreloadElement: $setup.isEmpty($setup.draftOrder)
+          }, {
+            default: withCtx(() => {
+              var _a;
+              return [
+                createVNode(_component_CheckoutBlockNode, {
+                  title: "\u041E\u043F\u043B\u0430\u0442\u0430",
+                  popupName: "checkoutPayment",
+                  value: `${((_a = $setup.draftOrder) == null ? void 0 : _a.payment_method) ? $setup.currentPaymentGatewayTitle : "\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u0441\u043F\u043E\u0441\u043E\u0431 \u043E\u043F\u043B\u0430\u0442\u044B"}`,
+                  icon: "cash"
+                }, {
+                  popup: withCtx(() => [
+                    (openBlock(true), createBlock(Fragment, null, renderList($setup.paymentGatewaysItems, (item, index) => {
+                      return openBlock(), createBlock(_component_InputRadioNode, {
+                        key: index,
+                        modelValue: $setup.draftOrder.payment_method === item.id,
+                        labelText: item.method_title,
+                        name: "paymentGateway",
+                        disabled: !item.enabled,
+                        onInput: ($event) => $setup.changePaymentMethod(item.id)
+                      }, null, 8, ["modelValue", "labelText", "disabled", "onInput"]);
+                    }), 128))
+                  ]),
+                  _: 1
+                }, 8, ["value"])
+              ];
+            }),
+            _: 1
+          }, 8, ["targetPreloadElement"])
+        ];
+      }
+    }),
+    sidebar: withCtx((_, _push2, _parent2, _scopeId) => {
+      var _a, _b, _c, _d, _e, _f;
+      if (_push2) {
+        _push2(`<div class="middle-content__sidebar-inner"${_scopeId}><div class="middle-content__block"${_scopeId}><div class="middle-content__item"${_scopeId}><div class="middle-content__key"${_scopeId}>\u041A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u043E \u0442\u043E\u0432\u0430\u0440\u043E\u0432</div><div class="middle-content__value icon-info"${_scopeId}>${ssrInterpolate((_a = $setup.cartStore.items) == null ? void 0 : _a.length)} \u0448\u0442. </div></div></div><div class="middle-content__block"${_scopeId}><div class="middle-content__item"${_scopeId}><div class="middle-content__key middle-content__key_big"${_scopeId}> \u0418\u0442\u043E\u0433\u043E </div><div class="middle-content__value middle-content__value_big"${_scopeId}>${ssrInterpolate((_c = (_b = $setup.cartStore) == null ? void 0 : _b.totals) == null ? void 0 : _c.total_price)} <span class="middle-content__currency"${_scopeId}> \u20BD</span></div></div>`);
+        _push2(ssrRenderComponent(_component_ButtonNode, {
+          class: "middle-content__button-submit",
+          buttonStyle: "dark",
+          onClick: ($event) => $setup.postCheckout()
+        }, {
+          default: withCtx((_2, _push3, _parent3, _scopeId2) => {
+            if (_push3) {
+              _push3(`\u0417\u0430\u043A\u0430\u0437\u0430\u0442\u044C `);
+            } else {
+              return [
+                createTextVNode("\u0417\u0430\u043A\u0430\u0437\u0430\u0442\u044C ")
+              ];
+            }
+          }),
+          _: 1
+        }, _parent2, _scopeId));
+        _push2(`</div></div>`);
+      } else {
+        return [
+          createVNode("div", { class: "middle-content__sidebar-inner" }, [
+            createVNode("div", { class: "middle-content__block" }, [
+              createVNode("div", { class: "middle-content__item" }, [
+                createVNode("div", { class: "middle-content__key" }, "\u041A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u043E \u0442\u043E\u0432\u0430\u0440\u043E\u0432"),
+                createVNode("div", { class: "middle-content__value icon-info" }, toDisplayString((_d = $setup.cartStore.items) == null ? void 0 : _d.length) + " \u0448\u0442. ", 1)
               ])
             ]),
-            _: 1
-          })
+            createVNode("div", { class: "middle-content__block" }, [
+              createVNode("div", { class: "middle-content__item" }, [
+                createVNode("div", { class: "middle-content__key middle-content__key_big" }, " \u0418\u0442\u043E\u0433\u043E "),
+                createVNode("div", { class: "middle-content__value middle-content__value_big" }, [
+                  createTextVNode(toDisplayString((_f = (_e = $setup.cartStore) == null ? void 0 : _e.totals) == null ? void 0 : _f.total_price) + " ", 1),
+                  createVNode("span", { class: "middle-content__currency" }, " \u20BD")
+                ])
+              ]),
+              createVNode(_component_ButtonNode, {
+                class: "middle-content__button-submit",
+                buttonStyle: "dark",
+                onClick: ($event) => $setup.postCheckout()
+              }, {
+                default: withCtx(() => [
+                  createTextVNode("\u0417\u0430\u043A\u0430\u0437\u0430\u0442\u044C ")
+                ]),
+                _: 1
+              }, 8, ["onClick"])
+            ])
+          ])
         ];
       }
     }),
     _: 1
   }, _parent));
+  _push(`</div></div>`);
 }
-const _sfc_setup$m = _sfc_main$m.setup;
-_sfc_main$m.setup = (props, ctx) => {
+const _sfc_setup$n = _sfc_main$n.setup;
+_sfc_main$n.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/pages/private/CheckoutPage.vue");
-  return _sfc_setup$m ? _sfc_setup$m(props, ctx) : void 0;
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/pages/private/ordering/OrderingCheckoutPage.vue");
+  return _sfc_setup$n ? _sfc_setup$n(props, ctx) : void 0;
 };
-const CheckoutPage = /* @__PURE__ */ _export_sfc(_sfc_main$m, [["ssrRender", _sfc_ssrRender$m]]);
-const _sfc_main$l = {
+const OrderingCheckoutPage = /* @__PURE__ */ _export_sfc(_sfc_main$n, [["ssrRender", _sfc_ssrRender$n]]);
+const _sfc_main$m = {
   setup() {
     const store2 = useStore();
     return {
@@ -30611,18 +29836,18 @@ const _sfc_main$l = {
     };
   }
 };
-function _sfc_ssrRender$l(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$m(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   _push(`<button${ssrRenderAttrs(mergeProps({ class: "logout-button" }, _attrs))}> \u0412\u044B\u0439\u0442\u0438 </button>`);
 }
-const _sfc_setup$l = _sfc_main$l.setup;
-_sfc_main$l.setup = (props, ctx) => {
+const _sfc_setup$m = _sfc_main$m.setup;
+_sfc_main$m.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/personal/LogoutButtonNode.vue");
-  return _sfc_setup$l ? _sfc_setup$l(props, ctx) : void 0;
+  return _sfc_setup$m ? _sfc_setup$m(props, ctx) : void 0;
 };
-const LogoutButtonNode = /* @__PURE__ */ _export_sfc(_sfc_main$l, [["ssrRender", _sfc_ssrRender$l]]);
+const LogoutButtonNode = /* @__PURE__ */ _export_sfc(_sfc_main$m, [["ssrRender", _sfc_ssrRender$m]]);
 const PersonalPage_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$k = {
+const _sfc_main$l = {
   components: {
     SpoilerNode,
     LogoutButtonNode
@@ -30630,33 +29855,40 @@ const _sfc_main$k = {
   setup() {
     const store2 = useStore();
     const router2 = useRouter();
+    const route = useRoute();
     const routes2 = router2.getRoutes();
     const userAuth = computed(() => store2.state.auth.userAuth);
     const profileSectionItems = store2.state.menus.items.profileSectionsList.items;
-    const { items } = store2.state.menus;
+    const menusItems = store2.state.menus.items;
     const pageByLink = store2.getters["pages/pageByLink"];
     const profileSectionItemsHandled = [];
+    const refHandledPath = ref();
+    watch(route, (newRoute) => {
+      refHandledPath.value = getPathName(newRoute.path, "array").items;
+    }, { immediate: true });
     for (const key in routes2) {
-      if (Object.hasOwnProperty.call(routes2, key)) {
-        const route = routes2[key];
-        if (route.path.match(/personal\/[a-z]/) && !route.beforeEnter) {
-          profileSectionItemsHandled.push(profileSectionItems.find((el) => getPathName(el.url) === route.path));
+      if (has(routes2, key)) {
+        const routeItem = routes2[key];
+        if (routeItem.path.match(/personal\/[a-z]/) && !routeItem.beforeEnter) {
+          profileSectionItemsHandled.push(profileSectionItems.find((el) => getPathName(el.url) === routeItem.path));
         }
       }
     }
     return {
+      refHandledPath,
       userAuth,
       pageByLink,
-      name: kebabCase(useRoute().name),
+      name: kebabCase(route.name),
       profileSectionItemsOutput: computed(() => userAuth.value ? profileSectionItems : profileSectionItemsHandled),
-      subItems: (url) => items[getPathName(url, "array").items[1]].items,
+      subItems: (url) => menusItems[getPathName(url, "array").items[1]].items,
       routeTo: (url) => router2.push(getPathName(url)),
       isEmpty,
-      templatePage: pageByLink(useRoute().fullPath)
+      last,
+      lastSlugParam
     };
   }
 };
-function _sfc_ssrRender$k(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$l(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   const _component_MainPageNode = resolveComponent("MainPageNode");
   const _component_ContainerNode = resolveComponent("ContainerNode");
   const _component_SpoilerNode = resolveComponent("SpoilerNode");
@@ -30670,18 +29902,18 @@ function _sfc_ssrRender$k(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
             if (_push3) {
               ssrRenderSuspense(_push3, {
                 default: () => {
-                  _push3(`<section class="personal"${_scopeId2}><div class="personal__body"${_scopeId2}><div class="personal__sidebar"${_scopeId2}><div class="personal__items"${_scopeId2}><!--[-->`);
+                  _push3(`<section class="personal"${_scopeId2}><div class="personal__body"${_scopeId2}><div class="personal__sidebar sidebar-personal"${_scopeId2}><!--[-->`);
                   ssrRenderList($setup.profileSectionItemsOutput, (item) => {
                     _push3(ssrRenderComponent(_component_SpoilerNode, {
                       key: item.id,
-                      item: { name: `personal${item.id}` }
+                      item: { name: `personal${$setup.lastSlugParam(item.url)}`, active: $setup.lastSlugParam(item.url) === $setup.last($setup.refHandledPath) }
                     }, {
                       button: withCtx((_3, _push4, _parent4, _scopeId3) => {
                         if (_push4) {
-                          _push4(`<button${_scopeId3}>${ssrInterpolate(item.content)}</button>`);
+                          _push4(`<button class="sidebar-personal__button"${_scopeId3}>${ssrInterpolate(item.content)}</button>`);
                         } else {
                           return [
-                            createVNode("button", null, toDisplayString(item.content), 1)
+                            createVNode("button", { class: "sidebar-personal__button" }, toDisplayString(item.content), 1)
                           ];
                         }
                       }),
@@ -30689,7 +29921,7 @@ function _sfc_ssrRender$k(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
                         if (_push4) {
                           _push4(`<!--[-->`);
                           ssrRenderList($setup.subItems(item.url), (subItem, index) => {
-                            _push4(`<button${_scopeId3}>${ssrInterpolate(subItem.content)}</button>`);
+                            _push4(`<button class="${ssrRenderClass([{ "sidebar-personal__sub-button_active": index === 0 ? $setup.lastSlugParam(item.url) === $setup.last($setup.refHandledPath) : $setup.lastSlugParam(subItem.url) === $setup.last($setup.refHandledPath) }, "sidebar-personal__sub-button"])}"${_scopeId3}>${ssrInterpolate(subItem.content)}</button>`);
                           });
                           _push4(`<!--]-->`);
                         } else {
@@ -30697,8 +29929,9 @@ function _sfc_ssrRender$k(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
                             (openBlock(true), createBlock(Fragment, null, renderList($setup.subItems(item.url), (subItem, index) => {
                               return openBlock(), createBlock("button", {
                                 key: subItem.id,
+                                class: ["sidebar-personal__sub-button", { "sidebar-personal__sub-button_active": index === 0 ? $setup.lastSlugParam(item.url) === $setup.last($setup.refHandledPath) : $setup.lastSlugParam(subItem.url) === $setup.last($setup.refHandledPath) }],
                                 onClick: ($event) => index === 0 ? $setup.routeTo(item.url) : $setup.routeTo(subItem.url)
-                              }, toDisplayString(subItem.content), 9, ["onClick"]);
+                              }, toDisplayString(subItem.content), 11, ["onClick"]);
                             }), 128))
                           ];
                         }
@@ -30712,9 +29945,9 @@ function _sfc_ssrRender$k(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
                   } else {
                     _push3(`<!---->`);
                   }
-                  _push3(`</div></div><div class="personal__content"${_scopeId2}>`);
-                  _push3(ssrRenderComponent(_component_RouterView, null, null, _parent3, _scopeId2));
-                  _push3(`</div></div></section>`);
+                  _push3(`</div>`);
+                  _push3(ssrRenderComponent(_component_RouterView, { class: "personal__content" }, null, _parent3, _scopeId2));
+                  _push3(`</div></section>`);
                 },
                 fallback: () => {
                   _push3(`<div${_scopeId2}>Loading...</div>`);
@@ -30727,33 +29960,30 @@ function _sfc_ssrRender$k(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
                   default: withCtx(() => [
                     createVNode("section", { class: "personal" }, [
                       createVNode("div", { class: "personal__body" }, [
-                        createVNode("div", { class: "personal__sidebar" }, [
-                          createVNode("div", { class: "personal__items" }, [
-                            (openBlock(true), createBlock(Fragment, null, renderList($setup.profileSectionItemsOutput, (item) => {
-                              return openBlock(), createBlock(_component_SpoilerNode, {
-                                key: item.id,
-                                item: { name: `personal${item.id}` }
-                              }, {
-                                button: withCtx(() => [
-                                  createVNode("button", null, toDisplayString(item.content), 1)
-                                ]),
-                                list: withCtx(() => [
-                                  (openBlock(true), createBlock(Fragment, null, renderList($setup.subItems(item.url), (subItem, index) => {
-                                    return openBlock(), createBlock("button", {
-                                      key: subItem.id,
-                                      onClick: ($event) => index === 0 ? $setup.routeTo(item.url) : $setup.routeTo(subItem.url)
-                                    }, toDisplayString(subItem.content), 9, ["onClick"]);
-                                  }), 128))
-                                ]),
-                                _: 2
-                              }, 1032, ["item"]);
-                            }), 128)),
-                            $setup.userAuth ? (openBlock(), createBlock(_component_LogoutButtonNode, { key: 0 })) : createCommentVNode("", true)
-                          ])
+                        createVNode("div", { class: "personal__sidebar sidebar-personal" }, [
+                          (openBlock(true), createBlock(Fragment, null, renderList($setup.profileSectionItemsOutput, (item) => {
+                            return openBlock(), createBlock(_component_SpoilerNode, {
+                              key: item.id,
+                              item: { name: `personal${$setup.lastSlugParam(item.url)}`, active: $setup.lastSlugParam(item.url) === $setup.last($setup.refHandledPath) }
+                            }, {
+                              button: withCtx(() => [
+                                createVNode("button", { class: "sidebar-personal__button" }, toDisplayString(item.content), 1)
+                              ]),
+                              list: withCtx(() => [
+                                (openBlock(true), createBlock(Fragment, null, renderList($setup.subItems(item.url), (subItem, index) => {
+                                  return openBlock(), createBlock("button", {
+                                    key: subItem.id,
+                                    class: ["sidebar-personal__sub-button", { "sidebar-personal__sub-button_active": index === 0 ? $setup.lastSlugParam(item.url) === $setup.last($setup.refHandledPath) : $setup.lastSlugParam(subItem.url) === $setup.last($setup.refHandledPath) }],
+                                    onClick: ($event) => index === 0 ? $setup.routeTo(item.url) : $setup.routeTo(subItem.url)
+                                  }, toDisplayString(subItem.content), 11, ["onClick"]);
+                                }), 128))
+                              ]),
+                              _: 2
+                            }, 1032, ["item"]);
+                          }), 128)),
+                          $setup.userAuth ? (openBlock(), createBlock(_component_LogoutButtonNode, { key: 0 })) : createCommentVNode("", true)
                         ]),
-                        createVNode("div", { class: "personal__content" }, [
-                          createVNode(_component_RouterView)
-                        ])
+                        createVNode(_component_RouterView, { class: "personal__content" })
                       ])
                     ])
                   ]),
@@ -30775,33 +30005,30 @@ function _sfc_ssrRender$k(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
                 default: withCtx(() => [
                   createVNode("section", { class: "personal" }, [
                     createVNode("div", { class: "personal__body" }, [
-                      createVNode("div", { class: "personal__sidebar" }, [
-                        createVNode("div", { class: "personal__items" }, [
-                          (openBlock(true), createBlock(Fragment, null, renderList($setup.profileSectionItemsOutput, (item) => {
-                            return openBlock(), createBlock(_component_SpoilerNode, {
-                              key: item.id,
-                              item: { name: `personal${item.id}` }
-                            }, {
-                              button: withCtx(() => [
-                                createVNode("button", null, toDisplayString(item.content), 1)
-                              ]),
-                              list: withCtx(() => [
-                                (openBlock(true), createBlock(Fragment, null, renderList($setup.subItems(item.url), (subItem, index) => {
-                                  return openBlock(), createBlock("button", {
-                                    key: subItem.id,
-                                    onClick: ($event) => index === 0 ? $setup.routeTo(item.url) : $setup.routeTo(subItem.url)
-                                  }, toDisplayString(subItem.content), 9, ["onClick"]);
-                                }), 128))
-                              ]),
-                              _: 2
-                            }, 1032, ["item"]);
-                          }), 128)),
-                          $setup.userAuth ? (openBlock(), createBlock(_component_LogoutButtonNode, { key: 0 })) : createCommentVNode("", true)
-                        ])
+                      createVNode("div", { class: "personal__sidebar sidebar-personal" }, [
+                        (openBlock(true), createBlock(Fragment, null, renderList($setup.profileSectionItemsOutput, (item) => {
+                          return openBlock(), createBlock(_component_SpoilerNode, {
+                            key: item.id,
+                            item: { name: `personal${$setup.lastSlugParam(item.url)}`, active: $setup.lastSlugParam(item.url) === $setup.last($setup.refHandledPath) }
+                          }, {
+                            button: withCtx(() => [
+                              createVNode("button", { class: "sidebar-personal__button" }, toDisplayString(item.content), 1)
+                            ]),
+                            list: withCtx(() => [
+                              (openBlock(true), createBlock(Fragment, null, renderList($setup.subItems(item.url), (subItem, index) => {
+                                return openBlock(), createBlock("button", {
+                                  key: subItem.id,
+                                  class: ["sidebar-personal__sub-button", { "sidebar-personal__sub-button_active": index === 0 ? $setup.lastSlugParam(item.url) === $setup.last($setup.refHandledPath) : $setup.lastSlugParam(subItem.url) === $setup.last($setup.refHandledPath) }],
+                                  onClick: ($event) => index === 0 ? $setup.routeTo(item.url) : $setup.routeTo(subItem.url)
+                                }, toDisplayString(subItem.content), 11, ["onClick"]);
+                              }), 128))
+                            ]),
+                            _: 2
+                          }, 1032, ["item"]);
+                        }), 128)),
+                        $setup.userAuth ? (openBlock(), createBlock(_component_LogoutButtonNode, { key: 0 })) : createCommentVNode("", true)
                       ]),
-                      createVNode("div", { class: "personal__content" }, [
-                        createVNode(_component_RouterView)
-                      ])
+                      createVNode(_component_RouterView, { class: "personal__content" })
                     ])
                   ])
                 ]),
@@ -30819,14 +30046,15 @@ function _sfc_ssrRender$k(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
     _: 1
   }, _parent));
 }
-const _sfc_setup$k = _sfc_main$k.setup;
-_sfc_main$k.setup = (props, ctx) => {
+const _sfc_setup$l = _sfc_main$l.setup;
+_sfc_main$l.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/pages/private/PersonalPage.vue");
-  return _sfc_setup$k ? _sfc_setup$k(props, ctx) : void 0;
+  return _sfc_setup$l ? _sfc_setup$l(props, ctx) : void 0;
 };
-const PersonalPage = /* @__PURE__ */ _export_sfc(_sfc_main$k, [["ssrRender", _sfc_ssrRender$k]]);
-const _sfc_main$j = {
+const PersonalPage = /* @__PURE__ */ _export_sfc(_sfc_main$l, [["ssrRender", _sfc_ssrRender$l]]);
+const PersonalWishlistPage_vue_vue_type_style_index_0_lang = "";
+const _sfc_main$k = {
   components: {
     ProductNode
   },
@@ -30837,109 +30065,37 @@ const _sfc_main$j = {
       store2.getters["wishlist/wishlistProductIds"]
     ));
     return {
-      products: products2
+      products: products2,
+      isEmpty
     };
   }
 };
-function _sfc_ssrRender$j(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$k(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   const _component_ProductNode = resolveComponent("ProductNode");
-  _push(`<div${ssrRenderAttrs(mergeProps({ class: "__items catalog-products" }, _attrs))}><!--[-->`);
-  ssrRenderList($setup.products, (product) => {
-    _push(ssrRenderComponent(_component_ProductNode, {
-      key: product.id,
-      product
-    }, null, _parent));
-  });
-  _push(`<!--]--></div>`);
+  _push(`<div${ssrRenderAttrs(mergeProps({ class: "wishlist" }, _attrs))}>`);
+  if (!$setup.isEmpty($setup.products)) {
+    _push(`<div class="wishlist__items catalog-products"><!--[-->`);
+    ssrRenderList($setup.products, (product) => {
+      _push(ssrRenderComponent(_component_ProductNode, {
+        key: product.id,
+        product
+      }, null, _parent));
+    });
+    _push(`<!--]--></div>`);
+  } else {
+    _push(`<div>\u0412\u0430\u0448 \u0441\u043F\u0438\u0441\u043E\u043A \u0436\u0435\u043B\u0430\u043D\u0438\u0439 \u043F\u0443\u0441\u0442. \u041F\u043E\u043F\u043E\u043B\u043D\u0438\u0442\u0435 \u0436\u0435 \u0435\u0433\u043E!</div>`);
+  }
+  _push(`</div>`);
 }
-const _sfc_setup$j = _sfc_main$j.setup;
-_sfc_main$j.setup = (props, ctx) => {
+const _sfc_setup$k = _sfc_main$k.setup;
+_sfc_main$k.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/pages/private/personal/PersonalWishlistPage.vue");
-  return _sfc_setup$j ? _sfc_setup$j(props, ctx) : void 0;
+  return _sfc_setup$k ? _sfc_setup$k(props, ctx) : void 0;
 };
-const PersonalWishlistPage = /* @__PURE__ */ _export_sfc(_sfc_main$j, [["ssrRender", _sfc_ssrRender$j]]);
-function handleMonth(n) {
-  const months = [
-    "\u042F\u043D\u0432\u0430\u0440\u044F",
-    "\u0424\u0435\u0432\u0440\u0430\u043B\u044F",
-    "\u041C\u0430\u0440\u0442\u0430",
-    "\u0410\u043F\u0440\u0435\u043B\u044F",
-    "\u041C\u0430\u044F",
-    "\u0418\u044E\u043D\u044F",
-    "\u0418\u044E\u043B\u044F",
-    "\u0410\u0432\u0433\u0443\u0441\u0442\u0430",
-    "\u0421\u0435\u043D\u0442\u044F\u0431\u0440\u044F",
-    "\u041E\u043A\u0442\u044F\u0431\u0440\u044F",
-    "\u041D\u043E\u044F\u0431\u0440\u044F",
-    "\u0414\u0435\u043A\u0430\u0431\u0440\u044F"
-  ];
-  return months[n];
-}
-const messages = {
-  orderingError: {
-    name: "orderingError",
-    type: "error",
-    html: `\u041F\u0440\u043E\u0438\u0437\u043E\u0448\u043B\u0430 \u043E\u0448\u0438\u0431\u043A\u0430 \u043F\u0440\u0438 \u043E\u0444\u043E\u0440\u043C\u043B\u0435\u043D\u0438\u0438 \u0437\u0430\u043A\u0430\u0437\u0430. \u041F\u043E\u043F\u0440\u043E\u0431\u0443\u0439\u0442\u0435
-    \u0441\u043D\u043E\u0432\u0430`
-  },
-  notSelectPaymentMethod: {
-    name: "notSelectPaymentMethod",
-    type: "error",
-    html: "\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u043C\u0435\u0442\u043E\u0434 \u043E\u043F\u043B\u0430\u0442\u044B"
-  },
-  notSelectProductSize: {
-    name: "notSelectProductSize",
-    type: "error",
-    html: "\u041D\u0435\u043E\u0431\u0445\u043E\u0434\u0438\u043C\u043E \u0432\u044B\u0431\u0440\u0430\u0442\u044C \u0440\u0430\u0437\u043C\u0435\u0440."
-  },
-  allError: {
-    name: "allError",
-    type: "error",
-    html: "\u041F\u0440\u043E\u0438\u0437\u043E\u0448\u043B\u0430 \u043E\u0448\u0438\u0431\u043A\u0430 \u043F\u0440\u0438 \u0432\u044B\u043F\u043E\u043B\u043D\u0435\u043D\u0438\u0438 \u043E\u043F\u0435\u0440\u0430\u0446\u0438\u0438"
-  },
-  productAddedToWishlist: {
-    name: "productAddedToWishlist",
-    type: "success",
-    html: {
-      template: `
-      \u0422\u043E\u0432\u0430\u0440 \u0434\u043E\u0431\u0430\u0432\u043B\u0435\u043D \u0432 \u0412\u0430\u0448 \u0441\u043F\u0438\u0441\u043E\u043A \u0436\u0435\u043B\u0430\u043D\u0438\u0439.<button
-      @click="$router.push({ name: 'PersonalWishlist' })"
-      class="message-link"
-    >
-      \u0418\u0437\u0431\u0440\u0430\u043D\u043D\u043E\u0435.
-    </button>`
-    }
-  },
-  currentPaymentURLNotSet: {
-    name: "currentPaymentURLNotSet",
-    type: "error",
-    html: {
-      template: `\u0421\u0441\u044B\u043B\u043A\u0430 \u043D\u0430 \u0441\u0442\u0440\u0430\u043D\u0438\u0446\u0443 \u043E\u043F\u043B\u0430\u0442\u044B \u043D\u0435 \u0431\u044B\u043B\u0430 \u043F\u043E\u043B\u0443\u0447\u0435\u043D\u0430. \u041F\u043E\u043F\u0440\u043E\u0431\u0443\u0439\u0442\u0435 \u043E\u043F\u043B\u0430\u0442\u0438\u0442\u044C \u0438\u0437
-
-      <button
-        @click="$router.push({ name: 'PersonalOrders' })"
-        class="message-link"
-      >
-        \u041B\u0438\u0447\u043D\u043E\u0433\u043E \u043A\u0430\u0431\u0438\u043D\u0435\u0442\u0430
-      </button>`
-    }
-  },
-  productAddedToCart: {
-    name: "productAddedToCart",
-    type: "success",
-    html: {
-      template: `\u0422\u043E\u0432\u0430\u0440 \u0434\u043E\u0431\u0430\u0432\u043B\u0435\u043D.<button
-      @click="$router.push({ name: 'Checkout' })"
-      class="message-link"
-    >
-      \u041E\u0444\u043E\u0440\u043C\u0438\u0442\u044C \u0437\u0430\u043A\u0430\u0437?
-    </button>`
-    }
-  }
-};
+const PersonalWishlistPage = /* @__PURE__ */ _export_sfc(_sfc_main$k, [["ssrRender", _sfc_ssrRender$k]]);
 const OrderNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$i = {
+const _sfc_main$j = {
   props: {
     order: {
       type: Object,
@@ -30952,7 +30108,7 @@ const _sfc_main$i = {
     };
   }
 };
-function _sfc_ssrRender$i(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$j(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   const _component_RouterLink = resolveComponent("RouterLink");
   const _component_ButtonNode = resolveComponent("ButtonNode");
   _push(`<article${ssrRenderAttrs(mergeProps({ class: "order" }, _attrs))}><div class="order__block"><h2 class="order__title"> \u0417\u0430\u043A\u0430\u0437 \u2116${ssrInterpolate($props.order.id)} \u043E\u0442 ${ssrInterpolate($props.order.date_created.getDate())} ${ssrInterpolate($setup.handleMonth($props.order.date_created.getMonth()))} ${ssrInterpolate($props.order.date_created.getFullYear())} \u0433. </h2><div class="order__status">${ssrInterpolate($props.order.status)}</div></div><div class="order__block"><div class="">\u0422\u043E\u0432\u0430\u0440\u043E\u0432: ${ssrInterpolate($props.order.line_items.length)}</div><ul class="order__list-products"><li><!--[-->`);
@@ -30986,8 +30142,9 @@ function _sfc_ssrRender$i(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
       _: 2
     }, _parent));
   });
-  _push(`<!--]--></li></ul></div><div class="order__block"><ul class="order__list-props"><li class="order__prop"><span class="order__prop-key">\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C \u0437\u0430\u043A\u0430\u0437\u0430</span><div class="order__prop-value">${ssrInterpolate($props.order.total)}</div></li></ul></div>`);
+  _push(`<!--]--></li></ul></div><div class="order__block"><ul class="order__list-props"><li class="order__prop"><span class="order__prop-key">\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C \u0437\u0430\u043A\u0430\u0437\u0430</span><div class="order__prop-value">${ssrInterpolate($props.order.total)} \u0440\u0443\u0431</div></li></ul></div>`);
   _push(ssrRenderComponent(_component_ButtonNode, {
+    disabled: true,
     onClick: ($event) => _ctx.openPaymentPage($props.order.payment_url)
   }, {
     default: withCtx((_, _push2, _parent2, _scopeId) => {
@@ -31003,84 +30160,88 @@ function _sfc_ssrRender$i(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
   }, _parent));
   _push(`</article>`);
 }
-const _sfc_setup$i = _sfc_main$i.setup;
-_sfc_main$i.setup = (props, ctx) => {
+const _sfc_setup$j = _sfc_main$j.setup;
+_sfc_main$j.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/ordering/OrderNode.vue");
-  return _sfc_setup$i ? _sfc_setup$i(props, ctx) : void 0;
+  return _sfc_setup$j ? _sfc_setup$j(props, ctx) : void 0;
 };
-const OrderNode = /* @__PURE__ */ _export_sfc(_sfc_main$i, [["ssrRender", _sfc_ssrRender$i]]);
-const _sfc_main$h = {
+const OrderNode = /* @__PURE__ */ _export_sfc(_sfc_main$j, [["ssrRender", _sfc_ssrRender$j]]);
+const _sfc_main$i = {
   components: {
     PreloadWrapContainerNode,
     OrderNode
   },
   async setup() {
     const store2 = useStore();
-    const { basedRequest: basedRequest2, items } = store2.state.orders;
-    store2.dispatch("getItems", { basedRequest: basedRequest2 });
+    const { basedRequest, items } = store2.state.orders;
+    store2.dispatch("getItems", { basedRequest });
     function openPaymentPage(url) {
       window.open(url);
     }
     return {
+      isEmpty,
       openPaymentPage,
-      handledOrders: computed(() => items)
+      orders: computed(() => items)
     };
   }
 };
-function _sfc_ssrRender$h(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$i(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   const _component_PreloadWrapContainerNode = resolveComponent("PreloadWrapContainerNode");
   const _component_OrderNode = resolveComponent("OrderNode");
-  _push(ssrRenderComponent(_component_PreloadWrapContainerNode, mergeProps({
-    class: "order",
-    quantityPreloadElements: 4,
-    iterable: $setup.handledOrders
-  }, _attrs), {
-    default: withCtx((slotProps, _push2, _parent2, _scopeId) => {
-      if (_push2) {
-        _push2(ssrRenderComponent(_component_OrderNode, {
-          order: slotProps.item
-        }, null, _parent2, _scopeId));
-      } else {
-        return [
-          createVNode(_component_OrderNode, {
+  if (!$setup.isEmpty($setup.orders)) {
+    _push(ssrRenderComponent(_component_PreloadWrapContainerNode, mergeProps({
+      quantityPreloadElements: 4,
+      iterable: $setup.orders
+    }, _attrs), {
+      default: withCtx((slotProps, _push2, _parent2, _scopeId) => {
+        if (_push2) {
+          _push2(ssrRenderComponent(_component_OrderNode, {
             order: slotProps.item
-          }, null, 8, ["order"])
-        ];
-      }
-    }),
-    _: 1
-  }, _parent));
+          }, null, _parent2, _scopeId));
+        } else {
+          return [
+            createVNode(_component_OrderNode, {
+              order: slotProps.item
+            }, null, 8, ["order"])
+          ];
+        }
+      }),
+      _: 1
+    }, _parent));
+  } else {
+    _push(`<div${ssrRenderAttrs(_attrs)}>\u0423 \u0432\u0430\u0441 \u0435\u0449\u0451 \u043D\u0435\u0442 \u0437\u0430\u043A\u0430\u0437\u043E\u0432.</div>`);
+  }
 }
-const _sfc_setup$h = _sfc_main$h.setup;
-_sfc_main$h.setup = (props, ctx) => {
+const _sfc_setup$i = _sfc_main$i.setup;
+_sfc_main$i.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/pages/private/personal/PersonalOrdersPage.vue");
-  return _sfc_setup$h ? _sfc_setup$h(props, ctx) : void 0;
+  return _sfc_setup$i ? _sfc_setup$i(props, ctx) : void 0;
 };
-const PersonalOrdersPage = /* @__PURE__ */ _export_sfc(_sfc_main$h, [["ssrRender", _sfc_ssrRender$h]]);
-const _sfc_main$g = {
+const PersonalOrdersPage = /* @__PURE__ */ _export_sfc(_sfc_main$i, [["ssrRender", _sfc_ssrRender$i]]);
+const _sfc_main$h = {
   setup() {
     const store2 = useStore();
     return { store: store2 };
   }
 };
-function _sfc_ssrRender$g(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
-  _push(`<div${ssrRenderAttrs(mergeProps({ class: "profile" }, _attrs))}>prof</div>`);
+function _sfc_ssrRender$h(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  _push(`<div${ssrRenderAttrs(mergeProps({ class: "profile" }, _attrs))}>\u0421\u0442\u0440\u0430\u043D\u0438\u0446\u0430 \u0440\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u043E\u0430\u043D\u0438\u0435 \u0434\u0430\u043D\u043D\u044B\u0445 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044F \u043D\u0430\u0445\u043E\u0434\u0438\u0442\u0441\u044F \u0432 \u0440\u0430\u0437\u0440\u0430\u0431\u043E\u0442\u043A\u0435...</div>`);
 }
-const _sfc_setup$g = _sfc_main$g.setup;
-_sfc_main$g.setup = (props, ctx) => {
+const _sfc_setup$h = _sfc_main$h.setup;
+_sfc_main$h.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/pages/private/personal/PersonalProfilePage.vue");
-  return _sfc_setup$g ? _sfc_setup$g(props, ctx) : void 0;
+  return _sfc_setup$h ? _sfc_setup$h(props, ctx) : void 0;
 };
-const PersonalProfilePage = /* @__PURE__ */ _export_sfc(_sfc_main$g, [["ssrRender", _sfc_ssrRender$g]]);
-const _sfc_main$f = {
+const PersonalProfilePage = /* @__PURE__ */ _export_sfc(_sfc_main$h, [["ssrRender", _sfc_ssrRender$h]]);
+const _sfc_main$g = {
   components: {
     TroubleNode
   }
 };
-function _sfc_ssrRender$f(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+function _sfc_ssrRender$g(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   const _component_MainPageNode = resolveComponent("MainPageNode");
   const _component_ContainerNode = resolveComponent("ContainerNode");
   const _component_TroubleNode = resolveComponent("TroubleNode");
@@ -31090,10 +30251,10 @@ function _sfc_ssrRender$f(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
         _push2(ssrRenderComponent(_component_ContainerNode, null, {
           default: withCtx((_2, _push3, _parent3, _scopeId2) => {
             if (_push3) {
-              _push3(ssrRenderComponent(_component_TroubleNode, null, null, _parent3, _scopeId2));
+              _push3(ssrRenderComponent(_component_TroubleNode, { text: ["\u0414\u043B\u044F \u0441\u043B\u0435\u0434\u044E\u0449\u0435\u0433\u043E \u043F\u0443\u0442\u0438", " \u043D\u0435 \u0441\u0443\u0449\u0435\u0441\u0442\u0432\u0443\u0435\u0442 \u043C\u0430\u0440\u0448\u0440\u0443\u0442\u0430!"] }, null, _parent3, _scopeId2));
             } else {
               return [
-                createVNode(_component_TroubleNode)
+                createVNode(_component_TroubleNode, { text: ["\u0414\u043B\u044F \u0441\u043B\u0435\u0434\u044E\u0449\u0435\u0433\u043E \u043F\u0443\u0442\u0438", " \u043D\u0435 \u0441\u0443\u0449\u0435\u0441\u0442\u0432\u0443\u0435\u0442 \u043C\u0430\u0440\u0448\u0440\u0443\u0442\u0430!"] })
               ];
             }
           }),
@@ -31103,7 +30264,7 @@ function _sfc_ssrRender$f(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
         return [
           createVNode(_component_ContainerNode, null, {
             default: withCtx(() => [
-              createVNode(_component_TroubleNode)
+              createVNode(_component_TroubleNode, { text: ["\u0414\u043B\u044F \u0441\u043B\u0435\u0434\u044E\u0449\u0435\u0433\u043E \u043F\u0443\u0442\u0438", " \u043D\u0435 \u0441\u0443\u0449\u0435\u0441\u0442\u0432\u0443\u0435\u0442 \u043C\u0430\u0440\u0448\u0440\u0443\u0442\u0430!"] })
             ]),
             _: 1
           })
@@ -31113,142 +30274,774 @@ function _sfc_ssrRender$f(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
     _: 1
   }, _parent));
 }
+const _sfc_setup$g = _sfc_main$g.setup;
+_sfc_main$g.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/pages/private/NotFoundPage.vue");
+  return _sfc_setup$g ? _sfc_setup$g(props, ctx) : void 0;
+};
+const NotFoundPage = /* @__PURE__ */ _export_sfc(_sfc_main$g, [["ssrRender", _sfc_ssrRender$g]]);
+const vueSliderComponent = "";
+const _default = "";
+const FilterPrices_vue_vue_type_style_index_0_lang = "";
+const _sfc_main$f = {
+  components: {
+    VueSlider
+  },
+  computed: {
+    ...mapState({
+      minCost: (state2) => state2.filter.minCost,
+      maxCost: (state2) => state2.filter.maxCost,
+      min_price: (state2) => state2.filter.params.min_price,
+      max_price: (state2) => state2.filter.params.max_price,
+      productsRequest: (state2) => state2.products.basedRequest
+    }),
+    minPrice: {
+      get() {
+        return this.min_price;
+      },
+      set(value) {
+        this.setMinPrice(value);
+      }
+    },
+    maxPrice: {
+      get() {
+        return this.max_price;
+      },
+      set(value) {
+        this.setMaxPrice(value);
+      }
+    },
+    pointValues() {
+      return [this.min_price, this.max_price];
+    }
+  },
+  methods: {
+    ...mapMutations({
+      setMinCost: "filter/setMinCost",
+      setMaxCost: "filter/setMaxCost",
+      setMaxPrice: "filter/setMaxPrice",
+      setMinPrice: "filter/setMinPrice"
+    }),
+    ...mapActions({}),
+    updatePrices(newValue) {
+      this.setMinPrice(newValue[0]);
+      this.setMaxPrice(newValue[1]);
+    }
+  }
+};
+function _sfc_ssrRender$f(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  const _component_InputNode = resolveComponent("InputNode");
+  const _component_VueSlider = resolveComponent("VueSlider");
+  _push(`<div${ssrRenderAttrs(mergeProps({ class: "filter-prices" }, _attrs))}><div class="filter-prices__inputes">`);
+  _push(ssrRenderComponent(_component_InputNode, {
+    modelValue: $options.minPrice,
+    "onUpdate:modelValue": ($event) => $options.minPrice = $event,
+    modelModifiers: { number: true },
+    inputmode: "numeric"
+  }, {
+    before: withCtx((_, _push2, _parent2, _scopeId) => {
+      if (_push2) {
+        _push2(`<span${_scopeId}>\u041E\u0442:</span>`);
+      } else {
+        return [
+          createVNode("span", null, "\u041E\u0442:")
+        ];
+      }
+    }),
+    after: withCtx((_, _push2, _parent2, _scopeId) => {
+      if (_push2) {
+        _push2(`<span${_scopeId}>\u0440\u0443\u0431</span>`);
+      } else {
+        return [
+          createVNode("span", null, "\u0440\u0443\u0431")
+        ];
+      }
+    }),
+    _: 1
+  }, _parent));
+  _push(ssrRenderComponent(_component_InputNode, {
+    modelValue: $options.maxPrice,
+    "onUpdate:modelValue": ($event) => $options.maxPrice = $event,
+    modelModifiers: { number: true },
+    inputmode: "numeric"
+  }, {
+    before: withCtx((_, _push2, _parent2, _scopeId) => {
+      if (_push2) {
+        _push2(`<span${_scopeId}>\u0414\u043E:</span>`);
+      } else {
+        return [
+          createVNode("span", null, "\u0414\u043E:")
+        ];
+      }
+    }),
+    after: withCtx((_, _push2, _parent2, _scopeId) => {
+      if (_push2) {
+        _push2(`<span${_scopeId}>\u0440\u0443\u0431</span>`);
+      } else {
+        return [
+          createVNode("span", null, "\u0440\u0443\u0431")
+        ];
+      }
+    }),
+    _: 1
+  }, _parent));
+  _push(`</div>`);
+  _push(ssrRenderComponent(_component_VueSlider, {
+    modelValue: $options.pointValues,
+    min: _ctx.minCost,
+    max: _ctx.maxCost,
+    "enable-cross": false,
+    "onUpdate:modelValue": $options.updatePrices
+  }, null, _parent));
+  _push(`</div>`);
+}
 const _sfc_setup$f = _sfc_main$f.setup;
 _sfc_main$f.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/pages/private/NotFoundPage.vue");
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/filter/FilterPrices.vue");
   return _sfc_setup$f ? _sfc_setup$f(props, ctx) : void 0;
 };
-const NotFoundPage = /* @__PURE__ */ _export_sfc(_sfc_main$f, [["ssrRender", _sfc_ssrRender$f]]);
-const common$1 = {
-  namespaced: true,
-  state: () => ({
-    settings: {},
-    scrollY: null,
-    scrollFlag: true,
-    browserReady: false,
-    windowWidth: null,
-    breakpoint: "",
-    progressLoad: {
-      visible: false,
-      percent: 0
-    },
-    progress: [],
-    message: null,
-    openings: {
-      basic: {},
-      revealing: {},
-      popup: {},
-      catalogRevealing: {},
-      spoiler: {}
-    }
-  }),
-  getters: {},
-  mutations: {
-    addOpening(state2, item) {
-      if (Object.prototype.hasOwnProperty.call(state2.openings[item.type], item.name)) {
-        console.error(`\u0422\u0430\u043A\u043E\u0439 opening ${item.name} \u0443\u0436\u0435 \u0441\u0443\u0449\u0435\u0441\u0442\u0432\u0443\u0435\u0442`);
-        return;
-      }
-      const element = {
-        name: item.name,
-        active: item.active !== void 0 ? item.active : false,
-        default: item.default !== void 0 ? item.default : true
-      };
-      state2.openings[item.type][element.name] = element;
-    },
-    setRevealing(state2, { name, value = null, prop = "active" }) {
-      const type = "revealing";
-      togglerOpening(name, prop, value, state2, type);
-    },
-    setPopup(state2, { name, value = null, prop = "active" }) {
-      const type = "popup";
-      togglerOpening(name, prop, value, state2, type);
-    },
-    setCatalogRevealing(state2, { name, value = null, prop = "active" }) {
-      const type = "catalogRevealing";
-      togglerOpening(name, prop, value, state2, type);
-    },
-    setSpoiler(state2, { name, value = null, prop = "active" }) {
-      const type = "spoiler";
-      togglerOpening(name, prop, value, state2, type);
-    },
-    setBasic(state2, { name, value = null, prop = "active" }) {
-      const type = "basic";
-      togglerOpening(name, prop, value, state2, type);
-    },
-    setAllOpeningTypeItems(state2, { type = null, value = false, prop = "active" }) {
-      const items = type !== null ? state2.openings[type] : state2.openings;
-      for (const key in items) {
-        if (Object.hasOwnProperty.call(items, key)) {
-          const item = items[key];
-          if (type !== null) {
-            item[prop] = value;
-          } else {
-            for (const nestedKey in item) {
-              if (Object.hasOwnProperty.call(item, nestedKey)) {
-                const element = item[nestedKey];
-                element[prop] = value;
-              }
-            }
-          }
-        }
-      }
-    },
-    setMessage(state2, value) {
-      state2.message = value;
-    },
-    setScrollFlag(state2, { value, toggle = false }) {
-      state2.scrollFlag = toggle ? !value : value;
-    },
-    setWindowWidth(state2, value) {
-      state2.windowWidth = value;
-    },
-    setBreakpoint(state2, value) {
-      state2.breakpoint = value;
-    },
-    setScrollY(state2, value) {
-      state2.scrollY = value;
-    },
-    setProgressLoad(state2, value) {
-      state2.progressLoad = value;
-    },
-    setProgress(state2, value) {
-      state2.progress.push(value);
-    },
-    setBrowserReady(state2, value) {
-      state2.browserReady = value;
+const FilterPrices = /* @__PURE__ */ _export_sfc(_sfc_main$f, [["ssrRender", _sfc_ssrRender$f]]);
+const BasicNode_vue_vue_type_style_index_0_lang = "";
+const _sfc_main$e = {
+  props: {
+    item: {
+      type: Object,
+      reqired: true
     }
   },
-  actions: {
-    updateMessage({
-      commit
-    }, name) {
-      commit("setMessage", messages[name]);
-      setTimeout(() => {
-        commit("setMessage", null);
-      }, 4500);
-    },
-    updateAllOpeningTypeItems({
-      commit
-    }, { type = null, value = false, prop = "active" }) {
-      const options = { type, value, prop };
-      commit("setAllOpeningTypeItems", options);
-      if (options.value === false && options.prop === "active") {
-        commit("setScrollFlag", { value: true });
+  setup(props) {
+    const store2 = useStore();
+    const item = { ...{ type: "basic" }, ...props.item };
+    watch(props, (newProps) => {
+      store2.commit("common/setBasic", {
+        name: newProps.item.name,
+        value: newProps.item.default,
+        prop: "default"
+      });
+    });
+    const { element } = useOpening(item);
+    const openBasic = () => {
+      store2.commit("common/setBasic", {
+        name: element.name,
+        prop: "active"
+      });
+    };
+    return { element, openBasic };
+  }
+};
+function _sfc_ssrRender$e(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  if ($setup.element.default) {
+    _push(`<div${ssrRenderAttrs(mergeProps({
+      class: ["basic", {
+        basic_active: $setup.element.active,
+        basic_default: $setup.element.default
+      }]
+    }, _attrs))}>`);
+    ssrRenderSlot(_ctx.$slots, "default", {}, null, _push, _parent);
+    _push(`</div>`);
+  } else {
+    _push(`<!---->`);
+  }
+}
+const _sfc_setup$e = _sfc_main$e.setup;
+_sfc_main$e.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/BasicNode.vue");
+  return _sfc_setup$e ? _sfc_setup$e(props, ctx) : void 0;
+};
+const BasicNode = /* @__PURE__ */ _export_sfc(_sfc_main$e, [["ssrRender", _sfc_ssrRender$e]]);
+const TheFilterNode_vue_vue_type_style_index_0_lang = "";
+const _sfc_main$d = {
+  components: {
+    FilterPrices,
+    CatalogRevealingNode,
+    BasicNode
+  },
+  data() {
+    return {
+      sticky: null,
+      onlineOnly: true,
+      filterBodyHeight: 0
+    };
+  },
+  computed: {
+    ...mapGetters({
+      itemsBased: "itemsBased",
+      itemsMatchedByCallback: "itemsMatchedByCallback",
+      attributesSlugs: "productsAttributes/attributesSlugs"
+    }),
+    ...mapState({
+      browserReady: (state2) => state2.common.browserReady,
+      basicFilter: (state2) => state2.common.openings.basic.filter,
+      minCost: (state2) => state2.filter.minCost || 1e4,
+      maxCost: (state2) => state2.filter.maxCost || 1e6,
+      min_price: (state2) => state2.filter.params.min_price,
+      max_price: (state2) => state2.filter.params.max_price,
+      filterParams: (state2) => state2.filter.params,
+      productsBrandsRequest: (state2) => state2.productsTermsBrands.basedRequest,
+      productsColorsRequest: (state2) => state2.productsTermsColors.basedRequest,
+      productsMaterialsRequest: (state2) => state2.productsTermsMaterials.basedRequest,
+      productsSizesRequest: (state2) => state2.productsTermsSizes.basedRequest,
+      productsAttributesRequest: (state2) => state2.productsAttributes.basedRequest
+    }),
+    attributes() {
+      return this.itemsMatchedByCallback(
+        this.productsAttributesRequest,
+        { regExp: /^pa_yookassa_*./ },
+        (element, keys, params) => {
+          if (element.slug.match(params.regExp) === null) {
+            return true;
+          }
+          return false;
+        }
+      );
+    }
+  },
+  mounted() {
+    this.sticky = new Sticky(".filter__wrapper", {
+      marginTop: 40,
+      marginBottom: 100,
+      stickyFor: 1024,
+      stickyClass: "filter__wrapper_stuck",
+      stickyContainer: ".page-main"
+    });
+    this.filterBodyHeight = this.$refs.filterBody.offsetHeight;
+  },
+  methods: {
+    ...mapMutations({
+      setMaterials: "filter/setMaterials",
+      setBrands: "filter/setBrands",
+      setColors: "filter/setColors",
+      setSizes: "filter/setSizes",
+      setOrderAndOrderBy: "filter/setOrderAndOrderBy",
+      setAttributeTerms: "filter/setAttributeTerms",
+      setMaxPrice: "filter/setMaxPrice",
+      setMinPrice: "filter/setMinPrice",
+      unsetDefaultAttributeOptions: "filter/unsetDefaultAttributeOptions",
+      setDefaultPrices: "filter/setDefaultPrices",
+      setCatalogRevealing: "common/setCatalogRevealing",
+      setBasic: "common/setBasic"
+    }),
+    ...mapActions({
+      setDefaultFilter: "filter/setDefaultFilter",
+      updateFilter: "filter/updateFilter",
+      updateAllOpeningTypeItems: "common/updateAllOpeningTypeItems"
+    }),
+    singleAttribute(attributeSlug) {
+      switch (attributeSlug) {
+        case "pa_brand":
+          return this.itemsBased(this.productsBrandsRequest);
+        case "pa_material":
+          return this.itemsBased(this.productsMaterialsRequest);
+        case "pa_tcvet":
+          return this.itemsBased(this.productsColorsRequest);
+        case "pa_razmer":
+          return this.itemsBased(this.productsSizesRequest);
       }
+      return {};
+    },
+    filterParamsChecked(attrSlug, termID) {
+      const terms = this.filterParams[attrSlug].options;
+      const term = terms.find((i) => i.id === termID);
+      if (term)
+        return true;
+      return false;
+    },
+    filterCleanAndLoadDefault() {
+      this.setDefaultFilter();
+      this.updateAllOpeningTypeItems({ type: "catalogRevealing" });
+      this.updateAllOpeningTypeItems({
+        type: "catalogRevealing",
+        value: true,
+        prop: "default"
+      });
+      this.updateFilter();
+    },
+    updateCatalogRevealing({ type, value }) {
+      this.setAttributeTerms({ type, value });
+      const marker = isEmpty(this.filterParams[type].options);
+      this.setCatalogRevealing({
+        name: type,
+        value: marker,
+        prop: "default"
+      });
+    },
+    setDefaultAttribute(slug) {
+      this.setCatalogRevealing({
+        name: slug,
+        value: true,
+        prop: "default"
+      });
+      this.unsetDefaultAttributeOptions(slug);
     }
   }
 };
-const instance$j = VUE_WP_INSTANCE().state.menus.returned;
-const menus = {
-  namespaced: true,
-  state: () => ({ settings: {}, items: instance$j }),
-  getters: {
-    menu: (state2) => ({ name }) => state2.menus.items[name]
-  }
+function _sfc_ssrRender$d(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  const _component_ContainerNode = resolveComponent("ContainerNode");
+  const _component_BaseButtonNode = resolveComponent("BaseButtonNode");
+  const _component_BasicNode = resolveComponent("BasicNode");
+  const _component_CatalogRevealingNode = resolveComponent("CatalogRevealingNode");
+  const _component_FilterPrices = resolveComponent("FilterPrices");
+  const _component_InputCheckboxNode = resolveComponent("InputCheckboxNode");
+  const _component_ButtonNode = resolveComponent("ButtonNode");
+  _push(`<section${ssrRenderAttrs(mergeProps({ class: "filter" }, _attrs))}>`);
+  _push(ssrRenderComponent(_component_ContainerNode, null, {
+    default: withCtx((_, _push2, _parent2, _scopeId) => {
+      if (_push2) {
+        _push2(ssrRenderComponent(_component_BaseButtonNode, {
+          class: "filter__button filter__button_filter-show",
+          onClick: ($event) => _ctx.setBasic({ name: "filter", active: true })
+        }, {
+          default: withCtx((_2, _push3, _parent3, _scopeId2) => {
+            if (_push3) {
+              _push3(`\u0424\u0438\u043B\u044C\u0442\u0440 \u0442\u043E\u0432\u0430\u0440\u043E\u0432`);
+            } else {
+              return [
+                createTextVNode("\u0424\u0438\u043B\u044C\u0442\u0440 \u0442\u043E\u0432\u0430\u0440\u043E\u0432")
+              ];
+            }
+          }),
+          _: 1
+        }, _parent2, _scopeId));
+        _push2(ssrRenderComponent(_component_BasicNode, {
+          item: { name: "filter", active: true },
+          onClick: () => {
+          }
+        }, {
+          default: withCtx((_2, _push3, _parent3, _scopeId2) => {
+            if (_push3) {
+              _push3(`<div class="filter__body" style="${ssrRenderStyle({ minHeight: _ctx.basicFilter.active === false ? "0px" : $data.filterBodyHeight + "px" })}"${_scopeId2}><div class="filter__wrapper container"${_scopeId2}><ul class="filter__list"${_scopeId2}><li class="filter__item"${_scopeId2}>`);
+              _push3(ssrRenderComponent(_component_CatalogRevealingNode, {
+                item: { name: "catalogPrices" },
+                onSetDefault: _ctx.setDefaultPrices
+              }, {
+                title: withCtx((_3, _push4, _parent4, _scopeId3) => {
+                  if (_push4) {
+                    _push4(`\u0426\u0435\u043D\u0430`);
+                  } else {
+                    return [
+                      createTextVNode("\u0426\u0435\u043D\u0430")
+                    ];
+                  }
+                }),
+                main: withCtx((_3, _push4, _parent4, _scopeId3) => {
+                  if (_push4) {
+                    if (_ctx.browserReady) {
+                      _push4(ssrRenderComponent(_component_FilterPrices, null, null, _parent4, _scopeId3));
+                    } else {
+                      _push4(`<!---->`);
+                    }
+                  } else {
+                    return [
+                      _ctx.browserReady ? (openBlock(), createBlock(_component_FilterPrices, { key: 0 })) : createCommentVNode("", true)
+                    ];
+                  }
+                }),
+                _: 1
+              }, _parent3, _scopeId2));
+              _push3(`</li><!--[-->`);
+              ssrRenderList($options.attributes, (attr, index) => {
+                _push3(`<li class="filter__item"${_scopeId2}>`);
+                _push3(ssrRenderComponent(_component_CatalogRevealingNode, {
+                  item: { name: attr.slug },
+                  name: attr.slug,
+                  bodyLoaded: attr.slug ? true : false,
+                  onSetDefault: ($event) => $options.setDefaultAttribute(attr.slug)
+                }, {
+                  title: withCtx((_3, _push4, _parent4, _scopeId3) => {
+                    if (_push4) {
+                      _push4(`${ssrInterpolate(attr.name)}`);
+                    } else {
+                      return [
+                        createTextVNode(toDisplayString(attr.name), 1)
+                      ];
+                    }
+                  }),
+                  main: withCtx((_3, _push4, _parent4, _scopeId3) => {
+                    if (_push4) {
+                      _push4(`<ul class="filter__first-list"${_scopeId3}><!--[-->`);
+                      ssrRenderList($options.singleAttribute(attr.slug), ({ id, name }) => {
+                        _push4(`<li class="filter__first-item"${_scopeId3}>`);
+                        _push4(ssrRenderComponent(_component_InputCheckboxNode, {
+                          modelValue: $options.filterParamsChecked(attr.slug, id),
+                          labelText: name,
+                          onInput: ($event) => $options.updateCatalogRevealing({
+                            type: attr.slug,
+                            value: { id, name }
+                          })
+                        }, null, _parent4, _scopeId3));
+                        _push4(`</li>`);
+                      });
+                      _push4(`<!--]--></ul>`);
+                    } else {
+                      return [
+                        createVNode("ul", { class: "filter__first-list" }, [
+                          (openBlock(true), createBlock(Fragment, null, renderList($options.singleAttribute(attr.slug), ({ id, name }) => {
+                            return openBlock(), createBlock("li", {
+                              key: id,
+                              class: "filter__first-item"
+                            }, [
+                              createVNode(_component_InputCheckboxNode, {
+                                modelValue: $options.filterParamsChecked(attr.slug, id),
+                                labelText: name,
+                                onInput: ($event) => $options.updateCatalogRevealing({
+                                  type: attr.slug,
+                                  value: { id, name }
+                                })
+                              }, null, 8, ["modelValue", "labelText", "onInput"])
+                            ]);
+                          }), 128))
+                        ])
+                      ];
+                    }
+                  }),
+                  _: 2
+                }, _parent3, _scopeId2));
+                _push3(`</li>`);
+              });
+              _push3(`<!--]--><li class="filter__item"${_scopeId2}>`);
+              _push3(ssrRenderComponent(_component_InputCheckboxNode, {
+                modelValue: $data.onlineOnly,
+                "onUpdate:modelValue": ($event) => $data.onlineOnly = $event,
+                labelText: "\u0414\u043E\u0441\u0442\u0443\u043F\u043D\u043E \u043E\u043D\u043B\u0430\u0439\u043D"
+              }, null, _parent3, _scopeId2));
+              _push3(`</li></ul>`);
+              _push3(ssrRenderComponent(_component_ButtonNode, {
+                class: "filter__button filter__button_clean",
+                onClick: $options.filterCleanAndLoadDefault
+              }, {
+                default: withCtx((_3, _push4, _parent4, _scopeId3) => {
+                  if (_push4) {
+                    _push4(`\u041E\u0447\u0438\u0441\u0442\u0438\u0442\u044C<span${_scopeId3}>\u0444\u0438\u043B\u044C\u0442\u0440\u044B</span>`);
+                  } else {
+                    return [
+                      createTextVNode("\u041E\u0447\u0438\u0441\u0442\u0438\u0442\u044C"),
+                      createVNode("span", null, "\u0444\u0438\u043B\u044C\u0442\u0440\u044B")
+                    ];
+                  }
+                }),
+                _: 1
+              }, _parent3, _scopeId2));
+              _push3(`</div></div>`);
+            } else {
+              return [
+                createVNode("div", {
+                  ref: "filterBody",
+                  class: "filter__body",
+                  style: { minHeight: _ctx.basicFilter.active === false ? "0px" : $data.filterBodyHeight + "px" }
+                }, [
+                  createVNode("div", { class: "filter__wrapper container" }, [
+                    createVNode("ul", { class: "filter__list" }, [
+                      createVNode("li", { class: "filter__item" }, [
+                        createVNode(_component_CatalogRevealingNode, {
+                          item: { name: "catalogPrices" },
+                          onSetDefault: _ctx.setDefaultPrices
+                        }, {
+                          title: withCtx(() => [
+                            createTextVNode("\u0426\u0435\u043D\u0430")
+                          ]),
+                          main: withCtx(() => [
+                            _ctx.browserReady ? (openBlock(), createBlock(_component_FilterPrices, { key: 0 })) : createCommentVNode("", true)
+                          ]),
+                          _: 1
+                        }, 8, ["onSetDefault"])
+                      ]),
+                      (openBlock(true), createBlock(Fragment, null, renderList($options.attributes, (attr, index) => {
+                        return openBlock(), createBlock("li", {
+                          key: index,
+                          class: "filter__item"
+                        }, [
+                          createVNode(_component_CatalogRevealingNode, {
+                            item: { name: attr.slug },
+                            name: attr.slug,
+                            bodyLoaded: attr.slug ? true : false,
+                            onSetDefault: ($event) => $options.setDefaultAttribute(attr.slug)
+                          }, {
+                            title: withCtx(() => [
+                              createTextVNode(toDisplayString(attr.name), 1)
+                            ]),
+                            main: withCtx(() => [
+                              createVNode("ul", { class: "filter__first-list" }, [
+                                (openBlock(true), createBlock(Fragment, null, renderList($options.singleAttribute(attr.slug), ({ id, name }) => {
+                                  return openBlock(), createBlock("li", {
+                                    key: id,
+                                    class: "filter__first-item"
+                                  }, [
+                                    createVNode(_component_InputCheckboxNode, {
+                                      modelValue: $options.filterParamsChecked(attr.slug, id),
+                                      labelText: name,
+                                      onInput: ($event) => $options.updateCatalogRevealing({
+                                        type: attr.slug,
+                                        value: { id, name }
+                                      })
+                                    }, null, 8, ["modelValue", "labelText", "onInput"])
+                                  ]);
+                                }), 128))
+                              ])
+                            ]),
+                            _: 2
+                          }, 1032, ["item", "name", "bodyLoaded", "onSetDefault"])
+                        ]);
+                      }), 128)),
+                      createVNode("li", { class: "filter__item" }, [
+                        createVNode(_component_InputCheckboxNode, {
+                          modelValue: $data.onlineOnly,
+                          "onUpdate:modelValue": ($event) => $data.onlineOnly = $event,
+                          labelText: "\u0414\u043E\u0441\u0442\u0443\u043F\u043D\u043E \u043E\u043D\u043B\u0430\u0439\u043D"
+                        }, null, 8, ["modelValue", "onUpdate:modelValue"])
+                      ])
+                    ]),
+                    createVNode(_component_ButtonNode, {
+                      class: "filter__button filter__button_clean",
+                      onClick: withModifiers($options.filterCleanAndLoadDefault, ["stop"])
+                    }, {
+                      default: withCtx(() => [
+                        createTextVNode("\u041E\u0447\u0438\u0441\u0442\u0438\u0442\u044C"),
+                        createVNode("span", null, "\u0444\u0438\u043B\u044C\u0442\u0440\u044B")
+                      ]),
+                      _: 1
+                    }, 8, ["onClick"])
+                  ])
+                ], 4)
+              ];
+            }
+          }),
+          _: 1
+        }, _parent2, _scopeId));
+      } else {
+        return [
+          createVNode(_component_BaseButtonNode, {
+            class: "filter__button filter__button_filter-show",
+            onClick: withModifiers(($event) => _ctx.setBasic({ name: "filter", active: true }), ["stop"])
+          }, {
+            default: withCtx(() => [
+              createTextVNode("\u0424\u0438\u043B\u044C\u0442\u0440 \u0442\u043E\u0432\u0430\u0440\u043E\u0432")
+            ]),
+            _: 1
+          }, 8, ["onClick"]),
+          createVNode(_component_BasicNode, {
+            item: { name: "filter", active: true },
+            onClick: withModifiers(() => {
+            }, ["stop"])
+          }, {
+            default: withCtx(() => [
+              createVNode("div", {
+                ref: "filterBody",
+                class: "filter__body",
+                style: { minHeight: _ctx.basicFilter.active === false ? "0px" : $data.filterBodyHeight + "px" }
+              }, [
+                createVNode("div", { class: "filter__wrapper container" }, [
+                  createVNode("ul", { class: "filter__list" }, [
+                    createVNode("li", { class: "filter__item" }, [
+                      createVNode(_component_CatalogRevealingNode, {
+                        item: { name: "catalogPrices" },
+                        onSetDefault: _ctx.setDefaultPrices
+                      }, {
+                        title: withCtx(() => [
+                          createTextVNode("\u0426\u0435\u043D\u0430")
+                        ]),
+                        main: withCtx(() => [
+                          _ctx.browserReady ? (openBlock(), createBlock(_component_FilterPrices, { key: 0 })) : createCommentVNode("", true)
+                        ]),
+                        _: 1
+                      }, 8, ["onSetDefault"])
+                    ]),
+                    (openBlock(true), createBlock(Fragment, null, renderList($options.attributes, (attr, index) => {
+                      return openBlock(), createBlock("li", {
+                        key: index,
+                        class: "filter__item"
+                      }, [
+                        createVNode(_component_CatalogRevealingNode, {
+                          item: { name: attr.slug },
+                          name: attr.slug,
+                          bodyLoaded: attr.slug ? true : false,
+                          onSetDefault: ($event) => $options.setDefaultAttribute(attr.slug)
+                        }, {
+                          title: withCtx(() => [
+                            createTextVNode(toDisplayString(attr.name), 1)
+                          ]),
+                          main: withCtx(() => [
+                            createVNode("ul", { class: "filter__first-list" }, [
+                              (openBlock(true), createBlock(Fragment, null, renderList($options.singleAttribute(attr.slug), ({ id, name }) => {
+                                return openBlock(), createBlock("li", {
+                                  key: id,
+                                  class: "filter__first-item"
+                                }, [
+                                  createVNode(_component_InputCheckboxNode, {
+                                    modelValue: $options.filterParamsChecked(attr.slug, id),
+                                    labelText: name,
+                                    onInput: ($event) => $options.updateCatalogRevealing({
+                                      type: attr.slug,
+                                      value: { id, name }
+                                    })
+                                  }, null, 8, ["modelValue", "labelText", "onInput"])
+                                ]);
+                              }), 128))
+                            ])
+                          ]),
+                          _: 2
+                        }, 1032, ["item", "name", "bodyLoaded", "onSetDefault"])
+                      ]);
+                    }), 128)),
+                    createVNode("li", { class: "filter__item" }, [
+                      createVNode(_component_InputCheckboxNode, {
+                        modelValue: $data.onlineOnly,
+                        "onUpdate:modelValue": ($event) => $data.onlineOnly = $event,
+                        labelText: "\u0414\u043E\u0441\u0442\u0443\u043F\u043D\u043E \u043E\u043D\u043B\u0430\u0439\u043D"
+                      }, null, 8, ["modelValue", "onUpdate:modelValue"])
+                    ])
+                  ]),
+                  createVNode(_component_ButtonNode, {
+                    class: "filter__button filter__button_clean",
+                    onClick: withModifiers($options.filterCleanAndLoadDefault, ["stop"])
+                  }, {
+                    default: withCtx(() => [
+                      createTextVNode("\u041E\u0447\u0438\u0441\u0442\u0438\u0442\u044C"),
+                      createVNode("span", null, "\u0444\u0438\u043B\u044C\u0442\u0440\u044B")
+                    ]),
+                    _: 1
+                  }, 8, ["onClick"])
+                ])
+              ], 4)
+            ]),
+            _: 1
+          }, 8, ["onClick"])
+        ];
+      }
+    }),
+    _: 1
+  }, _parent));
+  _push(`</section>`);
+}
+const _sfc_setup$d = _sfc_main$d.setup;
+_sfc_main$d.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/TheFilterNode.vue");
+  return _sfc_setup$d ? _sfc_setup$d(props, ctx) : void 0;
 };
-const instance$i = VUE_WP_INSTANCE().state.filter.returned;
+const TheFilterNode = /* @__PURE__ */ _export_sfc(_sfc_main$d, [["ssrRender", _sfc_ssrRender$d]]);
+function checkAuth(to) {
+  var _a;
+  const userAuth = (_a = store.state) == null ? void 0 : _a.auth.userAuth;
+  if (!userAuth) {
+    return false;
+  }
+  return true;
+}
+const truncatedComponents = [
+  {
+    path: "/ordering/",
+    component: OrderingPage,
+    children: [
+      {
+        path: "cart/",
+        component: OrderingCartPage,
+        name: "OrderingCart"
+      },
+      {
+        path: "checkout/",
+        component: OrderingCheckoutPage,
+        name: "OrderingCheckout",
+        beforeEnter: [checkAuth]
+      },
+      {
+        path: "payment/",
+        component: OrderingPaymentPage,
+        name: "OrderingPayment",
+        beforeEnter: [checkAuth, () => {
+          var _a;
+          return !isEmpty((_a = store.state) == null ? void 0 : _a.checkout.draftOrder);
+        }]
+      }
+    ]
+  }
+];
+const commonComponents = [
+  {
+    path: "/",
+    component: HomePage,
+    name: "Home",
+    props: () => ({ slug: "home" })
+  },
+  {
+    path: "/product-category/",
+    component: SingleCategoryPage,
+    children: [
+      {
+        path: ":mainPath/",
+        component: CategoryMainPage,
+        name: "CategoryMain",
+        props: (route) => ({ params: route.params })
+      },
+      {
+        path: ":mainPath+/",
+        components: {
+          default: CategorySubPage,
+          top: TheFilterNode,
+          bot: PageContentNode
+        },
+        name: "CategorySub",
+        props: {
+          default: (route) => ({ params: route.params, query: route.query }),
+          top: true,
+          bot: (route) => ({ page: last(route.params.mainPath) })
+        }
+      }
+    ]
+  },
+  {
+    path: "/product/:mainPath+/",
+    component: SingleProductPage,
+    name: "SingleProduct",
+    props: (route) => ({ params: route.params })
+  },
+  {
+    path: "/personal/",
+    component: PersonalPage,
+    children: [
+      {
+        path: "wishlist/",
+        component: PersonalWishlistPage,
+        name: "PersonalWishlist"
+      },
+      {
+        path: "orders/",
+        component: PersonalOrdersPage,
+        name: "PersonalOrders",
+        beforeEnter: [checkAuth]
+      },
+      {
+        path: "profile/",
+        component: PersonalProfilePage,
+        name: "PersonalProfile",
+        beforeEnter: [checkAuth]
+      }
+    ]
+  },
+  {
+    path: "/:pathMatch(.*)*",
+    component: NotFoundPage,
+    name: "NotFound"
+  }
+];
+const routes = truncatedComponents.concat(commonComponents).filter((route) => route);
+const router = createRouter({
+  routes,
+  history: createMemoryHistory(),
+  scrollBehavior(to, from, savedPosition) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve({ left: 0, top: 0 });
+      }, 500);
+    });
+  }
+});
+router.beforeEach((to, from) => {
+  store.dispatch("auth/updateUserAuth");
+});
+const instance$i = __INST__.state.filter.returned;
 const filter = {
   namespaced: true,
   settings: {},
@@ -31337,6 +31130,7 @@ const filter = {
     },
     validateValues({
       state: state2,
+      dispatch,
       commit,
       getters: getters2,
       rootGetters
@@ -31347,16 +31141,27 @@ const filter = {
       if (state2.params.max_price > state2.maxCost) {
         commit("setMaxPrice", state2.maxCost);
       }
+    },
+    async updateFilter({
+      state: state2,
+      dispatch,
+      commit,
+      getters: getters2,
+      rootGetters
+    }) {
+      router.push(await dispatch("products/changePage", 1, { root: true }));
+      dispatch("validateValues");
+      dispatch("products/updateRequestParams", null, { root: true });
+      dispatch("products/filterAndPaginate", null, { root: true });
     }
   }
 };
-const instance$h = VUE_WP_INSTANCE().state.site.returned;
+const instance$h = __INST__.state.site.returned;
 const site = {
   namespaced: true,
-  state: () => ({ settings: {}, items: instance$h }),
-  getters: {}
+  state: () => ({ settings: {}, items: instance$h })
 };
-const instance$g = VUE_WP_INSTANCE().state.pages;
+const instance$g = __INST__.state.pages;
 const pages = {
   namespaced: true,
   state: () => ({
@@ -31366,8 +31171,7 @@ const pages = {
       apiType: instance$g.apiType,
       type: instance$g.type,
       routeBase: instance$g.route_base,
-      params: instance$g.params,
-      single_params: instance$g.single_params
+      params: instance$g.params
     },
     items: instance$g.items
   }),
@@ -31379,17 +31183,18 @@ const pages = {
     }),
     pageByLink: (state2) => (fullPath) => {
       for (const key in state2.items) {
-        if (Object.hasOwnProperty.call(state2.items, key)) {
+        if (has(state2.items, key)) {
           const element = state2.items[key];
           if (getPathName(element.link) === `${fullPath}/`) {
             return element;
           }
         }
       }
+      return null;
     }
   }
 };
-const instance$f = VUE_WP_INSTANCE().state.banners;
+const instance$f = __INST__.state.banners;
 const banners = {
   namespaced: true,
   state: () => ({
@@ -31410,7 +31215,7 @@ const banners = {
     }
   }
 };
-const instance$e = VUE_WP_INSTANCE().state.media;
+const instance$e = __INST__.state.media;
 const media = {
   namespaced: true,
   state: () => ({
@@ -31425,7 +31230,7 @@ const media = {
     items: instance$e.items
   })
 };
-const instance$d = VUE_WP_INSTANCE().state.customers;
+const instance$d = __INST__.state.customers;
 const customers = {
   namespaced: true,
   state: () => ({
@@ -31434,11 +31239,12 @@ const customers = {
     basedRequest: {
       apiType: instance$d.apiType,
       type: instance$d.type,
-      routeBase: instance$d.route_base
+      routeBase: instance$d.route_base,
+      params: instance$d.params
     }
   })
 };
-const instance$c = VUE_WP_INSTANCE().state.orders;
+const instance$c = __INST__.state.orders;
 const orders = {
   namespaced: true,
   state: () => ({
@@ -31447,6 +31253,7 @@ const orders = {
     basedRequest: {
       apiType: instance$c.apiType,
       type: instance$c.type,
+      params: instance$c.params,
       routeBase: instance$c.route_base
     },
     items: instance$c.items
@@ -31472,7 +31279,7 @@ const orders = {
     }
   }
 };
-const instance$b = VUE_WP_INSTANCE().state.productsCategories;
+const instance$b = __INST__.state.productsCategories;
 const productsCategories = {
   namespaced: true,
   state: () => ({
@@ -31486,10 +31293,37 @@ const productsCategories = {
     },
     items: instance$b.items
   }),
-  getters: {},
-  mutations: {}
+  getters: {
+    categoryPage: (state2, getters2, rootState, rootGetters) => (slug) => {
+      const pagesType = rootState.pages.basedRequest.type;
+      const templatePage = rootGetters.singleBySlug({ type: pagesType, slug });
+      const category = rootGetters.singleBySlug({ type: state2.basedRequest.type, slug });
+      return {
+        templatePage,
+        category
+      };
+    }
+  },
+  actions: {
+    routeToSingleProductCategory({ state: state2, rootGetters, dispatch }, value) {
+      const category = rootGetters.universalItem({ type: state2.basedRequest.type, value });
+      const handledPath = getPathName(category.permalink, "array");
+      const mainPath = handledPath.items;
+      dispatch("common/updateAllOpeningTypeItems", {}, { root: true });
+      if (category.parent === 0) {
+        return router.push({
+          name: "CategoryMain",
+          params: { mainPath: mainPath[0] }
+        });
+      }
+      return router.push({
+        name: "CategorySub",
+        params: { mainPath }
+      });
+    }
+  }
 };
-const instance$a = VUE_WP_INSTANCE().state.products;
+const instance$a = __INST__.state.products;
 const products = {
   namespaced: true,
   state: () => ({
@@ -31510,7 +31344,7 @@ const products = {
   getters: {
     filtredProducts: (state2, getters2, rootState, rootGetters) => ({ quantity }) => {
       const items = [];
-      if (!isEmpty(state2.itemsPaginated) && state2.itemsPaginated.hasOwnProperty(state2.basedRequest.params.page)) {
+      if (!isEmpty(state2.itemsPaginated) && has(state2.itemsPaginated, state2.basedRequest.params.page)) {
         const ids = state2.itemsPaginated[state2.basedRequest.params.page];
         for (let i = 0; i < ids.length; i++) {
           if (i === quantity)
@@ -31521,23 +31355,23 @@ const products = {
       }
       return items;
     },
-    filtredProductAttributes: (state2, getters2, rootState, rootGetters) => ({ requestAttributes, item }) => {
+    filtredProductAttributes: () => ({ requestAttributes, item }) => {
       let confirmed = true;
       const filter2 = {};
-      requestAttributes:
+      check:
         for (const reqAttrKey in requestAttributes) {
-          if (Object.hasOwnProperty.call(requestAttributes, reqAttrKey)) {
+          if (has(requestAttributes, reqAttrKey)) {
             const reqAttrObject = requestAttributes[reqAttrKey];
             for (let i = 0; i < item.attributes.length; i++) {
               const itemAtrrObject = item.attributes[i];
-              if (itemAtrrObject.id == reqAttrObject.id) {
+              if (itemAtrrObject.id === reqAttrObject.id) {
                 for (let index = 0; index < itemAtrrObject.options.length; index++) {
                   const itemOption = itemAtrrObject.options[index];
-                  for (let index2 = 0; index2 < reqAttrObject.options.length; index2++) {
-                    const inputOption = reqAttrObject.options[index2];
-                    if (inputOption.name == itemOption) {
+                  for (let ind = 0; ind < reqAttrObject.options.length; ind++) {
+                    const inputOption = reqAttrObject.options[ind];
+                    if (inputOption.name === itemOption) {
                       filter2[reqAttrKey] = true;
-                      continue requestAttributes;
+                      continue check;
                     } else {
                       filter2[reqAttrKey] = false;
                     }
@@ -31548,7 +31382,7 @@ const products = {
           }
         }
       for (const opt in filter2) {
-        if (Object.hasOwnProperty.call(filter2, opt)) {
+        if (has(filter2, opt)) {
           const bool = filter2[opt];
           if (!bool) {
             confirmed = false;
@@ -31563,50 +31397,55 @@ const products = {
     ),
     singleProductAttribute: (state2) => ({ productId, attrId }) => {
       var _a, _b;
-      return (_b = (_a = state2.items) == null ? void 0 : _a[productId]) == null ? void 0 : _b.attributes.find((i) => i.id == attrId);
+      return (_b = (_a = state2.items) == null ? void 0 : _a[productId]) == null ? void 0 : _b.attributes.find((i) => i.id === attrId);
     },
     sortingProducts: (state2, getters2, rootState, rootGetters) => (items, type) => {
-      if (type == 0)
+      if (type === 0)
         return items.sort(rootGetters["filter/sortDefault"]);
-      if (type == 1) {
+      if (type === 1) {
         return items.sort(rootGetters["filter/sortPriceMinToMax"]);
       }
-      if (type == 2) {
+      if (type === 2) {
         return items.sort(rootGetters["filter/sortPriceMaxToMin"]);
       }
+      return null;
     }
   },
   mutations: {
     setProductsParams(state2, filterParams) {
       const { params } = state2.basedRequest;
       for (const key in filterParams) {
-        const neastedValue = filterParams[key];
-        if (typeof neastedValue === "object" && !neastedValue.hasOwnProperty("options")) {
-          for (const neastedValueKey in neastedValue) {
-            if (Object.hasOwnProperty.call(neastedValue, neastedValueKey)) {
-              const element = neastedValue[neastedValueKey];
-              if (params.hasOwnProperty(neastedValueKey)) {
-                params[neastedValueKey] = element;
+        if (has(filterParams, key)) {
+          const neastedValue = filterParams[key];
+          if (typeof neastedValue === "object" && !has(neastedValue, "options")) {
+            for (const neastedValueKey in neastedValue) {
+              if (has(neastedValue, neastedValueKey)) {
+                const element = neastedValue[neastedValueKey];
+                if (has(params, neastedValueKey)) {
+                  params[neastedValueKey] = element;
+                }
               }
             }
           }
-        }
-        if (params.hasOwnProperty(key)) {
-          if (typeof neastedValue === "number" || typeof neastedValue === "string" || typeof neastedValue === "array") {
-            params[key] = neastedValue;
-          } else if (typeof neastedValue === "object") {
-            if (neastedValue.hasOwnProperty("options")) {
-              params[key] = neastedValue.options.map((object) => object.id);
+          if (has(params, key)) {
+            if (typeof neastedValue === "number" || typeof neastedValue === "string" || Array.isArray(neastedValue)) {
+              params[key] = neastedValue;
+            } else if (typeof neastedValue === "object") {
+              if (has(neastedValue, "options")) {
+                params[key] = neastedValue.options.map((object) => object.id);
+              }
             }
           }
         }
       }
       for (const key in filterParams) {
-        const filterParam = filterParams[key];
-        if (typeof filterParam === "number" || typeof filterParam === "string") {
-          state2.basedRequest.preparedParams[key] = filterParam;
-        } else {
-          state2.basedRequest.preparedParams[key] = cloneDeep(filterParam);
+        if (has(filterParams, key)) {
+          const filterParam = filterParams[key];
+          if (typeof filterParam === "number" || typeof filterParam === "string") {
+            state2.basedRequest.preparedParams[key] = filterParam;
+          } else {
+            state2.basedRequest.preparedParams[key] = cloneDeep(filterParam);
+          }
         }
       }
     },
@@ -31638,7 +31477,7 @@ const products = {
       const requestAttributes = {};
       let items = [];
       for (const key in preparedParams) {
-        if (Object.hasOwnProperty.call(preparedParams, key)) {
+        if (has(preparedParams, key)) {
           const param = preparedParams[key];
           if (key.match(/^pa_[a-z]+/) && param.options.length) {
             requestAttributes[key] = param;
@@ -31650,9 +31489,9 @@ const products = {
         let confirmed = false;
         const id = ids[index];
         const item = state2.items[id];
-        for (let index2 = 0; index2 < item.categories.length; index2++) {
-          const category = item.categories[index2];
-          if (category.id == preparedParams.category) {
+        for (let i = 0; i < item.categories.length; i++) {
+          const category = item.categories[i];
+          if (category.id === preparedParams.category) {
             confirmed = true;
             break;
           } else {
@@ -31677,17 +31516,17 @@ const products = {
         items,
         state2.basedRequest.preparedParams.orderAndOrderBy.id
       );
-      const { per_page } = state2.basedRequest.params;
-      commit("setTotalPages", Math.ceil(items.length / per_page));
+      const perPage = state2.basedRequest.params.per_page;
+      commit("setTotalPages", Math.ceil(items.length / perPage));
       commit("unsetItemsPaginated");
-      const pageCount = Math.ceil(items.length / per_page);
+      const pageCount = Math.ceil(items.length / perPage);
       let itemMarker = 0;
       for (let pageNumber = 1; pageNumber <= pageCount; pageNumber++) {
         commit("setItemsPaginated", {
           pageNumber,
-          value: items.slice(itemMarker, itemMarker + per_page).map((i) => i.id)
+          value: items.slice(itemMarker, itemMarker + perPage).map((i) => i.id)
         });
-        itemMarker += per_page;
+        itemMarker += perPage;
       }
     },
     changePage({
@@ -31699,7 +31538,7 @@ const products = {
     }, page) {
       const value = Number(page);
       const pushObj = { name: "" };
-      if (value != 1)
+      if (value !== 1)
         pushObj.query = { page: value };
       const { type } = state2.basedRequest;
       commit("SET_PAGE", { type, value }, { root: true });
@@ -31714,29 +31553,18 @@ const products = {
     }) {
       commit("setProductsParams", rootGetters["filter/params"]);
     },
-    routeToSingle({ state: state2, rootGetters }, value) {
-      let product;
-      switch (typeof value) {
-        case "object":
-          product = value;
-          break;
-        case "number":
-          product = state2.items[value];
-          break;
-        case "string":
-          product = rootGetters.singleBySlug({ type: state2.basedRequest.type, slug: value });
-          break;
-      }
+    routeToSingleProduct({ state: state2, rootGetters }, value) {
+      const product = rootGetters.universalItem({ type: state2.basedRequest.type, value });
       const handledPath = getPathName(product.permalink, "array");
-      const preProduct = [handledPath.prefix, ...handledPath.items];
-      router$1.push({
+      const mainPath = [...handledPath.items, handledPath.last];
+      router.push({
         name: "SingleProduct",
-        params: { preProduct, productSlug: product.slug }
+        params: { mainPath }
       });
     }
   }
 };
-const instance$9 = VUE_WP_INSTANCE().state.productsAttributes;
+const instance$9 = __INST__.state.productsAttributes;
 const productsAttributes = {
   namespaced: true,
   state: () => ({
@@ -31754,7 +31582,7 @@ const productsAttributes = {
     attributesSlugs(state2) {
       const slugs = [];
       for (const key in state2.items) {
-        if (Object.hasOwnProperty.call(state2.items, key)) {
+        if (has(state2.items, key)) {
           const element = state2.items[key];
           slugs.push(element.slug);
         }
@@ -31763,7 +31591,7 @@ const productsAttributes = {
     }
   }
 };
-const instance$8 = VUE_WP_INSTANCE().state.productsTermsBrands;
+const instance$8 = __INST__.state.productsTermsBrands;
 const productsTermsBrands = {
   namespaced: true,
   state: () => ({
@@ -31778,7 +31606,7 @@ const productsTermsBrands = {
     items: instance$8.items || {}
   })
 };
-const instance$7 = VUE_WP_INSTANCE().state.productsTermsMaterials;
+const instance$7 = __INST__.state.productsTermsMaterials;
 const productsTermsMaterials = {
   namespaced: true,
   state: () => ({
@@ -31793,7 +31621,7 @@ const productsTermsMaterials = {
     items: instance$7.items
   })
 };
-const instance$6 = VUE_WP_INSTANCE().state.productsTermsColors;
+const instance$6 = __INST__.state.productsTermsColors;
 const productsTermsColors = {
   namespaced: true,
   state: () => ({
@@ -31808,7 +31636,7 @@ const productsTermsColors = {
     items: instance$6.items || {}
   })
 };
-const instance$5 = VUE_WP_INSTANCE().state.productsTermsSizes;
+const instance$5 = __INST__.state.productsTermsSizes;
 const productsTermsSizes = {
   namespaced: true,
   state: () => ({
@@ -31823,7 +31651,7 @@ const productsTermsSizes = {
     items: instance$5.items
   })
 };
-const instance$4 = VUE_WP_INSTANCE().state.paymentGateways;
+const instance$4 = __INST__.state.paymentGateways;
 const paymentGateways = {
   namespaced: true,
   state: () => ({
@@ -31832,12 +31660,77 @@ const paymentGateways = {
     basedRequest: {
       apiType: instance$4.apiType,
       type: instance$4.type,
+      params: instance$4.params,
       routeBase: instance$4.route_base
     },
     items: instance$4.items
   })
 };
-const instance$3 = VUE_WP_INSTANCE().state.wishlist;
+const headers = () => {
+  const headers2 = {};
+  {
+    headers2["Content-Security-Policy"] = "default-src 'self'";
+  }
+  return headers2;
+};
+const axiosInstance = (baseURL) => {
+  return axios.create({
+    baseURL,
+    headers,
+    timeout: 2e5
+  });
+};
+async function mainFetch({
+  id = null,
+  basedRequest,
+  method = "get",
+  config = {},
+  data = {}
+}) {
+  const { routeBase, apiType, type, params } = basedRequest;
+  const handledConfig = actionJWTResolver({
+    type,
+    config
+  });
+  const baseURL = `${siteURL()}wp-json${apiType}`;
+  handledConfig.withCredentials = false;
+  const showProgress = has(handledConfig, "onDownloadProgress") && handledConfig.onDownloadProgress;
+  try {
+    if (showProgress) {
+      handledConfig.onDownloadProgress = (progressEvent) => {
+        const percentCompleted = Math.floor(
+          progressEvent.loaded / progressEvent.total * 100
+        );
+        store.commit("common/setProgress", percentCompleted);
+        store.commit("common/setProgressLoad", {
+          visible: true,
+          percent: percentCompleted === Infinity ? 100 : percentCompleted
+        });
+      };
+    }
+    const response = await axiosInstance(
+      baseURL
+    )[method](
+      `/${routeBase}/${id !== null ? id : ""}`,
+      method === "get" ? handledConfig : data,
+      method === "get" ? void 0 : handledConfig
+    );
+    return response;
+  } catch (error) {
+    console.error("Error in method 'mainFetch'", { error, basedRequest });
+  } finally {
+    if (showProgress) {
+      setTimeout(() => {
+        store.commit("common/setProgressLoad", {
+          visible: false,
+          percent: 0
+        });
+      }, 2e3);
+    }
+  }
+  return null;
+}
+const instance$3 = __INST__.state.wishlist;
 const wishlist = {
   namespaced: true,
   state: () => ({
@@ -31847,25 +31740,27 @@ const wishlist = {
     basedRequest: {
       apiType: instance$3.apiType,
       type: instance$3.type,
-      routeBase: instance$3.route_base
+      routeBase: instance$3.route_base,
+      params: instance$3.params
     },
     items: instance$3.items
   }),
   getters: {
     productContanedInWishlist: (state2, getters2, rootState, rootGetters) => (id) => {
       for (const key in state2.items) {
-        if (Object.hasOwnProperty.call(state2.items, key)) {
+        if (has(state2.items, key)) {
           const item = state2.items[key];
-          if (id == item.product_id) {
+          if (id === item.product_id) {
             return key;
           }
         }
       }
+      return false;
     },
     wishlistProductIds: (state2) => {
       const ids = [];
       for (const key in state2.items) {
-        if (Object.hasOwnProperty.call(state2.items, key)) {
+        if (has(state2.items, key)) {
           const el = state2.items[key];
           ids.push(el.product_id);
         }
@@ -31883,24 +31778,18 @@ const wishlist = {
     }) {
       var _a, _b;
       const { userData } = rootState.auth;
-      const basedRequest2 = { ...{}, ...state2.basedRequest };
-      basedRequest2.routeBase = `${basedRequest2.routeBase}/get_by_user/${userData.id}`;
-      const response = await dispatch(
-        "mainFetchRequest",
-        { basedRequest: basedRequest2 },
-        {
-          root: true
-        }
-      );
+      const basedRequest = { ...{}, ...state2.basedRequest };
+      basedRequest.routeBase = `${basedRequest.routeBase}/get_by_user/${userData.id}`;
+      const response = await mainFetch({ basedRequest });
       if (userData.id !== 0) {
-        const tinv_wlk_log = (_b = (_a = response == null ? void 0 : response.data) == null ? void 0 : _a[0]) == null ? void 0 : _b.share_key;
-        Cookies.set("tinv_wlk_log", tinv_wlk_log || "");
+        const tinvWlkLog = (_b = (_a = response == null ? void 0 : response.data) == null ? void 0 : _a[0]) == null ? void 0 : _b.share_key;
+        Cookies.set("tinv_wlk_log", tinvWlkLog || "");
       }
     },
     getWishlistProductsByShareKey({ state: state2, dispatch }) {
-      const basedRequest2 = { ...{}, ...state2.basedRequest };
-      basedRequest2.routeBase = `${basedRequest2.routeBase}/${getWishListKeyFromCookieKey()}/get_products`;
-      dispatch("getItems", { basedRequest: basedRequest2, onDownloadProgress: true }, { root: true });
+      const basedRequest = { ...{}, ...state2.basedRequest };
+      basedRequest.routeBase = `${basedRequest.routeBase}/${getWishListKeyFromCookieKey()}/get_products`;
+      dispatch("getItems", { basedRequest, config: { onDownloadProgress: true } }, { root: true });
     },
     async updateWishlist({
       state: state2,
@@ -31910,11 +31799,10 @@ const wishlist = {
       rootGetters,
       rootState
     }, productData) {
+      let response;
       try {
-        const {
-          product_id
-        } = productData;
-        const itemId = getters2.productContanedInWishlist(product_id);
+        const productId = productData.product_id;
+        const itemId = getters2.productContanedInWishlist(productId);
         const payload = { basedRequest: { ...{}, ...state2.basedRequest } };
         if (itemId) {
           payload.basedRequest.routeBase = `${payload.basedRequest.routeBase}/remove_product/${itemId}`;
@@ -31923,9 +31811,7 @@ const wishlist = {
           payload.config = { params: productData };
           payload.method = "post";
         }
-        const response = await dispatch("mainFetchRequest", payload, {
-          root: true
-        });
+        response = await mainFetch(payload);
         if (typeof response.data === "object") {
           dispatch("common/updateMessage", "productAddedToWishlist", { root: true });
           commit(
@@ -31945,9 +31831,9 @@ const wishlist = {
         }
         return response;
       } catch (error) {
-        console.log(error);
-      } finally {
+        console.error(error);
       }
+      return response;
     }
   },
   mutations: {
@@ -31956,7 +31842,7 @@ const wishlist = {
     }
   }
 };
-const instance$2 = VUE_WP_INSTANCE().state.cart;
+const instance$2 = __INST__.state.cart;
 const cart = {
   namespaced: true,
   state: () => ({
@@ -31977,19 +31863,18 @@ const cart = {
       commit,
       dispatch
     }) {
+      let response;
       try {
-        const response = await dispatch(
-          "mainFetchRequest",
-          { basedRequest: state2.basedRequest },
-          { root: true }
+        response = await mainFetch(
+          { basedRequest: state2.basedRequest }
         );
         const { headers: headers2 } = response;
         Cookies.set("nonce-token", headers2.nonce);
         commit("setCart", response.data);
-        return response;
       } catch (error) {
         console.error(error);
       }
+      return response;
     },
     async updateCart({
       state: state2,
@@ -31997,24 +31882,17 @@ const cart = {
       commit,
       dispatch
     }, { routeBase, params }) {
+      let response;
       const config = {
         headers: getNonceToken(),
         params: {}
       };
       config.params = cloneDeep(params);
       config.params.variations = [];
-      const basedRequest2 = { ...{}, ...state2.basedRequest };
-      basedRequest2.routeBase = routeBase;
+      const basedRequest = { ...{}, ...state2.basedRequest };
+      basedRequest.routeBase = routeBase;
       try {
-        const response = await dispatch(
-          "mainFetchRequest",
-          {
-            basedRequest: basedRequest2,
-            config,
-            method: "post"
-          },
-          { root: true }
-        );
+        response = await mainFetch({ basedRequest, config, method: "post" });
         commit("setCart", response.data);
         switch (routeBase) {
           case "cart/add-item":
@@ -32027,6 +31905,7 @@ const cart = {
       } catch (e) {
         console.error(e);
       }
+      return response;
     },
     validationVariations(variations) {
       let valid = false;
@@ -32048,7 +31927,7 @@ const cart = {
     }
   }
 };
-const instance$1 = VUE_WP_INSTANCE().state.checkout;
+const instance$1 = __INST__.state.checkout;
 const checkout = {
   namespaced: true,
   state: () => ({
@@ -32057,14 +31936,64 @@ const checkout = {
     basedRequest: {
       apiType: instance$1.apiType,
       type: instance$1.type,
-      routeBase: instance$1.route_base
-    }
+      routeBase: instance$1.route_base,
+      params: instance$1.params
+    },
+    draftOrder: {}
   }),
   getters: {},
-  actions: {},
-  mutations: {}
+  actions: {
+    async getCheckout({ state: state2 }) {
+      let result = {};
+      try {
+        result = await mainFetch({
+          basedRequest: state2.basedRequest,
+          method: "get",
+          data: {},
+          config: { headers: getNonceToken() }
+        });
+        if (result == null ? void 0 : result.data) {
+          state2.draftOrder = result.data;
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async postCheckout({ state: state2, dispatch, commit }) {
+      if (!state2.draftOrder.payment_method) {
+        dispatch("common/updateMessage", "notSelectPaymentMethod", { root: true });
+        return;
+      }
+      let result = {};
+      try {
+        result = await mainFetch({
+          basedRequest: state2.basedRequest,
+          method: "post",
+          data: state2.draftOrder,
+          config: { headers: getNonceToken() }
+        });
+      } catch (error) {
+        dispatch("common/updateMessage", "orderingError", { root: true });
+        console.error(error);
+      }
+      commit("setCurrentURLPayment", result.data.payment_result.redirect_url);
+      router.push({ name: "OrderingPayment" });
+      dispatch("cart/getCart", null, { root: true });
+    }
+  },
+  mutations: {
+    setCurrentURLPayment(state2, value = "") {
+      state2.currentURLPayment = value;
+    },
+    changePaymentMethod(state2, value) {
+      state2.draftOrder.payment_method = value;
+    },
+    setDraftOrder(state2, value = {}) {
+      state2.draftOrder = value;
+    }
+  }
 };
-const instance = VUE_WP_INSTANCE().state.auth;
+const instance = __INST__.state.auth;
 const auth = {
   namespaced: true,
   state: () => ({
@@ -32091,19 +32020,17 @@ const auth = {
       dispatch,
       commit
     }, authData) {
-      const basedRequest2 = { ...{}, ...state2.basedRequest };
-      basedRequest2.routeBase = "token";
-      const responseLogin = await dispatch(
-        "mainFetchRequest",
+      const basedRequest = { ...{}, ...state2.basedRequest };
+      basedRequest.routeBase = "token";
+      const responseLogin = await mainFetch(
         {
-          basedRequest: basedRequest2,
+          basedRequest,
           method: "post",
           data: {
             username: loginFromMail(authData.email),
             password: authData.password
           }
-        },
-        { root: true }
+        }
       );
       Cookies.set("jwt-token", responseLogin.data.token);
       commit("updateSensitiveData", null, { root: true });
@@ -32117,12 +32044,8 @@ const auth = {
       dispatch("cart/getCart", null, { root: true });
     },
     async getUser({ dispatch, commit, rootState }) {
-      const response = await dispatch(
-        "mainFetchRequest",
-        { basedRequest: rootState.customers.basedRequest },
-        {
-          root: true
-        }
+      const response = await mainFetch(
+        { basedRequest: rootState.customers.basedRequest }
       );
       commit("setUserData", response == null ? void 0 : response.data);
     }
@@ -32131,23 +32054,19 @@ const auth = {
     dispatch,
     rootState
   }, authData) {
-    authData.username = loginFromMail(authData.email);
-    dispatch(
-      "mainFetchRequest",
+    const authDataHandled = authData;
+    authDataHandled.username = loginFromMail(authData.email);
+    mainFetch(
       {
         basedRequest: rootState.customers.basedRequest,
         method: "post",
-        data: authData
-      },
-      { root: true }
+        data: authDataHandled
+      }
     );
   },
   mutations: {
     setUserAuth(state2, value) {
       state2.userAuth = value === void 0 ? !state2.userAuth : value;
-    },
-    setCurrentURLPayment(state2, value = "") {
-      state2.currentURLPayment = value;
     },
     setUserData(state2, value = { id: 0 }) {
       state2.userData = value;
@@ -32178,14 +32097,14 @@ const getters = {
   },
   itemsBased: (state2) => ({ type }) => state2[type].items || [],
   itemsMatchedOneProperty: (state2) => ({ type }, params) => {
-    const items = [];
+    const items = {};
     const paramsKeys = Object.keys(params);
     for (const key in state2[type].items) {
-      if (Object.hasOwnProperty.call(state2[type].items, key)) {
+      if (has(state2[type].items, key)) {
         const element = state2[type].items[key];
         paramsKeys.forEach((paramKey) => {
           if (element[paramKey] === params[paramKey]) {
-            items.push(element);
+            items[key] = element;
           }
         });
       }
@@ -32196,7 +32115,7 @@ const getters = {
     const items = [];
     const keys = Object.keys(params);
     for (const key in state2[type].items) {
-      if (Object.hasOwnProperty.call(state2[type].items, key)) {
+      if (has(state2[type].items, key)) {
         const element = state2[type].items[key];
         const callbackResult = callback(element, keys, params, items);
         if (callbackResult)
@@ -32211,7 +32130,7 @@ const getters = {
   itemsInclude: (state2) => ({ type }, includeArray = []) => {
     const items = {};
     for (const key in state2[type].items) {
-      if (Object.hasOwnProperty.call(state2[type].items, key)) {
+      if (has(state2[type].items, key)) {
         const element = state2[type].items[key];
         includeArray.forEach((includeId) => {
           if (element.id === includeId) {
@@ -32225,7 +32144,7 @@ const getters = {
   mapItemsByKey: (state2) => ({ type }, inputKey) => {
     const ids = [];
     for (const key in state2[type].items) {
-      if (Object.hasOwnProperty.call(state2[type].items, key)) {
+      if (has(state2[type].items, key)) {
         const element = state2[type].items[key];
         ids.push(element[inputKey]);
       }
@@ -32250,7 +32169,7 @@ const getters = {
     if (!str || str.length < 3)
       return outputItems;
     for (const key in items) {
-      if (Object.hasOwnProperty.call(items, key)) {
+      if (has(items, key)) {
         const item = items[key];
         const regexp = new RegExp(str, "i");
         if (item.name.match(regexp)) {
@@ -32259,6 +32178,21 @@ const getters = {
       }
     }
     return outputItems;
+  },
+  universalItem: (state2, getters2) => ({ type, value }) => {
+    let item;
+    switch (typeof value) {
+      case "object":
+        item = value;
+        break;
+      case "number":
+        item = state2[type].items[value];
+        break;
+      case "string":
+        item = getters2.singleBySlug({ type, slug: value });
+        break;
+    }
+    return item;
   }
 };
 const mutations = {
@@ -32270,7 +32204,7 @@ const mutations = {
         id = key;
       }
     });
-    if (item && type && !Object.prototype.hasOwnProperty.call(state2[type].items, item[id])) {
+    if (item && type && !has(state2[type].items, item[id])) {
       state2[type].items[item[id]] = item;
     }
   },
@@ -32308,11 +32242,11 @@ const mutations = {
   updateSensitiveData(state2) {
     var _a;
     for (const key in state2) {
-      if (Object.hasOwnProperty.call(state2, key)) {
+      if (has(state2, key)) {
         const stateModule = state2[key];
         if ((_a = stateModule.settings) == null ? void 0 : _a.sensitive) {
           for (const mutationName in store._mutations) {
-            if (Object.hasOwnProperty.call(store._mutations, mutationName)) {
+            if (has(store._mutations, mutationName)) {
               const { type } = stateModule.basedRequest;
               if (mutationName.match(RegExp(`${type}`)) && !mutationName.match(/_/)) {
                 store.commit(mutationName);
@@ -32324,70 +32258,12 @@ const mutations = {
     }
   }
 };
-const headers = () => {
-  const headers2 = {};
-  {
-    headers2["Content-Security-Policy"] = "default-src 'self'";
-  }
-  return headers2;
-};
-const axiosInstance = (baseURL) => axios.create({
-  baseURL,
-  headers,
-  timeout: 2e5
-});
-async function mainFetch({
-  id = null,
-  basedRequest: basedRequest2,
-  method = "get",
-  config = {},
-  data = {}
-}) {
-  const { routeBase, apiType, type } = basedRequest2;
-  const baseURL = `${siteURL()}wp-json${apiType}`;
-  config.withCredentials = false;
-  const showProgress = config.hasOwnProperty("onDownloadProgress") && config.onDownloadProgress;
-  try {
-    if (showProgress) {
-      config.onDownloadProgress = (progressEvent) => {
-        const percentCompleted = Math.floor(
-          progressEvent.loaded / progressEvent.total * 100
-        );
-        store.commit("common/setProgress", percentCompleted);
-        store.commit("common/setProgressLoad", {
-          visible: true,
-          percent: percentCompleted === Infinity ? 100 : percentCompleted
-        });
-      };
-    }
-    const response = await axiosInstance(
-      baseURL
-    )[method](
-      `/${routeBase}/${id !== null ? id : ""}`,
-      method === "get" ? config : data,
-      method === "get" ? void 0 : config
-    );
-    return response;
-  } catch (error) {
-    console.error("Error in method 'mainFetch'", { error, basedRequest: basedRequest2 });
-  } finally {
-    if (showProgress) {
-      setTimeout(() => {
-        store.commit("common/setProgressLoad", {
-          visible: false,
-          percent: 0
-        });
-      }, 2e3);
-    }
-  }
-}
 const actions = {
   async getSingleById({ getters: getters2, commit }, { basedRequest: { routeBase, type, apiType }, params }) {
     if (getters2.singleById({ type, id: params.id }))
       return;
-    let response;
     try {
-      response = await mainFetch({
+      const response = await mainFetch({
         id: params.id,
         routeBase,
         config: { params },
@@ -32397,66 +32273,29 @@ const actions = {
     } catch (error) {
       console.error(error, { type });
     }
-    return response;
   },
-  async getSingleBySlug({ state: state2, getters: getters2, commit }, { basedRequest: { routeBase, type, apiType }, params }) {
-    if (getters2.singleBySlug({ type, slug: params.slug }))
+  async getSingleBySlug({ state: state2, getters: getters2, commit }, { basedRequest, slug }) {
+    if (getters2.singleBySlug({ type: basedRequest.type, slug }))
       return;
-    let response;
     try {
-      response = await mainFetch({ routeBase, config: { params }, apiType });
-      commit("ADD_ITEM", { type, item: response.data[0] });
+      const response = await mainFetch({ basedRequest, config: { params: { slug, pre_page: 1 } } });
+      commit("ADD_ITEM", { type: basedRequest.type, item: response.data[0] });
     } catch (error) {
       console.error(error, basedRequest);
     }
-    return response;
   },
   async getItems({ state: state2, getters: getters2, commit, dispatch }, {
-    basedRequest: basedRequest2,
-    onDownloadProgress = null
+    basedRequest,
+    config
   }) {
     let response;
     let payload;
-    getters2.request({
-      type: basedRequest2.type,
-      params: basedRequest2.params
-    });
-    const { type, params } = basedRequest2;
-    pickBy(params, identity);
-    let config = {
-      onDownloadProgress,
-      params
-    };
     try {
-      config = actionJWTResolver({
-        type,
-        config
-      });
-      payload = { basedRequest: basedRequest2, config };
+      payload = { basedRequest, config };
       response = await mainFetch(payload);
-      callStoreMethod(`${type}/handleItemsResponse`, "dispatch", response.data, () => {
-        response.data.forEach((item) => commit("ADD_ITEM", { type, item }));
+      callStoreMethod(`${basedRequest.type}/handleItemsResponse`, "dispatch", response.data, () => {
+        response.data.forEach((item) => commit("ADD_ITEM", { type: basedRequest.type, item }));
       });
-    } catch (error) {
-      console.error(error, payload);
-    }
-    return response;
-  },
-  async mainFetchRequest({ getters: getters2, commit, rootState }, {
-    basedRequest: basedRequest2,
-    method,
-    data,
-    config = {},
-    onDownloadProgress = null
-  }) {
-    let response;
-    const payload = { basedRequest: basedRequest2, config, method, data, onDownloadProgress };
-    try {
-      config = actionJWTResolver({
-        type: basedRequest2.type,
-        config
-      });
-      response = await mainFetch(payload);
     } catch (error) {
       console.error(error, payload);
     }
@@ -32466,7 +32305,7 @@ const actions = {
 const state = {};
 const store = createStore({
   modules: {
-    common: common$1,
+    common,
     menus,
     site,
     pages,
@@ -32493,498 +32332,6 @@ const store = createStore({
   mutations,
   actions
 });
-function checkAuth(to) {
-  var _a;
-  const userAuth = (_a = store.state) == null ? void 0 : _a.auth.userAuth;
-  if (!userAuth) {
-    return false;
-  }
-  return true;
-}
-const prefixes = {
-  product: (handled) => {
-    handled.last = handled.items[handled.items.length - 1];
-    handled.items.pop();
-    return handled;
-  },
-  "product-category": null
-};
-const truncatedComponents = [
-  {
-    path: "/cart/",
-    component: CartPage,
-    name: "Cart"
-  },
-  {
-    path: "/checkout/",
-    component: CheckoutPage,
-    name: "Checkout"
-  },
-  {
-    path: "/payment/",
-    component: PaymentPage,
-    name: "Payment"
-  }
-];
-const commonComponents = [
-  {
-    path: "/",
-    component: HomePage,
-    name: "Home",
-    props: () => ({ slug: "home" })
-  },
-  {
-    path: "/product-category/:mainCategorySlug/",
-    component: SingleCategoryPage,
-    name: "SingleCategory",
-    props: (route) => ({ params: route.params })
-  },
-  {
-    path: "/product-category/:mainCategorySlug/:categorySlug/",
-    component: SingleSubCategoryPage,
-    name: "SingleSubCategory",
-    props: (route) => ({ params: route.params, query: route.query })
-  },
-  {
-    path: "/:preProduct+/:productSlug/",
-    component: SingleProductPage,
-    name: "SingleProduct",
-    props: (route) => ({ params: route.params, query: route.query })
-  },
-  {
-    path: "/personal/",
-    component: PersonalPage,
-    children: [
-      {
-        path: "wishlist/",
-        component: PersonalWishlistPage,
-        name: "PersonalWishlist"
-      },
-      {
-        path: "orders/",
-        component: PersonalOrdersPage,
-        name: "PersonalOrders",
-        beforeEnter: [checkAuth]
-      },
-      {
-        path: "profile/",
-        component: PersonalProfilePage,
-        name: "PersonalProfile",
-        beforeEnter: [checkAuth]
-      }
-    ]
-  },
-  {
-    path: "/blog-page/",
-    component: BlogPage,
-    name: "BlogPage"
-  },
-  {
-    path: "/:pathMatch(.*)*",
-    component: NotFoundPage,
-    name: "NotFound"
-  }
-];
-const routes = truncatedComponents.concat(commonComponents).filter((route) => route);
-const router = createRouter({
-  routes,
-  history: createMemoryHistory(),
-  scrollBehavior(to, from, savedPosition) {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve({ left: 0, top: 0 });
-      }, 500);
-    });
-  }
-});
-router.beforeEach((to, from) => {
-});
-const router$1 = router;
-function getNonceToken(obj = {}) {
-  const nonceToken = Cookies.get("nonce-token");
-  if (!nonceToken) {
-    throw new Error("Nonce token undefined");
-  }
-  obj.Nonce = nonceToken;
-  return obj;
-}
-function findAllPositions(str, separator) {
-  let stop = false;
-  let pos = 0;
-  const foundPositions = [];
-  while (true) {
-    const foundPos = str.indexOf(separator, pos);
-    if (foundPos == -1 && !stop) {
-      foundPositions.push(str.length);
-      stop = true;
-    } else {
-      foundPositions.push(foundPos);
-      pos = foundPos + 1;
-    }
-    if (stop)
-      break;
-  }
-  return foundPositions;
-}
-function separateStringByArrayPositions(str, foundPositions) {
-  const subStrs = [];
-  let start = 0;
-  for (let index = 0; index < foundPositions.length; index++) {
-    const end = foundPositions[index];
-    const substr = str.slice(start, end);
-    subStrs.push(substr);
-    start += substr.length + 1;
-  }
-  return subStrs;
-}
-function handleWPDate(value) {
-  const separator = value.indexOf("T");
-  let yearMonthDate = value.slice(0, separator);
-  let hoursMinutesSeconds = value.slice(separator + 1);
-  yearMonthDate = separateStringByArrayPositions(
-    yearMonthDate,
-    findAllPositions(yearMonthDate, "-")
-  );
-  yearMonthDate[1] -= 1;
-  hoursMinutesSeconds = separateStringByArrayPositions(
-    hoursMinutesSeconds,
-    findAllPositions(hoursMinutesSeconds, ":")
-  );
-  return new Date(...yearMonthDate, ...hoursMinutesSeconds);
-}
-function VUE_WP_INSTANCE() {
-  return __VUE_WORDPRESS__;
-}
-function togglerOpening(name, prop, value, state2, type) {
-  const element = state2.openings[type][name];
-  if (value === null) {
-    element[prop] = !element[prop];
-  } else {
-    state2.openings[type][element.name][prop] = value;
-  }
-}
-function loginFromMail(email) {
-  const str = email;
-  return str.slice(0, str.indexOf("@"));
-}
-function actionJWTResolver({ type, config = {} }) {
-  const { JWTRequestConfig: { JWTReqired, JWTMaintain } } = store.state[type].settings;
-  let JWTToken;
-  if (JWTReqired && JWTMaintain === false) {
-    throw new Error('\u0418\u0441\u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u043D\u0438\u0435 \u0444\u043B\u0430\u0433\u0430 "JWTReqired" \u043F\u043E\u0434\u0440\u0430\u0437\u0443\u043C\u0435\u0432\u0430\u0435\u0442 \u0443\u0441\u0442\u0430\u043D\u043E\u0432\u043A\u0443 JWTMaintain = true');
-  }
-  if (JWTMaintain) {
-    JWTToken = Cookies.get("jwt-token");
-    if (JWTToken) {
-      if (!config.hasOwnProperty("headers")) {
-        config.headers = {};
-      }
-      config.headers.Authorization = `Bearer ${JWTToken}`;
-    } else if (JWTReqired) {
-      throw new Error(`\u0414\u043B\u044F \u0432\u044B\u043F\u043E\u043B\u043D\u0435\u043D\u0438\u044F \u0434\u043B\u044F ${type} \u0437\u0430\u043F\u0440\u043E\u0441\u0430 \u043D\u0435\u043E\u0431\u0445\u043E\u0434\u0438\u043C \u0442\u043E\u043A\u0435\u043D`);
-    }
-  }
-  return config;
-}
-function routeToCategory(category) {
-  var _a;
-  console.log(category);
-  if (isEmpty(category))
-    throw new Error("\u041D\u0435 \u043F\u0435\u0440\u0435\u0434\u0430\u043D\u0430 \u043A\u0430\u0442\u0435\u0433\u043E\u0440\u0438\u044F");
-  let routerObject = {};
-  if (category.parent === 0) {
-    routerObject = router$1.push({
-      name: "SingleCategory",
-      params: { mainCategorySlug: category.slug }
-    });
-  } else {
-    const parentCategorySlug = (_a = store.state.productsCategories.items) == null ? void 0 : _a[category.parent].slug;
-    routerObject = router$1.push({
-      name: "SingleSubCategory",
-      params: {
-        mainCategorySlug: parentCategorySlug,
-        categorySlug: category.slug
-      }
-    });
-  }
-  store.dispatch("common/updateAllOpeningTypeItems", {});
-  return routerObject;
-}
-function mutateObjectForReplaceProperty(mutableObject, replacementProps) {
-  const replacementKeys = Object.keys(replacementProps);
-  replacementKeys.forEach((key) => {
-    if (mutableObject.hasOwnProperty(key)) {
-      mutableObject[key] = replacementProps[key];
-    }
-  });
-  return mutableObject;
-}
-function getWishListKeyFromCookieKey() {
-  if (store.state.auth.userAuth) {
-    return Cookies.get("tinv_wlk_log");
-  }
-  return Cookies.get("tinv_wishlistkey");
-}
-function siteURL() {
-  let { url } = VUE_WP_INSTANCE().routing.returned;
-  url = new URL(url);
-  url = `${url.protocol}//${url.hostname}/`;
-  return url;
-}
-function getPathName(str, returnType = "string") {
-  let pathName;
-  if (str.indexOf(siteURL()) === 0) {
-    pathName = str.slice(siteURL().length - 1);
-  } else {
-    pathName = str;
-  }
-  switch (returnType) {
-    case "string":
-      return `${pathName}`;
-    case "array":
-      let handled = {
-        items: pathName.split("/").filter((el) => el)
-      };
-      const first = handled.items[0];
-      if (!Object.keys(prefixes).includes(first)) {
-        return handled;
-      }
-      handled.prefix = first;
-      handled.items.splice(0, 1);
-      if (prefixes[first]) {
-        handled = prefixes[first](handled);
-      }
-      return handled;
-    default:
-      return null;
-  }
-}
-function callStoreMethod(methodName, methodType = "dispatch", payload = void 0, callback = null) {
-  let typeStore;
-  switch (methodType) {
-    case "dispatch":
-      typeStore = "_actions";
-      break;
-    case "commit":
-      typeStore = "_mutations";
-      break;
-    default:
-      throw new Error("Wrong methodType");
-  }
-  const methodExists = Object.keys(store[typeStore]).findIndex((key) => key === methodName) !== -1;
-  if (methodExists) {
-    store[methodType](methodName, payload);
-  } else if (callback) {
-    callback(payload);
-  }
-}
-const PageHeadNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$e = {
-  inheritAttrs: false,
-  props: {
-    additionalTitle: String,
-    title: String,
-    navRaw: [Object, String, Array]
-  },
-  setup() {
-    const store2 = useStore();
-    const route = useRoute();
-    const router2 = useRouter();
-    const productsCategoriesType = store2.state.productsCategories.basedRequest.type;
-    const productsType = store2.state.products.basedRequest.type;
-    const crumbs = computed(() => {
-      const handledPath = getPathName(route.path, "array");
-      let items = [];
-      if (handledPath == null ? void 0 : handledPath.prefix) {
-        const catSlugs = handledPath.items;
-        for (let i = 0; i < catSlugs.length; i++) {
-          const el = catSlugs[i];
-          const pCat = store2.getters.singleBySlug({ type: productsCategoriesType, slug: el });
-          items.push({ title: pCat.name, routeTo: () => routeToCategory(pCat) });
-        }
-        if (handledPath == null ? void 0 : handledPath.last)
-          items.push({ title: store2.getters.singleBySlug({ type: productsType, slug: handledPath.last }).name });
-      } else {
-        items = handledPath.items.map((el) => {
-          var _a;
-          const title = (_a = store2.getters["pages/pageBySlug"](el)) == null ? void 0 : _a.title.rendered;
-          return title ? { title, routeTo: () => router2.push(el) } : null;
-        });
-      }
-      return items;
-    });
-    return {
-      crumbs
-    };
-  },
-  computed: {}
-};
-function _sfc_ssrRender$e(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
-  const _component_ContainerNode = resolveComponent("ContainerNode");
-  const _component_BaseLinkNode = resolveComponent("BaseLinkNode");
-  _push(`<section${ssrRenderAttrs(mergeProps({
-    class: ["page-head", $props.title ? "" : "page-head_product"]
-  }, _attrs))}>`);
-  _push(ssrRenderComponent(_component_ContainerNode, null, {
-    default: withCtx((_, _push2, _parent2, _scopeId) => {
-      if (_push2) {
-        _push2(`<div${ssrRenderAttrs(mergeProps({ class: "page-head__body" }, _ctx.$attrs))}${_scopeId}><div class="page-head__content"${_scopeId}>`);
-        if (!$props.title) {
-          _push2(`<button class="page-head__back icon-arrow"${_scopeId}> \u041D\u0430\u0437\u0430\u0434 </button>`);
-        } else {
-          _push2(`<!---->`);
-        }
-        _push2(`<ul class="page-head__breadcrumbs"${_scopeId}>`);
-        _push2(ssrRenderComponent(_component_BaseLinkNode, {
-          onClick: ($event) => _ctx.$router.push("/")
-        }, {
-          default: withCtx((_2, _push3, _parent3, _scopeId2) => {
-            if (_push3) {
-              _push3(`\u0413\u043B\u0430\u0432\u043D\u0430\u044F`);
-            } else {
-              return [
-                createTextVNode("\u0413\u043B\u0430\u0432\u043D\u0430\u044F")
-              ];
-            }
-          }),
-          _: 1
-        }, _parent2, _scopeId));
-        _push2(`<!--[-->`);
-        ssrRenderList($setup.crumbs, (crumb, index) => {
-          _push2(ssrRenderComponent(_component_BaseLinkNode, {
-            onClick: crumb.routeTo
-          }, {
-            default: withCtx((_2, _push3, _parent3, _scopeId2) => {
-              if (_push3) {
-                _push3(`${ssrInterpolate(crumb == null ? void 0 : crumb.title)}`);
-              } else {
-                return [
-                  createTextVNode(toDisplayString(crumb == null ? void 0 : crumb.title), 1)
-                ];
-              }
-            }),
-            _: 2
-          }, _parent2, _scopeId));
-        });
-        _push2(`<!--]--></ul></div>`);
-        if ($props.title) {
-          _push2(`<h1 class="page-head__title"${_scopeId}>${ssrInterpolate($props.title)}</h1>`);
-        } else {
-          _push2(`<!---->`);
-        }
-        _push2(`</div>`);
-      } else {
-        return [
-          createVNode("div", mergeProps({ class: "page-head__body" }, _ctx.$attrs), [
-            createVNode("div", { class: "page-head__content" }, [
-              !$props.title ? (openBlock(), createBlock("button", {
-                key: 0,
-                class: "page-head__back icon-arrow",
-                onClick: ($event) => _ctx.$router.back()
-              }, " \u041D\u0430\u0437\u0430\u0434 ", 8, ["onClick"])) : createCommentVNode("", true),
-              createVNode("ul", { class: "page-head__breadcrumbs" }, [
-                createVNode(_component_BaseLinkNode, {
-                  onClick: ($event) => _ctx.$router.push("/")
-                }, {
-                  default: withCtx(() => [
-                    createTextVNode("\u0413\u043B\u0430\u0432\u043D\u0430\u044F")
-                  ]),
-                  _: 1
-                }, 8, ["onClick"]),
-                (openBlock(true), createBlock(Fragment, null, renderList($setup.crumbs, (crumb, index) => {
-                  return openBlock(), createBlock(_component_BaseLinkNode, {
-                    key: index,
-                    onClick: crumb.routeTo
-                  }, {
-                    default: withCtx(() => [
-                      createTextVNode(toDisplayString(crumb == null ? void 0 : crumb.title), 1)
-                    ]),
-                    _: 2
-                  }, 1032, ["onClick"]);
-                }), 128))
-              ])
-            ]),
-            $props.title ? (openBlock(), createBlock("h1", {
-              key: 0,
-              class: "page-head__title"
-            }, toDisplayString($props.title), 1)) : createCommentVNode("", true)
-          ], 16)
-        ];
-      }
-    }),
-    _: 1
-  }, _parent));
-  _push(`</section>`);
-}
-const _sfc_setup$e = _sfc_main$e.setup;
-_sfc_main$e.setup = (props, ctx) => {
-  const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/structure/PageHeadNode.vue");
-  return _sfc_setup$e ? _sfc_setup$e(props, ctx) : void 0;
-};
-const PageHeadNode = /* @__PURE__ */ _export_sfc(_sfc_main$e, [["ssrRender", _sfc_ssrRender$e]]);
-const MainPageNode_vue_vue_type_style_index_0_lang = "";
-const _sfc_main$d = {
-  name: "MainPageNode",
-  components: {
-    PageHeadNode
-  },
-  inheritAttrs: false,
-  props: {
-    pageHeadNodeShow: {
-      type: Boolean,
-      default: true
-    },
-    templatePage: Object,
-    navRaw: Object,
-    additionalTitle: String
-  }
-};
-function _sfc_ssrRender$d(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
-  const _component_PageHeadNode = resolveComponent("PageHeadNode");
-  _push(`<main${ssrRenderAttrs(mergeProps({
-    class: ["page", $props.templatePage ? "" : "page_product"]
-  }, _attrs))}>`);
-  if ($props.pageHeadNodeShow) {
-    _push(`<div class="page__head-wrapper">`);
-    ssrRenderSlot(_ctx.$slots, "page-head", {}, () => {
-      _push(ssrRenderComponent(_component_PageHeadNode, {
-        title: $props.templatePage ? $props.templatePage.title.rendered : "",
-        navRaw: $props.navRaw,
-        additionalTitle: $props.additionalTitle
-      }, null, _parent));
-    }, _push, _parent);
-    _push(`</div>`);
-  } else {
-    _push(`<!---->`);
-  }
-  _push(`<div class="${ssrRenderClass([_ctx.$attrs.class, "page-main"])}">`);
-  ssrRenderSlot(_ctx.$slots, "page-main", {}, null, _push, _parent);
-  _push(`</div></main>`);
-}
-const _sfc_setup$d = _sfc_main$d.setup;
-_sfc_main$d.setup = (props, ctx) => {
-  const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("src/components/common/MainPageNode.vue");
-  return _sfc_setup$d ? _sfc_setup$d(props, ctx) : void 0;
-};
-const MainPageNode = /* @__PURE__ */ _export_sfc(_sfc_main$d, [["ssrRender", _sfc_ssrRender$d]]);
-const common = [
-  BaseButtonNode,
-  BaseLinkNode,
-  ButtonNode,
-  InputNode,
-  PopupNode,
-  LoadingNode,
-  CloseBtnNode,
-  ContainerNode,
-  InputStoreNode,
-  InputCheckboxNode,
-  PreloadWrapNode,
-  InputRadioNode,
-  RevealingNode,
-  MainPageNode
-];
 const LogoNode_vue_vue_type_style_index_0_lang = "";
 const _sfc_main$c = {};
 function _sfc_ssrRender$c(_ctx, _push, _parent, _attrs) {
@@ -33124,14 +32471,14 @@ const _sfc_main$9 = {
     };
     return {
       isEmpty,
-      routeToCategory,
       setPopup,
       products: products2,
       pCats,
       searchAll,
       popupInputButton,
       queryString,
-      scrollY: computed(() => store2.state.common.scrollY)
+      scrollY: computed(() => store2.state.common.scrollY),
+      routeToSingleProductCategory: (value) => store2.dispatch("productsCategories/routeToSingleProductCategory", value)
     };
   }
 };
@@ -33215,7 +32562,7 @@ function _sfc_ssrRender$9(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
                       return openBlock(), createBlock("button", {
                         key: item.id,
                         class: "result-search__category",
-                        onClick: ($event) => $setup.routeToCategory(item)
+                        onClick: ($event) => $setup.routeToSingleProductCategory(item)
                       }, toDisplayString(item.name), 9, ["onClick"]);
                     }), 128))
                   ])
@@ -33266,27 +32613,31 @@ const _sfc_main$8 = {
     NavNode,
     CategoriesNode
   },
-  computed: {
-    ...mapGetters({}),
-    ...mapState({
-      userAuth: (state2) => state2.auth.userAuth
-    })
-  },
-  methods: {
-    ...mapMutations({
-      setPopup: "common/setPopup"
-    })
+  setup() {
+    const { state: state2, commit } = useStore();
+    return {
+      userAuth: computed(() => state2.auth.userAuth),
+      setPopup: (value) => commit("common/setPopup", value),
+      headerMenuPopup: computed(() => {
+        var _a;
+        return (_a = state2.common.openings.popup) == null ? void 0 : _a.headerMenu;
+      })
+    };
   }
 };
 function _sfc_ssrRender$8(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  var _a;
   const _component_PopupNode = resolveComponent("PopupNode");
   const _component_CategoriesNode = resolveComponent("CategoriesNode");
   const _component_NavNode = resolveComponent("NavNode");
-  _push(`<div${ssrRenderAttrs(mergeProps({ class: "header-menu" }, _attrs))}><button class="header-burger-icon"><i></i><i></i><i></i></button>`);
+  _push(`<div${ssrRenderAttrs(mergeProps({ class: "header-menu" }, _attrs))}><button class="${ssrRenderClass([{ "header-menu__icon_active": (_a = $setup.headerMenuPopup) == null ? void 0 : _a.active }, "header-menu__icon"])}"><i></i><i></i><i></i></button>`);
   _push(ssrRenderComponent(_component_PopupNode, { item: { name: "headerMenu" } }, {
     default: withCtx((_, _push2, _parent2, _scopeId) => {
       if (_push2) {
-        _push2(ssrRenderComponent(_component_CategoriesNode, { spoilerType: true }, {
+        _push2(ssrRenderComponent(_component_CategoriesNode, {
+          class: "container",
+          spoilerType: true
+        }, {
           default: withCtx((slotProps, _push3, _parent3, _scopeId2) => {
             if (_push3) {
               _push3(ssrRenderComponent(_component_CategoriesNode, {
@@ -33309,16 +32660,16 @@ function _sfc_ssrRender$8(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
         _push2(ssrRenderComponent(_component_NavNode, { name: "top_header" }, {
           in: withCtx((_2, _push3, _parent3, _scopeId2) => {
             if (_push3) {
-              _push3(`<li class="header-nav__item"${_scopeId2}><button class="header-nav__btn icon-profile"${_scopeId2}>${ssrInterpolate(_ctx.userAuth ? "\u041B\u0438\u0447\u043D\u044B\u0439 \u043A\u0430\u0431\u0438\u043D\u0435\u0442" : "\u0412\u0445\u043E\u0434/\u0420\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u044F")}</button></li>`);
+              _push3(`<li class="header-nav__item"${_scopeId2}><button class="header-nav__btn icon-profile"${_scopeId2}>${ssrInterpolate($setup.userAuth ? "\u041B\u0438\u0447\u043D\u044B\u0439 \u043A\u0430\u0431\u0438\u043D\u0435\u0442" : "\u0412\u0445\u043E\u0434/\u0420\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u044F")}</button></li>`);
             } else {
               return [
                 createVNode("li", { class: "header-nav__item" }, [
                   createVNode("button", {
                     class: "header-nav__btn icon-profile",
-                    onClick: withModifiers(($event) => _ctx.userAuth ? _ctx.$router.push({ name: "PersonalProfile" }) : _ctx.setPopup({
+                    onClick: withModifiers(($event) => $setup.userAuth ? _ctx.$router.push({ name: "PersonalProfile" }) : $setup.setPopup({
                       name: "login"
                     }), ["stop"])
-                  }, toDisplayString(_ctx.userAuth ? "\u041B\u0438\u0447\u043D\u044B\u0439 \u043A\u0430\u0431\u0438\u043D\u0435\u0442" : "\u0412\u0445\u043E\u0434/\u0420\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u044F"), 9, ["onClick"])
+                  }, toDisplayString($setup.userAuth ? "\u041B\u0438\u0447\u043D\u044B\u0439 \u043A\u0430\u0431\u0438\u043D\u0435\u0442" : "\u0412\u0445\u043E\u0434/\u0420\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u044F"), 9, ["onClick"])
                 ])
               ];
             }
@@ -33327,7 +32678,10 @@ function _sfc_ssrRender$8(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
         }, _parent2, _scopeId));
       } else {
         return [
-          createVNode(_component_CategoriesNode, { spoilerType: true }, {
+          createVNode(_component_CategoriesNode, {
+            class: "container",
+            spoilerType: true
+          }, {
             default: withCtx((slotProps) => [
               createVNode(_component_CategoriesNode, {
                 nestedLevel: slotProps.nestedLevel,
@@ -33342,10 +32696,10 @@ function _sfc_ssrRender$8(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
               createVNode("li", { class: "header-nav__item" }, [
                 createVNode("button", {
                   class: "header-nav__btn icon-profile",
-                  onClick: withModifiers(($event) => _ctx.userAuth ? _ctx.$router.push({ name: "PersonalProfile" }) : _ctx.setPopup({
+                  onClick: withModifiers(($event) => $setup.userAuth ? _ctx.$router.push({ name: "PersonalProfile" }) : $setup.setPopup({
                     name: "login"
                   }), ["stop"])
-                }, toDisplayString(_ctx.userAuth ? "\u041B\u0438\u0447\u043D\u044B\u0439 \u043A\u0430\u0431\u0438\u043D\u0435\u0442" : "\u0412\u0445\u043E\u0434/\u0420\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u044F"), 9, ["onClick"])
+                }, toDisplayString($setup.userAuth ? "\u041B\u0438\u0447\u043D\u044B\u0439 \u043A\u0430\u0431\u0438\u043D\u0435\u0442" : "\u0412\u0445\u043E\u0434/\u0420\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u044F"), 9, ["onClick"])
               ])
             ]),
             _: 1
@@ -33591,7 +32945,7 @@ function _sfc_ssrRender$6(_ctx, _push, _parent, _attrs, $props, $setup, $data, $
               ], 8, ["onClick"]),
               createVNode("button", {
                 class: "header-main__action icon-cart",
-                onClick: ($event) => _ctx.$router.push({ name: "Cart" })
+                onClick: ($event) => _ctx.$router.push({ name: "OrderingCart" })
               }, [
                 createVNode("span", null, toDisplayString(_ctx.cartItemsQuantity), 1)
               ], 8, ["onClick"])
@@ -34038,7 +33392,7 @@ const _sfc_main$3 = {
     }
   },
   setup(props) {
-    const message = ref({});
+    const message = shallowRef();
     watch(
       props,
       (newProps) => {
@@ -34264,7 +33618,7 @@ const _sfc_main = {
       document.body.style.overflow = "hidden";
     },
     truncatedComponent(value) {
-      return !!truncatedComponents.find((el) => el.name === value);
+      return !!truncatedComponents[0].children.find((el) => el.name === value);
     }
   }
 };
@@ -34316,11 +33670,11 @@ _sfc_main.setup = (props, ctx) => {
 const App = /* @__PURE__ */ _export_sfc(_sfc_main, [["ssrRender", _sfc_ssrRender]]);
 function createApp() {
   const app = createSSRApp(App);
-  common.forEach((component) => {
+  common$1.forEach((component) => {
     app.component(component.name, component);
   });
-  app.use(router$1).use(store);
-  return { app, router: router$1 };
+  app.use(router).use(store);
+  return { app, router };
 }
 async function render(url, manifest) {
   const { app, router: router2 } = createApp();

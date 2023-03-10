@@ -1,9 +1,10 @@
 import Cookies from "js-cookie";
 import { has } from "lodash-es";
-import { VUE_WP_INSTANCE, getWishListKeyFromCookieKey } from "@/api/helpers";
+import { getWishListKeyFromCookieKey } from "@/api/helpers";
+import __INST__ from "@/json/vuewp.json";
 import { mainFetch } from "@/api";
 
-const instance = VUE_WP_INSTANCE().state.wishlist;
+const instance = __INST__.state.wishlist;
 export default {
   namespaced: true,
 

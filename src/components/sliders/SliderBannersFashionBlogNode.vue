@@ -16,17 +16,17 @@
     }"
   >
     <template #banner-category-name>
-      <div
+      <h2
         class="slider-banners-fashion-blog__title"
-        @click="$router.push('/blog-page')"
+        @click="$router.push('/')"
       >
         Fashion-блог
-      </div>
+      </h2>
     </template>
     <template #banner-title="bannerTitleProps">
       <div
         class="slider-banners-fashion-blog__banner-title"
-        @click="$router.push('/blog-page')"
+        @click="$router.push('/')"
       >
         {{ bannerTitleProps.banner.title.rendered }}
       </div>
@@ -49,19 +49,19 @@ export default {
   background-color: #231f20;
 
   &__title {
-    font-size: 2rem;
+    // font-size: 2rem;
     cursor: pointer;
   }
   &__banner-title {
     cursor: pointer;
-    font-size: 1.4rem;
-    line-height: 2rem;
+    font-size: 1.2rem;
+    line-height: 1.4rem;
     color: #fff;
     text-align: center;
     margin: 1.3333333333rem 1.3333333333rem 0;
     text-transform: uppercase;
     @media (max-width: ($md3+px)) {
-      font-size: 0.8666666667rem;
+      font-size: 1rem;
       line-height: 1.2rem;
     }
   }
@@ -78,6 +78,10 @@ export default {
     }
     &__body {
       padding: 2.6666666667rem 0 !important;
+      @media (max-width: ($md3+px)) {
+      padding: 1.6666666667rem 0 0 0 !important;
+
+      }
     }
   }
   .slider-arrows {

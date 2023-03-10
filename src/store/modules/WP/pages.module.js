@@ -1,7 +1,8 @@
 import { has } from "lodash-es";
-import { VUE_WP_INSTANCE, getPathName } from "@/api/helpers";
+import { getPathName } from "@/api/uni";
+import __INST__ from "@/json/vuewp.json";
 
-const instance = VUE_WP_INSTANCE().state.pages;
+const instance = __INST__.state.pages;
 
 export default {
   namespaced: true,

@@ -1,9 +1,4 @@
-//
-import {
-  createRouter,
-  createWebHistory,
-  createMemoryHistory,
-} from "vue-router";
+import { createRouter, createWebHistory, createMemoryHistory } from "vue-router";
 import { routes } from "@/router/routes";
 import store from "@/store";
 
@@ -29,16 +24,7 @@ router.beforeEach((to, from) => {
    * юзер не мог сразу открыть Orders маршрут, так как смена userAuth происходила из created хука компонента App)
    */
   store.dispatch("auth/updateUserAuth");
-
-  const userAuth = store.state?.auth.userAuth;
-  /**
-   * (!) - userAuth можно изменить из фронта и попасть на маршрут (правильно ли это?)
-   */
-  if (userAuth === false && to.name === "Checkout") {
-    return { name: "Cart" };
-  }
-
-  return true;
+  // const userAuth = store.state?.auth.userAuth;
 });
 
 export default router;

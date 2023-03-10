@@ -59,7 +59,7 @@
                 </button>
                 <button
                   class="header-main__action icon-cart"
-                  @click="$router.push({ name: 'Cart' })"
+                  @click="$router.push({ name: 'OrderingCart' })"
                 >
                   <span>{{ cartItemsQuantity }}</span>
                 </button>
@@ -192,7 +192,7 @@ export default {
         min-height: 40px;
       }
       .categories {
-        &__item {
+        &__button {
         padding: 0 !important;
       }
       &__list {
@@ -277,7 +277,7 @@ export default {
   }
 
   @media (max-width: ($md3+px)) {
-    padding: 0.3rem 0;
+    padding: 7px 0;
   }
 
   &__body {
@@ -292,11 +292,14 @@ export default {
   }
 
   &__action {
-    margin-left: 40px;
+    margin-left: 35px;
     position: relative;
     display: flex;
     @media (max-width: ($md2+px)) {
       margin-left: 20px;
+    }
+    &::before {
+      color: $mainColor;
     }
     &.icon-cart {
       span {
@@ -307,6 +310,12 @@ export default {
       }
     }
     &.icon-wishlist {
+      display: flex;
+      align-items: end;
+      margin-right: 3px;
+      &::before {
+        font-size: 19px;
+      }
       span {
         display: block;
         &::before,
@@ -345,11 +354,8 @@ export default {
   }
   .categories__list {
     margin: 0 -20px;
+    // sub-list абсолютен не по отношшению к item
     .categories__item {
-      padding: 0 20px;
-      // position: relative;
-      // flex: 1 1 auto;
-      // display: inline-flex;
       &:hover {
         .categories__first-list {
           opacity: 1;
@@ -358,7 +364,7 @@ export default {
       }
     }
     .categories__button {
-      // flex: 1 1 auto;
+      padding: 0 20px;
     }
   }
 
@@ -366,6 +372,9 @@ export default {
     top: 39px;
     opacity: 0;
     visibility: hidden;
+    position: absolute;
+    max-height: 370px;
+
     &::before {
       z-index: -1;
       content: "";

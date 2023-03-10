@@ -1,7 +1,8 @@
 <template>
   <div class="header-menu">
     <button
-      class="header-burger-icon"
+      class="header-menu__icon"
+      :class="{'header-menu__icon_active': headerMenuPopup?.active }"
       @click.stop="setPopup({ name: 'headerMenu' })"
     >
       <i/><i/><i/>
@@ -9,6 +10,7 @@
     <PopupNode :item="{ name: 'headerMenu' }">
       <CategoriesNode
         v-slot="slotProps"
+        class="container"
         :spoilerType="true"
       >
         <CategoriesNode
@@ -40,9 +42,8 @@
 </template>
 
 <script>
-import {
-  mapState, mapGetters, mapMutations,
-} from "vuex";
+import { computed } from "vue";
+import { useStore } from "vuex";
 import NavNode from "@/components/header/NavNode.vue";
 import CategoriesNode from "@/components/header/CategoriesNode.vue";
 
@@ -51,16 +52,13 @@ export default {
     NavNode,
     CategoriesNode,
   },
-  computed: {
-    ...mapGetters({}),
-    ...mapState({
-      userAuth: (state) => state.auth.userAuth,
-    }),
-  },
-  methods: {
-    ...mapMutations({
-      setPopup: "common/setPopup",
-    }),
+  setup() {
+    const { state, commit } = useStore();
+    return {
+      userAuth: computed(() => state.auth.userAuth),
+      setPopup: (value) => commit("common/setPopup", value),
+      headerMenuPopup: computed(() => state.common.openings.popup?.headerMenu),
+    };
   },
 };
 </script>
@@ -68,6 +66,59 @@ export default {
 <style lang="scss">
 .header-menu {
   display: none;
+  &__icon {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  // padding: 0 23px 0 16px;
+  margin-right: 16px;
+  min-height: 46px;
+  width: 28px;
+  i {
+    position: absolute;
+    display: inline-flex;
+    height: 0.1333333333rem;
+    background-color: #231f20;
+    width: 100%;
+    left: 0;
+    // left: 50%;
+    // transform: translate(-50%, 0);
+    transition: 0.2s;
+    &:nth-child(1) {
+      top: 12px;
+    }
+    &:nth-child(2) {
+      // transform: translate(-50%, 0);
+    }
+    &:nth-child(3) {
+      bottom: 12px;
+      // transform: translate(-50%, 0);
+    }
+  }
+  &_active {
+    i {
+
+    &:nth-child(1) {
+      width: 104%;
+      transform-origin: top right;
+      transform: translate(-10%, 0) rotate(-45deg);
+    }
+    &:nth-child(2) {
+      opacity: 0;
+    }
+    &:nth-child(3) {
+      width: 104%;
+      transform-origin: bottom right;
+      transform: translate(-10%, 0) rotate(45deg);
+    }
+  }
+  }
+}
   @media (max-width: ($md2+px)) {
     display: block;
   }
@@ -78,22 +129,26 @@ export default {
       margin: 0 !important;
     }
     &__wrapper {
-    overflow: hidden;
-    position: absolute;
-    top: 60px !important;
-    left: 0 !important;
-    transform: translate(0, 0) !important;
-    padding: 0 20px;
-    height: 100% !important;
-    width: 300px !important;
+      overflow: hidden;
+      position: absolute;
+      top: 62px !important;
+      left: 0 !important;
+      transform: translate(0, 0) !important;
+      padding: 0 20px;
+      height: 100% !important;
+      width: 300px !important;
+      border-top: 3px solid #d8d8d8;
 
-    @media (max-width: ($md3+px)) {
-      top: 54px !important;
+      @media (max-width: ($md3+px)) {
+        top: 54px !important;
+      }
     }
-  }
   }
 
   /** */
+  .categories {
+    padding: 0;
+  }
   .categories__list {
     flex-direction: column;
 
@@ -108,21 +163,24 @@ export default {
     right: 0;
     left: auto;
     position: relative;
-    padding: 1rem 0 1rem 0.5rem;
+    background: #f1f1f1 !important;
+    padding: 20px 20px 10px 10px !important;
 
     &::before {
       position: absolute;
       top: 0;
+      left: 0;
       content: "";
-      background-color: #231f20;
-      height: 20px;
+      background-color: #d8d8d8;
+      height: 1px;
       width: 300px;
       transform: translate(-20px, 0);
+      z-index: 1;
     }
 
     &::after {
       transition: 0s;
-      background-color: #f7f7f7;
+      background-color: #f7f7f7 !important;
       width: 600px;
       transform: translate(-30%, 0);
     }
@@ -155,12 +213,11 @@ export default {
       display: grid;
       grid-template-columns: 1fr 1fr;
       justify-items: start;
-
       &::after {
         z-index: -1;
         content: "";
         position: absolute;
-        height: 100%;
+        height: 200%;
         width: 100%;
         top: 0;
         left: 0;
@@ -214,6 +271,17 @@ export default {
           background: rgb(216, 216, 216);
         }
       }
+      &:last-child {
+        &::before {
+        content: "";
+        position: absolute;
+        height: 1px;
+        width: 300px;
+        bottom: 0;
+        left: -20px;
+        background: rgb(216, 216, 216);
+      }
+      }
       &::after {
         content: "";
         position: absolute;
@@ -229,38 +297,12 @@ export default {
       padding: 1rem 0;
       color: #231f20;
       text-align: start;
+      &.icon-profile {
+        &::before {
+          margin-right: 5px;
+        }
+      }
     }
-  }
-}
-
-.header-burger-icon {
-  z-index: 3;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  border: none;
-  outline: none;
-  background-color: transparent;
-  padding: 0.8rem 0.8rem 0.8rem 0;
-
-  i {
-    display: inline-flex;
-    height: 0.1333333333rem;
-    background-color: #231f20;
-    width: 1.6rem;
-    transition: transform 0.2s;
-    &:nth-child(1) {
-      margin-bottom: 7px;
-    }
-    &:nth-child(2) {
-      margin-bottom: 7px;
-    }
-  }
-}
-
-.header-nav__btn.icon-profile {
-  &::before {
-    margin-right: 5px;
   }
 }
 </style>

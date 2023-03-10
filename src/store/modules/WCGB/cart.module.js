@@ -1,9 +1,10 @@
 import { cloneDeep } from "lodash-es";
 import Cookies from "js-cookie";
-import { VUE_WP_INSTANCE, getNonceToken } from "@/api/helpers";
+import { getNonceToken } from "@/api/helpers";
 import { mainFetch } from "@/api";
+import __INST__ from "@/json/vuewp.json";
 
-const instance = VUE_WP_INSTANCE().state.cart;
+const instance = __INST__.state.cart;
 export default {
   namespaced: true,
 

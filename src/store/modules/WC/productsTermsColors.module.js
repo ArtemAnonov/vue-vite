@@ -1,6 +1,6 @@
-import { VUE_WP_INSTANCE } from "@/api/helpers";
+import __INST__ from "@/json/vuewp.json";
 
-const instance = VUE_WP_INSTANCE().state.productsTermsColors;
+const instance = __INST__.state.productsTermsColors;
 export default {
   namespaced: true,
 

@@ -21,7 +21,7 @@ import { mapState } from "vuex";
 export default {
   props: {
     text: {
-      default: () => ["Для следющего пути", " не существует маршрута!"],
+      default: () => ["Для категории по этому маршруту", "ещё не создана страница!"],
       type: Array,
     },
     // output: String,

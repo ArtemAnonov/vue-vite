@@ -1,8 +1,5 @@
 <template>
-  <MainPageNode
-    :navRaw="product ? product.categories[1] : undefined"
-    :additionalTitle="product ? product.name : undefined"
-  >
+  <MainPageNode>
     <template #page-main>
       <div class="single">
         <div class="single__body">
@@ -158,7 +155,7 @@ export default {
     ButtonWishlistNode,
   },
   props: {
-    params: Array,
+    params: Object,
   },
   data() {
     return {
@@ -206,7 +203,7 @@ export default {
     product() {
       return this.singleBySlug({
         type: this.productsRequest.type,
-        slug: this.productSlug,
+        slug: this.params.mainPath[this.params.mainPath.length - 1],
       });
     },
     wishlistPayload() {
@@ -214,9 +211,9 @@ export default {
         product_id: this.product.id,
       };
     },
-    productSlug() {
-      return this.params[this.params.length - 1];
-    },
+    // productSlug() {
+    //   return this.params[this.params.length - 1];
+    // },
   },
   watch: {
     product(newValue) {
@@ -417,7 +414,7 @@ export default {
     width: 4rem;
     margin-left: 1rem;
     &::before {
-      color: #000 !important;
+      // color: #000 !important;
     }
   }
 }
@@ -428,10 +425,7 @@ export default {
   }
 
   &__title {
-    color: #000;
     margin-bottom: 20px;
-    // font-size: 2rem;
-    // line-height: 36px;
   }
 
   &__list {

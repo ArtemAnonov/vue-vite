@@ -95,6 +95,9 @@ export default {
 .slider-products {
   position: relative;
   margin-bottom: 2rem;
+  @media (max-width: ($md3+px)) {
+     margin-bottom: 0;
+  }
 
   .slider-arrows {
     &__arrow {

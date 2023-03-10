@@ -2,19 +2,19 @@
   <MainPageNode class="home"
     :pageHeadNodeShow="false">
     <template #page-main>
+      <!-- :autoplay="{ delay: 5000, disableOnInteraction: false }" -->
       <SliderBannersNode
         class="slider-banners-main"
         :bannerCategoryId="68"
         :containerStylesOff="windowWidth < 1024 ? true : false"
         slug="slider-banners-main"
-        :autoplay="{ delay: 50000, disableOnInteraction: false }"
         pagination
         :slides-per-view="1"
       >
         <template #banner-title="bannerTitleProps">
           <div
             class="slider-banners-main__title"
-            @click="$router.push('/blog-page')"
+            @click="$router.push('/')"
           >
             {{ bannerTitleProps.banner.title.rendered }}
           </div>
@@ -51,19 +51,12 @@ import PageContentNode from "@/components/PageContentNode.vue";
 import DistributionNode from "@/components/DistributionNode.vue";
 
 export default {
-
   components: {
     SliderProductsSectionNode,
     SliderBannersNode,
     SliderBannersFashionBlogNode,
     PageContentNode,
     DistributionNode,
-  },
-  props: {
-    slug: {
-      type: String,
-      required: true,
-    },
   },
   computed: {
     ...mapGetters({
@@ -73,12 +66,6 @@ export default {
       pagesRequest: (state) => state.pages.basedRequest,
       windowWidth: (state) => state.common.windowWidth,
     }),
-    templatePage() {
-      return this.singleBySlug({ type: this.pagesRequest.type, slug: this.slug });
-    },
-  },
-  created() {
-    this.getTemplatePage();
   },
   methods: {
     ...mapMutations({
@@ -88,12 +75,6 @@ export default {
       getSingleBySlug: "getSingleBySlug",
       updateDocTitle: "updateDocTitle",
     }),
-    async getTemplatePage() {
-      await this.getSingleBySlug({
-        basedRequest: this.pagesRequest,
-        slug: this.slug,
-      });
-    },
   },
 };
 </script>

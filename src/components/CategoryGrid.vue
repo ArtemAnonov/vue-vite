@@ -41,21 +41,22 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from "vuex";
-import { routeToSingleProductCategory } from "@/api/helpers";
+import { mapState, mapGetters, useStore } from "vuex";
 
 export default {
   components: {
   },
   props: {
-    productCategory: {
+    category: {
       reqired: true,
       type: Object,
     },
   },
   setup() {
+    const store = useStore();
     return {
-      routeToSingleProductCategory,
+      routeToSingleProductCategory: (value) => store.dispatch("productsCategories/routeToSingleProductCategory", value),
+
     };
   },
   computed: {
@@ -67,11 +68,11 @@ export default {
       singleBySlug: "singleBySlug",
     }),
     productsCategories() {
-      if (!this.productCategory) return [];
+      if (!this.category) return [];
       return this.itemsMatchedByCallback(
         this.pCRequest,
         {
-          parent: this.productCategory.id,
+          parent: this.category.id,
         },
         (product, keys, params, items) => {
           let approved;
@@ -100,8 +101,8 @@ export default {
   &__items {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    row-gap: 2.6666666667rem;
-    column-gap: 1rem;
+    row-gap: 0.5rem;
+    column-gap: 0.5rem;
 
     @media (max-width: ($md3+px)) {
       grid-template-columns: repeat(2, 1fr);
@@ -109,11 +110,11 @@ export default {
   }
 
   &__item {
+    cursor: pointer;
     &:hover {
       img {
         transform: scale(1.1);
       }
-
       .category-grid__title,
       .category-grid__subtitle {
         color: #5073a2;
@@ -123,7 +124,6 @@ export default {
 
   &__image {
     overflow: hidden;
-
     img {
       max-width: 100%;
       transition: 0.3s ease;
@@ -132,18 +132,18 @@ export default {
 
   &__content {
     text-align: start;
+    padding: .5rem;
   }
 
   &__title {
-    font-size: 1.0666666667rem;
+    font-size: 1rem;
     line-height: 1.3333333333rem;
     transition: 0.3s ease;
-    margin-top: 1.0666666667rem;
-    font-weight: 700;
+    // margin-top: 1.0666666667rem;
   }
 
   &__subtitle {
-    font-size: 1.0666666667rem;
+    font-size: 0.9rem;
     line-height: 1.3333333333rem;
     transition: 0.3s ease;
     margin-top: 0.4rem;

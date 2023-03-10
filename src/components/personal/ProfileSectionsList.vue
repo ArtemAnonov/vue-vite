@@ -13,7 +13,7 @@
 
 <script>
 import { useStore } from "vuex";
-import { getPathName } from "@/api/helpers";
+import { getPathName } from "@/api/uni";
 import LogoutButtonNode from "@/components/personal/LogoutButtonNode.vue";
 
 export default {

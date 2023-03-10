@@ -1,10 +1,8 @@
 import { isEmpty, cloneDeep, has } from "lodash-es";
+import __INST__ from "@/json/vuewp.json";
 import router from "@/router/index.js";
-import {
-  VUE_WP_INSTANCE,
-  mutateObjectForReplaceProperty,
-  getPathName,
-} from "@/api/helpers";
+import { mutateObjectForReplaceProperty } from "@/api/helpers";
+import { getPathName } from "@/api/uni";
 
 /**
  * Фильтрация и сортировка во фроненде работает для предзагрузки товаров,
@@ -12,7 +10,7 @@ import {
  * уже начать выбирать товары ещё до полной загрузки страницы пагинации, загрузки данных
  * с сервера
  */
-const instance = VUE_WP_INSTANCE().state.products;
+const instance = __INST__.state.products;
 export default {
   namespaced: true,
   /**
@@ -332,7 +330,7 @@ export default {
     routeToSingleProduct({ state, rootGetters }, value) {
       const product = rootGetters.universalItem({ type: state.basedRequest.type, value });
       const handledPath = getPathName(product.permalink, "array");
-      const mainPath = handledPath.items;
+      const mainPath = [...handledPath.items, handledPath.last];
       router.push({
         name: "SingleProduct",
         params: { mainPath },

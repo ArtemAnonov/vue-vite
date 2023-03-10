@@ -1,6 +1,8 @@
-import { VUE_WP_INSTANCE, handleWPDate } from "@/api/helpers";
+import { handleWPDate } from "@/api/helpers";
+import router from "@/router";
+import __INST__ from "@/json/vuewp.json";
 
-const instance = VUE_WP_INSTANCE().state.filter.returned;
+const instance = __INST__.state.filter.returned;
 
 /**
  * Для устранения проблем необходимо для данного модуля поддерживать аналогичную структуру
@@ -101,7 +103,7 @@ export default {
       });
     },
     validateValues({
-      state, commit, getters, rootGetters,
+      state, dispatch, commit, getters, rootGetters,
     }) {
       if (state.params.min_price < state.minCost) {
         commit("setMinPrice", state.minCost);
@@ -109,6 +111,14 @@ export default {
       if (state.params.max_price > state.maxCost) {
         commit("setMaxPrice", state.maxCost);
       }
+    },
+    async updateFilter({
+      state, dispatch, commit, getters, rootGetters,
+    }) {
+      router.push(await dispatch("products/changePage", 1, { root: true }));
+      dispatch("validateValues");
+      dispatch("products/updateRequestParams", null, { root: true });
+      dispatch("products/filterAndPaginate", null, { root: true });
     },
   },
 };

@@ -1,5 +1,5 @@
 <template>
-  <button/>
+  <button class="close-btn" />
 </template>
 
 <script>
@@ -19,8 +19,9 @@ button {
   background: transparent;
   border: 0;
   width: 50px;
-  height: 100%;
+  height: 50px;
   cursor: pointer;
+  z-index: 10;
 
   &::after,
   &::before {

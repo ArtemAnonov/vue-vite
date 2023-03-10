@@ -7,6 +7,8 @@
         <div class="popup__inner">
           <slot/>
         </div>
+        <CloseBtnNode v-if="showCloseBtn"
+          @click.stop="setPopup(element.name)"/>
       </div>
     </div>
   </div>
@@ -16,23 +18,34 @@
 import { watchEffect } from "vue";
 import { useStore } from "vuex";
 import { useOpening } from "@/composables/opening.js";
+import CloseBtnNode from "@/components/common/CloseBtnNode.vue";
 
 export default {
   name: "PopupNode",
+  components: {
+    CloseBtnNode,
+  },
   props: {
     item: Object,
+    showCloseBtn: {
+      type: Boolean,
+      default: false,
+    },
   },
   setup(props) {
-    const store = useStore();
+    const { dispatch, commit } = useStore();
     const item = { ...{ type: "popup" }, ...props.item };
     const { element } = useOpening(item);
     watchEffect(() => {
       if (element.active) {
-        store.commit("common/setScrollFlag", { value: true });
+        commit("common/setScrollFlag", { value: true });
       }
     });
 
-    return { element };
+    return {
+      element,
+      setPopup: (name) => commit("common/setPopup", { name }),
+    };
   },
 };
 </script>
@@ -86,7 +99,7 @@ export default {
     right: 15px;
     width: 18px;
     height: 18px;
-    z-index: 1;
+    z-index: 10;
   }
 }
 </style>

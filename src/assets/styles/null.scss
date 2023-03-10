@@ -3,6 +3,7 @@
 	margin: 0px;
 	border: 0px;
 }
+
 *,
 *:before,
 *:after {
@@ -10,14 +11,15 @@
 	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
 }
+
 :focus,
 :active {
 	outline: none;
 }
-a:focus,
-a:active {
 
-}
+a:focus,
+a:active {}
+
 aside,
 nav,
 footer,
@@ -25,17 +27,17 @@ header,
 section {
 	display: block;
 }
-html {
 
-}
+html {}
+
 html,
 body {
 	font-size: $fontSize;
 	position: relative;
 	color: $mainColor;
 	min-width: $minWidth;
-	line-height: 1.4rem;
 }
+
 body {
 
 	-ms-text-size-adjust: 100%;
@@ -51,14 +53,17 @@ textarea {
 
 	font-size: inherit;
 }
+
 input::-ms-clear {
 	display: none;
 }
+
 button {
 	font-family: inherit;
 	cursor: pointer;
 	background-color: inherit;
 }
+
 button::-moz-focus-inner {
 	padding: 0;
 	border: 0;
@@ -69,21 +74,26 @@ a:visited {
 	color: inherit;
 	text-decoration: none;
 }
+
 a:hover {
 	text-decoration: none;
 }
-ol, ul {
 
-}
+ol,
+ul {}
+
 li {
 	list-style: none;
 }
-li::marker{
+
+li::marker {
 	display: none !important;
 }
+
 img {
 	vertical-align: top;
 }
+
 h1,
 h2,
 h3,
@@ -94,9 +104,6 @@ h6 {
 	font-size: inherit;
 }
 
-li::marker{
+li::marker {
 	display: none !important;
 }
-
-
-

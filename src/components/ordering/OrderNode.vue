@@ -42,11 +42,12 @@
       <ul class="order__list-props">
         <li class="order__prop">
           <span class="order__prop-key">Стоимость заказа</span>
-          <div class="order__prop-value">{{ order.total }}</div>
+          <div class="order__prop-value">{{ order.total }} руб</div>
         </li>
       </ul>
     </div>
-    <ButtonNode @click="openPaymentPage(order.payment_url)"
+    <ButtonNode :disabled="true"
+      @click="openPaymentPage(order.payment_url)"
     >Оплатить</ButtonNode
     >
   </article>
@@ -85,6 +86,9 @@ export default {
       padding-top: 20px;
       margin-top: 20px;
     }
+    &:nth-child(3) {
+      margin-bottom: 2rem;
+    }
   }
   // .order__title
   &__title {
@@ -103,12 +107,21 @@ export default {
   }
   // .order__prop
   &__prop {
+    display: flex;
   }
   // .order__prop-key
   &__prop-key {
+    padding-right: 40px;
+    color: rgba(0,0,0,.5);
+    font-size: .86667rem;
+    line-height: 1.06667rem;
+    white-space: nowrap;
   }
   // .order__prop-value
   &__prop-value {
+    font-weight: 700;
+    font-size: 1.13333rem;
+    line-height: 1.4rem;
   }
 
   .product-order {
@@ -140,6 +153,8 @@ export default {
     }
     // .product-order__props
     &__props {
+      padding-left: .8rem;
+
     }
 
     // .product-order__prop
@@ -173,9 +188,9 @@ export default {
     // .product-order__price
     &__price {
       color: inherit;
-
+      font-size: 1.33333rem;
       display: block;
-      margin-top: 15px;
+      margin-top: 35px;
       font-weight: 700;
       line-height: 1.2rem;
     }

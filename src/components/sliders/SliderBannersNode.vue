@@ -1,60 +1,63 @@
 <template>
-  <section class="slider-banners"
-    :class="$attrs.class">
-    <ContainerNode :containerStylesOff="containerStylesOff">
-      <div class="slider-banners__body">
-        <div class="slider-banners__items">
-          <slot name="banner-category-name" />
-          <ArrowsSliderNode
-            v-show="banners?.length !== 0"
-            :slug="slug"
-          />
-        </div>
-        <Swiper
-          v-bind="$attrs"
-          :modules="modules"
-          :loop="true"
-          :navigation="{
-            prevEl: `.${slug}__arrow_prev`,
-            nextEl: `.${slug}__arrow_next`,
-          }"
-          :freeMode="{
-            enabled: true,
-            sticky: true,
-          }"
-        >
-          <SwiperSlide
-            v-for="banner in banners"
-            :key="banner.id"
-            @click="$router.push('/blog-page')"
+  <PreloadWrapNode :targetPreloadElement="!loaded">
+    <section class="slider-banners"
+      :class="$attrs.class">
+      <ContainerNode :containerStylesOff="containerStylesOff">
+        <div class="slider-banners__body">
+          <div class="slider-banners__items">
+            <slot name="banner-category-name" />
+            <ArrowsSliderNode
+              v-show="banners?.length !== 0"
+              :slug="slug"
+            />
+          </div>
+          <Swiper
+            v-bind="$attrs"
+            :modules="modules"
+            :loop="true"
+            :navigation="{
+              prevEl: `.${slug}__arrow_prev`,
+              nextEl: `.${slug}__arrow_next`,
+            }"
+            :freeMode="{
+              enabled: true,
+              sticky: true,
+            }"
+            @swiper="onSwiper"
           >
-            <PreloadWrapNode
-              :targetPreloadElement="bannerOneMedia(banner.featured_media)"
+            <SwiperSlide
+              v-for="banner in banners"
+              :key="banner.id"
+              @click="$router.push('/')"
             >
-              <div class="slider-banners__image">
-                <picture>
-                  <source srcset=""
-                    type="image/webp" >
-                  <source srcset=""
-                    type="image/jpeg" >
-                  <img :src="bannerOneMedia(banner.featured_media)"
-                    alt="" >
-                </picture>
-              </div>
-              <slot name="banner-title"
-                :banner="banner" />
-            </PreloadWrapNode>
-          </SwiperSlide>
-        </Swiper>
-      </div>
-    </ContainerNode>
-  </section>
+              <PreloadWrapNode
+                :targetPreloadElement="bannerOneMedia(banner.featured_media)"
+              >
+                <div class="slider-banners__image">
+                  <picture>
+                    <source srcset=""
+                      type="image/webp" >
+                    <source srcset=""
+                      type="image/jpeg" >
+                    <img :src="bannerOneMedia(banner.featured_media)"
+                      alt="" >
+                  </picture>
+                </div>
+                <slot name="banner-title"
+                  :banner="banner" />
+              </PreloadWrapNode>
+            </SwiperSlide>
+          </Swiper>
+        </div>
+      </ContainerNode>
+    </section>
+  </PreloadWrapNode>
 </template>
 
 <script>
 import { mapState, mapGetters, mapActions, mapMutations } from "vuex";
 import { isEmpty } from "lodash-es";
-
+import { ref } from "vue";
 import { Navigation, Pagination, Autoplay, FreeMode } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import ArrowsSliderNode from "@/components/sliders/ArrowsSliderNode.vue";
@@ -91,7 +94,13 @@ export default {
     },
   },
   setup() {
+    const loaded = ref(false);
+    const onSwiper = (swiper) => {
+      loaded.value = true;
+    };
     return {
+      loaded,
+      onSwiper,
       modules: [Navigation, Pagination, Autoplay, FreeMode],
     };
   },
@@ -142,20 +151,22 @@ export default {
 
 <style lang="scss">
 .slider-banners {
-  // min-height: 80vh;
-
-  @media (max-width: ($md2+px)) {
+  margin-bottom: 2rem;
+  @media (max-width: ($md3+px)) {
+    margin-bottom: 1rem;
     .slider-arrows {
       display: none;
     }
   }
 
   &__body {
-    padding: 2.6666666667rem 0;
+    // padding: 2.6666666667rem 0;
     position: relative;
-
     @media (max-width: ($md2+px)) {
       padding: 0 0 1.6666666667rem 0;
+    }
+    @media (max-width: ($md3+px)) {
+       padding: 0;
     }
   }
 
@@ -163,12 +174,9 @@ export default {
     cursor: pointer;
     position: relative;
     padding-bottom: 40%;
-
-    // @include adaptiv-value("width",1000, 100, 0);
     @media (max-width: ($md3+px)) {
       padding-bottom: 55% !important;
     }
-
     img {
       max-width: 100%;
       object-fit: cover;
@@ -178,10 +186,6 @@ export default {
     }
   }
 
-  .swiper-wrapper {
-    // padding-bottom: 40%;
-  }
-
   .swiper {
     padding-bottom: 2rem;
   }
@@ -189,7 +193,7 @@ export default {
   .slider-arrows {
     position: absolute;
     right: 2rem;
-    bottom: 6rem;
+    bottom: 3rem;
     top: auto;
     left: auto;
   }

@@ -34,6 +34,9 @@ export default {
       popup: {},
       catalogRevealing: {},
       spoiler: {},
+      // sensitive: {
+
+      // },
     },
     //   { name: 'notSelectPaymentMethod', type: 'error', visible: false },
     // ]
@@ -43,7 +46,8 @@ export default {
   mutations: {
     addOpening(state, item) {
       if (has(state.openings[item.type], item.name)) {
-        console.error(`Такой opening ${item.name} уже существует`);
+        // (!)
+        // console.error(`Такой opening ${item.name} уже существует`);
         return;
         // throw new Error(`Такой opening ${item.name} уже существует`);
       }
@@ -98,6 +102,8 @@ export default {
       const items = type !== null ? state.openings[type] : state.openings;
       for (const key in items) {
         if (has(items, key)) {
+          // (~) костыль
+          if (key === "basic") continue;
           const item = items[key];
           if (type !== null) {
             item[prop] = value;
@@ -156,15 +162,7 @@ export default {
   },
 
   actions: {
-    updateMessage(
-      {
-        commit,
-      },
-      name,
-    ) {
-      // if ((state.message === null)) {
-      //   return
-      // }
+    updateMessage({ commit }, name) {
       commit("setMessage", messages[name]);
       setTimeout(() => {
         commit("setMessage", null);

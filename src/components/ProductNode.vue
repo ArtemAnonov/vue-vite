@@ -171,7 +171,7 @@ export default {
   justify-items: center;
   position: relative;
   padding: 0 0 2rem 0;
-    margin: 0 0 1rem 0;
+  margin: 0 0 1rem 0;
   &_catalog {
     // padding: 0 0.66rem 3rem 0.66rem;
 
@@ -267,7 +267,7 @@ export default {
     margin: 0 0 0.3333333333rem;
     font-weight: 400;
     @media (max-width: ($md4+px)) {
-      font-size: 11px;
+      font-size: 0.9rem;
       margin: 0 0 -0.3333333333rem;
     }
   }
@@ -297,18 +297,13 @@ export default {
   }
 
   &__prices {
+
   }
 
   &__regular-price {
     &_only {
       color: #231f20;
     }
-  }
-
-  &__sale-price {
-  }
-
-  &__actions {
   }
 
   &__wishlist {
@@ -378,9 +373,9 @@ export default {
       line-height: 1.2rem;
       font-weight: 700;
       margin: 0 5px 0 0;
-      @media (max-width: ($md4+px)) {
-        font-size: 1rem;
-      }
+      // @media (max-width: ($md4+px)) {
+      //   font-size: 1rem;
+      // }
     }
 
     &__regular-price {
@@ -388,9 +383,9 @@ export default {
       line-height: 1.2rem;
       font-weight: 400;
       text-decoration: line-through;
-      @media (max-width: ($md4+px)) {
-        font-size: 13px;
-      }
+      // @media (max-width: ($md4+px)) {
+      //   font-size: 13px;
+      // }
 
       &_only {
         text-decoration: none;

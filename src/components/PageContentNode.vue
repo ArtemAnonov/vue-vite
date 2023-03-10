@@ -1,30 +1,31 @@
 <template>
   <section class="page-content">
     <ContainerNode>
-      <div v-if="page"
+      <div v-if="handledPage"
         class="page-content__body">
         <h3 class="page-content__title"
-          v-html="page.title.rendered"/>
+          v-html="handledPage.title.rendered"/>
         <div class="page-content__content"
-          v-html="page.content.rendered"/>
+          v-html="handledPage.content.rendered"/>
       </div>
-      <!-- <TroubleNode v-else
-        :text="['Для этой категории ', 'ещё не добавлено описание!']" /> -->
     </ContainerNode>
   </section>
 </template>
 
 <script>
-// import TroubleNode from "@/components/TroubleNode.vue";
+import { useStore } from "vuex";
 
 export default {
-  components: {
-    // TroubleNode,
-  },
   props: {
-    page: Object,
+    page: [String, Object],
   },
-
+  setup(props) {
+    const store = useStore();
+    const handledPage = store.getters.universalItem({ type: store.state.pages.basedRequest.type, value: props.page });
+    return {
+      handledPage,
+    };
+  },
 };
 </script>
 
@@ -34,6 +35,9 @@ export default {
   padding: 1.3333333333rem 0;
   background-color: #f1f1f1;
     color: #868686;
+    h3 {
+      font-size: 1rem !important;
+    }
   &__body {
 
   }
@@ -53,9 +57,6 @@ export default {
       }
     // }
 
-    h3 {
-      font-size: 1rem !important;
-    }
   // }
     @media (max-width: ($md2+px)) {
       padding: 0 10px;

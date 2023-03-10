@@ -21,9 +21,9 @@ export default defineConfig(({ mode, command, ssrBuild }) => {
     // envDir: '/',
     /**
      * Дефолтное значение ("/") определяет путь файлов в index.html на выходе как абсолютный;
-     * Для генерации нужен длинный путь: "/wp-content/themes/logotype-ssr/vue-vite-ssg/dist/static/",
+     * Для генерации нужен длинный путь: "/wp-content/themes/logotype-ssg/vue-vite-ssg/dist/static/",
      */
-    base: mode === "production" ? "/wp-content/themes/logotype-ssr/vue-vite-ssg/dist/static/" : "/",
+    base: mode === "production" ? "/wp-content/themes/logotype-ssg/vue-vite-ssg/dist/static/" : "/",
     build: {
       outDir: "../dist",
       // sourcemap: true,
@@ -47,6 +47,7 @@ export default defineConfig(({ mode, command, ssrBuild }) => {
       },
     },
     plugins: [vue(),
+    // служит для предотвращения ошибок vite hmr из-за circle dependencyes
       {
         name: "singleHMR",
         handleHotUpdate({ modules }) {

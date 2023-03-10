@@ -1,12 +1,15 @@
-import HomePage from "@/pages/common/HomePage.vue";
-import SingleSubCategoryPage from "@/pages/common/SingleSubCategoryPage.vue";
-import SingleCategoryPage from "@/pages/common/SingleCategoryPage.vue";
-import SingleProductPage from "@/pages/common/SingleProductPage.vue";
-import BlogPage from "@/pages/common/BlogPage.vue";
+import { isEmpty, last } from "lodash-es";
 
-import CartPage from "@/pages/private/CartPage.vue";
-import PaymentPage from "@/pages/private/PaymentPage.vue";
-import CheckoutPage from "@/pages/private/CheckoutPage.vue";
+import HomePage from "@/pages/common/HomePage.vue";
+import CategoryMainPage from "@/pages/common/category/CategoryMainPage.vue";
+import CategorySubPage from "@/pages/common/category/CategorySubPage.vue";
+import SingleProductPage from "@/pages/common/SingleProductPage.vue";
+import SingleCategoryPage from "@/pages/common/SingleCategoryPage.vue";
+
+import OrderingPage from "@/pages/private/OrderingPage.vue";
+import OrderingCartPage from "@/pages/private/ordering/OrderingCartPage.vue";
+import OrderingPaymentPage from "@/pages/private/ordering/OrderingPaymentPage.vue";
+import OrderingCheckoutPage from "@/pages/private/ordering/OrderingCheckoutPage.vue";
 
 import PersonalPage from "@/pages/private/PersonalPage.vue";
 import PersonalWishlistPage from "@/pages/private/personal/PersonalWishlistPage.vue";
@@ -15,46 +18,48 @@ import PersonalProfilePage from "@/pages/private/personal/PersonalProfilePage.vu
 
 import NotFoundPage from "@/pages/private/NotFoundPage.vue";
 
+// VIEWS
+import TheFilterNode from "@/components/TheFilterNode.vue";
+import PageContentNode from "@/components/PageContentNode.vue";
+
 import store from "@/store";
 
 function checkAuth(to) {
   const userAuth = store.state?.auth.userAuth;
-
   if (!userAuth) {
     return false;
   }
   return true;
 }
 
-export const prefixes = {
-  product: null,
-  //   (handled) => {
-  //   handled.last = handled.items[handled.items.length - 1];
-  //   handled.items.pop();
-  //   return handled;
-  // },
-  "product-category": null,
-};
-
 /**
  * params нельзя использовать вместе с path
  */
 export const truncatedComponents = [
   {
-    path: "/cart/",
-    component: CartPage,
-    name: "Cart",
+    path: "/ordering/",
+    component: OrderingPage,
+    children: [
+      {
+        path: "cart/",
+        component: OrderingCartPage,
+        name: "OrderingCart",
+      },
+      {
+        path: "checkout/",
+        component: OrderingCheckoutPage,
+        name: "OrderingCheckout",
+        beforeEnter: [checkAuth],
+      },
+      {
+        path: "payment/",
+        component: OrderingPaymentPage,
+        name: "OrderingPayment",
+        beforeEnter: [checkAuth, () => (!isEmpty(store.state?.checkout.draftOrder))],
+      },
+    ],
   },
-  {
-    path: "/checkout/",
-    component: CheckoutPage,
-    name: "Checkout",
-  },
-  {
-    path: "/payment/",
-    component: PaymentPage,
-    name: "Payment",
-  },
+
 ];
 
 export const commonComponents = [
@@ -65,16 +70,32 @@ export const commonComponents = [
     props: () => ({ slug: "home" }),
   },
   {
-    path: "/product-category/:mainCategorySlug/",
+    path: "/product-category/",
     component: SingleCategoryPage,
-    name: "SingleCategory",
-    props: (route) => ({ params: route.params }),
-  },
-  {
-    path: "/product-category/:mainCategorySlug/:categorySlug/",
-    component: SingleSubCategoryPage,
-    name: "SingleSubCategory",
-    props: (route) => ({ params: route.params, query: route.query }),
+    children: [
+      {
+        path: ":mainPath/",
+        component: CategoryMainPage,
+        name: "CategoryMain",
+        props: (route) => ({ params: route.params }),
+      },
+      {
+        // path: ":parentCategory/:mainPath+/",
+        path: ":mainPath+/",
+        components: {
+          default: CategorySubPage,
+          // update filter
+          top: TheFilterNode,
+          bot: PageContentNode,
+        },
+        name: "CategorySub",
+        props: {
+          default: (route) => ({ params: route.params, query: route.query }),
+          top: true,
+          bot: (route) => ({ page: last(route.params.mainPath) }),
+        },
+      },
+    ],
   },
   {
     path: "/product/:mainPath+/", // exp: /product/cat1/cat2/productSlug
@@ -106,12 +127,6 @@ export const commonComponents = [
     ],
   },
 
-  //
-  {
-    path: "/blog-page/",
-    component: BlogPage,
-    name: "BlogPage",
-  },
   {
     path: "/:pathMatch(.*)*",
     component: NotFoundPage,

@@ -17,8 +17,15 @@ module.exports = {
   },
   plugins: ["vue"],
   rules: {
-    "linebreak-style": 0,
 
+    // ДОЛЖГНЫ БЫТЬ РАССМОТРЕНЫ
+    "no-labels": "off",
+    "no-continue": "off",
+    "import/no-unresolved": "off",
+    "max-len": ["error", { code: 200 }],
+    // ДОЛЖГНЫ БЫТЬ РАССМОТРЕНЫ
+
+    "linebreak-style": 0,
     // "linebreak-style": ["error", "unix"],
     // "no-console": ["error", { allow: ["warn", "error"] }], // без console.log
     indent: ["error", 2, {}],
@@ -57,7 +64,6 @@ module.exports = {
     "no-bitwise": ["error", { allow: ["~"] }], // запрещает побитовые операторы.
     // "no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
     "no-unused-vars": "off",
-    "max-len": ["error", { code: 200 }], // обеспечивает максимальную длину строки.
     "object-curly-newline": [
       "error",
       {
@@ -235,10 +241,6 @@ module.exports = {
       },
     ],
 
-    // ДОЛЖГНЫ БЫТЬ РАССМОТРЕНЫ
-    "no-labels": "off",
-    "no-continue": "off",
-    "import/no-unresolved": "off",
   },
   // settings: {
   //   // должен работать для разрешения алиасов

@@ -43,9 +43,7 @@
 </template>
 
 <script>
-import {
-  mapState, mapGetters, mapMutations, mapActions,
-} from "vuex";
+import { useStore } from "vuex";
 import { useOpening } from "@/composables/opening.js";
 
 export default {
@@ -59,37 +57,25 @@ export default {
       default: false,
     },
   },
-  emmits: ["apply", "setDefault"],
-  setup(props) {
+  emmits: [
+    // "apply",
+    "setDefault"],
+  setup(props, ctx) {
+    const store = useStore();
     const item = { ...{ type: "catalogRevealing" }, ...props.item };
     const { element } = useOpening(item);
-    return { element };
+    const apply = () => {
+      store.dispatch("common/updateAllOpeningTypeItems", { type: "catalogRevealing" });
+      store.dispatch("filter/updateFilter");
+    };
+    return {
+      element,
+      apply,
+      setDefault: () => ctx.emit("setDefault"),
+      setCatalogRevealing: (value) => store.commit("common/setCatalogRevealing", value),
+    };
   },
-  computed: {
-    ...mapGetters({}),
-    ...mapState({}),
-  },
-  methods: {
-    ...mapMutations({
-      setCatalogRevealing: "common/setCatalogRevealing",
-    }),
-    ...mapActions({
-      updateAllOpeningTypeItems: "common/updateAllOpeningTypeItems",
-    }),
 
-    /**
-     * Вместо вывода сообщения, логика валидации (она нужна по сути только для цены)
-     * вынесена в Catalog.updateFilter
-     */
-    apply() {
-      this.updateAllOpeningTypeItems({ type: "catalogRevealing" });
-      return this.$emit("apply");
-    },
-
-    setDefault() {
-      this.$emit("setDefault");
-    },
-  },
 };
 </script>
 

@@ -19,9 +19,8 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from "vuex";
+import { mapState, mapGetters, useStore } from "vuex";
 import SliderProductsNode from "@/components/sliders/SliderProductsNode.vue";
-import { routeToSingleProductCategory } from "@/api/helpers";
 
 export default {
   components: {
@@ -35,8 +34,10 @@ export default {
     slug: String,
   },
   setup() {
+    const store = useStore();
     return {
-      routeToSingleProductCategory,
+      routeToSingleProductCategory: (value) => store.dispatch("productsCategories/routeToSingleProductCategory", value),
+
     };
   },
   computed: {
@@ -77,23 +78,7 @@ export default {
 <style lang="scss">
 .slider-products-section {
   position: relative;
-  margin-bottom: 2rem;
-  &__slider {
-    .slider-arrows {
-      &__arrow {
-        position: absolute;
-        top: 50%;
-        // transform: translate(0, -50%);
-        &_prev {
-          left: 1rem;
-        }
 
-        &_next {
-          right: 1rem;
-        }
-      }
-    }
-  }
   &__body {
     // padding: 2.6666666667rem 0;
     // @media (max-width: ($md3+px)) {

@@ -1,5 +1,5 @@
 <template>
-  <div :style="paddingBottom ? { paddingBottom: `${paddingBottom}%` } : {}"
+  <div :style="paddingBottom && showLoading ? { paddingBottom: `${paddingBottom}%` } : {}"
     :class="{ visible: showLoading }"
     class="preload-wrap"
     @click="routeTo">
@@ -20,8 +20,14 @@ export default {
     targetPreloadElement: {
       default: false,
     },
-    paddingBottom: Number,
+    paddingBottom: {
+      type: Number,
+      default: 10,
+    },
   },
+  /**
+   * Если true, то показываем данный компонент
+   */
   setup(props) {
     const showLoading = ref(false);
     watch(

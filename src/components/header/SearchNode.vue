@@ -73,7 +73,6 @@
 import { ref, computed } from "vue";
 import { useStore } from "vuex";
 import { isEmpty } from "lodash-es";
-import { routeToSingleProductCategory } from "@/api/helpers";
 import SliderProductsNode from "@/components/sliders/SliderProductsNode.vue";
 import CategoriesNode from "@/components/header/CategoriesNode.vue";
 
@@ -107,7 +106,6 @@ export default {
 
     return {
       isEmpty,
-      routeToSingleProductCategory,
       setPopup,
       products,
       pCats,
@@ -115,6 +113,7 @@ export default {
       popupInputButton,
       queryString,
       scrollY: computed(() => store.state.common.scrollY),
+      routeToSingleProductCategory: (value) => store.dispatch("productsCategories/routeToSingleProductCategory", value),
     };
   },
 };
@@ -243,6 +242,10 @@ export default {
     &__inner {
       min-width: 0; // for swiper
     }
+  }
+
+  .close-btn {
+    height: 100%;
   }
 }
 

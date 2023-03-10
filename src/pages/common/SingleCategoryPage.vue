@@ -1,118 +1,32 @@
 <template>
   <MainPageNode
-    class="single-category"
-    :templatePage="templatePage"
-    :navRaw="productCategory"
-  >
-
+    class="single-category">
     <template #page-main>
+      <RouterView name="top"/>
       <ContainerNode >
-        <div v-if="templatePage"
+        <div
           class="single-category__body">
-          <CatalogSidebarNode
-            :total="total"
-          />
-          <div class="single-category__sections">
-            <SliderBannersNode
-              class="slider-banners-single-category"
-              :bannerCategoryId="68"
-              :containerStylesOff="true"
-              slug="slider-banners-main_single-category"
-              :autoplay="{ delay: 50000, disableOnInteraction: false }"
-              pagination
-              :slides-per-view="1"
-            />
-            <CategoryGrid :productCategory="productCategory"/>
-            <SliderProductsSectionNode
-              slug="single-category-for-women"
-              title="Для женщин"
-              :productsCategoryId="20"
-              :breakpoints="{
-                '320': {
-                  slidesPerView: 2,
-                  spaceBetween: 20,
-                },
-                '768': {
-                  slidesPerView: 3,
-                  spaceBetween: 20,
-                },
-                '1200': {
-                  slidesPerView: 4,
-                  spaceBetween: 30,
-                },
-              }"
-            />
-          </div>
+          <CatalogSidebarNode/>
+          <RouterView/>
         </div>
-        <TroubleNode v-else
-          :text="['Для категории по этому маршруту', 'ещё не создана страница!']" />
+        <DistributionNode/>
       </ContainerNode>
+      <RouterView name="bot"/>
     </template>
   </MainPageNode>
 </template>
 
 <script>
-import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
-import { isEmpty } from "lodash-es";
+
 import CatalogSidebarNode from "@/components/CatalogSidebarNode.vue";
-import CategoryGrid from "@/components/CategoryGrid.vue";
-import SliderProductsSectionNode from "@/components/sliders/SliderProductsSectionNode.vue";
-import SliderBannersNode from "@/components/sliders/SliderBannersNode.vue";
-import TroubleNode from "@/components/TroubleNode.vue";
+import DistributionNode from "@/components/DistributionNode.vue";
 
 export default {
 
   components: {
     CatalogSidebarNode,
-    CategoryGrid,
-    SliderProductsSectionNode,
-    SliderBannersNode,
-    TroubleNode,
+    DistributionNode,
   },
-  props: {
-    params: {
-      mainCategorySlug: String,
-    },
-  },
-  computed: {
-    ...mapState({
-      productsRequest: (state) => state.products.basedRequest,
-      pCRequest: (state) => state.productsCategories.basedRequest,
-      pagesRequest: (state) => state.pages.basedRequest,
-    }),
-    ...mapGetters({
-      singleBySlug: "singleBySlug",
-      requestByItemParam: "requestByItemParam",
-    }),
-
-    /**
-     * Метод получает дату категории страницы. Перед этим во VUEX state pC добавляется slug
-     */
-    productCategory() {
-      return this.singleBySlug({
-        type: this.pCRequest.type,
-        slug: this.params.mainCategorySlug,
-      });
-    },
-
-    templatePage() {
-      return this.singleBySlug({
-        type: this.pagesRequest.type,
-        slug: this.params.mainCategorySlug,
-      });
-    },
-
-    total() {
-      if (isEmpty(this.productCategory)) return;
-      return this.productCategory.count;
-    },
-  },
-  methods: {
-    ...mapMutations({
-      SET_SINGLE_PARAM: "SET_SINGLE_PARAM",
-    }),
-  },
-
 };
 </script>
 

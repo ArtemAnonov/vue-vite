@@ -1,65 +1,44 @@
 <template>
-  <MainPageNode :templatePage="templatePage"
-    :navRaw="category">
-    <template #page-main>
-      <TheFilterNode @updateFilter="updateFilter"/>
-      <ContainerNode>
-        <div class="catalog__body">
-          <div class="catalog__main">
-            <CatalogSidebarNode
-              :total="total"
-            />
-            <div class="catalog__products">
-              <div class="catalog__sorting">
-                <CatalogRevealingNode
-                  :bodyLoaded="sortOptions ? true : false"
-                  :item="{ name: 'catalogSorting' }"
-                  @apply="updateFilter"
-                >
-                  <template #title>Сортировка</template>
-                  <template #main>
-                    <InputRadioNode
-                      v-for="option in sortOptions"
-                      :key="option.id"
-                      :modelValue="equalOptionSort(option)"
-                      :labelText="option.name"
-                      :checked="option.id === 0"
-                      name="sort"
-                      :disabled="
-                        option.id == 3 || option.id == 4 || option.id == 5
-                      "
-                      @input="setOrderAndOrderBy(option)"
-                    />
-                  </template>
-                </CatalogRevealingNode>
-              </div>
-              <CatalogProductsNode
-                :categoryId="categoryId"
-              />
-              <PaginationNode :type="productsRequest.type"/>
-            </div>
-          </div>
-        </div>
-        <DistributionNode/>
-      </ContainerNode>
-      <PageContentNode
-        v-if="templatePage"
-        :page="templatePage"
-      />
-    </template>
-  </MainPageNode>
+  <div class="catalog__products">
+    <div class="catalog__sorting">
+      <CatalogRevealingNode
+        :bodyLoaded="sortOptions ? true : false"
+        :item="{ name: 'catalogSorting' }"
+      >
+        <template #title>Сортировка</template>
+        <template #main>
+          <InputRadioNode
+            v-for="option in sortOptions"
+            :key="option.id"
+            :modelValue="equalOptionSort(option)"
+            :labelText="option.name"
+            :checked="option.id === 0"
+            name="sort"
+            :disabled="
+              option.id == 3 || option.id == 4 || option.id == 5
+            "
+            @input="setOrderAndOrderBy(option)"
+          />
+        </template>
+      </CatalogRevealingNode>
+    </div>
+    <CatalogProductsNode
+      :categoryId="categoryId"
+    />
+    <PaginationNode :type="productsRequest.type"/>
+  </div>
 </template>
 
 <script>
-import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
-import { isEmpty, isEqual } from "lodash-es";
-import TheFilterNode from "@/components/TheFilterNode.vue";
+import { last, isEqual } from "lodash-es";
+import { mapState, mapGetters, mapMutations, mapActions, useStore } from "vuex";
+import { onUpdated, watch, ref, computed, reactive } from "vue";
+
 import CatalogProductsNode from "@/components/CatalogProductsNode.vue";
 import PaginationNode from "@/components/PaginationNode.vue";
 import CatalogRevealingNode from "@/components/CatalogRevealingNode.vue";
-import PageContentNode from "@/components/PageContentNode.vue";
-import DistributionNode from "@/components/DistributionNode.vue";
-import CatalogSidebarNode from "@/components/CatalogSidebarNode.vue";
+import { useCategory } from "@/composables/category.js";
+
 /**
  * В компоненте в первую очередь утанавливается data страницы каталога,
  * затем (маркером установки является установка старницы категории в request)
@@ -69,31 +48,31 @@ import CatalogSidebarNode from "@/components/CatalogSidebarNode.vue";
 
 export default {
   components: {
-    CatalogSidebarNode,
     CatalogRevealingNode,
-    TheFilterNode,
     CatalogProductsNode,
     PaginationNode,
-    PageContentNode,
-    DistributionNode,
   },
   props: {
-    params: {
-      mainCategorySlug: String,
-      categorySlug: String,
-    },
+    params: Object,
     query: Object,
   },
+  setup(props) {
+    const { templatePage, category } = useCategory(props);
+    return {
+      templatePage,
+      category,
+    };
+  },
+
   data() {
     return {
-      initMarker: false,
+      initialized: false,
     };
   },
   computed: {
     ...mapGetters({
       pageBySlug: "pages/pageBySlug",
       singleBySlug: "singleBySlug",
-      total: "total",
       requestByItemParam: "requestByItemParam",
       filtredProducts: "products/filtredProducts",
     }),
@@ -111,28 +90,6 @@ export default {
       orderAndOrderBy: (state) => state.filter.params.orderAndOrderBy,
     }),
 
-    category() {
-      return this.singleBySlug({
-        type: this.productsCategoriesRequest.type,
-        slug: this.params.categorySlug,
-      });
-    },
-
-    mainCategory() {
-      return this.singleBySlug({
-        type: this.productsCategoriesRequest.type,
-        slug: this.params.mainCategorySlug,
-      });
-    },
-
-    templatePage() {
-      return this.pageBySlug(this.params.categorySlug);
-    },
-    total() {
-      if (isEmpty(this.mainCategory)) return;
-      return this.mainCategory.count;
-    },
-
     products() {
       return this.filtredProducts({ quantity: 8 });
     },
@@ -144,7 +101,7 @@ export default {
      * @param {*} newValue
      */
     async categoryId(newValue) {
-      if (newValue !== null && !this.initMarker) {
+      if (newValue !== null && !this.initialized) {
         this.initCatalog();
       }
     },
@@ -156,7 +113,7 @@ export default {
    * Run after change category
    */
   beforeUpdate() {
-    this.initMarker = false;
+    this.initialized = false;
     this.setCategoryId(this.category.id);
   },
   methods: {
@@ -175,6 +132,7 @@ export default {
       filterAndPaginate: "products/filterAndPaginate",
       changePage: "products/changePage",
       validateValues: "filter/validateValues",
+      updateFilter: "filter/updateFilter",
     }),
 
     /**
@@ -184,18 +142,18 @@ export default {
       this.setPage(this.query.page ? this.query.page : 1);
       this.updateRequestParams();
       this.filterAndPaginate();
-      this.initMarker = true;
+      this.initialized = true;
     },
 
-    /**
-     * Валидация параметоров (цены) происходит автоматически, без выаода сообщения
-     */
-    async updateFilter() {
-      this.$router.push(await this.changePage(1));
-      this.validateValues();
-      this.updateRequestParams();
-      this.filterAndPaginate();
-    },
+    // /**
+    //  * Валидация параметоров (цены) происходит автоматически, без выаода сообщения
+    //  */
+    // async updateFilter() {
+    //   this.$router.push(await this.changePage(1));
+    //   this.validateValues();
+    //   this.updateRequestParams();
+    //   this.filterAndPaginate();
+    // },
 
     /**
      * Метод возвращает Boolean, сравнивая опцию, записанную в filter.params.orderAndOrderBy

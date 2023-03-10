@@ -79,14 +79,14 @@ export default {
    * @returns
    */
   itemsMatchedOneProperty: (state) => ({ type }, params) => {
-    const items = [];
+    const items = {};
     const paramsKeys = Object.keys(params);
     for (const key in state[type].items) {
       if (has(state[type].items, key)) {
         const element = state[type].items[key];
         paramsKeys.forEach((paramKey) => {
           if (element[paramKey] === params[paramKey]) {
-            items.push(element);
+            items[key] = element;
           }
         });
       }

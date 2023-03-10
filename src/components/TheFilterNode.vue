@@ -3,23 +3,24 @@
     <ContainerNode>
       <BaseButtonNode
         class="filter__button filter__button_filter-show"
-        @click.stop="setBasic({name: 'filter'})"
+        @click.stop="setBasic({name: 'filter', active: true})"
       >Фильтр товаров</BaseButtonNode
       >
       <BasicNode :item="{name: 'filter', active: true}"
         @click.stop
       >
+        <!-- :style="{ minHeight: basicFilter.active === true ? filterBodyHeight : '0' + 'px' }" -->
+
         <div
           ref="filterBody"
           class="filter__body"
-          :style="{ minHeight: filterBodyHeight + 'px' }"
+          :style="{ minHeight: basicFilter.active === false ? '0px' : filterBodyHeight + 'px' }"
         >
           <div class="filter__wrapper container">
             <ul class="filter__list">
               <li class="filter__item">
                 <CatalogRevealingNode
                   :item="{ name: 'catalogPrices' }"
-                  @apply="$emit('updateFilter')"
                   @setDefault="setDefaultPrices"
                 >
                   <template #title>Цена</template>
@@ -37,7 +38,6 @@
                   :item="{ name: attr.slug }"
                   :name="attr.slug"
                   :bodyLoaded="attr.slug ? true : false"
-                  @apply="$emit('updateFilter')"
                   @setDefault="setDefaultAttribute(attr.slug)"
                 >
                   <template #title>{{ attr.name }}</template>
@@ -106,16 +106,11 @@ export default {
     CatalogRevealingNode,
     BasicNode,
   },
-  emits: ["updateFilter"],
   data() {
     return {
+      sticky: null,
       onlineOnly: true,
-      applyValidate: true,
-      revealings: {
-        sorting: {},
-        prices: {},
-      },
-      filterBodyHeight: null,
+      filterBodyHeight: 0,
     };
   },
 
@@ -127,6 +122,7 @@ export default {
     }),
     ...mapState({
       browserReady: (state) => state.common.browserReady,
+      basicFilter: (state) => state.common.openings.basic.filter,
       minCost: (state) => state.filter.minCost || 10000,
       maxCost: (state) => state.filter.maxCost || 1000000,
       min_price: (state) => state.filter.params.min_price,
@@ -154,7 +150,7 @@ export default {
   },
   mounted() {
     // eslint-disable-next-line no-new
-    new Sticky(".filter__wrapper", {
+    this.sticky = new Sticky(".filter__wrapper", {
       // wrap: true,
       marginTop: 40,
       marginBottom: 100,
@@ -182,6 +178,7 @@ export default {
 
     ...mapActions({
       setDefaultFilter: "filter/setDefaultFilter",
+      updateFilter: "filter/updateFilter",
       updateAllOpeningTypeItems: "common/updateAllOpeningTypeItems",
     }),
 
@@ -224,7 +221,7 @@ export default {
         value: true,
         prop: "default",
       });
-      this.$emit("updateFilter");
+      this.updateFilter();
     },
 
     /**
@@ -260,12 +257,8 @@ export default {
 .filter {
   position: relative;
   z-index: 1;
-  background: #f7f7f7;
-  border-bottom: 0 solid #d8d8d8;
   .basic_active {
     .filter__body {
-      // border-bottom: 0.0666666667rem solid #d8d8d8;
-
       &::after {
         display: block;
       }
@@ -284,24 +277,10 @@ export default {
       }
     }
   }
-  &_active {
-
-  }
 
   &__body {
-    min-height: 0 !important;
+    // min-height: auto !important;
 
-    position: relative;
-    &::after {
-      position: absolute;
-      content: '';
-      width: 500%;
-      height: 0.0666666667rem;
-      bottom: 0;
-      left: -200%;
-      background: #d8d8d8;
-      display: none;
-    }
   }
 
   &__wrapper {
@@ -311,14 +290,29 @@ export default {
     opacity: 0;
     visibility: hidden;
     display: flex;
+    @media (max-width: ($md2+px)) {
+       max-height: auto !important;
+    }
     @media (max-width: ($md4+px)) {
       flex-direction: column-reverse;
+    }
+
+    &::after {
+      position: absolute;
+      content: '';
+      width: 500%;
+      height: 0.0666666667rem;
+      bottom: 0;
+      left: -200%;
+      background: #d8d8d8;
+      z-index: 1;
     }
     //
     z-index: 1;
     &::before {
-      opacity: 0;
-      background: #fff;
+      z-index: -1;
+      // border-bottom: 0 solid #d8d8d8;
+      background: #f7f7f7;
       content: "";
       position: absolute;
       height: 100%;
@@ -326,16 +320,22 @@ export default {
       top: 0;
       left: 0;
       transform: translate(-50%, 0);
-      box-shadow: 0 0 0.3333333333rem 0 rgba(0, 0, 0, 0.25);
     }
     &_stuck {
       &::before {
-        opacity: 1;
+        background: #fff;
+        box-shadow: 0 0 0.3333333333rem 0 rgba(0, 0, 0, 0.25);
+      }
+      &::after {
+        display: none;
       }
       padding: 0 !important;
-      // .filter__button_clean {
-      //   display: none;
-      // }
+      .filter__button_clean {
+        display: none;
+      }
+      .filter__item > .input_checkbox {
+        display: none;
+      }
     }
   }
 

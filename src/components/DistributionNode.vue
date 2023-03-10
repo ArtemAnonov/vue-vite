@@ -40,13 +40,17 @@ export default {
 
 <style lang="scss">
 .distr {
-  padding: 1.3333333333rem 0;
+  padding: 2.6666666667rem 0;
 
+  @media (max-width: ($md3+px)) {
+    padding: 1.6666666667rem 0;
+
+  }
   &__body {
-    padding: 2.6666666667rem 0;
     display: grid;
     grid-template-columns: repeat(12, 1fr);
     gap: 1rem;
+
   }
 
   &__head {
