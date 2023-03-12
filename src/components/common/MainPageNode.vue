@@ -16,7 +16,8 @@
     </div>
     <div class="page-main"
       :class="$attrs.class">
-      <slot name="page-main"/>
+      <slot :templatePage="templatePage"
+        name="page-main"/>
     </div>
   </main>
   <ContainerNode v-else>

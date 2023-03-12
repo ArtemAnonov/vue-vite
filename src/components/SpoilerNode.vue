@@ -93,12 +93,12 @@ export default {
   &__button {
     position: relative;
     &::before {
-      transition: 0.1s;
+      transition: 0.2s;
       position: absolute;
       top: 50%;
       right: 0;
       transform: translate(0, -50%) rotate(90deg);
-      font-size: 12px;
+      font-size: 10px;
     }
   }
 }

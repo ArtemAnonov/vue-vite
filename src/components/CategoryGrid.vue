@@ -117,7 +117,7 @@ export default {
       }
       .category-grid__title,
       .category-grid__subtitle {
-        color: #5073a2;
+        color: $cBlue;
       }
     }
   }

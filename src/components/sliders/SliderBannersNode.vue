@@ -1,62 +1,61 @@
 <template>
-  <PreloadWrapNode :targetPreloadElement="!loaded">
-    <section class="slider-banners"
-      :class="$attrs.class">
-      <ContainerNode :containerStylesOff="containerStylesOff">
-        <div class="slider-banners__body">
-          <div class="slider-banners__items">
-            <slot name="banner-category-name" />
-            <ArrowsSliderNode
-              v-show="banners?.length !== 0"
-              :slug="slug"
-            />
-          </div>
-          <Swiper
-            v-bind="$attrs"
-            :modules="modules"
-            :loop="true"
-            :navigation="{
-              prevEl: `.${slug}__arrow_prev`,
-              nextEl: `.${slug}__arrow_next`,
-            }"
-            :freeMode="{
-              enabled: true,
-              sticky: true,
-            }"
-            @swiper="onSwiper"
-          >
-            <SwiperSlide
-              v-for="banner in banners"
-              :key="banner.id"
-              @click="$router.push('/')"
-            >
-              <PreloadWrapNode
-                :targetPreloadElement="bannerOneMedia(banner.featured_media)"
-              >
-                <div class="slider-banners__image">
-                  <picture>
-                    <source srcset=""
-                      type="image/webp" >
-                    <source srcset=""
-                      type="image/jpeg" >
-                    <img :src="bannerOneMedia(banner.featured_media)"
-                      alt="" >
-                  </picture>
-                </div>
-                <slot name="banner-title"
-                  :banner="banner" />
-              </PreloadWrapNode>
-            </SwiperSlide>
-          </Swiper>
+  <!-- <PreloadWrapNode :targetPreloadElement="!loaded"> -->
+  <section class="slider-banners"
+    :class="$attrs.class">
+    <ContainerNode :containerStylesOff="containerStylesOff">
+      <div class="slider-banners__body">
+        <div class="slider-banners__items">
+          <slot name="banner-category-name" />
+          <ArrowsSliderNode
+            v-show="banners?.length !== 0"
+            :slug="slug"
+          />
         </div>
-      </ContainerNode>
-    </section>
-  </PreloadWrapNode>
+        <Swiper
+          v-bind="$attrs"
+          :modules="modules"
+          :loop="true"
+          :navigation="{
+            prevEl: `.${slug}__arrow_prev`,
+            nextEl: `.${slug}__arrow_next`,
+          }"
+          :freeMode="{
+            enabled: true,
+            sticky: true,
+          }"
+          @swiper="onSwiper"
+        >
+          <SwiperSlide
+            v-for="banner in banners"
+            :key="banner.id"
+            @click="$router.push('/')"
+          >
+            <PreloadWrapNode
+              :targetPreloadElement="bannerOneMedia(banner.featured_media)"
+            >
+              <div class="slider-banners__image">
+                <picture>
+                  <source srcset=""
+                    type="image/webp" >
+                  <source srcset=""
+                    type="image/jpeg" >
+                  <img :src="bannerOneMedia(banner.featured_media)"
+                    alt="" >
+                </picture>
+              </div>
+              <slot name="banner-title"
+                :banner="banner" />
+            </PreloadWrapNode>
+          </SwiperSlide>
+        </Swiper>
+      </div>
+    </ContainerNode>
+  </section>
+  <!-- </PreloadWrapNode> -->
 </template>
 
 <script>
 import { mapState, mapGetters, mapActions, mapMutations } from "vuex";
-import { isEmpty } from "lodash-es";
 import { ref } from "vue";
 import { Navigation, Pagination, Autoplay, FreeMode } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/vue";

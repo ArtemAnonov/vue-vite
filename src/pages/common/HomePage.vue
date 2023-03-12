@@ -1,7 +1,7 @@
 <template>
   <MainPageNode class="home"
     :pageHeadNodeShow="false">
-    <template #page-main>
+    <template #page-main="{ templatePage }">
       <!-- :autoplay="{ delay: 5000, disableOnInteraction: false }" -->
       <SliderBannersNode
         class="slider-banners-main"

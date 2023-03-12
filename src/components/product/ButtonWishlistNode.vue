@@ -24,7 +24,7 @@ export default {
 
 <style scoped lang="scss">
   .icon-wishlist-fill {
-    color: $mainColor;
+    color: $cMain;
   }
 
 </style>

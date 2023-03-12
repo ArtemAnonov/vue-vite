@@ -2,11 +2,11 @@
   <article
     class="order">
     <div class="order__block">
-      <h2 class="order__title">
+      <div class="order__title">
         Заказ №{{ order.id }} от {{ order.date_created.getDate() }}
         {{ handleMonth(order.date_created.getMonth()) }}
         {{ order.date_created.getFullYear() }} г.
-      </h2>
+      </div>
       <div class="order__status">{{ order.status }}</div>
     </div>
     <div class="order__block">
@@ -41,7 +41,7 @@
     <div class="order__block">
       <ul class="order__list-props">
         <li class="order__prop">
-          <span class="order__prop-key">Стоимость заказа</span>
+          <span class="order__prop-key">Стоимость заказа:</span>
           <div class="order__prop-value">{{ order.total }} руб</div>
         </li>
       </ul>
@@ -77,6 +77,9 @@ export default {
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.15);
   padding: 40px;
   margin-bottom: 40px;
+  @media (max-width: ($md2+px)) {
+     padding: 20px;
+  }
   // .order__block
   &__block {
     &:nth-child(2),
@@ -92,12 +95,19 @@ export default {
   }
   // .order__title
   &__title {
-    margin: 0 0 20px;
+    font-size: 1.5rem;
+    margin: 0 0 10px;
+    @media (max-width: ($md3+px)) {
+       font-size: 1.2rem;
+    }
   }
   // .order__status
   &__status {
     color: #00b477;
-    font-size: 1.4rem;
+    font-size: 1.2rem;
+    @media (max-width: ($md3+px)) {
+       font-size: 1rem;
+    }
   }
   // .order__list-products
   &__list-products {
@@ -108,6 +118,7 @@ export default {
   // .order__prop
   &__prop {
     display: flex;
+    align-items: center;
   }
   // .order__prop-key
   &__prop-key {
@@ -120,7 +131,7 @@ export default {
   // .order__prop-value
   &__prop-value {
     font-weight: 700;
-    font-size: 1.13333rem;
+    font-size: 1.05rem;
     line-height: 1.4rem;
   }
 
@@ -188,9 +199,8 @@ export default {
     // .product-order__price
     &__price {
       color: inherit;
-      font-size: 1.33333rem;
       display: block;
-      margin-top: 35px;
+      // margin-top: 35px;
       font-weight: 700;
       line-height: 1.2rem;
     }

@@ -34,7 +34,7 @@ html,
 body {
 	font-size: $fontSize;
 	position: relative;
-	color: $mainColor;
+	color: $cMain;
 	min-width: $minWidth;
 }
 
@@ -49,7 +49,7 @@ input,
 button,
 textarea {
 
-	color: $mainColor;
+	color: $cMain;
 
 	font-size: inherit;
 }

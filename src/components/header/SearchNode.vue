@@ -133,7 +133,7 @@ export default {
   .search__form {
     &:hover {
       .search__icon::before {
-        color: $mainColor;
+        color: $cMain;
       }
     }
   }
@@ -168,7 +168,7 @@ export default {
       .search__icon {
         padding: 0;
         &::before {
-          color: $mainColor !important;
+          color: $cMain !important;
         }
       }
       .search__input {
@@ -190,7 +190,7 @@ export default {
       .search__icon {
         padding: 0;
         &::before {
-          color: $mainColor !important;
+          color: $cMain !important;
         }
       }
       .search__input {
@@ -227,7 +227,7 @@ export default {
     padding: 0 1rem;
     &::before {
       color: #868686;
-      font-size: 22px;
+      font-size: 20px;
     }
   }
 
@@ -280,7 +280,7 @@ export default {
     &__button {
       text-transform: none;
       &:hover {
-      color: #5073a2;
+      color: $cBlue;
     }
     }
   }

@@ -52,7 +52,7 @@
               <SearchNode/>
               <div class="header-main__actions">
                 <button
-                  class="header-main__action icon-wishlist"
+                  class="header-main__action icon-wishlist2"
                   @click="$router.push({ name: 'PersonalWishlist' })"
                 >
                   <span v-if="!wishlistItemsEmpty"/>
@@ -61,8 +61,10 @@
                   class="header-main__action icon-cart"
                   @click="$router.push({ name: 'OrderingCart' })"
                 >
-                  <span>{{ cartItemsQuantity }}</span>
+                  <span>{{ cartItemsQuantity || 0 }}</span>
                 </button>
+                <img src=""
+                  alt="">
               </div>
             </div>
           </ContainerNode>
@@ -149,9 +151,9 @@ export default {
 <style lang="scss">
 .header {
   position: relative;
-  padding-bottom: 205px;
+  padding-bottom: 181px;
   @media (max-width: ($md2+px)) {
-    padding-bottom: 60px;
+    padding-bottom: 46px;
   }
 
   &__wrapper {
@@ -196,14 +198,15 @@ export default {
         padding: 0 !important;
       }
       &__list {
-        padding: 0 10px;
+        padding: 0 20px;
+        margin: 0;
       }
       }
 
     }
   }
   &__body {
-    min-height: 60px;
+    // min-height: 60px;
     background: #fff;
     z-index: 2;
     position: relative;
@@ -257,7 +260,7 @@ export default {
 
 .header-main {
   position: relative;
-  padding: 25px 0;
+  padding: 15px 0;
   // border-bottom: 1px solid #f1f1f1;
   display: flex;
   align-items: center;
@@ -273,11 +276,12 @@ export default {
     z-index: -1;
   }
   @media (max-width: ($md2+px)) {
-    padding: 0.5rem 0;
+    padding: 0;
+    // padding: 0.5rem 0;
   }
 
   @media (max-width: ($md3+px)) {
-    padding: 7px 0;
+    // padding: 7px 0;
   }
 
   &__body {
@@ -292,29 +296,33 @@ export default {
   }
 
   &__action {
-    margin-left: 35px;
+    margin-left: 25px;
     position: relative;
     display: flex;
     @media (max-width: ($md2+px)) {
       margin-left: 20px;
     }
     &::before {
-      color: $mainColor;
+      color: $cMain;
     }
     &.icon-cart {
+      padding-right: 7px;
       span {
+        position: absolute;
+        top: -4px;
+        right: 0;
         padding-left: 2px;
         font-size: 0.86667rem;
         color: #231f20;
         line-height: 1;
       }
     }
-    &.icon-wishlist {
+    &.icon-wishlist2 {
       display: flex;
-      align-items: end;
-      margin-right: 3px;
+      align-items: flex-end;
+      margin-right: 1px;
       &::before {
-        font-size: 19px;
+        font-size: 20px;
       }
       span {
         display: block;

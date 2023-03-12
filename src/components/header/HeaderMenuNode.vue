@@ -82,7 +82,7 @@ export default {
   i {
     position: absolute;
     display: inline-flex;
-    height: 0.1333333333rem;
+    height: 2px;
     background-color: #231f20;
     width: 100%;
     left: 0;

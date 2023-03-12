@@ -14,12 +14,12 @@
                   >
                     <template
                       #button>
-                      <button class="sidebar-personal__button">{{ item.content }}</button>
+                      <button class="sidebar-personal__button link">{{ item.content }}</button>
                     </template>
                     <template #list>
                       <button v-for="(subItem, index) in subItems(item.url)"
                         :key="subItem.id"
-                        class="sidebar-personal__sub-button"
+                        class="sidebar-personal__sub-button link"
                         :class="{ 'sidebar-personal__sub-button_active': index === 0 ? lastSlugParam(item.url) === last(refHandledPath) : lastSlugParam(subItem.url) === last(refHandledPath) }"
                         @click="index === 0 ?
                           routeTo(item.url) :
@@ -149,7 +149,7 @@ export default {
     }
     &__button {
       border-bottom: 1px solid transparent;
-      padding: 20px 0;
+      padding: 15px 0;
     }
     &__list {
       border-bottom: 1px solid #f1f1f1;
@@ -163,14 +163,21 @@ export default {
 
   .logout-button {
     border-bottom: 1px solid #f1f1f1;
-    padding: 20px 0;
+    padding: 15px 0;
   }
 }
 .sidebar-personal {
-  button {
-    transition: .1s;
+  // button {
+  //   transition: .1s;
+  //   &:hover {
+  //     font-weight: 600;
+  //   }
+  // }
+  .spoiler__button {
     &:hover {
-      font-weight: 600;
+      &::before {
+        color: $cBlue !important;
+      }
     }
   }
   &__button {
@@ -186,7 +193,7 @@ export default {
         width: 2px;
         top: 0;
         left: 0;
-        background: $mainColor;
+        background: $cMain;
       }
     }
   }

@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { watchEffect } from "vue";
+import { watch } from "vue";
 import { useStore } from "vuex";
 import { useOpening } from "@/composables/opening.js";
 import CloseBtnNode from "@/components/common/CloseBtnNode.vue";
@@ -36,11 +36,13 @@ export default {
     const { dispatch, commit } = useStore();
     const item = { ...{ type: "popup" }, ...props.item };
     const { element } = useOpening(item);
-    watchEffect(() => {
-      if (element.active) {
+    watch(element, (newElement) => {
+      if (newElement.active) {
+        commit("common/setScrollFlag", { value: false });
+      } else {
         commit("common/setScrollFlag", { value: true });
       }
-    });
+    }, { deep: true });
 
     return {
       element,

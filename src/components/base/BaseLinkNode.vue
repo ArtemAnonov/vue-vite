@@ -17,7 +17,7 @@ export default {
 .link {
   transition: .1s;
     &:hover {
-      color: #5073a2;
+      color: $cBlue;
     }
     &:disabled {
 

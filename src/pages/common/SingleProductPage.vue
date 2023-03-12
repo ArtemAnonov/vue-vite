@@ -366,7 +366,7 @@ export default {
     button {
       height: 40px;
       line-height: 39px;
-      color: #5073a2;
+      color: $cBlue;
       display: block;
     }
     ul {

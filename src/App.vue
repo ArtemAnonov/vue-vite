@@ -165,7 +165,7 @@ export default {
 }
 
 .message-link {
-  color: #5073a2;
+  color: $cBlue;
   margin-left: 4px;
 }
 

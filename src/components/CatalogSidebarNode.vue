@@ -114,7 +114,7 @@ export default {
 
       &.active {
         & > button {
-          color: $mainColor;
+          color: $cMain;
         }
       }
     }
@@ -137,7 +137,7 @@ export default {
       padding-top: 8px;
       padding-bottom: 8px;
       &:hover {
-        color: $mainColor;
+        color: $cMain;
       }
     }
 
@@ -192,7 +192,7 @@ export default {
           &::after {
           content: '';
           position: absolute;
-          background: $mainColor;
+          background: $cMain;
           height: 100%;
           width: 2px;
           top: 0;
@@ -208,7 +208,7 @@ export default {
           &::after {
           content: '';
           position: absolute;
-          background: $mainColor;
+          background: $cMain;
           height: 100%;
           width: 2px;
           top: 0;

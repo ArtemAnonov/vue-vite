@@ -194,7 +194,7 @@ export default {
         }
       }
       .product__wishlist {
-        color: $mainColor;
+        color: $cMain;
         opacity: 1;
       }
       &::before {
@@ -273,7 +273,7 @@ export default {
   }
 
   &__title {
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
     height: 2.4rem;
 
     @media (max-width: ($md3+px)) {
@@ -308,18 +308,20 @@ export default {
 
   &__wishlist {
     position: absolute;
-    top: 0.6rem;
-    right: 0.6rem;
-    // color: $mainColor;
-    font-size: 1.2rem;
+    top: 0.2rem;
+    right: 0.2rem;
     cursor: pointer;
-
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &::before {
+      flex: 1 1 auto;
+    }
     @media (any-hover: hover) {
       opacity: 0;
     }
-    // &:hover {
-    //   color: #231f20;
-    // }
   }
 
   &__colors {
